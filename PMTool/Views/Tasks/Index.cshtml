@@ -1,161 +1,57 @@
 @model IEnumerable<PMTool.Models.Task>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Index | Task";
 }
 
-<h2>Index</h2>
+
+
+
+
+<div class="pagetitle">
+    <h1>Task List</h1>
+    <span>List of Tasks....</span>
+</div>
+
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", null, new { @title = "Add Task", @class = "btn btn-primary" })
 </p>
-<table>
-    <tr>
-        <th></th>
-        <th>
-            Project
-        </th>
-        <th>
-            Title
-        </th>
-        <th>
-            Description
-        </th>
-        <th>
-            StartDate
-        </th>
-        <th>
-            EndDate
-        </th>
-        <th>
-            TaskHour
-        </th>
-        <th>
-            Priority
-        </th>
-        <th>
-            IsLocked
-        </th>
-        <th>
-            IsActive
-        </th>
-        <th>
-            ParentTaskId
-        </th>
-        <th>
-            ChildTask
-        </th>
-        <th>
-            Attachments
-        </th>
-        <th>
-            CreatedBy
-        </th>
-        <th>
-            CreatedByUser
-        </th>
-        <th>
-            ModifieddBy
-        </th>
-        <th>
-            ModifiedByUser
-        </th>
-        <th>
-            CreateDate
-        </th>
-        <th>
-            ModificationDate
-        </th>
-        <th>
-            ActionDate
-        </th>
-        <th>
-            Users
-        </th>
-        <th>
-            Followers
-        </th>
-        <th>
-            Labels
-        </th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TaskID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TaskID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TaskID })
-        </td>
-        <td>
-			@(item.Project == null ? "None" : item.Project.Name)
-        </td>
-        <td>
-			@item.Title
-        </td>
-        <td>
-			@item.Description
-        </td>
-        <td>
-			@String.Format("{0:g}", item.StartDate)
-        </td>
-        <td>
-			@String.Format("{0:g}", item.EndDate)
-        </td>
-        <td>
-			@String.Format("{0:F}", item.TaskHour)
-        </td>
-        <td>
-			@(item.Priority == null ? "None" : item.Priority.Name)
-        </td>
-        <td>
-			@item.IsLocked
-        </td>
-        <td>
-			@item.IsActive
-        </td>
-        <td>
-			@item.ParentTaskId
-        </td>
-        <td>
-			@(item.ChildTask == null ? "None" : item.ChildTask.Count.ToString())
-        </td>
-        <td>
-			@item.Attachments
-        </td>
-        <td>
-			@item.CreatedBy
-        </td>
-        <td>
-			@(item.CreatedByUser == null ? "None" : item.CreatedByUser.LastName)
-        </td>
-        <td>
-			@item.ModifieddBy
-        </td>
-        <td>
-			@(item.ModifiedByUser == null ? "None" : item.ModifiedByUser.LastName)
-        </td>
-        <td>
-			@String.Format("{0:g}", item.CreateDate)
-        </td>
-        <td>
-			@String.Format("{0:g}", item.ModificationDate)
-        </td>
-        <td>
-			@String.Format("{0:g}", item.ActionDate)
-        </td>
-        <td>
-			@(item.Users == null ? "None" : item.Users.Count.ToString())
-        </td>
-        <td>
-			@(item.Followers == null ? "None" : item.Followers.Count.ToString())
-        </td>
-        <td>
-			@(item.Labels == null ? "None" : item.Labels.Count.ToString())
-        </td>
-    </tr>
-}
-
+<table class="table table-bordered" id="dyntable">
+    <thead>
+        <tr>
+            <th>Project Name
+            </th>
+            <th>Title
+            </th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Project.Name
+                </td>
+                <td>
+                    @Html.DisplayTextFor(_ => item.Title).ToString()
+                </td>
+                <td>
+                    @Html.DisplayTextFor(_ => item.Description).ToString()
+                </td>
+                <td align="center">
+                    @Html.ActionLink(" ", "Edit", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
+                    |
+                    @Html.ActionLink(" ", "Details", new { id = item.TaskID }, new { @class = "icon-list-alt", @title = "Details" })
+                    |
+                    @Html.ActionLink(" ", "Delete", new { id = item.TaskID }, new { @class = "icon-trash", @title = "Delete" })
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
+
 
 

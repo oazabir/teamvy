@@ -1,25 +1,39 @@
 @model PMTool.Models.Task
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit | Task";
 }
 
-<h2>Edit</h2>
 
-@using (Html.BeginForm()) {
+
+<div class="pagetitle">
+    <h1>
+        Task Edit
+    </h1>
+    <span>Edit Task below....</span>
+</div>
+@using (Html.BeginForm())
+{
     @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>Task</legend>
+     
 
-        @Html.HiddenFor(model => model.TaskID)
-		@Html.Partial("_CreateOrEdit", Model)
-
-        <p>
-            <input type="submit" value="Save" />
-        </p>
-    </fieldset>
+    @Html.HiddenFor(model => model.TaskID)
+    @Html.HiddenFor(model => model.CreatedBy)
+    @Html.HiddenFor(model => model.CreateDate)
+   
+    <table class="table table-bordered table-invoice">
+        <tbody>
+    @Html.Partial("_CreateOrEdit", Model)
+            <tr>
+                <td class="width30">
+                </td>
+                <td>
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
 }
-
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index","Tasks", null,  new { @class="btn"})
 </div>

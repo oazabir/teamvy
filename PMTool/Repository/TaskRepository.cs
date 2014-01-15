@@ -41,7 +41,7 @@ namespace PMTool.Repository
 
         public Task Find(long id)
         {
-            return context.Tasks.Find(id);
+            return context.Tasks.Where(t => t.TaskID == id).Include(task => task.Users).Include(task => task.Followers).FirstOrDefault();
         }
 
         public void InsertOrUpdate(Task task)
@@ -49,9 +49,19 @@ namespace PMTool.Repository
             if (task.TaskID == default(long)) {
                 // New entity
                 context.Tasks.Add(task);
+                
             } else {
                 // Existing entity
+                //foreach (User user in task.Users)
+                //{
+                //    context.Users.Attach(user);
+                //}
+                //foreach (User follower in task.Followers)
+                //{
+                //    context.Users.Attach(follower);
+                //}
                 context.Entry(task).State = System.Data.Entity.EntityState.Modified;
+                
             }
         }
 

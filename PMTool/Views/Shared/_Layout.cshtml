@@ -132,6 +132,7 @@
                         </ul>
                     </li>
                    <li>@Html.ActionLink("Projects", "Index", "Projects")</li>
+                   <li>@Html.ActionLink("Tasks", "Index", "Tasks")</li>
                     <li>@Html.ActionLink("Labels", "Index", "Labels")</li>
                     <li>@Html.ActionLink("Priorities", "Index", "Priorities")</li>
                     
@@ -195,7 +196,7 @@
                     <!--dropdown-->
 
                     <div class="dropdown userinfo">
-                        <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">Hi, User! <b class="caret"></b></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">Hi, @User.Identity.Name! <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="editprofile.html"><span class="icon-edit"></span>Edit Profile</a></li>
                             <li><a href=""><span class="icon-wrench"></span>Account Settings</a></li>
@@ -325,9 +326,14 @@
         });
 
         // calendar
-        jQuery('#calendar').datepicker();
+        // jQuery('#calendar').datepicker();
 
 
+    });
+</script>
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.datepicker').datepicker();
     });
 </script>
 @*<html lang="en">

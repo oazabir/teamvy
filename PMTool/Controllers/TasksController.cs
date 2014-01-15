@@ -65,6 +65,19 @@ namespace PMTool.Controllers
             if (ModelState.IsValid)
             {
                 unitOfWork.TaskRepository.InsertOrUpdate(task);
+                task.Users = new List<User>();
+                foreach (string userID in task.SelectedAssignedUsers)
+                {
+                  User user=  unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
+                  task.Users.Add(user);
+
+                }
+                task.Followers = new List<User>();
+                foreach (string userID in task.SelectedFollowedUsers)
+                {
+                    User user = unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
+                    task.Followers.Add(user);
+                }
                 unitOfWork.Save();
                 return RedirectToAction("Index");  
             }
@@ -90,6 +103,18 @@ namespace PMTool.Controllers
             Task task = unitOfWork.TaskRepository.Find(id);
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
             ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+            List<SelectListItem> allUsers = new List<SelectListItem>();
+            List<User> userList = unitOfWork.UserRepository.All();
+            foreach (User user in userList)
+            {
+                SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName + user.LastName };
+                allUsers.Add(item);
+            }
+            task.SelectedAssignedUsers = task.Users.Select(u => u.UserId.ToString()).ToList();
+            task.SelectedFollowedUsers = task.Followers.Select(u => u.UserId.ToString()).ToList();
+            task.UserList = task.Users.Select(u => u.UserId.ToString()).ToArray();
+            task.FollowerList = task.Followers.Select(u => u.UserId.ToString()).ToArray();
+            ViewBag.PossibleUsers =  allUsers;
             return View(task);
         }
 
@@ -99,12 +124,46 @@ namespace PMTool.Controllers
         [HttpPost]
         public ActionResult Edit(Task task)
         {
+           // task.CreatedBy = (Guid)Membership.GetUser().ProviderUserKey;
+            task.ModifieddBy = (Guid)Membership.GetUser().ProviderUserKey;
+            //task.CreateDate = DateTime.Now;
+            task.ModificationDate = DateTime.Now;
+            task.ActionDate = DateTime.Now;
+           // Task taskOld = unitOfWork.TaskRepository.Find(task.TaskID);
             if (ModelState.IsValid)
             {
+
                 unitOfWork.TaskRepository.InsertOrUpdate(task);
+                task.Users = new List<User>();
+                if (task.SelectedAssignedUsers != null)
+                {
+                    foreach (string userID in task.SelectedAssignedUsers)
+                    {
+                        User user = unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
+                        task.Users.Add(user);
+
+                    }
+                }
+                task.Followers = new List<User>();
+                if (task.SelectedFollowedUsers != null)
+                {
+                    foreach (string userID in task.SelectedFollowedUsers)
+                    {
+                        User user = unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
+                        task.Followers.Add(user);
+                    }
+                }
                 unitOfWork.Save();
                 return RedirectToAction("Index");
             }
+            List<SelectListItem> allUsers = new List<SelectListItem>();
+            List<User> userList = unitOfWork.UserRepository.All();
+            foreach (User user in userList)
+            {
+                SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName + user.LastName };
+                allUsers.Add(item);
+            }
+            ViewBag.PossibleUsers = allUsers;
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
             ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
             return View(task);

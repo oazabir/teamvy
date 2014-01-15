@@ -21,6 +21,11 @@ namespace PMTool.Repository
             return context.Users.Where(Usr => Usr.Email == email).FirstOrDefault();
         }
 
+        public User GetUserByUserID(Guid userID)
+        {
+            return context.Users.Where(Usr => Usr.UserId == userID).FirstOrDefault();
+        }
+
         public List<User> All()
         {
             return context.Users.ToList();
@@ -65,6 +70,7 @@ namespace PMTool.Repository
         void Save();
         void Insert(User user);
         List<User> All();
+        User GetUserByUserID(Guid userID);
 
     }
 }

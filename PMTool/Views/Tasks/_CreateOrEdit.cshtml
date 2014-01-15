@@ -2,147 +2,119 @@
 
 @* This partial view defines form fields that will appear when creating and editing entities *@
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.Title)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.Title)
-    @Html.ValidationMessageFor(model => model.Title)
-</div>
+<tr>
+    <td>
+        @Html.LabelFor(model => model.Title)
+    </td>
+    <td>
+        @Html.EditorFor(model => model.Title)
+        @Html.ValidationMessageFor(model => model.Title)
+    </td>
+</tr>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.Description)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.Description)
-    @Html.ValidationMessageFor(model => model.Description)
-</div>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.StartDate)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.StartDate)
-    @Html.ValidationMessageFor(model => model.StartDate)
-</div>
+<tr>
+    <td>
+        @Html.LabelFor(model => model.Description)
+    </td>
+    <td>
+        @Html.EditorFor(model => model.Description)
+        @Html.ValidationMessageFor(model => model.Description)
+    </td>
+</tr>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.EndDate)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.EndDate)
-    @Html.ValidationMessageFor(model => model.EndDate)
-</div>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.TaskHour)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.TaskHour)
-    @Html.ValidationMessageFor(model => model.TaskHour)
-</div>
+<tr>
+    <td>
+        @Html.LabelFor(model => model.StartDate)
+    </td>
+    <td>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.IsLocked)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.IsLocked)
-    @Html.ValidationMessageFor(model => model.IsLocked)
-</div>
+        @Html.TextBoxFor(model => model.StartDate,  new { @class = "datepicker" })
+        @Html.ValidationMessageFor(model => model.StartDate)
+    </td>
+</tr>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.IsActive)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.IsActive)
-    @Html.ValidationMessageFor(model => model.IsActive)
-</div>
+<tr>
+    <td>
+        @Html.LabelFor(model => model.EndDate)
+    </td>
+    <td>
+        @Html.TextBoxFor(model => model.EndDate,  new { @class = "datepicker" })
+        @Html.ValidationMessageFor(model => model.EndDate)
+    </td>
+</tr>
 
-@*<div class="editor-label">
-    @Html.LabelFor(model => model.ParentTaskId)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.ParentTaskId)
-    @Html.ValidationMessageFor(model => model.ParentTaskId)
-</div>
+<tr>
+    <td>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.Attachments)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.Attachments)
-    @Html.ValidationMessageFor(model => model.Attachments)
-</div>
+        @Html.LabelFor(model => model.TaskHour)
+    </td>
+    <td>
+        @Html.EditorFor(model => model.TaskHour)
+        @Html.ValidationMessageFor(model => model.TaskHour)
+    </td>
+</tr>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.CreatedBy)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.CreatedBy)
-    @Html.ValidationMessageFor(model => model.CreatedBy)
-</div>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.ModifieddBy)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.ModifieddBy)
-    @Html.ValidationMessageFor(model => model.ModifieddBy)
-</div>
+<tr>
+    <td>
+        @Html.LabelFor(model => model.IsLocked)
+    </td>
+    <td>
+        @Html.EditorFor(model => model.IsLocked)
+        @Html.ValidationMessageFor(model => model.IsLocked)
+    </td>
+</tr>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.CreateDate)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.CreateDate)
-    @Html.ValidationMessageFor(model => model.CreateDate)
-</div>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.ModificationDate)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.ModificationDate)
-    @Html.ValidationMessageFor(model => model.ModificationDate)
-</div>
+<tr>
+    <td>
+        @Html.LabelFor(model => model.IsActive)
+    </td>
+    <td>
+        @Html.EditorFor(model => model.IsActive)
+        @Html.ValidationMessageFor(model => model.IsActive)
+    </td>
+</tr>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.ActionDate)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.ActionDate)
-    @Html.ValidationMessageFor(model => model.ActionDate)
-</div>*@
 
-<div class="editor-label">
-    Project
-</div>
-<div class="editor-field">
-    @Html.DropDownListFor(model => model.ProjectID, ((IEnumerable<PMTool.Models.Project>)ViewBag.PossibleProjects).Select(option => new SelectListItem {
-        Text = (option == null ? "None" : option.Name), 
-        Value = option.ProjectID.ToString(),
-        Selected = (Model != null) && (option.ProjectID == Model.ProjectID)
-    }), "Choose...")
-    @Html.ValidationMessageFor(model => model.ProjectID)
-</div>
-<div class="editor-label">
-    Priority
-</div>
-<div class="editor-field">
-    @Html.DropDownListFor(model => model.PriorityID, ((IEnumerable<PMTool.Models.Priority>)ViewBag.PossiblePriorities).Select(option => new SelectListItem {
-        Text = (option == null ? "None" : option.Name), 
-        Value = option.PriorityID.ToString(),
-        Selected = (Model != null) && (option.PriorityID == Model.PriorityID)
-    }), "Choose...")
-    @Html.ValidationMessageFor(model => model.PriorityID)
-</div>
-        <script type="text/javascript">
-           
-            jQuery(document).ready(function () {
 
-                jQuery('.chosen').chosen();
-            });
-  </script>
+<tr>
+    <td>Project
+    </td>
+    <td>
+        @Html.DropDownListFor(model => model.ProjectID, ((IEnumerable<PMTool.Models.Project>)ViewBag.PossibleProjects).Select(option => new SelectListItem
+   {
+       Text = (option == null ? "None" : option.Name),
+       Value = option.ProjectID.ToString(),
+       Selected = (Model != null) && (option.ProjectID == Model.ProjectID)
+   }), "Choose...")
+        @Html.ValidationMessageFor(model => model.ProjectID)
+    </td>
+</tr>
+
+<tr>
+    <td>Priority
+    </td>
+    <td>
+        @Html.DropDownListFor(model => model.PriorityID, ((IEnumerable<PMTool.Models.Priority>)ViewBag.PossiblePriorities).Select(option => new SelectListItem
+   {
+       Text = (option == null ? "None" : option.Name),
+       Value = option.PriorityID.ToString(),
+       Selected = (Model != null) && (option.PriorityID == Model.PriorityID)
+   }), "Choose...")
+        @Html.ValidationMessageFor(model => model.PriorityID)
+    </td>
+</tr>
+
+<script type="text/javascript">
+
+    jQuery(document).ready(function () {
+
+        jQuery('.chosen').chosen();
+    });
+</script>
 
 <script type="text/javascript">
     jQuery(".chosen").chosen({ max_selected_options: 10 });
@@ -150,49 +122,50 @@
     jQuery(".chosen").chosen().change();
     jQuery(".chosen").trigger('liszt:updated');
 
-    var selectedUserID = jQuery('Select#SelectedAssignedUsers').val();
-    var SelectedAssignedUsers = "";
+    var selectedUserID = jQuery('Select#Users').val();
+    var Users = "";
 
     if (selectedUserID != null) {
         jQuery.each(selectedUserID, function (index, value) {
-            SelectedAssignedUsers = SelectedAssignedUsers + value + ",";
+            Users = Users + value + ",";
         });
 
         var UserArray = new Array();
-        jQuery('Select#SelectedAssignedUsers').val(UserArray);
+        jQuery('Select#Users').val(UserArray);
 
         jQuery('.chzn-select').trigger('chosen:updated');
     }
 
-    var selectedFollowedUserID = jQuery('Select#SelectedAssignedUsers').val();
-    var SelectedFollowedUsers = "";
+    var selectedFollowedUserID = jQuery('Select#Users').val();
+    var Followers = "";
 
     if (selectedFollowedUserID != null) {
         jQuery.each(selectedFollowedUserID, function (index, value) {
-            SelectedFollowedUsers = SelectedFollowedUsers + value + ",";
+            Followers = Followers + value + ",";
         });
 
         var FollowedUserArray = new Array();
-        jQuery('Select#SelectedFollowedUsers').val(FollowedUserArray);
+        jQuery('Select#Followers').val(FollowedUserArray);
 
         jQuery('.chzn-select').trigger('chosen:updated');
     }
 </script>
 
-<div class="editor-label">
-    Assign User
-</div>
-<div class="editor-field">
+<tr>
+    <td>Assigned To
+    </td>
+    <td>
+        @Html.ListBoxFor(m => m.SelectedAssignedUsers, (IEnumerable<SelectListItem>)ViewBag.PossibleUsers,
+            new { @class = "chosen", multiple = "multiple", style = "width: 350px;" })
+    </td>
+</tr>
 
-    @Html.ListBoxFor(m => m.SelectedAssignedUsers, (IEnumerable<SelectListItem>)ViewBag.PossibleUsers,
-            new { @class = "chosen", multiple = "multiple", style = "width: 350px;"})
-</div> 
-
-<div class="editor-label">
-    Assign User
-</div>
-<div class="editor-field">
-
-    @Html.ListBoxFor(m => m.SelectedFollowedUsers, (IEnumerable<SelectListItem>)ViewBag.PossibleUsers,
-            new { @class = "chosen", multiple = "multiple", style = "width: 350px;"})
-</div> 
+<tr>
+    <td>Follower 
+    </td>
+    <td>
+       
+        @Html.ListBoxFor(m => m.SelectedFollowedUsers, (IEnumerable<SelectListItem>)ViewBag.PossibleUsers,
+            new { @class = "chosen", multiple = "multiple", style = "width: 350px;" })
+    </td>
+</tr>
