@@ -1,0 +1,161 @@
+@model IEnumerable<PMTool.Models.Task>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            Project
+        </th>
+        <th>
+            Title
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            StartDate
+        </th>
+        <th>
+            EndDate
+        </th>
+        <th>
+            TaskHour
+        </th>
+        <th>
+            Priority
+        </th>
+        <th>
+            IsLocked
+        </th>
+        <th>
+            IsActive
+        </th>
+        <th>
+            ParentTaskId
+        </th>
+        <th>
+            ChildTask
+        </th>
+        <th>
+            Attachments
+        </th>
+        <th>
+            CreatedBy
+        </th>
+        <th>
+            CreatedByUser
+        </th>
+        <th>
+            ModifieddBy
+        </th>
+        <th>
+            ModifiedByUser
+        </th>
+        <th>
+            CreateDate
+        </th>
+        <th>
+            ModificationDate
+        </th>
+        <th>
+            ActionDate
+        </th>
+        <th>
+            Users
+        </th>
+        <th>
+            Followers
+        </th>
+        <th>
+            Labels
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.TaskID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.TaskID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.TaskID })
+        </td>
+        <td>
+			@(item.Project == null ? "None" : item.Project.Name)
+        </td>
+        <td>
+			@item.Title
+        </td>
+        <td>
+			@item.Description
+        </td>
+        <td>
+			@String.Format("{0:g}", item.StartDate)
+        </td>
+        <td>
+			@String.Format("{0:g}", item.EndDate)
+        </td>
+        <td>
+			@String.Format("{0:F}", item.TaskHour)
+        </td>
+        <td>
+			@(item.Priority == null ? "None" : item.Priority.Name)
+        </td>
+        <td>
+			@item.IsLocked
+        </td>
+        <td>
+			@item.IsActive
+        </td>
+        <td>
+			@item.ParentTaskId
+        </td>
+        <td>
+			@(item.ChildTask == null ? "None" : item.ChildTask.Count.ToString())
+        </td>
+        <td>
+			@item.Attachments
+        </td>
+        <td>
+			@item.CreatedBy
+        </td>
+        <td>
+			@(item.CreatedByUser == null ? "None" : item.CreatedByUser.LastName)
+        </td>
+        <td>
+			@item.ModifieddBy
+        </td>
+        <td>
+			@(item.ModifiedByUser == null ? "None" : item.ModifiedByUser.LastName)
+        </td>
+        <td>
+			@String.Format("{0:g}", item.CreateDate)
+        </td>
+        <td>
+			@String.Format("{0:g}", item.ModificationDate)
+        </td>
+        <td>
+			@String.Format("{0:g}", item.ActionDate)
+        </td>
+        <td>
+			@(item.Users == null ? "None" : item.Users.Count.ToString())
+        </td>
+        <td>
+			@(item.Followers == null ? "None" : item.Followers.Count.ToString())
+        </td>
+        <td>
+			@(item.Labels == null ? "None" : item.Labels.Count.ToString())
+        </td>
+    </tr>
+}
+
+</table>
+
+

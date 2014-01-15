@@ -1,0 +1,172 @@
+﻿@*@model PMTool.Models.RegisterModel
+@{
+    ViewBag.Title = "Register";
+}*@
+
+@*<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>Create a new account.</h2>
+</hgroup>*@
+
+@*@{
+    ViewBag.Title = "Create a new account.";
+    Layout = null;
+}
+<div class="pagetitle">
+    <h1>Create Account
+    </h1>
+    <span>Create a new account.....</span>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+    <table class="table table-bordered table-invoice">
+        <tbody>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.UserName)
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.UserName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.Password)
+                </td>
+                <td>
+                    @Html.PasswordFor(m => m.Password)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.ConfirmPassword)
+                </td>
+                <td>
+                    @Html.PasswordFor(m => m.ConfirmPassword)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.Email)
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.Email)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.ConfirmEmail)
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.ConfirmEmail)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Register" class="btn btn-primary" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}*@
+
+@*@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}*@
+
+
+@model PMTool.Models.RegisterModel
+@{
+    Layout = null;
+    ViewBag.Title = "Signup";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PM Tools</title>
+    <link rel="stylesheet" href="../../Content/themes/site/css/style.default.css" type="text/css" />
+    <script type="text/javascript" src="../../Content/themes/site/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../Content/themes/site/js/jquery-migrate-1.1.1.min.js"></script>
+</head>
+
+<body class="loginbody">
+
+    <div class="loginwrapper">
+        <div class="loginwrap zindex100 animate2 bounceInDown">
+            <h1 class="logintitle"><span class="iconfa-lock"></span>Signup <span class="subtitle">Hello! Create a new account!</span></h1>
+            <div class="loginwrapperinner">
+                @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { id = "signupform" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary()
+                    <p class="animate4 bounceIn">@Html.TextBoxFor(m => m.UserName, new { @placeholder = "Username" })</p>
+                    <p class="animate5 bounceIn">@Html.PasswordFor(m => m.Password, new { @placeholder = "Password" })</p>
+                    <p class="animate5 bounceIn">@Html.PasswordFor(m => m.ConfirmPassword, new { @placeholder = "Confirm Password" })</p>
+                    <p class="animate4 bounceIn">@Html.TextBoxFor(m => m.Email, new { @placeholder = "Email" })</p>
+                    <p class="animate4 bounceIn">@Html.TextBoxFor(m => m.ConfirmEmail, new { @placeholder = "Confirm Email" })</p>
+                    
+                    <p class="animate6 bounceIn">@*<button class="btn btn-default btn-block">Submit</button>*@
+                        @* <input type="submit" value="LogOn" class="btn btn-default btn-block" id="LogOn"/>*@
+
+                        <input type="submit" value="Signup" class="btn btn-default btn-block" />
+                    </p>
+@*<p class="animate7 fadeIn"><a href=""><span class="icon-question-sign icon-white"></span> Forgot Password?</a></p>*@
+               
+                    @Html.ValidationSummary(true, "")
+
+               
+                }
+                @*                     @Html.ActionLink("Signup", "Register", "Account")*@
+            </div>
+            <!--loginwrapperinner-->
+
+        </div>
+        <div class="loginshadow animate3 fadeInUp"></div>
+
+    </div>
+    <!--loginwrapper-->
+
+    <script type="text/javascript">
+        jQuery.noConflict();
+
+        jQuery(document).ready(function () {
+
+            var anievent = (jQuery.browser.webkit) ? 'webkitAnimationEnd' : 'animationend';
+            jQuery('.loginwrap').bind(anievent, function () {
+                jQuery(this).removeClass('animate2 bounceInDown');
+            });
+
+            jQuery('#UserName,#Password').focus(function () {
+                if (jQuery(this).hasClass('error')) jQuery(this).removeClass('error');
+            });
+
+            jQuery('#signupform input[type="submit"]').click(function () {
+                if (!jQuery.browser.msie) {
+                    if (jQuery('#UserName').val() == '' || jQuery('#Password').val() == '' || jQuery('#ConfirmPassword').val() == '' || jQuery('#Email').val() == '' || jQuery('#ConfirmEmail').val() == '') {
+                        if (jQuery('#UserName').val() == '') jQuery('#UserName').addClass('error'); else jQuery('#UserName').removeClass('error');
+                        if (jQuery('#Password').val() == '') jQuery('#Password').addClass('error'); else jQuery('#Password').removeClass('error');
+                        if (jQuery('#ConfirmPassword').val() == '') jQuery('#ConfirmPassword').addClass('error'); else jQuery('#ConfirmPassword').removeClass('error');
+                        jQuery('.loginwrap').addClass('animate0 wobble').bind(anievent, function () {
+                            jQuery(this).removeClass('animate0 wobble');
+                        });
+                    } else {
+                        jQuery('.loginwrapper').addClass('animate0 fadeOutUp').bind(anievent, function () {
+                            jQuery('#signupform').submit();
+                        });
+                    }
+                    return false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
