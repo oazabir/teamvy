@@ -11,6 +11,7 @@ using WebMatrix.WebData;
 using PMTool.Filters;
 using PMTool.Models;
 using PMTool.Repository;
+using System.Net.Mail;
 
 namespace PMTool.Controllers
 {
@@ -33,7 +34,7 @@ namespace PMTool.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-       // [ValidateAntiForgeryToken]
+        // [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: false))
@@ -82,14 +83,18 @@ namespace PMTool.Controllers
                 // Attempt to register the user
                 try
                 {
-                    //WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password,
-                        new
-                        {
-                            Email = model.Email
-                        },
-                        false
-                    );
+                    string msg = WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
+                    //WebSecurity.CreateUserAndAccount(model.UserName, model.Password,
+                    //    new
+                    //    {
+                    //        Email = model.Email
+                    //    },
+                    //    false
+                    //);
+
+                    if(msg == String.Empty)
+                        SendConfirmationEmail(model.UserName, model.Email);
+
                     WebSecurity.Login(model.UserName, model.Password);
                     return RedirectToAction("Index", "Home");
                 }
@@ -338,6 +343,25 @@ namespace PMTool.Controllers
             return PartialView("_RemoveExternalLoginsPartial", externalLogins);
         }
 
+        //[AllowAnonymous]
+        //[Authorize]
+        //public ActionResult InvitePeople()
+        //{
+        //    return View();
+        //}
+
+        [Authorize]
+        public ActionResult InvitePeople(string email)
+        {
+            //Just for test purpose
+            if (!String.IsNullOrEmpty(email))
+            {
+                SendInvitationEmail(email);
+                ViewBag.Message = "Invitation sent!";
+            }
+            return View(ViewBag);
+        }
+
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)
         {
@@ -411,6 +435,61 @@ namespace PMTool.Controllers
                 default:
                     return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
             }
+        }
+        #endregion
+
+        #region Invitation & Verification
+
+        public void SendConfirmationEmail(string userName, string userEmail)
+        {
+            MembershipUser user = Membership.GetUser(userName);
+            string confirmationGuid = user.ProviderUserKey.ToString();
+            string verifyUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/account/verify?ID=" + confirmationGuid;
+
+            var message = new MailMessage("testbd2014@gmail.com", userEmail)
+            {
+                Subject = "Hi " + userName + ", Please confirm your email",
+                Body = "Dear " + userName + ", Please confirm your email" + verifyUrl
+
+            };
+
+            var client = new SmtpClient();
+            client.Credentials = new System.Net.NetworkCredential("testbd2014@gmail.com", "testbd@123");
+            client.EnableSsl = true;
+            client.Host = "smtp.gmail.com";
+            client.Port = 587;
+
+            //client.u
+            client.Send(message);
+        }
+
+
+
+        public void SendInvitationEmail(string userEmail)
+        {
+            //MembershipUser user = Membership.GetUser(userName);
+            string confirmationGuid = Guid.NewGuid().ToString(); 
+                //user.ProviderUserKey.ToString();
+            string verifyUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/account/verify?ID=" + confirmationGuid;
+
+            var message = new MailMessage("testbd2014@gmail.com", userEmail)
+            {
+                Subject = "Invitation from PMTool",
+                Body = "You are invited to PMTool. Please click on the below link and signup. " + verifyUrl
+
+            };
+
+            var client = new SmtpClient();
+            client.UseDefaultCredentials = false;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.Credentials = new System.Net.NetworkCredential("testbd2014@gmail.com", "testbd@123");
+            client.EnableSsl = true;
+            client.Host = "smtp.gmail.com";
+            client.Port = 587;
+
+
+            //client.u
+            client.Send(message);
         }
         #endregion
     }
