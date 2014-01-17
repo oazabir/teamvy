@@ -87,8 +87,7 @@ namespace PMTool.Models
 
         public List<string> SelectedFollowedUsers { get; set; }
 
-        public string[] UserList { get; set; }
 
-        public string[] FollowerList { get; set; }
+        public List<string> SelectedLabels { get; set; }
     }
 }

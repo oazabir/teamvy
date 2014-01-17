@@ -10,7 +10,7 @@ using PMTool.Models;
 using PMTool.Repository;
 
 namespace PMTool.Controllers
-{   
+{
     public class TasksController : Controller
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
@@ -36,20 +36,16 @@ namespace PMTool.Controllers
 
         public ActionResult Create()
         {
-            List<User> userList = unitOfWork.UserRepository.All();
-            List<SelectListItem> allUsers = new List<SelectListItem>();
-            foreach (User user in userList)
-            {
-                SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName + " " + user.LastName };
-                allUsers.Add(item);
-            }
-            //Task task = new Task();
-            //task.SelectedAssignedUsers = new List<string>();
+            List<SelectListItem> allUsers = GetAllUser();
             ViewBag.PossibleUsers = allUsers;
+
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
             ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+
+            List<SelectListItem> allLabels = GetAllLabel();
+            ViewBag.PossibleLabels = allLabels;
             return View();
-        } 
+        }
 
         //
         // POST: /Tasks/Create
@@ -65,44 +61,82 @@ namespace PMTool.Controllers
             if (ModelState.IsValid)
             {
                 unitOfWork.TaskRepository.InsertOrUpdate(task);
-                task.Users = new List<User>();
-                foreach (string userID in task.SelectedAssignedUsers)
-                {
-                  User user=  unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
-                  task.Users.Add(user);
+                AddAssignUser(task);
+                AddFollower(task);
+                AddLabel(task);
 
-                }
-                task.Followers = new List<User>();
-                foreach (string userID in task.SelectedFollowedUsers)
-                {
-                    User user = unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
-                    task.Followers.Add(user);
-                }
                 unitOfWork.Save();
-                return RedirectToAction("Index");  
+                return RedirectToAction("Index");
             }
-            List<SelectListItem> allUsers = new List<SelectListItem>();
-            List<User> userList = unitOfWork.UserRepository.All();
-           foreach (User user in userList)
-           {
-               SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName + user.LastName };
-               allUsers.Add(item);
-           }
-           ViewBag.PossibleUsers = allUsers;
-
-           ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
-           ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
             return View(task);
         }
-        
+
+        private void AddLabel(Task task)
+        {
+            task.Labels = new List<Label>();
+            foreach (string labelID in task.SelectedLabels)
+            {
+                Label label = unitOfWork.LabelRepository.Find(Convert.ToInt64(labelID));
+                task.Labels.Add(label);
+            }
+        }
+
+        private void AddFollower(Task task)
+        {
+            task.Followers = new List<User>();
+            foreach (string userID in task.SelectedFollowedUsers)
+            {
+                User user = unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
+                task.Followers.Add(user);
+            }
+        }
+
+        private void AddAssignUser(Task task)
+        {
+            task.Users = new List<User>();
+            foreach (string userID in task.SelectedAssignedUsers)
+            {
+                User user = unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
+                task.Users.Add(user);
+
+            }
+        }
+
         //
         // GET: /Tasks/Edit/5
- 
+
         public ActionResult Edit(long id)
         {
             Task task = unitOfWork.TaskRepository.Find(id);
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
             ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+
+            List<SelectListItem> allUsers = GetAllUser();
+            ViewBag.PossibleUsers = allUsers;
+
+            task.SelectedAssignedUsers = task.Users.Select(u => u.UserId.ToString()).ToList();
+            task.SelectedFollowedUsers = task.Followers.Select(u => u.UserId.ToString()).ToList();
+            task.SelectedLabels = task.Labels.Select(u => u.LabelID.ToString()).ToList();
+
+            List<SelectListItem> allLabels = GetAllLabel();
+            ViewBag.PossibleLabels = allLabels;
+            return View(task);
+        }
+
+        private List<SelectListItem> GetAllLabel()
+        {
+            List<SelectListItem> allLabels = new List<SelectListItem>();
+            List<Label> labelList = unitOfWork.LabelRepository.All.ToList();
+            foreach (Label label in labelList)
+            {
+                SelectListItem item = new SelectListItem { Value = label.LabelID.ToString(), Text = label.Name };
+                allLabels.Add(item);
+            }
+            return allLabels;
+        }
+
+        private List<SelectListItem> GetAllUser()
+        {
             List<SelectListItem> allUsers = new List<SelectListItem>();
             List<User> userList = unitOfWork.UserRepository.All();
             foreach (User user in userList)
@@ -110,12 +144,7 @@ namespace PMTool.Controllers
                 SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName + user.LastName };
                 allUsers.Add(item);
             }
-            task.SelectedAssignedUsers = task.Users.Select(u => u.UserId.ToString()).ToList();
-            task.SelectedFollowedUsers = task.Followers.Select(u => u.UserId.ToString()).ToList();
-            task.UserList = task.Users.Select(u => u.UserId.ToString()).ToArray();
-            task.FollowerList = task.Followers.Select(u => u.UserId.ToString()).ToArray();
-            ViewBag.PossibleUsers =  allUsers;
-            return View(task);
+            return allUsers;
         }
 
         //
@@ -124,54 +153,26 @@ namespace PMTool.Controllers
         [HttpPost]
         public ActionResult Edit(Task task)
         {
-           // task.CreatedBy = (Guid)Membership.GetUser().ProviderUserKey;
             task.ModifieddBy = (Guid)Membership.GetUser().ProviderUserKey;
-            //task.CreateDate = DateTime.Now;
             task.ModificationDate = DateTime.Now;
             task.ActionDate = DateTime.Now;
-           // Task taskOld = unitOfWork.TaskRepository.Find(task.TaskID);
             if (ModelState.IsValid)
             {
+                AddAssignUser(task);
+                AddFollower(task);
+                AddLabel(task);
 
                 unitOfWork.TaskRepository.InsertOrUpdate(task);
-                task.Users = new List<User>();
-                if (task.SelectedAssignedUsers != null)
-                {
-                    foreach (string userID in task.SelectedAssignedUsers)
-                    {
-                        User user = unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
-                        task.Users.Add(user);
-
-                    }
-                }
-                task.Followers = new List<User>();
-                if (task.SelectedFollowedUsers != null)
-                {
-                    foreach (string userID in task.SelectedFollowedUsers)
-                    {
-                        User user = unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
-                        task.Followers.Add(user);
-                    }
-                }
                 unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-            List<SelectListItem> allUsers = new List<SelectListItem>();
-            List<User> userList = unitOfWork.UserRepository.All();
-            foreach (User user in userList)
-            {
-                SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName + user.LastName };
-                allUsers.Add(item);
-            }
-            ViewBag.PossibleUsers = allUsers;
-            ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
-            ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+
             return View(task);
         }
 
         //
         // GET: /Tasks/Delete/5
- 
+
         public ActionResult Delete(long id)
         {
             Task task = unitOfWork.TaskRepository.Find(id);

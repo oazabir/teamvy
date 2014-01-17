@@ -149,6 +149,20 @@
 
         jQuery('.chzn-select').trigger('chosen:updated');
     }
+
+    var SelectedLabelID = jQuery('Select#Labels').val();
+    var Labels = "";
+
+    if (SelectedLabelID != null) {
+        jQuery.each(SelectedLabelID, function (index, value) {
+            Labels = Labels + value + ",";
+        });
+
+        var LabelArray = new Array();
+        jQuery('Select#Labels').val(LabelArray);
+
+        jQuery('.chzn-select').trigger('chosen:updated');
+    }
 </script>
 
 <tr>
@@ -166,6 +180,16 @@
     <td>
        
         @Html.ListBoxFor(m => m.SelectedFollowedUsers, (IEnumerable<SelectListItem>)ViewBag.PossibleUsers,
+            new { @class = "chosen", multiple = "multiple", style = "width: 350px;" })
+    </td>
+</tr>
+
+<tr>
+    <td>Label 
+    </td>
+    <td>
+       
+        @Html.ListBoxFor(m => m.SelectedLabels, (IEnumerable<SelectListItem>)ViewBag.PossibleLabels,
             new { @class = "chosen", multiple = "multiple", style = "width: 350px;" })
     </td>
 </tr>
