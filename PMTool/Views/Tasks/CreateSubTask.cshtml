@@ -1,16 +1,19 @@
-@model PMTool.Models.Project
+﻿@model PMTool.Models.Task
+
 @{
-    ViewBag.Title = "Create | Project";
+    ViewBag.Title = "Create | Task";
 }
+
 <div class="pagetitle">
     <h1>
-        Create Project
+        Create Sub Task
     </h1>
-    <span>Create a Project below....</span>
+    <span>Parent Task " @Model.ParentTask.Title "</span>
 </div>
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ParentTaskId)
     <table class="table table-bordered table-invoice">
         <tbody>
             <tr>

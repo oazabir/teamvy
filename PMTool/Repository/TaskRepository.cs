@@ -40,6 +40,36 @@ namespace PMTool.Repository
             return query;
         }
 
+        public IQueryable<Task> ByProjectIncluding(long projectID,params Expression<Func<Task, object>>[] includeProperties)
+        {
+            IQueryable<Task> query = context.Tasks.Where(t=>t.ProjectID==projectID && t.ParentTaskId==null);
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+                
+            }
+            foreach (Task task in query)
+            {
+                task.ChildTask = context.Tasks.Where(t => t.ParentTaskId == task.TaskID).ToList();
+            }
+            return query;
+        }
+
+        public IQueryable<Task> AllSubTaskByProjectIncluding(long projectID,long TaskID, params Expression<Func<Task, object>>[] includeProperties)
+        {
+            IQueryable<Task> query = context.Tasks.Where(t => t.ProjectID == projectID && t.ParentTaskId != null && t.ParentTaskId==TaskID);
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+
+            }
+            foreach (Task task in query)
+            {
+                task.ParentTask = context.Tasks.Where(t => t.TaskID == task.ParentTaskId).FirstOrDefault();
+            }
+            return query;
+        }
+
         public Task Find(long id)
         {
             return context.Tasks.Where(t => t.TaskID == id).Include(task => task.Users).Include(task => task.Followers).FirstOrDefault();
@@ -57,13 +87,14 @@ namespace PMTool.Repository
             {
                 // Existing entity
                 var existingTask = context.Tasks.Include("Users")
-                        .Where(t => t.TaskID == task.TaskID).FirstOrDefault<Task>();
+                   .Where(t => t.TaskID == task.TaskID).FirstOrDefault<Task>();
 
                 UpdateAssignedUsers(task, existingTask);
 
                 UpdateFollowers(task, existingTask);
 
                 UpdateLabels(task, existingTask);
+                context.Entry(existingTask).CurrentValues.SetValues(task);
 
             }
         }

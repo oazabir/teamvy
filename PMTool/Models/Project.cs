@@ -50,5 +50,6 @@ namespace PMTool.Models
 
         public virtual List<User> Users { get; set; }
 
+        public List<string> SelectedAssignedUsers { get; set; }
     }
 }

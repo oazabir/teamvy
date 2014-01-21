@@ -11,7 +11,7 @@ using PMTool.Repository;
 
 namespace PMTool.Controllers
 {
-    public class TasksController : Controller
+    public class TasksController : BaseController
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
         //
@@ -20,6 +20,24 @@ namespace PMTool.Controllers
         public ViewResult Index()
         {
             return View(unitOfWork.TaskRepository.AllIncluding(task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList());
+        }
+
+        //
+        // GET: /Tasks/ProjectTasks?ProjectID=5
+        public ViewResult ProjectTasks(long projectID)
+        {
+            List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectID);
+            return View(taskList);
+        }
+
+        //
+        // GET: /Tasks/SubTaskList?taskID=5
+        public ViewResult SubTaskList(long projectID,long taskID)
+        {
+            List<Task> taskList = unitOfWork.TaskRepository.AllSubTaskByProjectIncluding(projectID,taskID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectID);
+            return View(taskList);
         }
 
         //
@@ -32,11 +50,11 @@ namespace PMTool.Controllers
         }
 
         //
-        // GET: /Tasks/Create
+        // GET: /Tasks/Create?ProjectID=5
 
-        public ActionResult Create()
+        public ActionResult Create(long ProjectID)
         {
-            List<SelectListItem> allUsers = GetAllUser();
+            List<SelectListItem> allUsers = GetAllUser(ProjectID);
             ViewBag.PossibleUsers = allUsers;
 
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
@@ -44,7 +62,33 @@ namespace PMTool.Controllers
 
             List<SelectListItem> allLabels = GetAllLabel();
             ViewBag.PossibleLabels = allLabels;
-            return View();
+            Task task = new Task();
+            task.ProjectID = ProjectID;
+            task.StartDate = DateTime.Now;
+            task.EndDate = DateTime.Now;
+            return View(task);
+        }
+
+        //
+        // GET: /Tasks/CreateSubTask?ProjectID=5&TaskID=1
+
+        public ActionResult CreateSubTask(long ProjectID,long TaskID)
+        {
+            List<SelectListItem> allUsers = GetAllUser(ProjectID);
+            ViewBag.PossibleUsers = allUsers;
+
+            ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
+            ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+
+            List<SelectListItem> allLabels = GetAllLabel();
+            ViewBag.PossibleLabels = allLabels;
+            Task task = new Task();
+            task.ProjectID = ProjectID;
+            task.StartDate = DateTime.Now;
+            task.EndDate = DateTime.Now;
+            task.ParentTaskId = TaskID;
+            task.ParentTask = unitOfWork.TaskRepository.Find(TaskID);
+            return View(task);
         }
 
         //
@@ -66,39 +110,73 @@ namespace PMTool.Controllers
                 AddLabel(task);
 
                 unitOfWork.Save();
-                return RedirectToAction("Index");
+                return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
             }
-            return View(task);
+            return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
+        }
+
+        //
+        // POST: /Tasks/CreateSubTask
+
+        [HttpPost]
+        public ActionResult CreateSubTask(Task task)
+        {
+            task.TaskID = 0;
+            task.CreatedBy = (Guid)Membership.GetUser().ProviderUserKey;
+            task.ModifieddBy = (Guid)Membership.GetUser().ProviderUserKey;
+            task.CreateDate = DateTime.Now;
+            task.ModificationDate = DateTime.Now;
+            task.ActionDate = DateTime.Now;
+            if (ModelState.IsValid)
+            {
+                unitOfWork.TaskRepository.InsertOrUpdate(task);
+                AddAssignUser(task);
+                AddFollower(task);
+                AddLabel(task);
+
+                unitOfWork.Save();
+                return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
+            }
+            return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
         }
 
         private void AddLabel(Task task)
         {
             task.Labels = new List<Label>();
-            foreach (string labelID in task.SelectedLabels)
+            if (task.SelectedLabels != null)
             {
-                Label label = unitOfWork.LabelRepository.Find(Convert.ToInt64(labelID));
-                task.Labels.Add(label);
+                foreach (string labelID in task.SelectedLabels)
+                {
+                    Label label = unitOfWork.LabelRepository.Find(Convert.ToInt64(labelID));
+                    task.Labels.Add(label);
+                }
             }
         }
 
         private void AddFollower(Task task)
         {
             task.Followers = new List<User>();
-            foreach (string userID in task.SelectedFollowedUsers)
+            if (task.SelectedFollowedUsers != null)
             {
-                User user = unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
-                task.Followers.Add(user);
+                foreach (string userID in task.SelectedFollowedUsers)
+                {
+                    User user = unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
+                    task.Followers.Add(user);
+                }
             }
         }
 
         private void AddAssignUser(Task task)
         {
             task.Users = new List<User>();
-            foreach (string userID in task.SelectedAssignedUsers)
+            if (task.SelectedAssignedUsers != null)
             {
-                User user = unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
-                task.Users.Add(user);
+                foreach (string userID in task.SelectedAssignedUsers)
+                {
+                    User user = unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
+                    task.Users.Add(user);
 
+                }
             }
         }
 
@@ -111,7 +189,7 @@ namespace PMTool.Controllers
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
             ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
 
-            List<SelectListItem> allUsers = GetAllUser();
+            List<SelectListItem> allUsers = GetAllUser(task.ProjectID);
             ViewBag.PossibleUsers = allUsers;
 
             task.SelectedAssignedUsers = task.Users.Select(u => u.UserId.ToString()).ToList();
@@ -135,10 +213,10 @@ namespace PMTool.Controllers
             return allLabels;
         }
 
-        private List<SelectListItem> GetAllUser()
+        private List<SelectListItem> GetAllUser(long ProjectID)
         {
             List<SelectListItem> allUsers = new List<SelectListItem>();
-            List<User> userList = unitOfWork.UserRepository.All();
+            List<User> userList = unitOfWork.ProjectRepository.Find(ProjectID).Users;
             foreach (User user in userList)
             {
                 SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName + user.LastName };
@@ -164,7 +242,7 @@ namespace PMTool.Controllers
 
                 unitOfWork.TaskRepository.InsertOrUpdate(task);
                 unitOfWork.Save();
-                return RedirectToAction("Index");
+                return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
             }
 
             return View(task);
@@ -185,8 +263,9 @@ namespace PMTool.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(long id)
         {
+           Task task= unitOfWork.TaskRepository.Find(id);
             unitOfWork.TaskRepository.Delete(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
         }
 
         protected override void Dispose(bool disposing)

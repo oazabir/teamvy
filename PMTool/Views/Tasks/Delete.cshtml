@@ -44,7 +44,7 @@
         </tbody>
     </table>
     <p>
-        @Html.ActionLink("Back to List", "Index", "Tasks", "", new { @class = "btn" })
+       @Html.ActionLink("Back to List", "ProjectTasks", "Tasks", new { @ProjectID=Model.ProjectID}, new { @class = "btn" })
     </p>
 }
 

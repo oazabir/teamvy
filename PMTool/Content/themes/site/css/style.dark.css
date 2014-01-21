@@ -65,3 +65,48 @@ h4.ctitle { border-color: #222 !important; }
 @media screen and (max-width: 767px) {
 	.searchwidget input.search-query { min-height: 34px !important; }
 }
+
+
+/*Notification CSS*/
+.jewelCount span {
+background: -webkit-gradient(linear, center top, center bottom, from(#fa3c45), to(#dc0d17));
+background: -webkit-linear-gradient(top, #fa3c45, #dc0d17);
+border: none;
+-webkit-border-radius: 2px;
+-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .7);
+font-family: "Helvetica Neue", Helvetica, Arial, "segoe ui",tahoma,sans-serif;
+font-size: 10px;
+-webkit-font-smoothing: antialiased;
+font-weight: bold;
+height: 14px;
+line-height: 14px;
+min-width: 12px;
+padding: 0;
+text-align: center;
+text-shadow: 0 -1px 0 rgba(0, 0, 0, .4);
+}
+
+
+ .jewelCount span {
+ -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #F03D25;
+    border-color: #E23923 #D83722 #C0311E;
+    border-image: none;
+    border-left: 1px solid #D83722;
+    border-radius: 50% !important;
+    border-right: 1px solid #D83722;
+    border-style: solid;
+    border-width: 1px;
+    height: 10px;
+    padding: 0 1px;
+    width: 10px;
+}
+
+.fbJewel .jewelCount {
+color: #fff;
+font-size: 9px;
+font-weight: bold;
+}

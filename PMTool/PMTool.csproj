@@ -174,6 +174,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Context\DataContextInitializer.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LabelsController.cs" />
     <Compile Include="Controllers\PrioritiesController.cs" />
@@ -189,13 +190,9 @@
     <Compile Include="Membership\CodeFirstRoleProvider.cs" />
     <Compile Include="Membership\Crypto.cs" />
     <Compile Include="Membership\WebSecurity.cs" />
-    <Compile Include="Migrations\201401101304203_phase1.cs" />
-    <Compile Include="Migrations\201401101304203_phase1.Designer.cs">
-      <DependentUpon>201401101304203_phase1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201401130922434_tasksChange.cs" />
-    <Compile Include="Migrations\201401130922434_tasksChange.Designer.cs">
-      <DependentUpon>201401130922434_tasksChange.cs</DependentUpon>
+    <Compile Include="Migrations\201401211252489_firstmigration.cs" />
+    <Compile Include="Migrations\201401211252489_firstmigration.Designer.cs">
+      <DependentUpon>201401211252489_firstmigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
@@ -805,6 +802,9 @@
     <Content Include="Views\Tasks\Index.cshtml" />
     <Content Include="Views\Tasks\_CreateOrEdit.cshtml" />
     <Content Include="Views\Account\InvitePeople.cshtml" />
+    <Content Include="Views\Tasks\ProjectTasks.cshtml" />
+    <Content Include="Views\Tasks\CreateSubTask.cshtml" />
+    <Content Include="Views\Tasks\SubTaskList.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -884,11 +884,8 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201401101304203_phase1.resx">
-      <DependentUpon>201401101304203_phase1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201401130922434_tasksChange.resx">
-      <DependentUpon>201401130922434_tasksChange.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201401211252489_firstmigration.resx">
+      <DependentUpon>201401211252489_firstmigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

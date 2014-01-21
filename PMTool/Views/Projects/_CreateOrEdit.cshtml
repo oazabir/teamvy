@@ -40,76 +40,40 @@
         @Html.ValidationMessageFor(model => model.IsLocked)
     </td>
 </tr>
+<script type="text/javascript">
 
-@*<div class="editor-label">
-    @Html.LabelFor(model => model.Name)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.Name)
-    @Html.ValidationMessageFor(model => model.Name)
-</div>
+    jQuery(document).ready(function () {
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.Description)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.Description)
-    @Html.ValidationMessageFor(model => model.Description)
-</div>
+        jQuery('.chosen').chosen();
+    });
+</script>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.IsLocked)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.IsLocked)
-    @Html.ValidationMessageFor(model => model.IsLocked)
-</div>
+<script type="text/javascript">
+    jQuery(".chosen").chosen({ max_selected_options: 10 });
+    jQuery(".chosen-deselect").chosen({ allow_single_deselect: true });
+    jQuery(".chosen").chosen().change();
+    jQuery(".chosen").trigger('liszt:updated');
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.IsActive)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.IsActive)
-    @Html.ValidationMessageFor(model => model.IsActive)
-</div>
+    var selectedUserID = jQuery('Select#Users').val();
+    var Users = "";
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.CreatedBy)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.CreatedBy)
-    @Html.ValidationMessageFor(model => model.CreatedBy)
-</div>
+    if (selectedUserID != null) {
+        jQuery.each(selectedUserID, function (index, value) {
+            Users = Users + value + ",";
+        });
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.ModifieddBy)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.ModifieddBy)
-    @Html.ValidationMessageFor(model => model.ModifieddBy)
-</div>
+        var UserArray = new Array();
+        jQuery('Select#Users').val(UserArray);
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.CreateDate)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.CreateDate)
-    @Html.ValidationMessageFor(model => model.CreateDate)
-</div>
+        jQuery('.chzn-select').trigger('chosen:updated');
+    }
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.ModificationDate)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.ModificationDate)
-    @Html.ValidationMessageFor(model => model.ModificationDate)
-</div>
-
-<div class="editor-label">
-    @Html.LabelFor(model => model.ActionDate)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.ActionDate)
-    @Html.ValidationMessageFor(model => model.ActionDate)
-</div>
-*@
+</script>
+<tr>
+    <td>Assigned To
+    </td>
+    <td>
+        @Html.ListBoxFor(m => m.SelectedAssignedUsers, (IEnumerable<SelectListItem>)ViewBag.PossibleUsers,
+            new { @class = "chosen", multiple = "multiple", style = "width: 350px;" })
+    </td>
+</tr>

@@ -4,6 +4,9 @@
     ViewBag.Title = "Edit | Project";
 }
 
+
+
+
 <div class="pagetitle">
     <h1>
         Project Edit
@@ -36,27 +39,3 @@
     @Html.ActionLink("Back to List", "Index","Projects", null,  new { @class="btn"})
 </div>
 
-
-@*@{
-    ViewBag.Title = "Edit";
-}
-
-<h2>Edit</h2>
-
-@using (Html.BeginForm()) {
-    @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>Project</legend>
-
-        @Html.HiddenFor(model => model.ProjectID)
-		@Html.Partial("_CreateOrEdit", Model)
-
-        <p>
-            <input type="submit" value="Save" />
-        </p>
-    </fieldset>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>*@

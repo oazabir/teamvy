@@ -80,19 +80,7 @@
 
 
 
-<tr>
-    <td>Project
-    </td>
-    <td>
-        @Html.DropDownListFor(model => model.ProjectID, ((IEnumerable<PMTool.Models.Project>)ViewBag.PossibleProjects).Select(option => new SelectListItem
-   {
-       Text = (option == null ? "None" : option.Name),
-       Value = option.ProjectID.ToString(),
-       Selected = (Model != null) && (option.ProjectID == Model.ProjectID)
-   }), "Choose...")
-        @Html.ValidationMessageFor(model => model.ProjectID)
-    </td>
-</tr>
+
 
 <tr>
     <td>Priority

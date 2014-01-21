@@ -34,22 +34,14 @@ namespace PMTool.Repository
 
         public void Insert(User user)
         {
-            //if (user.UserId == default(long))
-            //{
-                // New entity
+    
             context.Users.Add(user);
-            //}
-            //else
-            //{
-            //    // Existing entity
-            //    context.Entry(user).State = System.Data.Entity.EntityState.Modified;
-            //}
+
         }
 
         public void Delete(long id)
         {
-            //var test = context.Tests.Find(id);
-            //context.Tests.Remove(test);
+      
         }
 
         public void Save()

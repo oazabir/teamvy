@@ -3,9 +3,14 @@
 @{
     ViewBag.Title = "Index | Project";
 }
-
-
-
+@if (TempData["Message"]!=null)
+{
+<div class="alert alert-info">
+    <button class="close" data-dismiss="alert" type="button">×</button>
+    <strong>Warning!</strong>
+    @TempData["Message"]
+</div>
+}
 
 <div class="pagetitle">
     <h1>Project List</h1>
@@ -25,6 +30,10 @@
 
             <th>Is Active
             </th>
+            <th>Add Tasks
+            </th>
+            <th>Show Tasks
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -42,6 +51,12 @@
                 <td>
                     @Html.DisplayTextFor(_ => item.IsActive).ToString()
                 </td>
+                <td>
+                    @Html.ActionLink("Add Tasks", "Create","Tasks", new { ProjectID = item.ProjectID }, new { @title = "Show Tasks" })
+                </td>
+                <td>
+                    @Html.ActionLink("Show Tasks", "ProjectTasks","Tasks", new { ProjectID = item.ProjectID }, new { @title = "Show Tasks" })
+                </td>
                 <td align="center">
                     @Html.ActionLink(" ", "Edit", new { id = item.ProjectID }, new { @class = "icon-edit", @title = "Edit" })
                     |
@@ -55,102 +70,3 @@
 </table>
 
 
-@*@{
-    ViewBag.Title = "Index";
-}
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table>
-    <tr>
-        <th></th>
-        <th>
-            Name
-        </th>
-        <th>
-            Description
-        </th>
-        <th>
-            IsLocked
-        </th>
-        <th>
-            IsActive
-        </th>
-        <th>
-            CreatedBy
-        </th>
-        <th>
-            ModifieddBy
-        </th>
-        <th>
-            CreateDate
-        </th>
-        <th>
-            ModificationDate
-        </th>
-        <th>
-            ActionDate
-        </th>
-        <th>
-            CreatedByUser
-        </th>
-        <th>
-            ModifiedByUser
-        </th>
-        <th>
-            Users
-        </th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ProjectID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ProjectID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ProjectID })
-        </td>
-        <td>
-			@item.Name
-        </td>
-        <td>
-			@item.Description
-        </td>
-        <td>
-			@item.IsLocked
-        </td>
-        <td>
-			@item.IsActive
-        </td>
-        <td>
-			@item.CreatedBy
-        </td>
-        <td>
-			@item.ModifieddBy
-        </td>
-        <td>
-			@String.Format("{0:g}", item.CreateDate)
-        </td>
-        <td>
-			@String.Format("{0:g}", item.ModificationDate)
-        </td>
-        <td>
-			@String.Format("{0:g}", item.ActionDate)
-        </td>
-        <td>
-			@(item.CreatedByUser == null ? "None" : item.CreatedByUser.LastName)
-        </td>
-        <td>
-			@(item.ModifiedByUser == null ? "None" : item.ModifiedByUser.LastName)
-        </td>
-        <td>
-			@(item.Users == null ? "None" : item.Users.Count.ToString())
-        </td>
-    </tr>
-}
-
-</table>
-
-*@

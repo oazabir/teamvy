@@ -11,7 +11,7 @@ using PMTool.Repository;
 
 namespace PMTool.Controllers
 {   
-    public class LabelsController : Controller
+    public class LabelsController : BaseController
     {
         private UnitOfWork uitofWork = new UnitOfWork();
 

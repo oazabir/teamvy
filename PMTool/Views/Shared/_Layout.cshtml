@@ -121,43 +121,25 @@
                     </li>
                     <li class="dropdown"><a href=""><span class="icon-briefcase"></span>Assigned Projects</a>
                         <ul>
-                            <li><a href="#">Test Project 1</a></li>
-                            <li><a href="#">Test Project 2</a></li>
+                            @if (ViewBag.AssignedProjects!=null)
+                            {
+                                foreach (PMTool.Models.Project item in (List <PMTool.Models.Project>)ViewBag.AssignedProjects)
+                                {
+                                    <li>@Html.ActionLink(@item.Name, "ProjectTasks", "Tasks", new { @projectID=item.ProjectID},null)</li>
+                                }
+                            }
                         </ul>
                     </li>
-                    <li class="dropdown"><a href=""><span class="icon-th-list"></span>Project You are following</a>
+                    <li class="dropdown"><a href=""><span class="icon-th-list"></span>Own Projects</a>
                         <ul>
-                            <li><a href="#">Test Project 3</a></li>
-                            <li><a href="#">Test Project 4</a></li>
+                            <li>@Html.ActionLink("Create New Project", "Create", "Projects")</li>
+                            <li>@Html.ActionLink("Projects Created by you", "Index", "Projects")</li>
                         </ul>
                     </li>
-                   <li>@Html.ActionLink("Projects", "Index", "Projects")</li>
-                   <li>@Html.ActionLink("Tasks", "Index", "Tasks")</li>
                     <li>@Html.ActionLink("Labels", "Index", "Labels")</li>
                     <li>@Html.ActionLink("Priorities", "Index", "Priorities")</li>
                     <li>@Html.ActionLink("Invite People", "InvitePeople", "Account")</li>
-                    
-                    @* <li><a href="messages.html"><span class="icon-envelope"></span>Messages</a></li>
-                    <li><a href="buttons.html"><span class="icon-hand-up"></span>Buttons &amp; Icons</a></li>
-                    <li class="dropdown"><a href=""><span class="icon-pencil"></span>Forms</a>
-                        <ul>
-                            <li><a href="forms.html">Form Styles</a></li>
-                            <li><a href="wizards.html">Wizard Form</a></li>
-                            <li><a href="wysiwyg.html">WYSIWYG</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="calendar.html"><span class="icon-calendar"></span>Calendar</a></li>
-                    <li><a href="animations.html"><span class="icon-play"></span>Animations</a></li>
-                    <li class="dropdown"><a href=""><span class="icon-book"></span>Other Pages</a>
-                        <ul>
-                            <li><a href="404.html">404 Error Page</a></li>
-                            <li><a href="invoice.html">Invoice Page</a></li>
-                            <li><a href="editprofile.html">Edit Profile</a></li>
-                            <li><a href="grid.html">Grid Styles</a></li>
-                            <li><a href="faq.html">FAQ</a></li>
-                            <li><a href="stickyheader.html">Sticky Header Page</a></li>
-                        </ul>
-                    </li>*@
+                   
                 </ul>
             </div>
             <!--leftmenu-->
@@ -176,7 +158,7 @@
                     <div class="dropdown notification">
                         <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">
                             <span class="iconsweets-globe iconsweets-white"></span>
-                        <span style="color:red;font-weight:bold;"> 7</span>
+                        <span class="jewelCount" id="notificationsCountWrapper"><span id="notificationsCountValue">35</span></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li class="nav-header">Notifications</li>
@@ -204,7 +186,7 @@
                             <li><a href=""><span class="icon-eye-open"></span>Privacy Settings</a></li>
                             <li class="divider"></li>
                             <li>
-                                @*<a href="index.html"><span class="icon-off"></span>Sign Out</a>*@
+                                
 
                                 @Html.ActionLink("Log Off", "LogOff", "Account")
                             </li>
@@ -240,7 +222,7 @@
 
         <div class="footer">
             <div class="footerleft">Project Management Tool v1.0</div>
-            <div class="footerright">&copy; ThemePixels - <a href="http://twitter.com/themepixels">Follow me on Twitter</a> - <a href="http://dribbble.com/themepixels">Follow me on Dribbble</a></div>
+            <div class="footerright">Design & Developed by:</div>
         </div>
         <!--footer-->
 
@@ -326,61 +308,6 @@
             colors: ["#06c"]
         });
 
-        // calendar
-        // jQuery('#calendar').datepicker();
-
 
     });
 </script>
-<script type="text/javascript">
-    jQuery(document).ready(function () {
-        jQuery('.datepicker').datepicker();
-    });
-</script>
-@*<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>@ViewBag.Title - My ASP.NET MVC Application</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
-    </head>
-    <body>
-        <header>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
-                </div>
-                <div class="float-right">
-                    <section id="login">
-                        @Html.Partial("_LoginPartial")
-                    </section>
-                    <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("About", "About", "Home")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </header>
-        <div id="body">
-            @RenderSection("featured", required: false)
-            <section class="content-wrapper main-content clear-fix">
-                @RenderBody()
-            </section>
-        </div>
-        <footer>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
-                </div>
-            </div>
-        </footer>
-
-        @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
-    </body>
-</html>*@

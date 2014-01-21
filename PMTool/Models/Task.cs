@@ -49,9 +49,11 @@ namespace PMTool.Models
         [Display(Name = "Project Is Active")]
         public bool IsActive { get; set; }
 
-        public int? ParentTaskId { get; set; }
+        public long? ParentTaskId { get; set; }
 
         public virtual List<Task> ChildTask { get; set; }
+
+        public virtual Task ParentTask { get; set; }
 
         public string Attachments { get; set; }
 

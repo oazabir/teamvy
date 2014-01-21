@@ -3,7 +3,7 @@ namespace PMTool.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class phase1 : DbMigration
+    public partial class firstmigration : DbMigration
     {
         public override void Up()
         {
@@ -52,17 +52,56 @@ namespace PMTool.Migrations
                         LastPasswordChangedDate = c.DateTime(),
                         PasswordVerificationToken = c.String(),
                         PasswordVerificationTokenExpirationDate = c.DateTime(),
-                        Project_ProjectID = c.Long(),
-                        Task_TaskID = c.Long(),
-                        Task_TaskID1 = c.Long(),
                     })
-                .PrimaryKey(t => t.UserId)
-                .ForeignKey("dbo.Projects", t => t.Project_ProjectID)
-                .ForeignKey("dbo.Tasks", t => t.Task_TaskID)
-                .ForeignKey("dbo.Tasks", t => t.Task_TaskID1)
-                .Index(t => t.Project_ProjectID)
-                .Index(t => t.Task_TaskID)
-                .Index(t => t.Task_TaskID1);
+                .PrimaryKey(t => t.UserId);
+            
+            CreateTable(
+                "dbo.Tasks",
+                c => new
+                    {
+                        TaskID = c.Long(nullable: false, identity: true),
+                        ProjectID = c.Long(nullable: false),
+                        Title = c.String(nullable: false),
+                        Description = c.String(nullable: false),
+                        StartDate = c.DateTime(nullable: false),
+                        EndDate = c.DateTime(nullable: false),
+                        TaskHour = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        PriorityID = c.Int(nullable: false),
+                        IsLocked = c.Boolean(nullable: false),
+                        IsActive = c.Boolean(nullable: false),
+                        ParentTaskId = c.Long(),
+                        Attachments = c.String(),
+                        CreatedBy = c.Guid(nullable: false),
+                        ModifieddBy = c.Guid(nullable: false),
+                        CreateDate = c.DateTime(nullable: false),
+                        ModificationDate = c.DateTime(nullable: false),
+                        ActionDate = c.DateTime(nullable: false),
+                        UserID = c.Long(nullable: false),
+                        ParentTask_TaskID = c.Long(),
+                        CreatedByUser_UserId = c.Guid(),
+                        ModifiedByUser_UserId = c.Guid(),
+                    })
+                .PrimaryKey(t => t.TaskID)
+                .ForeignKey("dbo.Tasks", t => t.ParentTask_TaskID)
+                .ForeignKey("dbo.Users", t => t.CreatedByUser_UserId)
+                .ForeignKey("dbo.Users", t => t.ModifiedByUser_UserId)
+                .ForeignKey("dbo.Priorities", t => t.PriorityID)
+                .ForeignKey("dbo.Projects", t => t.ProjectID)
+                .Index(t => t.ParentTask_TaskID)
+                .Index(t => t.CreatedByUser_UserId)
+                .Index(t => t.ModifiedByUser_UserId)
+                .Index(t => t.PriorityID)
+                .Index(t => t.ProjectID);
+            
+            CreateTable(
+                "dbo.Priorities",
+                c => new
+                    {
+                        PriorityID = c.Int(nullable: false, identity: true),
+                        Name = c.String(nullable: false),
+                        Description = c.String(nullable: false),
+                    })
+                .PrimaryKey(t => t.PriorityID);
             
             CreateTable(
                 "dbo.Projects",
@@ -80,15 +119,12 @@ namespace PMTool.Migrations
                         ActionDate = c.DateTime(nullable: false),
                         CreatedByUser_UserId = c.Guid(),
                         ModifiedByUser_UserId = c.Guid(),
-                        User_UserId = c.Guid(),
                     })
                 .PrimaryKey(t => t.ProjectID)
                 .ForeignKey("dbo.Users", t => t.CreatedByUser_UserId)
                 .ForeignKey("dbo.Users", t => t.ModifiedByUser_UserId)
-                .ForeignKey("dbo.Users", t => t.User_UserId)
                 .Index(t => t.CreatedByUser_UserId)
-                .Index(t => t.ModifiedByUser_UserId)
-                .Index(t => t.User_UserId);
+                .Index(t => t.ModifiedByUser_UserId);
             
             CreateTable(
                 "dbo.Roles",
@@ -101,66 +137,66 @@ namespace PMTool.Migrations
                 .PrimaryKey(t => t.RoleId);
             
             CreateTable(
-                "dbo.Tasks",
-                c => new
-                    {
-                        TaskID = c.Long(nullable: false, identity: true),
-                        ProjectID = c.Long(nullable: false),
-                        Title = c.String(nullable: false),
-                        Description = c.String(nullable: false),
-                        StartDate = c.DateTime(nullable: false),
-                        EndDate = c.DateTime(nullable: false),
-                        TaskHour = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        PriorityID = c.Int(nullable: false),
-                        IsLocked = c.Boolean(nullable: false),
-                        IsActive = c.Boolean(nullable: false),
-                        ParentTaskId = c.Int(),
-                        Attachments = c.String(),
-                        CreatedBy = c.Guid(nullable: false),
-                        ModifieddBy = c.Guid(nullable: false),
-                        CreateDate = c.DateTime(nullable: false),
-                        ModificationDate = c.DateTime(nullable: false),
-                        ActionDate = c.DateTime(nullable: false),
-                        Task_TaskID = c.Long(),
-                        CreatedByUser_UserId = c.Guid(),
-                        ModifiedByUser_UserId = c.Guid(),
-                        User_UserId = c.Guid(),
-                        User_UserId1 = c.Guid(),
-                    })
-                .PrimaryKey(t => t.TaskID)
-                .ForeignKey("dbo.Tasks", t => t.Task_TaskID)
-                .ForeignKey("dbo.Users", t => t.CreatedByUser_UserId)
-                .ForeignKey("dbo.Users", t => t.ModifiedByUser_UserId)
-                .ForeignKey("dbo.Priorities", t => t.PriorityID, cascadeDelete: true)
-                .ForeignKey("dbo.Projects", t => t.ProjectID, cascadeDelete: true)
-                .ForeignKey("dbo.Users", t => t.User_UserId)
-                .ForeignKey("dbo.Users", t => t.User_UserId1)
-                .Index(t => t.Task_TaskID)
-                .Index(t => t.CreatedByUser_UserId)
-                .Index(t => t.ModifiedByUser_UserId)
-                .Index(t => t.PriorityID)
-                .Index(t => t.ProjectID)
-                .Index(t => t.User_UserId)
-                .Index(t => t.User_UserId1);
-            
-            CreateTable(
-                "dbo.Priorities",
-                c => new
-                    {
-                        PriorityID = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false),
-                        Description = c.String(nullable: false),
-                    })
-                .PrimaryKey(t => t.PriorityID);
-            
-            CreateTable(
                 "dbo.UserProfile",
                 c => new
                     {
                         UserId = c.Int(nullable: false, identity: true),
                         UserName = c.String(),
+                        Email = c.String(),
                     })
                 .PrimaryKey(t => t.UserId);
+            
+            CreateTable(
+                "dbo.TaskFollowers",
+                c => new
+                    {
+                        UserId = c.Long(nullable: false),
+                        TaskId = c.Guid(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.UserId, t.TaskId })
+                .ForeignKey("dbo.Tasks", t => t.UserId, cascadeDelete: true)
+                .ForeignKey("dbo.Users", t => t.TaskId, cascadeDelete: true)
+                .Index(t => t.UserId)
+                .Index(t => t.TaskId);
+            
+            CreateTable(
+                "dbo.TaskLabels",
+                c => new
+                    {
+                        LabelId = c.Long(nullable: false),
+                        TaskId = c.Long(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.LabelId, t.TaskId })
+                .ForeignKey("dbo.Tasks", t => t.LabelId, cascadeDelete: true)
+                .ForeignKey("dbo.Labels", t => t.TaskId, cascadeDelete: true)
+                .Index(t => t.LabelId)
+                .Index(t => t.TaskId);
+            
+            CreateTable(
+                "dbo.ProjectUsers",
+                c => new
+                    {
+                        ProjectId = c.Long(nullable: false),
+                        UserId = c.Guid(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.ProjectId, t.UserId })
+                .ForeignKey("dbo.Projects", t => t.ProjectId, cascadeDelete: true)
+                .ForeignKey("dbo.Users", t => t.UserId, cascadeDelete: true)
+                .Index(t => t.ProjectId)
+                .Index(t => t.UserId);
+            
+            CreateTable(
+                "dbo.TaskUsers",
+                c => new
+                    {
+                        TaskId = c.Long(nullable: false),
+                        UserId = c.Guid(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.TaskId, t.UserId })
+                .ForeignKey("dbo.Tasks", t => t.TaskId, cascadeDelete: true)
+                .ForeignKey("dbo.Users", t => t.UserId, cascadeDelete: true)
+                .Index(t => t.TaskId)
+                .Index(t => t.UserId);
             
             CreateTable(
                 "dbo.RoleUsers",
@@ -175,68 +211,58 @@ namespace PMTool.Migrations
                 .Index(t => t.Role_RoleId)
                 .Index(t => t.User_UserId);
             
-            CreateTable(
-                "dbo.TaskLabels",
-                c => new
-                    {
-                        Task_TaskID = c.Long(nullable: false),
-                        Label_LabelID = c.Long(nullable: false),
-                    })
-                .PrimaryKey(t => new { t.Task_TaskID, t.Label_LabelID })
-                .ForeignKey("dbo.Tasks", t => t.Task_TaskID, cascadeDelete: true)
-                .ForeignKey("dbo.Labels", t => t.Label_LabelID, cascadeDelete: true)
-                .Index(t => t.Task_TaskID)
-                .Index(t => t.Label_LabelID);
-            
         }
         
         public override void Down()
         {
             DropForeignKey("dbo.Labels", "ModifiedByUser_UserId", "dbo.Users");
             DropForeignKey("dbo.Labels", "CreatedByUser_UserId", "dbo.Users");
-            DropForeignKey("dbo.Tasks", "User_UserId1", "dbo.Users");
-            DropForeignKey("dbo.Tasks", "User_UserId", "dbo.Users");
-            DropForeignKey("dbo.Users", "Task_TaskID1", "dbo.Tasks");
-            DropForeignKey("dbo.TaskLabels", "Label_LabelID", "dbo.Labels");
-            DropForeignKey("dbo.TaskLabels", "Task_TaskID", "dbo.Tasks");
-            DropForeignKey("dbo.Users", "Task_TaskID", "dbo.Tasks");
-            DropForeignKey("dbo.Tasks", "ProjectID", "dbo.Projects");
-            DropForeignKey("dbo.Tasks", "PriorityID", "dbo.Priorities");
-            DropForeignKey("dbo.Tasks", "ModifiedByUser_UserId", "dbo.Users");
-            DropForeignKey("dbo.Tasks", "CreatedByUser_UserId", "dbo.Users");
-            DropForeignKey("dbo.Tasks", "Task_TaskID", "dbo.Tasks");
             DropForeignKey("dbo.RoleUsers", "User_UserId", "dbo.Users");
             DropForeignKey("dbo.RoleUsers", "Role_RoleId", "dbo.Roles");
-            DropForeignKey("dbo.Projects", "User_UserId", "dbo.Users");
-            DropForeignKey("dbo.Users", "Project_ProjectID", "dbo.Projects");
+            DropForeignKey("dbo.TaskUsers", "UserId", "dbo.Users");
+            DropForeignKey("dbo.TaskUsers", "TaskId", "dbo.Tasks");
+            DropForeignKey("dbo.Tasks", "ProjectID", "dbo.Projects");
+            DropForeignKey("dbo.ProjectUsers", "UserId", "dbo.Users");
+            DropForeignKey("dbo.ProjectUsers", "ProjectId", "dbo.Projects");
             DropForeignKey("dbo.Projects", "ModifiedByUser_UserId", "dbo.Users");
             DropForeignKey("dbo.Projects", "CreatedByUser_UserId", "dbo.Users");
+            DropForeignKey("dbo.Tasks", "PriorityID", "dbo.Priorities");
+            DropForeignKey("dbo.Tasks", "ModifiedByUser_UserId", "dbo.Users");
+            DropForeignKey("dbo.TaskLabels", "TaskId", "dbo.Labels");
+            DropForeignKey("dbo.TaskLabels", "LabelId", "dbo.Tasks");
+            DropForeignKey("dbo.TaskFollowers", "TaskId", "dbo.Users");
+            DropForeignKey("dbo.TaskFollowers", "UserId", "dbo.Tasks");
+            DropForeignKey("dbo.Tasks", "CreatedByUser_UserId", "dbo.Users");
+            DropForeignKey("dbo.Tasks", "ParentTask_TaskID", "dbo.Tasks");
             DropIndex("dbo.Labels", new[] { "ModifiedByUser_UserId" });
             DropIndex("dbo.Labels", new[] { "CreatedByUser_UserId" });
-            DropIndex("dbo.Tasks", new[] { "User_UserId1" });
-            DropIndex("dbo.Tasks", new[] { "User_UserId" });
-            DropIndex("dbo.Users", new[] { "Task_TaskID1" });
-            DropIndex("dbo.TaskLabels", new[] { "Label_LabelID" });
-            DropIndex("dbo.TaskLabels", new[] { "Task_TaskID" });
-            DropIndex("dbo.Users", new[] { "Task_TaskID" });
-            DropIndex("dbo.Tasks", new[] { "ProjectID" });
-            DropIndex("dbo.Tasks", new[] { "PriorityID" });
-            DropIndex("dbo.Tasks", new[] { "ModifiedByUser_UserId" });
-            DropIndex("dbo.Tasks", new[] { "CreatedByUser_UserId" });
-            DropIndex("dbo.Tasks", new[] { "Task_TaskID" });
             DropIndex("dbo.RoleUsers", new[] { "User_UserId" });
             DropIndex("dbo.RoleUsers", new[] { "Role_RoleId" });
-            DropIndex("dbo.Projects", new[] { "User_UserId" });
-            DropIndex("dbo.Users", new[] { "Project_ProjectID" });
+            DropIndex("dbo.TaskUsers", new[] { "UserId" });
+            DropIndex("dbo.TaskUsers", new[] { "TaskId" });
+            DropIndex("dbo.Tasks", new[] { "ProjectID" });
+            DropIndex("dbo.ProjectUsers", new[] { "UserId" });
+            DropIndex("dbo.ProjectUsers", new[] { "ProjectId" });
             DropIndex("dbo.Projects", new[] { "ModifiedByUser_UserId" });
             DropIndex("dbo.Projects", new[] { "CreatedByUser_UserId" });
-            DropTable("dbo.TaskLabels");
+            DropIndex("dbo.Tasks", new[] { "PriorityID" });
+            DropIndex("dbo.Tasks", new[] { "ModifiedByUser_UserId" });
+            DropIndex("dbo.TaskLabels", new[] { "TaskId" });
+            DropIndex("dbo.TaskLabels", new[] { "LabelId" });
+            DropIndex("dbo.TaskFollowers", new[] { "TaskId" });
+            DropIndex("dbo.TaskFollowers", new[] { "UserId" });
+            DropIndex("dbo.Tasks", new[] { "CreatedByUser_UserId" });
+            DropIndex("dbo.Tasks", new[] { "ParentTask_TaskID" });
             DropTable("dbo.RoleUsers");
+            DropTable("dbo.TaskUsers");
+            DropTable("dbo.ProjectUsers");
+            DropTable("dbo.TaskLabels");
+            DropTable("dbo.TaskFollowers");
             DropTable("dbo.UserProfile");
-            DropTable("dbo.Priorities");
-            DropTable("dbo.Tasks");
             DropTable("dbo.Roles");
             DropTable("dbo.Projects");
+            DropTable("dbo.Priorities");
+            DropTable("dbo.Tasks");
             DropTable("dbo.Users");
             DropTable("dbo.Labels");
         }

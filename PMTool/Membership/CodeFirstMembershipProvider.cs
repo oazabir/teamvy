@@ -94,11 +94,7 @@ using PMTool.Repository;
             using (UnitOfWork reopo = new UnitOfWork())
             {
                 User existingUser = reopo.UserRepository.GetUserByEmail(email);
-                //if (reopo.Users.Where(Usr => Usr.Username == username).Any())
-                //{
-                //    status = MembershipCreateStatus.DuplicateUserName;
-                //    return null;
-                //}
+             
                
                 if (existingUser!=null)
                 {
@@ -123,8 +119,6 @@ using PMTool.Repository;
                     LastPasswordFailureDate = DateTime.UtcNow
                 };
 
-                //reopo.Users.Add(NewUser);
-                //reopo.SaveChanges();
                 reopo.UserRepository.Insert(NewUser);
                 reopo.Save();
                 status = MembershipCreateStatus.Success;

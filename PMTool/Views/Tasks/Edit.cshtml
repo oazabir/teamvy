@@ -20,10 +20,20 @@
     @Html.HiddenFor(model => model.TaskID)
     @Html.HiddenFor(model => model.CreatedBy)
     @Html.HiddenFor(model => model.CreateDate)
+    @Html.HiddenFor(model => model.ProjectID)
+    @Html.HiddenFor(model => model.ParentTaskId)
    
     <table class="table table-bordered table-invoice">
         <tbody>
-    @Html.Partial("_CreateOrEdit", Model)
+            <tr>
+                <td class="width30">
+                    Project
+                </td>
+                <td>
+                    @Html.DisplayTextFor(model => model.Project.Name)
+                </td>
+            </tr>
+            @Html.Partial("_CreateOrEdit", Model)
             <tr>
                 <td class="width30">
                 </td>
@@ -35,5 +45,5 @@
     </table>
 }
 <div>
-    @Html.ActionLink("Back to List", "Index","Tasks", null,  new { @class="btn"})
+    @Html.ActionLink("Back to List", "ProjectTasks", "Tasks", new { @ProjectID=Model.ProjectID}, new { @class = "btn" })
 </div>

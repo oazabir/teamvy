@@ -1,0 +1,92 @@
+﻿@model IEnumerable<PMTool.Models.Task>
+
+@{
+    if (ViewBag.CurrentProject != null)
+    {
+        PMTool.Models.Project projetc = (PMTool.Models.Project)ViewBag.CurrentProject;
+        ViewBag.Title = projetc.Name + " | Tasks";
+    }
+}
+
+
+
+
+
+<div class="pagetitle">
+    <h1>Task List</h1>
+    <span>@(((PMTool.Models.Project)ViewBag.CurrentProject).Name)  Tasks....</span>
+</div>
+
+
+<p>
+    @Html.ActionLink("Create New", "Create", new { @ProjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID }, new { @title = "Add Task", @class = "btn btn-primary" })
+</p>
+<table class="table table-bordered" id="dyntable">
+    <thead>
+        <tr>
+            <th>Project Name
+            </th>
+            <th>Title
+            </th>
+            <th>Description</th>
+            <th>Sub Tasks
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Project.Name
+                </td>
+                <td>
+                    @Html.DisplayTextFor(_ => item.Title).ToString()
+                </td>
+                <td>
+                    @Html.DisplayTextFor(_ => item.Description).ToString()
+                </td>
+                <td>
+                    @if (item.ChildTask.Count>0)
+                    {
+                    <div class="btn-group">
+                        <button class="btn btn-small">Sub Tasks</button>
+                        <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            @foreach (PMTool.Models.Task task in item.ChildTask)
+                            {
+                               <li> @Html.ActionLink(task.Title, "Edit", new { id = task.TaskID }, new { @target = "_blank" })</li>
+                                
+                            }
+                            <li class="divider"></li>
+                           <li> @Html.ActionLink("All Sub Tasks", "SubTaskList",  new { ProjectID = item.ProjectID, TaskID = item.TaskID },  new { @target = "_blank" })</li>
+                       
+                            
+                        </ul>
+                    </div>
+                    }
+                    @if (item.ChildTask.Count==0)
+                    {
+                        @Html.Display("No Sub Task")
+                    }  
+
+                </td>
+                <td>
+                    @Html.ActionLink("Add SubTask", "CreateSubTask", new { ProjectID = item.ProjectID, TaskID = item.TaskID }, new { @title = "Add SubTask" })
+                </td>
+                <td align="center">
+                    @Html.ActionLink(" ", "Edit", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
+                    |
+                    @Html.ActionLink(" ", "Details", new { id = item.TaskID }, new { @class = "icon-list-alt", @title = "Details" })
+                    |
+                    @Html.ActionLink(" ", "Delete", new { id = item.TaskID }, new { @class = "icon-trash", @title = "Delete" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+

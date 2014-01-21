@@ -10,7 +10,7 @@ using PMTool.Repository;
 
 namespace PMTool.Controllers
 {   
-    public class PrioritiesController : Controller
+    public class PrioritiesController : BaseController
     {
         private PMToolContext context = new PMToolContext();
 

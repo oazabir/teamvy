@@ -8,15 +8,6 @@ using System.Web.Security;
 
 namespace PMTool.Models
 {
-    //public class UsersContext : DbContext
-    //{
-    //    public UsersContext()
-    //        : base("DefaultConnection")
-    //    {
-    //    }
-
-    //   // public DbSet<UserProfile> UserProfiles { get; set; }
-    //}
 
     [Table("UserProfile")]
     public class UserProfile
@@ -73,8 +64,9 @@ namespace PMTool.Models
 
     public class RegisterModel
     {
+        [RegularExpression(@"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}", ErrorMessage = "Email address is not valid.")]
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "Email")]
         public string UserName { get; set; }
 
         [Required]
@@ -87,16 +79,6 @@ namespace PMTool.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-
-        [Required]
-        //[StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-
-        //[DataType(DataType.Password)]
-        [Display(Name = "Confirm Email")]
-        [Compare("Email", ErrorMessage = "The email and confirmation email do not match.")]
-        public string ConfirmEmail { get; set; }
     }
 
     public class ExternalLogin

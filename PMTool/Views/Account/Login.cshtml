@@ -1,46 +1,4 @@
-﻿@*@model PMTool.Models.LoginModel
-
-@{
-    ViewBag.Title = "Log in";
-}
-
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-</hgroup>
-
-<h2>Use a local account to log in.</h2>
-@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-
-    <fieldset>
-        <legend>Log in Form</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName)
-                @Html.ValidationMessageFor(m => m.UserName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
-                @Html.ValidationMessageFor(m => m.Password)
-            </li>
-            <li>
-                @Html.CheckBoxFor(m => m.RememberMe)
-                @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
-            </li>
-        </ol>
-        <input type="submit" value="Log in" />
-    </fieldset>
-    <p>
-        @Html.ActionLink("Register", "Register") if you don't have an account.
-    </p>
-}
-
-    <h2>Use another service to log in.</h2>
-    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })*@
-@model PMTool.Models.LoginModel
+﻿@model PMTool.Models.LoginModel
 @{
     Layout = null;
     ViewBag.Title = "Log On";
@@ -66,12 +24,12 @@
                 {
                     <p class="animate4 bounceIn">@Html.TextBoxFor(m => m.UserName, new { @placeholder = "Username" })</p>
                     <p class="animate5 bounceIn">@Html.PasswordFor(m => m.Password, new { @placeholder = "Password" })</p>
-                    <p class="animate6 bounceIn">@*<button class="btn btn-default btn-block">Submit</button>*@
-                        @* <input type="submit" value="LogOn" class="btn btn-default btn-block" id="LogOn"/>*@
-
+                    <p class="animate6 bounceIn">
+                        
+                        
                         <input type="submit" value="Log On" class="btn btn-default btn-block" />
                     </p>
-@*<p class="animate7 fadeIn"><a href=""><span class="icon-question-sign icon-white"></span> Forgot Password?</a></p>*@
+
                
                     @Html.ValidationSummary(true, "")
 
