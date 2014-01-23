@@ -181,3 +181,19 @@
             new { @class = "chosen", multiple = "multiple", style = "width: 350px;" })
     </td>
 </tr>
+
+
+<tr>
+    <td>Status
+    </td>
+    <td>
+        <select id="Status" name="Status">
+            <option value="">Choose...</option>
+            @foreach (SelectListItem item in (IEnumerable<SelectListItem>)ViewBag.PossibleTaskStatus)
+            {
+                <option value="@item.Value" selected="@item.Selected">@item.Text</option>
+            }
+        </select>
+        @Html.ValidationMessageFor(model => model.Status)
+    </td>
+</tr>

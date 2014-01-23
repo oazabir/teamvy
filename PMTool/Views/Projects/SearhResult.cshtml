@@ -1,26 +1,17 @@
-@model IEnumerable<PMTool.Models.Project>
+ï»¿
 
 @{
-    ViewBag.Title = "Index | Project";
-}
-@if (TempData["Message"]!=null)
-{
-<div class="alert alert-info">
-    <button class="close" data-dismiss="alert" type="button">×</button>
-    <strong>Warning!</strong>
-    @TempData["Message"]
-</div>
+    ViewBag.Title = "Search result | Project";
 }
 
 <div class="pagetitle">
     <h1>Project List</h1>
     <span>List of Projects....</span>
 </div>
-
-
-<p>
-    @Html.ActionLink("Create New", "Create", null, new { @title = "Add Project", @class = "btn btn-primary" })
-</p>
+@if (TempData["PossibleProjects"] == null)
+{
+    TempData["PossibleProjects"] = new List<PMTool.Models.Project>();
+}
 <table class="table table-bordered" id="dyntable">
     <thead>
         <tr>
@@ -38,7 +29,8 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+
+        @foreach (var item in (List<PMTool.Models.Project>)TempData["PossibleProjects"])
         {
             <tr>
                 <td>
@@ -58,13 +50,10 @@
                     @Html.ActionLink("Show Tasks", "ProjectTasks","Tasks", new { ProjectID = item.ProjectID }, new { @title = "Show Tasks" })
                 </td>
                 <td align="center">
-                    @Html.ActionLink(" ", "Edit", new { id = item.ProjectID }, new { @class = "icon-edit", @title = "Edit" })
-                    |
                     @Html.ActionLink(" ", "Details", new { id = item.ProjectID }, new { @class = "icon-list-alt", @title = "Details" })
-                    |
-                    @Html.ActionLink(" ", "Delete", new { id = item.ProjectID }, new { @class = "icon-trash", @title = "Delete" })
                 </td>
             </tr>
         }
     </tbody>
+
 </table>

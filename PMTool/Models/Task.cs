@@ -91,5 +91,13 @@ namespace PMTool.Models
 
 
         public List<string> SelectedLabels { get; set; }
+
+
+        [Required]
+        [Display(Name = "Status")]
+        public PMTool.Models.EnumCollection.TaskStatus Status { get; set; }
+
+
+
     }
 }

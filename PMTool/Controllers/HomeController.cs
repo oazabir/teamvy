@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PMTool.Models;
+using PMTool.Repository;
 
 namespace PMTool.Controllers
 {
@@ -28,6 +30,18 @@ namespace PMTool.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public ActionResult Search(Search search)
+        {
+            List<Project> projectList = new List<Project>();
+            using (UnitOfWork unitOfWork = new UnitOfWork())
+            {
+                if (!string.IsNullOrEmpty(search.SearchParam))
+                projectList = unitOfWork.ProjectRepository.GetListbyName(search.SearchParam);
+            }
+            TempData["PossibleProjects"] = projectList;
+            return RedirectToAction("SearhResult","Projects");
         }
     }
 }

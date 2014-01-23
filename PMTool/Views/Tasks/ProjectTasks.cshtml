@@ -52,7 +52,7 @@
                     @if (item.ChildTask.Count>0)
                     {
                     <div class="btn-group">
-                        <button class="btn btn-small">Sub Tasks</button>
+                        <button class="btn btn-small">Sub Tasks (@item.ChildTask.Count)</button>
                         <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
                         <ul class="dropdown-menu">
                             @foreach (PMTool.Models.Task task in item.ChildTask)
@@ -69,7 +69,7 @@
                     }
                     @if (item.ChildTask.Count==0)
                     {
-                        @Html.Display("No Sub Task")
+                        @Html.Raw("No Sub Task")
                     }  
 
                 </td>
