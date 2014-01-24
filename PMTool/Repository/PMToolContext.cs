@@ -25,6 +25,8 @@ namespace PMTool.Repository
 
         public DbSet<PMTool.Models.Task> Tasks { get; set; }
 
+        public DbSet<PMTool.Models.Notification> Notifications { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

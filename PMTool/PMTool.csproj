@@ -194,9 +194,33 @@
     <Compile Include="Migrations\201401211252489_firstmigration.Designer.cs">
       <DependentUpon>201401211252489_firstmigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201401220819299_taskstatusenum.cs" />
+    <Compile Include="Migrations\201401220819299_taskstatusenum.Designer.cs">
+      <DependentUpon>201401220819299_taskstatusenum.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201401221231002_notificationFatureCreated.cs" />
+    <Compile Include="Migrations\201401221231002_notificationFatureCreated.Designer.cs">
+      <DependentUpon>201401221231002_notificationFatureCreated.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201401221243048_notificationuseradded.cs" />
+    <Compile Include="Migrations\201401221243048_notificationuseradded.Designer.cs">
+      <DependentUpon>201401221243048_notificationuseradded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201401221253058_notificationtaskporpertychange.cs" />
+    <Compile Include="Migrations\201401221253058_notificationtaskporpertychange.Designer.cs">
+      <DependentUpon>201401221253058_notificationtaskporpertychange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201401221308177_notificationtaskporpertychange2.cs" />
+    <Compile Include="Migrations\201401221308177_notificationtaskporpertychange2.Designer.cs">
+      <DependentUpon>201401221308177_notificationtaskporpertychange2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Notification.cs" />
+    <Compile Include="Models\EnumCollection.cs" />
     <Compile Include="Models\Label.cs" />
+    <Compile Include="Models\Search.cs" />
+    <Compile Include="Repository\NotificationRepository.cs" />
     <Compile Include="Repository\LabelRepository.cs" />
     <Compile Include="Models\Priority.cs" />
     <Compile Include="Repository\PriorityRepository.cs" />
@@ -805,6 +829,8 @@
     <Content Include="Views\Tasks\ProjectTasks.cshtml" />
     <Content Include="Views\Tasks\CreateSubTask.cshtml" />
     <Content Include="Views\Tasks\SubTaskList.cshtml" />
+    <Content Include="Views\Shared\Search.cshtml" />
+    <Content Include="Views\Projects\SearhResult.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -886,6 +912,21 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201401211252489_firstmigration.resx">
       <DependentUpon>201401211252489_firstmigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401220819299_taskstatusenum.resx">
+      <DependentUpon>201401220819299_taskstatusenum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401221231002_notificationFatureCreated.resx">
+      <DependentUpon>201401221231002_notificationFatureCreated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401221243048_notificationuseradded.resx">
+      <DependentUpon>201401221243048_notificationuseradded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401221253058_notificationtaskporpertychange.resx">
+      <DependentUpon>201401221253058_notificationtaskporpertychange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401221308177_notificationtaskporpertychange2.resx">
+      <DependentUpon>201401221308177_notificationtaskporpertychange2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

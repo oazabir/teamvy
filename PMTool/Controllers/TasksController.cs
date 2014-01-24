@@ -66,7 +66,33 @@ namespace PMTool.Controllers
             task.ProjectID = ProjectID;
             task.StartDate = DateTime.Now;
             task.EndDate = DateTime.Now;
+
+            GetAllStatus(task);
+
             return View(task);
+        }
+
+        private void GetAllStatus(Task task)
+        {
+            List<SelectListItem> statusList = new List<SelectListItem>();
+            foreach (var item in Enum.GetValues(typeof(PMTool.Models.EnumCollection.TaskStatus)))
+            {
+                SelectListItem listitem = new SelectListItem();
+
+                listitem.Value = Convert.ToString((int)item);
+                listitem.Text = Enum.GetName(typeof(PMTool.Models.EnumCollection.TaskStatus), item).Replace("_", " ");
+                if ((int)item == (int)task.Status)
+                {
+                    listitem.Selected = true;
+                }
+                else
+                {
+                    listitem.Selected = false;
+                }
+                statusList.Add(listitem);
+            }
+
+            ViewBag.PossibleTaskStatus = statusList;
         }
 
         //
@@ -76,7 +102,6 @@ namespace PMTool.Controllers
         {
             List<SelectListItem> allUsers = GetAllUser(ProjectID);
             ViewBag.PossibleUsers = allUsers;
-
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
             ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
 
@@ -88,6 +113,7 @@ namespace PMTool.Controllers
             task.EndDate = DateTime.Now;
             task.ParentTaskId = TaskID;
             task.ParentTask = unitOfWork.TaskRepository.Find(TaskID);
+            GetAllStatus(task);
             return View(task);
         }
 
@@ -104,15 +130,121 @@ namespace PMTool.Controllers
             task.ActionDate = DateTime.Now;
             if (ModelState.IsValid)
             {
-                unitOfWork.TaskRepository.InsertOrUpdate(task);
+              bool isStatusChanged=  unitOfWork.TaskRepository.InsertOrUpdate(task);
                 AddAssignUser(task);
                 AddFollower(task);
                 AddLabel(task);
-
                 unitOfWork.Save();
+                SaveNotification(task, true, false, isStatusChanged);
                 return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
             }
-            return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
+            List<SelectListItem> allUsers = GetAllUser(task.ProjectID);
+            ViewBag.PossibleUsers = allUsers;
+            ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
+            ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+
+            List<SelectListItem> allLabels = GetAllLabel();
+            ViewBag.PossibleLabels = allLabels;
+            GetAllStatus(task);
+            return View(task); //return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
+        }
+
+        private void SaveNotification(Task task, bool isTaskInsert,bool isSubTask,bool isTaskStatusChanged)
+        {
+            string phrase = "";
+            if (task.Users != null)
+            {
+                foreach (User user in task.Users)
+                {
+                    Notification notification = new Notification();
+                    if (isTaskInsert)
+                    {
+                        if (!isSubTask)
+                        {
+                            phrase = " Has assigned you on the Task --";
+                        }
+                        else
+                        {
+                            phrase = " Has assigned you on the Subtask --";
+                        }
+
+                        User createdUser = unitOfWork.UserRepository.GetUserByUserID(task.CreatedBy);
+                        notification.Title = createdUser.FirstName + " " + createdUser.LastName + phrase + task.Title;
+                    }
+                    else
+                    {
+                        if (!isTaskStatusChanged)
+                        {
+                            if (!isSubTask)
+                            {
+                                phrase = " Has modify the Task --";
+                            }
+                            else
+                            {
+                                phrase = " Has modify the Subtask --";
+                            }
+                        }
+                        else
+                        {
+                            if (!isSubTask)
+                            {
+                                phrase = string.Format(" Has changed the task status to {0} --",task.Status.ToString());
+                            }
+                            else
+                            {
+                                phrase = string.Format(" Has changed the subtask status to {0} --",task.Status.ToString());
+                            }
+                        }
+                        User modifiedUser = unitOfWork.UserRepository.GetUserByUserID(task.ModifieddBy);
+                        notification.Title = modifiedUser.FirstName + " " + modifiedUser.LastName + phrase + task.Title;
+                    }
+                    notification.UserID = user.UserId;
+                    notification.Description = notification.Title;
+                    notification.ProjectID = task.ProjectID;
+                    notification.TaskID = task.TaskID;
+                    unitOfWork.NotificationRepository.InsertOrUpdate(notification);
+                    unitOfWork.Save();
+                }
+            }
+            if (task.Followers != null)
+            {
+                foreach (User user in task.Followers)
+                {
+                    Notification notification = new Notification();
+                    if (isTaskInsert)
+                    {
+                        if (!isSubTask)
+                        {
+                            phrase = " Has added you as a follower on the Task --";
+                        }
+                        else
+                        {
+                            phrase = " Has added you as a follower on the Subtask --";
+                        }
+                        User createdUser = unitOfWork.UserRepository.GetUserByUserID(task.CreatedBy);
+                        notification.Title = createdUser.FirstName + " " + createdUser.LastName + phrase + task.Title;
+                    }
+                    else
+                    {
+                        if (!isSubTask)
+                        {
+                            phrase = " Has modify the Task --";
+                        }
+                        else
+                        {
+                            phrase = " Has modify the Subtask --";
+                        }
+                        User modifiedUser = unitOfWork.UserRepository.GetUserByUserID(task.ModifieddBy);
+                        notification.Title = modifiedUser.FirstName + " " + modifiedUser.LastName + phrase + task.Title;
+                    }
+                    notification.UserID = user.UserId;
+                    notification.Description = notification.Title;
+                    notification.ProjectID = task.ProjectID;
+                    notification.TaskID = task.TaskID;
+                    unitOfWork.NotificationRepository.InsertOrUpdate(notification);
+                    unitOfWork.Save();
+                }
+            }
         }
 
         //
@@ -129,15 +261,23 @@ namespace PMTool.Controllers
             task.ActionDate = DateTime.Now;
             if (ModelState.IsValid)
             {
-                unitOfWork.TaskRepository.InsertOrUpdate(task);
+               bool isStatusChanged= unitOfWork.TaskRepository.InsertOrUpdate(task);
                 AddAssignUser(task);
                 AddFollower(task);
                 AddLabel(task);
-
                 unitOfWork.Save();
+                SaveNotification(task, true, true, isStatusChanged);
                 return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
             }
-            return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
+            List<SelectListItem> allUsers = GetAllUser(task.ProjectID);
+            ViewBag.PossibleUsers = allUsers;
+            ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
+            ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+
+            List<SelectListItem> allLabels = GetAllLabel();
+            ViewBag.PossibleLabels = allLabels;
+            GetAllStatus(task);
+            return View(task);
         }
 
         private void AddLabel(Task task)
@@ -195,10 +335,38 @@ namespace PMTool.Controllers
             task.SelectedAssignedUsers = task.Users.Select(u => u.UserId.ToString()).ToList();
             task.SelectedFollowedUsers = task.Followers.Select(u => u.UserId.ToString()).ToList();
             task.SelectedLabels = task.Labels.Select(u => u.LabelID.ToString()).ToList();
-
+            List<string> statusList = new List<string>();
+            statusList.Add( task.Status.ToString());
             List<SelectListItem> allLabels = GetAllLabel();
             ViewBag.PossibleLabels = allLabels;
+
+
+            GetAllStatus(task);
+
+            MakeNotificationReadonly();
+           
+
             return View(task);
+        }
+
+
+        private void MakeNotificationReadonly()
+        {
+            try
+            {
+                if (Request.QueryString["notificationID"] != null)
+                {
+                    Notification notification = unitOfWork.NotificationRepository.Find(Convert.ToInt64(Request.QueryString["notificationID"].ToString()));
+                    notification.IsNoticed = true;
+                    unitOfWork.NotificationRepository.InsertOrUpdate(notification);
+                    unitOfWork.Save();
+                    User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+                    LoadUnreadNotifications(user);
+                }
+            }
+            catch
+            {
+            }
         }
 
         private List<SelectListItem> GetAllLabel()
@@ -236,15 +404,38 @@ namespace PMTool.Controllers
             task.ActionDate = DateTime.Now;
             if (ModelState.IsValid)
             {
-                AddAssignUser(task);
-                AddFollower(task);
-                AddLabel(task);
+                if (ValidTaskStatus(task))
+                {
+                    AddAssignUser(task);
+                    AddFollower(task);
+                    AddLabel(task);
 
-                unitOfWork.TaskRepository.InsertOrUpdate(task);
-                unitOfWork.Save();
-                return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
+                  bool isStatusChanged=  unitOfWork.TaskRepository.InsertOrUpdate(task);
+                    unitOfWork.Save();
+                    if (task.ParentTaskId != null)
+                    {
+                        SaveNotification(task, false, false, isStatusChanged);
+                    }
+                    else
+                    {
+                        SaveNotification(task, false, true, isStatusChanged);
+                    }
+                    return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
+                }
+                else
+                {
+                    TempData["Message"] = "One or more subtask is not closed yet!!!";
+                }
             }
 
+            List<SelectListItem> allUsers = GetAllUser(task.ProjectID);
+            ViewBag.PossibleUsers = allUsers;
+            ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
+            ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+
+            List<SelectListItem> allLabels = GetAllLabel();
+            ViewBag.PossibleLabels = allLabels;
+            GetAllStatus(task);
             return View(task);
         }
 
@@ -266,6 +457,21 @@ namespace PMTool.Controllers
            Task task= unitOfWork.TaskRepository.Find(id);
             unitOfWork.TaskRepository.Delete(id);
             return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
+        }
+
+
+        private bool ValidTaskStatus(Task task)
+        {
+            bool isvalid = true;
+            if (task.Status == PMTool.Models.EnumCollection.TaskStatus.Closed)
+            {
+                List<Task> subTaskList = unitOfWork.TaskRepository.AllSubTaskByProjectIncluding(task.ProjectID, task.TaskID, t => t.Project).Include(t => t.Priority).Include(t => t.ChildTask).Include(t => t.Users).Include(t => t.Followers).Include(t => t.Labels).ToList();
+                if (subTaskList.Any(st => st.Status != PMTool.Models.EnumCollection.TaskStatus.Closed))
+                {
+                    isvalid = false;
+                }
+            }
+            return isvalid;
         }
 
         protected override void Dispose(bool disposing)

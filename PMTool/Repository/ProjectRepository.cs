@@ -78,7 +78,7 @@ namespace PMTool.Repository
             var deletedUsers = existingProject.Users.ToList<User>();
             var addedUsers = project.Users.ToList<User>();
            // deletedUsers.ForEach(c => existingProject.Users.Remove(c));
-            foreach (User user in existingProject.Users)
+            foreach (User user in existingProject.Users.ToList())
             {
                 List<Task> taskList = context.Tasks.Include("Users").Where(t => t.Users.Any(u=>u.UserId==user.UserId)).ToList();
                if (taskList.Count == 0)
@@ -126,6 +126,16 @@ namespace PMTool.Repository
             }
             return projectListNew;
         }
+
+        public  List<Project> GetListbyName(string searchParam,params Expression<Func<Project, object>>[] includeProperties)
+        {
+            IQueryable<Project> query = context.Projects.Where(p => p.Name.ToLower().Contains(searchParam));
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+            return query.ToList();
+        }
     }
 
     public interface IProjectRepository : IDisposable
@@ -138,5 +148,6 @@ namespace PMTool.Repository
         void Delete(long id);
         void Save();
         List<Project> GetAssignedProjectByUser(User user);
+        List<Project> GetListbyName(string searchParam, params Expression<Func<Project, object>>[] includeProperties);
     }
 }

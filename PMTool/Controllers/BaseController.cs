@@ -18,10 +18,17 @@ namespace PMTool.Controllers
             {
                 User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
                 LoadAssignedProjects(user);
+                LoadUnreadNotifications(user);
             }
         }
 
-        private void LoadAssignedProjects(User user)
+        public void LoadUnreadNotifications(User user)
+        {
+            List<Notification> notificationList = unitOfWork.NotificationRepository.UserUnreadNotification(user);
+            ViewBag.Notifications = notificationList;
+        }
+
+        public void LoadAssignedProjects(User user)
         {
           List<Project> projectList= unitOfWork.ProjectRepository.GetAssignedProjectByUser(user);
           ViewBag.AssignedProjects = projectList;

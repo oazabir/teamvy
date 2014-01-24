@@ -29,7 +29,27 @@ namespace PMTool.Controllers
         public ViewResult Details(long id)
         {
             Project project = unitOfWork.ProjectRepository.Find(id);
+            MakeNotificationReadonly();
             return View(project);
+        }
+
+        private void MakeNotificationReadonly()
+        {
+            try
+            {
+                if (Request.QueryString["notificationID"] != null)
+                {
+                    Notification notification = unitOfWork.NotificationRepository.Find(Convert.ToInt64(Request.QueryString["notificationID"].ToString()));
+                    notification.IsNoticed = true;
+                    unitOfWork.NotificationRepository.InsertOrUpdate(notification);
+                    unitOfWork.Save();
+                    User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+                    LoadUnreadNotifications(user);
+                }
+            }
+            catch
+            {
+            }
         }
 
         //
@@ -71,12 +91,41 @@ namespace PMTool.Controllers
                 unitOfWork.ProjectRepository.InsertOrUpdate(project);
                 AddAssignUser(project);
                 unitOfWork.Save();
+                SaveNotification(project,true);
                 
                 return RedirectToAction("Index");
             }
             List<SelectListItem> allUsers = GetAllUser();
             ViewBag.PossibleUsers = allUsers;
             return View(project);
+        }
+
+        private void SaveNotification(Project project,bool isProjectInsert)
+        {
+            if (project.Users != null)
+            {
+                foreach (User user in project.Users)
+                {
+                    
+
+                    Notification notification = new Notification();
+                    if (isProjectInsert)
+                    {
+                        User createdUser = unitOfWork.UserRepository.GetUserByUserID(project.CreatedBy);
+                        notification.Title = createdUser.FirstName + " " + createdUser.LastName + " Has added you on the porject --" + project.Name;
+                    }
+                    else
+                    {
+                        User modifiedUser = unitOfWork.UserRepository.GetUserByUserID(project.ModifieddBy);
+                        notification.Title = modifiedUser.FirstName + " " + modifiedUser.LastName + " Has modify the porject --" + project.Name;
+                    }
+                    notification.UserID = user.UserId;
+                    notification.Description = notification.Title;
+                    notification.ProjectID = project.ProjectID;
+                    unitOfWork.NotificationRepository.InsertOrUpdate(notification);
+                    unitOfWork.Save();
+                }
+            }
         }
 
         private void AddAssignUser(Project project)
@@ -120,6 +169,7 @@ namespace PMTool.Controllers
                 AddAssignUser(project);
                userList= unitOfWork.ProjectRepository.InsertOrUpdate(project);
                 unitOfWork.Save();
+                SaveNotification(project, false);
                 string msg = "";
                 foreach (User user in userList)
                 {
@@ -152,6 +202,14 @@ namespace PMTool.Controllers
 
         //
         // POST: /Projects/Delete/5
+
+
+        public ActionResult SearhResult()
+        {
+            TempData["PossibleProjects"] = TempData["PossibleProjects"];
+
+            return View();
+        }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(long id)

@@ -97,6 +97,20 @@ namespace PMTool.Repository
             }
         }
 
+        private NotificationRepository _notificationRepository;
+
+        public NotificationRepository NotificationRepository
+        {
+            get
+            {
+
+                if (this._notificationRepository == null)
+                {
+                    this._notificationRepository = new NotificationRepository(context);
+                }
+                return _notificationRepository;
+            }
+        }
 
         public void Save()
         {

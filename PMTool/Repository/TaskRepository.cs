@@ -75,8 +75,9 @@ namespace PMTool.Repository
             return context.Tasks.Where(t => t.TaskID == id).Include(task => task.Users).Include(task => task.Followers).FirstOrDefault();
         }
 
-        public void InsertOrUpdate(Task task)
+        public bool InsertOrUpdate(Task task)
         {
+           bool isStatusChanged = false;
             if (task.TaskID == default(long))
             {
                 // New entity
@@ -89,6 +90,11 @@ namespace PMTool.Repository
                 var existingTask = context.Tasks.Include("Users")
                    .Where(t => t.TaskID == task.TaskID).FirstOrDefault<Task>();
 
+                if (task.Status != existingTask.Status)
+                {
+                    isStatusChanged = true;
+                }
+
                 UpdateAssignedUsers(task, existingTask);
 
                 UpdateFollowers(task, existingTask);
@@ -97,6 +103,7 @@ namespace PMTool.Repository
                 context.Entry(existingTask).CurrentValues.SetValues(task);
 
             }
+            return isStatusChanged;
         }
 
         private void UpdateLabels(Task task, Task existingTask)
@@ -163,7 +170,7 @@ namespace PMTool.Repository
         IQueryable<Task> All { get; }
         IQueryable<Task> AllIncluding(params Expression<Func<Task, object>>[] includeProperties);
         Task Find(long id);
-        void InsertOrUpdate(Task task);
+        bool InsertOrUpdate(Task task);
         void Delete(long id);
         void Save();
     }
