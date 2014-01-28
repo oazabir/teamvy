@@ -30,7 +30,7 @@
     </td>
     <td>
 
-        @Html.TextBoxFor(model => model.StartDate,  new { @class = "datepicker" })
+        @Html.TextBoxFor(model => model.StartDate, "{0:dd/MM/yyyy}",  new { @class = "datepicker" })
         @Html.ValidationMessageFor(model => model.StartDate)
     </td>
 </tr>
@@ -40,7 +40,7 @@
         @Html.LabelFor(model => model.EndDate)
     </td>
     <td>
-        @Html.TextBoxFor(model => model.EndDate,  new { @class = "datepicker" })
+        @Html.TextBoxFor(model => model.EndDate, "{0:dd/MM/yyyy}",  new { @class = "datepicker" })
         @Html.ValidationMessageFor(model => model.EndDate)
     </td>
 </tr>
