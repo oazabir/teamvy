@@ -214,6 +214,10 @@
     <Compile Include="Migrations\201401221308177_notificationtaskporpertychange2.Designer.cs">
       <DependentUpon>201401221308177_notificationtaskporpertychange2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201401280833139_tasktablechange.cs" />
+    <Compile Include="Migrations\201401280833139_tasktablechange.Designer.cs">
+      <DependentUpon>201401280833139_tasktablechange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Notification.cs" />
@@ -928,6 +932,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201401221308177_notificationtaskporpertychange2.resx">
       <DependentUpon>201401221308177_notificationtaskporpertychange2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401280833139_tasktablechange.resx">
+      <DependentUpon>201401280833139_tasktablechange.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
