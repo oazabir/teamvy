@@ -18,7 +18,7 @@ namespace PMTool.Controllers
 {
     [Authorize]
     [InitializeSimpleMembership]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         //
         // GET: /Account/Login
@@ -363,7 +363,7 @@ namespace PMTool.Controllers
             {
                 try
                 {
-                    if (String.IsNullOrEmpty(ConfigurationManager.AppSettings["EnableEmailNotification"]))
+                    if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["EnableEmailNotification"]))
                     {
                         if (Convert.ToBoolean(ConfigurationManager.AppSettings["EnableEmailNotification"])) //Check Enable Email Notification
                         {
@@ -373,7 +373,7 @@ namespace PMTool.Controllers
                 }
                 catch (Exception exp)
                 {
-                    throw (exp);
+                    //throw (exp);
                 }
                 ViewBag.Message = "Invitation sent!";
             }
@@ -491,8 +491,14 @@ namespace PMTool.Controllers
             else
                 client.Port = 25; //Default port for SMTP
 
-            //client.u
-            client.Send(message);
+            try
+            {
+                client.Send(message);
+            }
+            catch (Exception exp)
+            {
+                throw (exp);
+            }
         }
 
 
@@ -537,7 +543,14 @@ namespace PMTool.Controllers
             else
                 client.Port = 25; //Default port for SMTP
 
-            client.Send(message);
+            try
+            {
+                client.Send(message);
+            }
+            catch (Exception exp)
+            {
+                throw (exp);
+            }
         }
         #endregion
     }

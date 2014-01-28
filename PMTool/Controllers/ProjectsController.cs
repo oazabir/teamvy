@@ -62,13 +62,17 @@ namespace PMTool.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Get All possible user for assigning project
+        /// </summary>
+        /// <returns></returns>
         private List<SelectListItem> GetAllUser()
         {
             List<SelectListItem> allUsers = new List<SelectListItem>();
             List<User> userList = unitOfWork.UserRepository.All();
             foreach (User user in userList)
             {
-                SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName + user.LastName };
+                SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName +" "+ user.LastName };
                 allUsers.Add(item);
             }
             return allUsers;

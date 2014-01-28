@@ -214,6 +214,10 @@
     <Compile Include="Migrations\201401221308177_notificationtaskporpertychange2.Designer.cs">
       <DependentUpon>201401221308177_notificationtaskporpertychange2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201401280833139_tasktablechange.cs" />
+    <Compile Include="Migrations\201401280833139_tasktablechange.Designer.cs">
+      <DependentUpon>201401280833139_tasktablechange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Notification.cs" />
@@ -831,6 +835,7 @@
     <Content Include="Views\Tasks\SubTaskList.cshtml" />
     <Content Include="Views\Shared\Search.cshtml" />
     <Content Include="Views\Projects\SearhResult.cshtml" />
+    <Content Include="ClassDiagram1.cd" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -927,6 +932,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201401221308177_notificationtaskporpertychange2.resx">
       <DependentUpon>201401221308177_notificationtaskporpertychange2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401280833139_tasktablechange.resx">
+      <DependentUpon>201401280833139_tasktablechange.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
