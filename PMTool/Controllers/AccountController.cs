@@ -18,7 +18,7 @@ namespace PMTool.Controllers
 {
     [Authorize]
     [InitializeSimpleMembership]
-    public class AccountController : Controller
+    public class AccountController :BaseController
     {
         //
         // GET: /Account/Login
@@ -84,7 +84,7 @@ namespace PMTool.Controllers
                 // Attempt to register the user
                 try
                 {
-                    string msg = WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
+                    string msg = WebSecurity.CreateAccount(model.UserName, model.UserName, model.Password, model.FirstName, model.LastName, false);
 
                     if (msg == String.Empty && !String.IsNullOrEmpty(ConfigurationManager.AppSettings["EnableEmailNotification"]))
                     {
@@ -380,6 +380,29 @@ namespace PMTool.Controllers
             return View(ViewBag);
         }
 
+
+        [Authorize]
+        public ActionResult EditProfile()
+        {
+            UnitOfWork unitofWork = new UnitOfWork();
+            User user =unitofWork.UserRepository.GetUserByEmail(User.Identity.Name);
+            return View(user);
+        }
+
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult EditProfile(User user) 
+        {
+            UnitOfWork unitofWork = new UnitOfWork();
+            //User userNew = unitofWork.UserRepository.GetUserByEmail(User.Identity.Name);
+            //userNew.FirstName = user.FirstName;
+            //userNew.LastName = user.LastName;
+            unitofWork.UserRepository.Update(user);
+            unitofWork.Save();
+            return View();
+        }
+
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)
         {
@@ -537,6 +560,7 @@ namespace PMTool.Controllers
             else
                 client.Port = 25; //Default port for SMTP
 
+            client.UseDefaultCredentials = false;
             client.Send(message);
         }
         #endregion

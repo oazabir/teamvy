@@ -202,16 +202,17 @@
                     <!--dropdown-->
 
                     <div class="dropdown userinfo">
-                        <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">Hi, @User.Identity.Name! <b class="caret"></b></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">Hi, @ViewBag.UserName! <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="editprofile.html"><span class="icon-edit"></span>Edit Profile</a></li>
+                            <li><a href="@Url.Action("EditProfile", "Account")"><span class="icon-edit"></span>Edit Profile</a></li>
                             <li><a href=""><span class="icon-wrench"></span>Account Settings</a></li>
                             <li><a href=""><span class="icon-eye-open"></span>Privacy Settings</a></li>
                             <li class="divider"></li>
                             <li>
-                                
-
-                                @Html.ActionLink("Log Off", "LogOff", "Account")
+                                <a href="@Url.Action("LogOff", "Account")">
+                                    <span class="icon-off"></span>
+                                    Sign Out
+                                </a>
                             </li>
                         </ul>
                     </div>

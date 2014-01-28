@@ -1,0 +1,55 @@
+﻿@model User
+
+@{
+    ViewBag.Title = "Edit | Profile";
+}
+
+<div class="pagetitle">
+    <h1>Edit Profile
+    </h1>
+    <span>Edit Profile below....</span>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Username)
+    @Html.HiddenFor(model => model.UserId)
+    @Html.HiddenFor(model => model.Comment)
+    @Html.HiddenFor(model => model.Password)
+    @Html.HiddenFor(model => model.IsApproved)
+    @Html.HiddenFor(model => model.LastPasswordFailureDate)
+    @Html.HiddenFor(model => model.LastActivityDate)
+    @Html.HiddenFor(model => model.LastLockoutDate)
+    @Html.HiddenFor(model => model.LastLoginDate)
+    @Html.HiddenFor(model => model.CreateDate)
+    @Html.HiddenFor(model => model.LastPasswordChangedDate)
+    <table class="table table-bordered table-invoice">
+        <tbody>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.FirstName)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.FirstName)
+                    @Html.ValidationMessageFor(model => model.FirstName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.LastName)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.LastName)
+                    @Html.ValidationMessageFor(model => model.LastName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <input type="submit" value="Edit Profile" class="btn btn-primary" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}

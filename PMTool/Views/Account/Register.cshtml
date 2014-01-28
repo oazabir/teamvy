@@ -26,6 +26,8 @@
                 {
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary()
+                    <p class="animate4 bounceIn">@Html.TextBoxFor(m => m.FirstName, new { @placeholder = "First Name" })</p>
+                    <p class="animate4 bounceIn">@Html.TextBoxFor(m => m.LastName, new { @placeholder = "Last Name" })</p>
                     <p class="animate4 bounceIn">@Html.TextBoxFor(m => m.UserName, new { @placeholder = "Email" })</p>
                     <p class="animate5 bounceIn">@Html.PasswordFor(m => m.Password, new { @placeholder = "Password" })</p>
                     <p class="animate5 bounceIn">@Html.PasswordFor(m => m.ConfirmPassword, new { @placeholder = "Confirm Password" })</p>
