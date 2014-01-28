@@ -226,15 +226,33 @@ jQuery(document).ready(function(){
 
 	
 	// date picker
-	if (jQuery('.datepicker').length > 0)
-	    jQuery(".datepicker").datepicker();
+	if (jQuery('.datepicker').length > 0) {
+	    jQuery(".datepicker").datepicker({
+	        dateFormat: "dd/mm/yy",
+	        showStatus: true,
+	        showWeeks: true,
+	        currentText: 'Now',
+	        autoSize: true,
+	        gotoCurrent: true,
+	        showAnim: 'blind',
+	        highlightWeek: true
+	    });
 
+	}
 
+	if (jQuery('#datepicker').length > 0) {
+	    jQuery("#datepicker").datepicker({
+	        dateFormat: "dd/mm/yy",
+	        showStatus: true,
+	        showWeeks: true,
+	        currentText: 'Now',
+	        autoSize: true,
+	        gotoCurrent: true,
+	        showAnim: 'blind',
+	        highlightWeek: true
+	    });
 
-	if (jQuery('#datepicker').length > 0)
-	    jQuery("#datepicker").datepicker();
-		
-	
+	}
 	// growl notification
 	if(jQuery('#growl').length > 0) {
 		jQuery('#growl').click(function(){
