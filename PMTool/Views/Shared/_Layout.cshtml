@@ -166,14 +166,7 @@
                             <span class="iconsweets-globe iconsweets-white"></span>
                             @if (((List<PMTool.Models.Notification>)ViewBag.Notifications).Count > 0)
                             {
-                                <span class="jewelCount" id="notificationsCountWrapper">
-                                    <span id="notificationsCountValue">
-                               
-                                          <span>@(((List<PMTool.Models.Notification>)ViewBag.Notifications).Count)</span>
-                               
-                                    </span>
-
-                                </span>
+                               <span class="badge badge-important">@(((List<PMTool.Models.Notification>)ViewBag.Notifications).Count)</span>
                             }
                         </a>
                         <ul class="dropdown-menu">

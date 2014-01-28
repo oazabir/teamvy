@@ -20,10 +20,16 @@ namespace PMTool.Controllers
         {
             if (!string.IsNullOrEmpty(WebSecurity.User.Identity.Name))
             {
-                User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
-                LoadAssignedProjects(user);
-                LoadUnreadNotifications(user);
-                ViewBag.UserName = user.FirstName + " " + user.LastName;
+                try
+                {
+                    User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+                    LoadAssignedProjects(user);
+                    LoadUnreadNotifications(user);
+                    ViewBag.UserName = user.FirstName + " " + user.LastName;
+                }
+                catch
+                {
+                }
             }
         }
 

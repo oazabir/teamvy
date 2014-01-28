@@ -110,3 +110,16 @@ color: #fff;
 font-size: 9px;
 font-weight: bold;
 }
+
+
+/*Added by najib*/
+
+.label-important,
+.badge-important {
+  background-color: #E41B17 !important;
+}
+
+.label-important[href],
+.badge-important[href] {
+  background-color: #953b39 !important;
+}
