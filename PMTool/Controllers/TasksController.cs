@@ -128,6 +128,7 @@ namespace PMTool.Controllers
             task.CreateDate = DateTime.Now;
             task.ModificationDate = DateTime.Now;
             task.ActionDate = DateTime.Now;
+            task.IsActive = true;
             if (ModelState.IsValid)
             {
               bool isStatusChanged=  unitOfWork.TaskRepository.InsertOrUpdate(task);
@@ -387,7 +388,7 @@ namespace PMTool.Controllers
             List<User> userList = unitOfWork.ProjectRepository.Find(ProjectID).Users;
             foreach (User user in userList)
             {
-                SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName + user.LastName };
+                SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName +" "+ user.LastName };
                 allUsers.Add(item);
             }
             return allUsers;
