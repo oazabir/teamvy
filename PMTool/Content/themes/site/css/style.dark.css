@@ -123,3 +123,61 @@ font-weight: bold;
 .badge-important[href] {
   background-color: #953b39 !important;
 }
+
+
+.column{
+	width:18% !important;
+	margin-right:.5% !important;
+	min-height:300px !important;
+	background:#fff !important;
+	float:left !important;
+    background-color:none repeat scroll 0 0 #f7de55 !important;
+}
+.column .dragbox{
+	margin:5px 2px  20px !important;
+	background:#fff !important;
+	position:relative !important;
+	border:1px solid #ddd !important;
+	-moz-border-radius:5px !important;
+	-webkit-border-radius:5px !important;
+}
+.column .dragbox h2{
+	margin:0 !important;
+	font-size:12px !important;
+	padding:5px !important;
+	background:#f0f0f0 !important;
+	color:#000 !important;
+	border-bottom:1px solid #eee !important;
+	font-family:Verdana !important;
+	cursor:move !important;
+}
+.dragbox-content{
+	background:#fff !important;
+	min-height:100px; margin:5px !important;
+	font-family:'Lucida Grande', Verdana; font-size:0.8em; line-height:1.5em !important;
+}
+.column  .placeholder{
+	background: #f0f0f0 !important;
+	border:1px dashed #ddd !important;
+}
+.dragbox h2.collapse{
+	background:#f0f0f0 url('../img/collapse.png') no-repeat top right !important;
+    margin:0 !important;
+	font-size:12px !important;
+	padding:5px !important;
+	background:#f0f0f0 !important;
+	color:#000 !important;
+	border-bottom:1px solid #eee !important;
+	font-family:Verdana !important;
+	cursor:move !important;
+}
+.dragbox h2 .configure{
+	font-size:11px; font-weight:normal !important;
+	margin-right:30px; float:right !important;
+}
+
+.column legend
+{
+     font-size: 13px;
+     color:#FFFFFF;
+}

@@ -133,7 +133,7 @@ namespace PMTool.Repository
 
         public void Dispose()
         {
-            Dispose(true);
+            context.Dispose();
             GC.SuppressFinalize(this);
         }
 

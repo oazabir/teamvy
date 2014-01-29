@@ -475,6 +475,17 @@ namespace PMTool.Controllers
             return isvalid;
         }
 
+        public ActionResult Kanban(long ProjectID)
+        {
+            List<Task> tasklist = unitOfWork.TaskRepository.ByProjectIncluding(ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(ProjectID);
+
+
+            List<PMTool.Models.EnumCollection.TaskStatus> statusList = Enum.GetValues(typeof(PMTool.Models.EnumCollection.TaskStatus)).Cast<PMTool.Models.EnumCollection.TaskStatus>().ToList();
+            ViewBag.AllStatus = statusList;
+            return View(tasklist);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

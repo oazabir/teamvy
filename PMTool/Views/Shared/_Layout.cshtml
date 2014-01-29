@@ -131,7 +131,8 @@
                             {
                                 foreach (PMTool.Models.Project item in (List<PMTool.Models.Project>)ViewBag.AssignedProjects)
                                 {
-                                    <li>@Html.ActionLink(@item.Name, "ProjectTasks", "Tasks", new { @projectID = item.ProjectID }, null)</li>
+                                    <li>@Html.ActionLink(@item.Name, "ProjectTasks", "Tasks", new { @projectID = item.ProjectID }, null)
+                                    </li>
                                 }
                             }
                         </ul>

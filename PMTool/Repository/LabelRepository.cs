@@ -9,7 +9,8 @@ using PMTool.Models;
 using PMTool.Repository;
 
 namespace PMTool.Repository
-{ 
+{
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
     public class LabelRepository : ILabelRepository
     {
         PMToolContext context = new PMToolContext();
