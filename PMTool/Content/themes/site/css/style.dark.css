@@ -131,6 +131,7 @@ font-weight: bold;
 	min-height:300px !important;
 	background:#fff !important;
 	float:left !important;
+    text-align: center;
     background-color:none repeat scroll 0 0 #f7de55 !important;
 }
 .column .dragbox{
@@ -180,4 +181,5 @@ font-weight: bold;
 {
      font-size: 13px;
      color:#FFFFFF;
+     text-align: center;
 }

@@ -19,7 +19,7 @@
 <br />
 <br />
 <script type="text/javascript" >
-jQuery(function(){
+    jQuery(document).ready(function () {
     jQuery('.dragbox')
 	.each(function(){
 		jQuery(this).hover(function(){
@@ -44,21 +44,48 @@ jQuery(function(){
 		cursor: 'move',
 		placeholder: 'placeholder',
 		forcePlaceholderSize: true,
-		opacity: 0.4,
-		stop: function(event, ui){
+		opacity: 1,
+		delay: 300,
+		stop: function (event, ui) {
 		    jQuery(ui.item).find('h2').click();
+		    ui.sender.sortable("cancel");
 			var sortorder='';
-			jQuery('.column').each(function () {
-				var itemorder=jQuery(this).sortable('toArray');
-				var columnId=jQuery(this).attr('id');
-				sortorder+=columnId+'='+itemorder.toString()+'&';
+			jQuery('.dragbox').draggable({
+			    connectToSortable: '.column',
+			    cursor: 'move'
 			});
-			alert('SortOrder: '+sortorder);
-			/*Pass sortorder variable to server using ajax to save state*/
 		}
-	})
+    })
 	.disableSelection();
+    var iscalled = 0;
+    jQuery('.column').droppable({
+        // Drop should only fire when a draggable element is dropped into the sortables,
+        // and NOT when the sortables themselves are sorted (without something being dragged into).
+        drop: function (ev, ui) {
+            var task = ui.draggable[0].id;
+            if (task == '') {
+                task = ui.helper[0].id;
+            }
+            var status = jQuery(this).attr('id');
+            UpdateRecord(task, status);
+        }
+    })
 });
+    function UpdateRecord(task, status) {
+        jQuery.ajax({
+            url: '@Url.Action("Kanban", "Tasks")',
+            data: { taskid: task, statusid: status },
+            type: 'POST',
+            success: function (data) {
+                jQuery.jGrowl(data, { life: 5000 });
+                //alert("Success");
+            },
+            error: function () {
+                jQuery.jGrowl('somethis is wrong!!!', { life: 5000 });
+                //alert("Error");
+            }
+        });
+    }
 </script>
 <div style="background-color:#f7de55">
 

@@ -486,6 +486,28 @@ namespace PMTool.Controllers
             return View(tasklist);
         }
 
+        [HttpPost]
+        public ActionResult Kanban(long taskid, int statusid)
+        {
+            string ststus = "";
+            try
+            {
+                Task task = unitOfWork.TaskRepository.Find(taskid);
+                if ((int)task.Status != statusid)
+                {
+                    task.Status = (PMTool.Models.EnumCollection.TaskStatus)statusid;
+                    unitOfWork.TaskRepository.InsertOrUpdate(task);
+                    unitOfWork.Save();
+                    ststus = "Task- " + task.Title + " is moved to " + task.Status.ToString().Replace("_"," ")+" successfully!!!";
+                }
+            }
+            catch
+            {
+
+            }
+            return Content(ststus);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
