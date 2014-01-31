@@ -475,6 +475,39 @@ namespace PMTool.Controllers
             return isvalid;
         }
 
+        public ActionResult Kanban(long ProjectID)
+        {
+            List<Task> tasklist = unitOfWork.TaskRepository.ByProjectIncluding(ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(ProjectID);
+
+
+            List<PMTool.Models.EnumCollection.TaskStatus> statusList = Enum.GetValues(typeof(PMTool.Models.EnumCollection.TaskStatus)).Cast<PMTool.Models.EnumCollection.TaskStatus>().ToList();
+            ViewBag.AllStatus = statusList;
+            return View(tasklist);
+        }
+
+        [HttpPost]
+        public ActionResult Kanban(long taskid, int statusid)
+        {
+            string ststus = "";
+            try
+            {
+                Task task = unitOfWork.TaskRepository.Find(taskid);
+                if ((int)task.Status != statusid)
+                {
+                    task.Status = (PMTool.Models.EnumCollection.TaskStatus)statusid;
+                    unitOfWork.TaskRepository.InsertOrUpdate(task);
+                    unitOfWork.Save();
+                    ststus = "Task- " + task.Title + " is moved to " + task.Status.ToString().Replace("_"," ")+" successfully!!!";
+                }
+            }
+            catch
+            {
+
+            }
+            return Content(ststus);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

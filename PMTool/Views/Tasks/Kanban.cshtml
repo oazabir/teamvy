@@ -1,0 +1,112 @@
+﻿@model IEnumerable<PMTool.Models.Task>
+
+@{
+    if (ViewBag.CurrentProject != null)
+    {
+        PMTool.Models.Project projetc = (PMTool.Models.Project)ViewBag.CurrentProject;
+        ViewBag.Title = projetc.Name + " | Kanban Board";
+    }
+}
+
+
+
+
+<div class="pagetitle">
+    <h1>@(((PMTool.Models.Project)ViewBag.CurrentProject).Name) Kanban Board</h1>
+    <span>@(((PMTool.Models.Project)ViewBag.CurrentProject).Name)  Kanban Board....</span>
+</div>
+
+<br />
+<br />
+<script type="text/javascript" >
+    jQuery(document).ready(function () {
+    jQuery('.dragbox')
+	.each(function(){
+		jQuery(this).hover(function(){
+			//jQuery(this).find('h2').addClass('collapse');
+		}, function(){
+			//jQuery(this).find('h2').removeClass('collapse');
+		})
+		.find('h2').hover(function(){
+			//jQuery(this).find('.configure').css('visibility', 'visible');
+		}, function(){
+			//jQuery(this).find('.configure').css('visibility', 'hidden');
+		})
+		.click(function(){
+			jQuery(this).siblings('.dragbox-content').toggle();
+		})
+		.end()
+		.find('.configure').css('visibility', 'hidden');
+	});
+    jQuery('.column').sortable({
+		connectWith: '.column',
+		handle: 'h2',
+		cursor: 'move',
+		placeholder: 'placeholder',
+		forcePlaceholderSize: true,
+		opacity: 1,
+		delay: 300,
+		stop: function (event, ui) {
+		    jQuery(ui.item).find('h2').click();
+		    ui.sender.sortable("cancel");
+			var sortorder='';
+			jQuery('.dragbox').draggable({
+			    connectToSortable: '.column',
+			    cursor: 'move'
+			});
+		}
+    })
+	.disableSelection();
+    var iscalled = 0;
+    jQuery('.column').droppable({
+        // Drop should only fire when a draggable element is dropped into the sortables,
+        // and NOT when the sortables themselves are sorted (without something being dragged into).
+        drop: function (ev, ui) {
+            var task = ui.draggable[0].id;
+            if (task == '') {
+                task = ui.helper[0].id;
+            }
+            var status = jQuery(this).attr('id');
+            UpdateRecord(task, status);
+        }
+    })
+});
+    function UpdateRecord(task, status) {
+        jQuery.ajax({
+            url: '@Url.Action("Kanban", "Tasks")',
+            data: { taskid: task, statusid: status },
+            type: 'POST',
+            success: function (data) {
+                jQuery.jGrowl(data, { life: 5000 });
+                //alert("Success");
+            },
+            error: function () {
+                jQuery.jGrowl('somethis is wrong!!!', { life: 5000 });
+                //alert("Error");
+            }
+        });
+    }
+</script>
+<div style="background-color:#f7de55">
+
+@foreach (var status in (List<PMTool.Models.EnumCollection.TaskStatus>)ViewBag.AllStatus)
+{
+        <fieldset class='column' id='@Convert.ToInt32(status)'>
+        
+ <legend class="widgettitle ctitle"> @Convert.ToString(status).Replace("_", " ")</legend>
+    @foreach (var item in Model)
+    {
+        if (Convert.ToInt32(status) == Convert.ToInt32(item.Status))
+        {
+        <div class="dragbox" id="@item.TaskID" >
+            <h2>@item.Title</h2>
+            <div class="dragbox-content"  style="display: none;">
+                @item.Description
+            </div>
+        </div>
+            }
+        }
+</fieldset>
+}
+    </div>
+<hr style="clear:both;" />

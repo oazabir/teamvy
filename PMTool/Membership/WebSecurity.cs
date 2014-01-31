@@ -117,6 +117,50 @@ using PMTool.Repository;
             return CodeFirstMembership.CreateAccount(userName, password, requireConfirmationToken);
         }
 
+        public static string CreateAccount(string userName, string email,string password, string FirstName,string LastName ,bool requireConfirmationToken = false)
+        {
+            string status="";
+            using (UnitOfWork reopo = new UnitOfWork())
+            {
+                User existingUser = reopo.UserRepository.GetUserByEmail(email);
+
+                string HashedPassword = Crypto.HashPassword(password);
+                if (HashedPassword.Length > 128)
+                {
+                    status = "InvalidPassword";
+                    return null;
+                }
+
+                if (existingUser != null)
+                {
+                    status = "DuplicateEmail";
+                    return null;
+                }
+                User NewUser = new User
+                {
+                    UserId = Guid.NewGuid(),
+                    Username = email,
+                    Password = HashedPassword,
+                    IsApproved = true,
+                    Email = email,
+                    CreateDate = DateTime.UtcNow,
+                    LastPasswordChangedDate = DateTime.UtcNow,
+                    PasswordFailuresSinceLastSuccess = 0,
+                    LastLoginDate = DateTime.UtcNow,
+                    LastActivityDate = DateTime.UtcNow,
+                    LastLockoutDate = DateTime.UtcNow,
+                    IsLockedOut = false,
+                    LastPasswordFailureDate = DateTime.UtcNow,
+                    FirstName = FirstName,
+                    LastName = LastName
+                };
+
+                reopo.UserRepository.Insert(NewUser);
+                reopo.Save();
+            }
+            return status;
+        }
+
         public static string CreateUserAndAccount(string userName, string password)
         {
             return CreateUserAndAccount(userName, password, propertyValues: null, requireConfirmationToken: false);

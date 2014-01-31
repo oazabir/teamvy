@@ -19,6 +19,7 @@
     <script src="@Url.Content("~/Content/themes/site/js/custom.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Content/themes/site/js/tinymce/jquery.tinymce.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Content/themes/site/js/chosen.jquery.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/themes/site/js/jquery.jgrowl.js")" type="text/javascript"></script>
     
     <script type="text/javascript">
         jQuery.noConflict();
@@ -131,7 +132,8 @@
                             {
                                 foreach (PMTool.Models.Project item in (List<PMTool.Models.Project>)ViewBag.AssignedProjects)
                                 {
-                                    <li>@Html.ActionLink(@item.Name, "ProjectTasks", "Tasks", new { @projectID = item.ProjectID }, null)</li>
+                                    <li>@Html.ActionLink(@item.Name, "ProjectTasks", "Tasks", new { @projectID = item.ProjectID }, null)
+                                    </li>
                                 }
                             }
                         </ul>
@@ -166,14 +168,7 @@
                             <span class="iconsweets-globe iconsweets-white"></span>
                             @if (((List<PMTool.Models.Notification>)ViewBag.Notifications).Count > 0)
                             {
-                                <span class="jewelCount" id="notificationsCountWrapper">
-                                    <span id="notificationsCountValue">
-                               
-                                          <span>@(((List<PMTool.Models.Notification>)ViewBag.Notifications).Count)</span>
-                               
-                                    </span>
-
-                                </span>
+                               <span class="badge badge-important">@(((List<PMTool.Models.Notification>)ViewBag.Notifications).Count)</span>
                             }
                         </a>
                         <ul class="dropdown-menu">
@@ -202,16 +197,17 @@
                     <!--dropdown-->
 
                     <div class="dropdown userinfo">
-                        <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">Hi, @User.Identity.Name! <b class="caret"></b></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">Hi, @ViewBag.UserName! <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="editprofile.html"><span class="icon-edit"></span>Edit Profile</a></li>
+                            <li><a href="@Url.Action("EditProfile", "Account")"><span class="icon-edit"></span>Edit Profile</a></li>
                             <li><a href=""><span class="icon-wrench"></span>Account Settings</a></li>
                             <li><a href=""><span class="icon-eye-open"></span>Privacy Settings</a></li>
                             <li class="divider"></li>
                             <li>
-                                
-
-                                @Html.ActionLink("Log Off", "LogOff", "Account")
+                                <a href="@Url.Action("LogOff", "Account")">
+                                    <span class="icon-off"></span>
+                                    Sign Out
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -255,6 +251,12 @@
    
 </body>
 </html>
+<div id="jGrowl" class="top-right jGrowl">
+<div class="jGrowl-notification"></div>
+</div>
+<div class="loaders">
+    <img alt="" src="~/Content/themes/site/img/loaders/loader2.gif">
+    </div>
 <script type="text/javascript">
     jQuery(document).ready(function () {
 

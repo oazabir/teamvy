@@ -12,14 +12,13 @@ namespace PMTool.Controllers
 {   
     public class PrioritiesController : BaseController
     {
-        private PMToolContext context = new PMToolContext();
-
+        private UnitOfWork unitofWork = new UnitOfWork();
         //
         // GET: /Priorities/
 
         public ViewResult Index()
         {
-            return View(context.Priorities.ToList());
+            return View(unitofWork.PriorityRepository.All);
         }
 
         //
@@ -27,7 +26,7 @@ namespace PMTool.Controllers
 
         public ViewResult Details(int id)
         {
-            Priority priority = context.Priorities.Single(x => x.PriorityID == id);
+            Priority priority = unitofWork.PriorityRepository.Find(id);
             return View(priority);
         }
 
@@ -47,8 +46,8 @@ namespace PMTool.Controllers
         {
             if (ModelState.IsValid)
             {
-                context.Priorities.Add(priority);
-                context.SaveChanges();
+                unitofWork.PriorityRepository.InsertOrUpdate(priority);
+                unitofWork.Save();
                 return RedirectToAction("Index");  
             }
 
@@ -60,7 +59,7 @@ namespace PMTool.Controllers
  
         public ActionResult Edit(int id)
         {
-            Priority priority = context.Priorities.Single(x => x.PriorityID == id);
+            Priority priority = unitofWork.PriorityRepository.Find(id);
             return View(priority);
         }
 
@@ -72,8 +71,8 @@ namespace PMTool.Controllers
         {
             if (ModelState.IsValid)
             {
-                context.Entry(priority).State = System.Data.Entity.EntityState.Modified;
-                context.SaveChanges();
+                unitofWork.PriorityRepository.InsertOrUpdate(priority);
+                unitofWork.Save();
                 return RedirectToAction("Index");
             }
             return View(priority);
@@ -84,7 +83,7 @@ namespace PMTool.Controllers
  
         public ActionResult Delete(int id)
         {
-            Priority priority = context.Priorities.Single(x => x.PriorityID == id);
+            Priority priority = unitofWork.PriorityRepository.Find(id);
             return View(priority);
         }
 
@@ -94,17 +93,13 @@ namespace PMTool.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Priority priority = context.Priorities.Single(x => x.PriorityID == id);
-            context.Priorities.Remove(priority);
-            context.SaveChanges();
+            unitofWork.PriorityRepository.Delete(id);
+            unitofWork.Save();
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing) {
-                context.Dispose();
-            }
             base.Dispose(disposing);
         }
     }
