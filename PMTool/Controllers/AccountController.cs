@@ -96,7 +96,7 @@ namespace PMTool.Controllers
                             }
                             catch (Exception exp)
                             {
-                                throw (exp);
+                                //throw (exp);
                             }
                         }
                     }
@@ -363,7 +363,7 @@ namespace PMTool.Controllers
             {
                 try
                 {
-                    if (String.IsNullOrEmpty(ConfigurationManager.AppSettings["EnableEmailNotification"]))
+                    if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["EnableEmailNotification"]))
                     {
                         if (Convert.ToBoolean(ConfigurationManager.AppSettings["EnableEmailNotification"])) //Check Enable Email Notification
                         {
@@ -490,6 +490,7 @@ namespace PMTool.Controllers
             string confirmationGuid = user.ProviderUserKey.ToString();
             string verifyUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/account/verify?ID=" + confirmationGuid;
 
+            client.UseDefaultCredentials = false;
             if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["EmailFrom"]) && !String.IsNullOrEmpty(ConfigurationManager.AppSettings["EmailFromPass"]))
             {
                 message = new MailMessage(ConfigurationManager.AppSettings["EmailFrom"].ToString(), userName)
@@ -529,7 +530,7 @@ namespace PMTool.Controllers
         
             //string verifyUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/account/verify?ID=" + confirmationGuid;
             string verifyUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/Account/Register";
-
+            client.UseDefaultCredentials = false;
 
             if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["EmailFrom"]) && !String.IsNullOrEmpty(ConfigurationManager.AppSettings["EmailFromPass"]))
             {
@@ -544,7 +545,7 @@ namespace PMTool.Controllers
             }
 
 
-            client.UseDefaultCredentials = false;
+            
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             //client.Credentials = new System.Net.NetworkCredential("testbd2014@gmail.com", "testbd@123");
 
@@ -560,7 +561,7 @@ namespace PMTool.Controllers
             else
                 client.Port = 25; //Default port for SMTP
 
-            client.UseDefaultCredentials = false;
+            //client.UseDefaultCredentials = false;
             client.Send(message);
         }
         #endregion
