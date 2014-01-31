@@ -345,11 +345,79 @@ namespace PMTool.Controllers
             GetAllStatus(task);
 
             MakeNotificationReadonly();
-           
+
 
             return View(task);
         }
 
+        public ActionResult EditFromKanban(long id)
+        {
+            Task task = unitOfWork.TaskRepository.Find(id);
+            ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
+            ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+
+            List<SelectListItem> allUsers = GetAllUser(task.ProjectID);
+            ViewBag.PossibleUsers = allUsers;
+
+            task.SelectedAssignedUsers = task.Users.Select(u => u.UserId.ToString()).ToList();
+            task.SelectedFollowedUsers = task.Followers.Select(u => u.UserId.ToString()).ToList();
+            task.SelectedLabels = task.Labels.Select(u => u.LabelID.ToString()).ToList();
+            List<string> statusList = new List<string>();
+            statusList.Add(task.Status.ToString());
+            List<SelectListItem> allLabels = GetAllLabel();
+            ViewBag.PossibleLabels = allLabels;
+
+
+            GetAllStatus(task);
+
+            MakeNotificationReadonly();
+
+
+            return PartialView(task);
+        }
+
+        [HttpPost]
+        public ActionResult EditFromKanban(Task task)
+        {
+            task.ModifieddBy = (Guid)Membership.GetUser().ProviderUserKey;
+            task.ModificationDate = DateTime.Now;
+            task.ActionDate = DateTime.Now;
+            if (ModelState.IsValid)
+            {
+                if (ValidTaskStatus(task))
+                {
+                    AddAssignUser(task);
+                    AddFollower(task);
+                    AddLabel(task);
+
+                    bool isStatusChanged = unitOfWork.TaskRepository.InsertOrUpdate(task);
+                    unitOfWork.Save();
+                    if (task.ParentTaskId != null)
+                    {
+                        SaveNotification(task, false, false, isStatusChanged);
+                    }
+                    else
+                    {
+                        SaveNotification(task, false, true, isStatusChanged);
+                    }
+                    //return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
+                }
+                else
+                {
+                    TempData["Message"] = "One or more subtask is not closed yet!!!";
+                }
+            }
+
+            List<SelectListItem> allUsers = GetAllUser(task.ProjectID);
+            ViewBag.PossibleUsers = allUsers;
+            ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
+            ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+
+            List<SelectListItem> allLabels = GetAllLabel();
+            ViewBag.PossibleLabels = allLabels;
+            GetAllStatus(task);
+            return RedirectToAction("Kanban", new { @ProjectID = task.ProjectID });
+        }
 
         private void MakeNotificationReadonly()
         {

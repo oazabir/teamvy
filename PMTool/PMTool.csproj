@@ -826,7 +826,6 @@
     <Content Include="Views\Projects\Index.cshtml" />
     <Content Include="Views\Projects\_CreateOrEdit.cshtml" />
     <Content Include="Views\Tasks\Create.cshtml" />
-    <Content Include="Views\Tasks\Edit.cshtml" />
     <Content Include="Views\Tasks\Delete.cshtml" />
     <Content Include="Views\Tasks\Details.cshtml" />
     <Content Include="Views\Tasks\Index.cshtml" />
@@ -839,6 +838,8 @@
     <Content Include="Views\Projects\SearhResult.cshtml" />
     <Content Include="Views\Tasks\Kanban.cshtml" />
     <Content Include="Content\themes\site\js\jquery-ui-1.7.2.custom.min" />
+    <Content Include="Views\Tasks\EditFromKanban.cshtml" />
+    <Content Include="Views\Tasks\Edit.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />

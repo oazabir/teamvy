@@ -433,5 +433,5 @@ jQuery(document).ready(function(){
 			jQuery.cookie("skin-color", c, { path: '/' });
 		}
 	}
-	
+
 });
