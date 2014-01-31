@@ -555,23 +555,26 @@ namespace PMTool.Controllers
         }
 
         [HttpPost]
-        public ActionResult Kanban(long taskid, int statusid)
+        public ActionResult Kanban(string taskid, string statusid)
         {
             string ststus = "";
-            try
+            if (taskid != null && statusid != null)
             {
-                Task task = unitOfWork.TaskRepository.Find(taskid);
-                if ((int)task.Status != statusid)
+                try
                 {
-                    task.Status = (PMTool.Models.EnumCollection.TaskStatus)statusid;
-                    unitOfWork.TaskRepository.InsertOrUpdate(task);
-                    unitOfWork.Save();
-                    ststus = "Task- " + task.Title + " is moved to " + task.Status.ToString().Replace("_"," ")+" successfully!!!";
+                    Task task = unitOfWork.TaskRepository.Find(Convert.ToInt64( taskid));
+                    if ((int)task.Status != Convert.ToInt32( statusid))
+                    {
+                        task.Status = (PMTool.Models.EnumCollection.TaskStatus)Convert.ToInt32( statusid);
+                        unitOfWork.TaskRepository.InsertOrUpdate(task);
+                        unitOfWork.Save();
+                        ststus = "Task- " + task.Title + " is moved to " + task.Status.ToString().Replace("_", " ") + " successfully!!!";
+                    }
                 }
-            }
-            catch
-            {
+                catch
+                {
 
+                }
             }
             return Content(ststus);
         }

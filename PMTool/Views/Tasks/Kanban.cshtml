@@ -48,7 +48,6 @@
             delay: 300,
             stop: function (event, ui) {
                 jQuery(ui.item).find('h2').click();
-                ui.sortable("cancel");
                 var sortorder = '';
                 jQuery('.dragbox').draggable({
                     connectToSortable: '.column',
@@ -57,18 +56,31 @@
             }
         })
         .disableSelection();
-        var iscalled = 0;
+        var isfailed = true;
         jQuery('.column').droppable({
             // Drop should only fire when a draggable element is dropped into the sortables,
             // and NOT when the sortables themselves are sorted (without something being dragged into).
             drop: function (ev, ui) {
+                
                 var task = ui.draggable[0].id;
                 if (task == '') {
                     task = ui.helper[0].id;
                 }
                 var status = jQuery(this).attr('id');
-                UpdateRecord(task, status);
-            }
+                if (typeof (status) != 'undefined' && status != null && typeof (task) != 'undefined' && task != null) {
+                    UpdateRecord(task, status);
+                }
+                else {
+                    isfailed = false;
+                }
+                //jQuery.jGrowl('somethig is wrong', { life: 5000 });
+                setTimeout((function () {
+                    jQuery(this).draggable("destroy");
+                }).bind(ui.draggable), 500);
+            },
+            accept: function() {
+                return isfailed;
+        }
         })
     });
     function UpdateRecord(task, status) {
@@ -77,16 +89,19 @@
             data: { taskid: task, statusid: status },
             type: 'POST',
             success: function (data) {
+                var msg = new String(data);
+                if (msg.startsWith("T"))
                 jQuery.jGrowl(data, { life: 5000 });
-                //alert("Success");
             },
-            error: function () {
-                jQuery.jGrowl('somethis is wrong!!!', { life: 5000 });
-                //alert("Error");
+            error: function (xhr, textStatus, errorThrown) {
+                alert(xhr.responseText);
+                //jQuery.jGrowl('somethig is wrong', { life: 5000 });
             }
         });
     }
 </script>
+
+
 <div style="background-color: #f7de55">
 
     @foreach (var status in (List<PMTool.Models.EnumCollection.TaskStatus>)ViewBag.AllStatus)
