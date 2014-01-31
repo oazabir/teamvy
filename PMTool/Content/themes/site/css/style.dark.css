@@ -183,3 +183,9 @@ font-weight: bold;
      color:#FFFFFF;
      text-align: center;
 }
+.modal
+{
+    width:450px !important;
+height:400px !important;
+overflow:scroll !important;
+}
