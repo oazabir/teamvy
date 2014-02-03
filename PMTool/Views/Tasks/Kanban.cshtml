@@ -18,8 +18,9 @@
 
 <br />
 <br />
-<script type="text/javascript">
-    jQuery(document).ready(function () {
+
+<script type="text/javascript" >
+    jQuery(function () {
         jQuery('.dragbox')
         .each(function () {
             jQuery(this).hover(function () {
@@ -35,8 +36,8 @@
             .click(function () {
                 jQuery(this).siblings('.dragbox-content').toggle();
             })
-            .end()
-            .find('.configure').css('visibility', 'hidden');
+            .end();
+            //.find('.configure').css('visibility', 'hidden');
         });
         jQuery('.column').sortable({
             connectWith: '.column',
@@ -44,44 +45,18 @@
             cursor: 'move',
             placeholder: 'placeholder',
             forcePlaceholderSize: true,
-            opacity: 1,
-            delay: 300,
-            stop: function (event, ui) {
-                jQuery(ui.item).find('h2').click();
-                var sortorder = '';
-                jQuery('.dragbox').draggable({
-                    connectToSortable: '.column',
-                    cursor: 'move'
-                });
+            opacity: 0.4,
+            receive: function (event, ui) {
+                //jQuery(ui.item).find('h2').click();
+                //var sortorder = '';
+
+                var columnId = jQuery(this).attr('id');
+                var taskId = ui.item[0].id;
+                UpdateRecord(taskId, columnId);
+                /*Pass sortorder variable to server using ajax to save state*/
             }
         })
         .disableSelection();
-        var isfailed = true;
-        jQuery('.column').droppable({
-            // Drop should only fire when a draggable element is dropped into the sortables,
-            // and NOT when the sortables themselves are sorted (without something being dragged into).
-            drop: function (ev, ui) {
-                
-                var task = ui.draggable[0].id;
-                if (task == '') {
-                    task = ui.helper[0].id;
-                }
-                var status = jQuery(this).attr('id');
-                if (typeof (status) != 'undefined' && status != null && typeof (task) != 'undefined' && task != null) {
-                    UpdateRecord(task, status);
-                }
-                else {
-                    isfailed = false;
-                }
-                //jQuery.jGrowl('somethig is wrong', { life: 5000 });
-                setTimeout((function () {
-                    jQuery(this).draggable("destroy");
-                }).bind(ui.draggable), 500);
-            },
-            accept: function() {
-                return isfailed;
-        }
-        })
     });
     function UpdateRecord(task, status) {
         jQuery.ajax({
@@ -90,17 +65,15 @@
             type: 'POST',
             success: function (data) {
                 var msg = new String(data);
-                if (msg.startsWith("T"))
-                jQuery.jGrowl(data, { life: 5000 });
+                if (msg.indexOf('T') == 0)
+                    jQuery.jGrowl(data, { life: 5000 });
             },
             error: function (xhr, textStatus, errorThrown) {
-                alert(xhr.responseText);
-                //jQuery.jGrowl('somethig is wrong', { life: 5000 });
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
             }
         });
     }
 </script>
-
 
 <div style="background-color: #f7de55">
 
@@ -113,7 +86,7 @@
             {
                 if (Convert.ToInt32(status) == Convert.ToInt32(item.Status))
                 {
-                <div class="dragbox" id="@item.TaskID" >
+                <div class="dragbox" id="@item.TaskID">
                     <h2>@item.Title</h2>
                     <div class="dragbox-content" style="display: none;">
                         @item.Description
