@@ -394,11 +394,11 @@ namespace PMTool.Controllers
                     unitOfWork.Save();
                     if (task.ParentTaskId != null)
                     {
-                        SaveNotification(task, false, false, isStatusChanged);
+                        SaveNotification(task, false, true, isStatusChanged);
                     }
                     else
                     {
-                        SaveNotification(task, false, true, isStatusChanged);
+                        SaveNotification(task, false, false, isStatusChanged);
                     }
                     //return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
                 }
@@ -562,10 +562,10 @@ namespace PMTool.Controllers
             {
                 try
                 {
-                    Task task = unitOfWork.TaskRepository.Find(Convert.ToInt64( taskid));
-                    if ((int)task.Status != Convert.ToInt32( statusid))
+                    Task task = unitOfWork.TaskRepository.Find(Convert.ToInt64(taskid));
+                    if ((int)task.Status != Convert.ToInt32(statusid))
                     {
-                        task.Status = (PMTool.Models.EnumCollection.TaskStatus)Convert.ToInt32( statusid);
+                        task.Status = (PMTool.Models.EnumCollection.TaskStatus)Convert.ToInt32(statusid);
                         unitOfWork.TaskRepository.InsertOrUpdate(task);
                         unitOfWork.Save();
                         ststus = "Task- " + task.Title + " is moved to " + task.Status.ToString().Replace("_", " ") + " successfully!!!";
@@ -575,6 +575,7 @@ namespace PMTool.Controllers
                 {
 
                 }
+                return Content(ststus);
             }
             return Content(ststus);
         }

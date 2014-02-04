@@ -931,6 +931,8 @@
     <Content Include="Content\themes\site\fonts\Roboto-ThinItalic-webfont.eot" />
     <Content Include="Content\themes\site\fonts\Roboto-ThinItalic-webfont.ttf" />
     <Content Include="Content\themes\site\fonts\Roboto-ThinItalic-webfont.woff" />
+    <Content Include="Views\Home\_Notification.cshtml" />
+    <Content Include="Views\Home\_NotificationReadAll.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />

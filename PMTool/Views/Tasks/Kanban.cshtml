@@ -52,6 +52,7 @@
 
                 var columnId = jQuery(this).attr('id');
                 var taskId = ui.item[0].id;
+                if (taskId != null && columnId!=null)
                 UpdateRecord(taskId, columnId);
                 /*Pass sortorder variable to server using ajax to save state*/
             }
@@ -74,7 +75,6 @@
         });
     }
 </script>
-
 <div style="background-color: #f7de55">
 
     @foreach (var status in (List<PMTool.Models.EnumCollection.TaskStatus>)ViewBag.AllStatus)
@@ -99,7 +99,6 @@
     }
 </div>
 <hr style="clear: both;" />
-
 <div id='Modalpopup' class='modal hide fade in' data-url='@Url.Action("EditFromKanban", "Tasks")'>
     <div id='popupcontainer'>
     </div>
