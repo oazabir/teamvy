@@ -11,6 +11,7 @@ using PMTool.Repository;
 
 namespace PMTool.Controllers
 {
+    [Authorize]
     public class TasksController : BaseController
     {
         private UnitOfWork unitOfWork = new UnitOfWork();

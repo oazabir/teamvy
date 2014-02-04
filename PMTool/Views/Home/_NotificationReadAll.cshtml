@@ -1,0 +1,66 @@
+﻿@model IEnumerable<PMTool.Models.Notification>
+ 
+<div class="dropdown notification">
+    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#">
+        <span class="iconsweets-globe iconsweets-white"></span>
+        @if (Model.Count() > 0)
+        {
+            <span class="badge badge-important">@(Model.Count())</span>
+        }
+    </a>
+    <ul class="dropdown-menu">
+        <li class="nav-header">Notifications
+             @if (Model.Count() > 0)
+             {
+                 @*<input type="submit" style="float:right;" id="btnReadAll" value="mark all as read" class="btn btn-primary" />*@ 
+                @Ajax.ActionLink("mark all as read", "_NotificationReadAll", "Home", new AjaxOptions { UpdateTargetId = "result" }, new {  @class = "label label-info" })
+             }
+        </li>
+        @if (Model.Count() > 0)
+        {
+            foreach (PMTool.Models.Notification notification in Model)
+            {
+                if (notification.TaskID == null)
+                {
+            <li><a href="@Url.Action("Details", "Projects", new { id = notification.ProjectID, notificationID = notification.NotificationID })"><span class='icon-envelope'></span><strong>@notification.Title</strong></a></li>
+                }
+                if (notification.TaskID != null)
+                {
+                                    
+            <li><a href="@Url.Action("Edit", "Tasks", new { id = notification.TaskID, notificationID = notification.NotificationID })"><span class='icon-envelope'></span><strong>@notification.Title</strong></a></li>
+                }
+            }
+        }
+        @if (Model.Count() == 0)
+        {
+            <li class="viewmore"><a href="#">No unread notifications</a></li>
+        }
+    </ul>
+</div>
+
+
+@*<script type="text/javascript">
+    	
+
+    jQuery('#btnReadAll').click(function () {
+        jQuery.ajax({
+            type: 'POST',
+            url: '@Url.Action("_Notification", "Home")',
+            contentType: 'application/json; charset=utf-8',
+            data: {
+                notifications: jQuery(this).serialize()
+                },
+            success: function (returnPayload) {
+                //console && console.log("request succeeded");
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+               // console && console.log("request failed");
+            },
+            dataType: "xml",
+            contentType: "application/json",
+            processData: true,
+            async: false
+        });
+    });
+
+</script>*@
