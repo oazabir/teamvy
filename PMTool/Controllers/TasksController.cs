@@ -11,6 +11,7 @@ using PMTool.Repository;
 
 namespace PMTool.Controllers
 {
+    [Authorize]
     public class TasksController : BaseController
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
@@ -394,11 +395,11 @@ namespace PMTool.Controllers
                     unitOfWork.Save();
                     if (task.ParentTaskId != null)
                     {
-                        SaveNotification(task, false, false, isStatusChanged);
+                        SaveNotification(task, false, true, isStatusChanged);
                     }
                     else
                     {
-                        SaveNotification(task, false, true, isStatusChanged);
+                        SaveNotification(task, false, false, isStatusChanged);
                     }
                     //return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
                 }
@@ -555,23 +556,27 @@ namespace PMTool.Controllers
         }
 
         [HttpPost]
-        public ActionResult Kanban(long taskid, int statusid)
+        public ActionResult Kanban(string taskid, string statusid)
         {
             string ststus = "";
-            try
+            if (taskid != null && statusid != null)
             {
-                Task task = unitOfWork.TaskRepository.Find(taskid);
-                if ((int)task.Status != statusid)
+                try
                 {
-                    task.Status = (PMTool.Models.EnumCollection.TaskStatus)statusid;
-                    unitOfWork.TaskRepository.InsertOrUpdate(task);
-                    unitOfWork.Save();
-                    ststus = "Task- " + task.Title + " is moved to " + task.Status.ToString().Replace("_"," ")+" successfully!!!";
+                    Task task = unitOfWork.TaskRepository.Find(Convert.ToInt64(taskid));
+                    if ((int)task.Status != Convert.ToInt32(statusid))
+                    {
+                        task.Status = (PMTool.Models.EnumCollection.TaskStatus)Convert.ToInt32(statusid);
+                        unitOfWork.TaskRepository.InsertOrUpdate(task);
+                        unitOfWork.Save();
+                        ststus = "Task- " + task.Title + " is moved to " + task.Status.ToString().Replace("_", " ") + " successfully!!!";
+                    }
                 }
-            }
-            catch
-            {
+                catch
+                {
 
+                }
+                return Content(ststus);
             }
             return Content(ststus);
         }

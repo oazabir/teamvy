@@ -9,7 +9,8 @@ using PMTool.Models;
 using PMTool.Repository;
 
 namespace PMTool.Controllers
-{   
+{
+    [Authorize]
     public class PrioritiesController : BaseController
     {
         private UnitOfWork unitofWork = new UnitOfWork();

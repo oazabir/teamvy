@@ -18,8 +18,9 @@
 
 <br />
 <br />
-<script type="text/javascript">
-    jQuery(document).ready(function () {
+
+<script type="text/javascript" >
+    jQuery(function () {
         jQuery('.dragbox')
         .each(function () {
             jQuery(this).hover(function () {
@@ -35,8 +36,8 @@
             .click(function () {
                 jQuery(this).siblings('.dragbox-content').toggle();
             })
-            .end()
-            .find('.configure').css('visibility', 'hidden');
+            .end();
+            //.find('.configure').css('visibility', 'hidden');
         });
         jQuery('.column').sortable({
             connectWith: '.column',
@@ -44,32 +45,19 @@
             cursor: 'move',
             placeholder: 'placeholder',
             forcePlaceholderSize: true,
-            opacity: 1,
-            delay: 300,
-            stop: function (event, ui) {
-                jQuery(ui.item).find('h2').click();
-                ui.sortable("cancel");
-                var sortorder = '';
-                jQuery('.dragbox').draggable({
-                    connectToSortable: '.column',
-                    cursor: 'move'
-                });
+            opacity: 0.4,
+            receive: function (event, ui) {
+                //jQuery(ui.item).find('h2').click();
+                //var sortorder = '';
+
+                var columnId = jQuery(this).attr('id');
+                var taskId = ui.item[0].id;
+                if (taskId != null && columnId!=null)
+                UpdateRecord(taskId, columnId);
+                /*Pass sortorder variable to server using ajax to save state*/
             }
         })
         .disableSelection();
-        var iscalled = 0;
-        jQuery('.column').droppable({
-            // Drop should only fire when a draggable element is dropped into the sortables,
-            // and NOT when the sortables themselves are sorted (without something being dragged into).
-            drop: function (ev, ui) {
-                var task = ui.draggable[0].id;
-                if (task == '') {
-                    task = ui.helper[0].id;
-                }
-                var status = jQuery(this).attr('id');
-                UpdateRecord(task, status);
-            }
-        })
     });
     function UpdateRecord(task, status) {
         jQuery.ajax({
@@ -77,12 +65,12 @@
             data: { taskid: task, statusid: status },
             type: 'POST',
             success: function (data) {
-                jQuery.jGrowl(data, { life: 5000 });
-                //alert("Success");
+                var msg = new String(data);
+                if (msg.indexOf('T') == 0)
+                    jQuery.jGrowl(data, { life: 5000 });
             },
-            error: function () {
-                jQuery.jGrowl('somethis is wrong!!!', { life: 5000 });
-                //alert("Error");
+            error: function (xhr, textStatus, errorThrown) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
             }
         });
     }
@@ -98,7 +86,7 @@
             {
                 if (Convert.ToInt32(status) == Convert.ToInt32(item.Status))
                 {
-                <div class="dragbox" id="@item.TaskID" >
+                <div class="dragbox" id="@item.TaskID">
                     <h2>@item.Title</h2>
                     <div class="dragbox-content" style="display: none;">
                         @item.Description
@@ -111,7 +99,6 @@
     }
 </div>
 <hr style="clear: both;" />
-
 <div id='Modalpopup' class='modal hide fade in' data-url='@Url.Action("EditFromKanban", "Tasks")'>
     <div id='popupcontainer'>
     </div>

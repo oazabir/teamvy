@@ -132,7 +132,7 @@ font-weight: bold;
 	background:#fff !important;
 	float:left !important;
     text-align: center;
-    background-color:none repeat scroll 0 0 #f7de55 !important;
+    background-color: #3B6998 !important
 }
 .column .dragbox{
 	margin:5px 2px  20px !important;
@@ -185,7 +185,13 @@ font-weight: bold;
 }
 .modal
 {
-    width:450px !important;
-height:400px !important;
+    width:600px !important;
+height:450px !important;
 overflow:scroll !important;
+}
+
+.headerright {
+    display: inline-flex;
+    float: right;
+    padding: 7px 14px 0 0;
 }

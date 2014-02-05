@@ -12,14 +12,16 @@
     <script type="text/javascript" src="@Url.Content("~/Content/themes/site/js/jquery.dataTables.nightly.js")"></script>
     <script src="@Url.Content("~/Content/themes/site/js/jquery-migrate-1.1.1.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Content/themes/site/js/jquery-ui-1.9.2.min.js")" type="text/javascript"></script>
-   <script src="@Url.Content("~/Content/themes/site/js/jquery.flot.min.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Content/themes/site/js/jquery.flot.resize.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Content/themes/site/js/bootstrap.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Content/themes/site/js/jquery.cookie.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Content/themes/site/js/custom.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Content/themes/site/js/tinymce/jquery.tinymce.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Content/themes/site/js/chosen.jquery.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Content/themes/site/js/jquery.jgrowl.js")" type="text/javascript"></script>
+   @*<script src="@Url.Content("~/Content/themes/site/js/jquery.flot.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/themes/site/js/jquery.flot.resize.min.js")" type="text/javascript"></script>*@
+    <script src="@Url.Content("~/Content/themes/site/js/jquery.flot.pack.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
     
     <script type="text/javascript">
         jQuery.noConflict();
@@ -95,7 +97,7 @@
         <div class="leftpanel">
 
             <div class="logopanel">
-                <h1><a href="dashboard.html">PM Tool <span>v1.0</span></a></h1>
+                <h1><a href="#">PM Tool <span>v1.0</span></a></h1>
             </div>
             <!--logopanel-->
 
@@ -122,10 +124,8 @@
             <div class="leftmenu">
                 <ul class="nav nav-tabs nav-stacked">
                     <li class="nav-header">Main Navigation</li>
-                    <li class="active">
-                         <li>@Html.ActionLink("Dashboard", "Index", "Home")</li>
-                           
-                    </li>
+                    <li class="active">@Html.ActionLink("Dashboard", "Index", "Home")</li>
+
                     <li class="dropdown"><a href=""><span class="icon-briefcase"></span>Assigned Projects</a>
                         <ul>
                             @if (ViewBag.AssignedProjects != null)
@@ -138,7 +138,7 @@
                             }
                         </ul>
                     </li>
-                    <li class="dropdown"><a href=""><span class="icon-th-list"></span>Own Projects</a>
+                    <li class="dropdown"><a href="#"><span class="icon-th-list"></span>Own Projects</a>
                         <ul>
                             <li>@Html.ActionLink("Create New Project", "Create", "Projects")</li>
                             <li>@Html.ActionLink("Projects Created by you", "Index", "Projects")</li>
@@ -160,39 +160,12 @@
 
         <div class="rightpanel">
             <div class="headerpanel">
-                <a href="" class="showmenu"></a>
+                <a href="#" class="showmenu"></a>
 
                 <div class="headerright">
-                    <div class="dropdown notification">
-                        <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#">
-                            <span class="iconsweets-globe iconsweets-white"></span>
-                            @if (((List<PMTool.Models.Notification>)ViewBag.Notifications).Count > 0)
-                            {
-                               <span class="badge badge-important">@(((List<PMTool.Models.Notification>)ViewBag.Notifications).Count)</span>
-                            }
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="nav-header">Notifications</li>
-                            @if (((List<PMTool.Models.Notification>)ViewBag.Notifications).Count > 0)
-                            {
-                                foreach (PMTool.Models.Notification notification in (List<PMTool.Models.Notification>)ViewBag.Notifications)
-                                {
-                                    if (notification.TaskID == null)
-                                    {
-                                    <li><a href="@Url.Action("Details", "Projects", new { id = notification.ProjectID, notificationID = notification.NotificationID })"><span class='icon-envelope'></span><strong>@notification.Title</strong></a></li>
-                                    }
-                                    if (notification.TaskID != null)
-                                    {
-                                    
-                                    <li><a href="@Url.Action("Edit", "Tasks", new { id = notification.TaskID, notificationID = notification.NotificationID })"><span class='icon-envelope'></span><strong>@notification.Title</strong></a></li>
-                                    }
-                                }
-                            }
-                             @if (((List<PMTool.Models.Notification>)ViewBag.Notifications).Count == 0)
-                             {
-                                 <li class="viewmore"><a href="">No unread notifications</a></li>
-                             }
-                        </ul>
+                    @*@{Html.RenderPartial("_Notification");}*@
+                    <div id="result">
+                        @{Html.RenderAction("_Notification", "Home");}
                     </div>
                     <!--dropdown-->
 
@@ -255,84 +228,7 @@
 <div class="jGrowl-notification"></div>
 </div>
 <div class="loaders" id="loaders">
-    <img alt="" src="~/Content/themes/site/img/loaders/loader2.gif">
+    <img alt="" src="../../Content/themes/site/img/loaders/loader2.gif">
     </div>
-<script type="text/javascript">
-    jQuery(document).ready(function () {
-
-        // basic chart
-        var flash = [[0, 2], [1, 6], [2, 3], [3, 8], [4, 5], [5, 13], [6, 8]];
-        var html5 = [[0, 5], [1, 4], [2, 4], [3, 1], [4, 9], [5, 10], [6, 13]];
-
-        function showTooltip(x, y, contents) {
-            jQuery('<div id="tooltip" class="tooltipflot">' + contents + '</div>').css({
-                position: 'absolute',
-                display: 'none',
-                top: y + 5,
-                left: x + 5
-            }).appendTo("body").fadeIn(200);
-        }
 
 
-        var plot = jQuery.plot(jQuery("#chartplace2"),
-			   [{ data: flash, label: "Flash(x)", color: "#fb6409" }, { data: html5, label: "HTML5(x)", color: "#096afb" }], {
-			       series: {
-			           lines: { show: true, fill: true, fillColor: { colors: [{ opacity: 0.05 }, { opacity: 0.15 }] } },
-			           points: { show: true }
-			       },
-			       legend: { position: 'nw' },
-			       grid: { hoverable: true, clickable: true, borderColor: '#ccc', borderWidth: 1, labelMargin: 10 },
-			       yaxis: { min: 0, max: 15 }
-			   });
-
-        var previousPoint = null;
-        jQuery("#chartplace2").bind("plothover", function (event, pos, item) {
-            jQuery("#x").text(pos.x.toFixed(2));
-            jQuery("#y").text(pos.y.toFixed(2));
-
-            if (item) {
-                if (previousPoint != item.dataIndex) {
-                    previousPoint = item.dataIndex;
-
-                    jQuery("#tooltip").remove();
-                    var x = item.datapoint[0].toFixed(2),
-					y = item.datapoint[1].toFixed(2);
-
-                    showTooltip(item.pageX, item.pageY,
-									item.series.label + " of " + x + " = " + y);
-                }
-
-            } else {
-                jQuery("#tooltip").remove();
-                previousPoint = null;
-            }
-
-        });
-
-        jQuery("#chartplace2").bind("plotclick", function (event, pos, item) {
-            if (item) {
-                jQuery("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ".");
-                plot.highlight(item.series, item.datapoint);
-            }
-        });
-
-
-        // bar graph
-        var d2 = [];
-        for (var i = 0; i <= 10; i += 1)
-            d2.push([i, parseInt(Math.random() * 30)]);
-
-        var stack = 0, bars = true, lines = false, steps = false;
-        jQuery.plot(jQuery("#bargraph2"), [d2], {
-            series: {
-                stack: stack,
-                lines: { show: lines, fill: true, steps: steps },
-                bars: { show: bars, barWidth: 0.6 }
-            },
-            grid: { hoverable: true, clickable: true, borderColor: '#bbb', borderWidth: 1, labelMargin: 10 },
-            colors: ["#06c"]
-        });
-
-
-    });
-</script>

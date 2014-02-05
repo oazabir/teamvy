@@ -11,6 +11,7 @@ using System.Web.Security;
 
 namespace PMTool.Controllers
 {
+    [Authorize]
     public class ProjectsController :BaseController
     {
         private UnitOfWork unitOfWork = new UnitOfWork();

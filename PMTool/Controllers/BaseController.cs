@@ -35,8 +35,8 @@ namespace PMTool.Controllers
 
         public void LoadUnreadNotifications(User user)
         {
-            List<Notification> notificationList = unitOfWork.NotificationRepository.UserUnreadNotification(user);
-            ViewBag.Notifications = notificationList;
+            //List<Notification> notificationList = unitOfWork.NotificationRepository.UserUnreadNotification(user);
+            //ViewBag.Notifications = notificationList;
         }
 
         public void LoadAssignedProjects(User user)
