@@ -49,31 +49,73 @@
     <Reference Include="EntityFramework.SqlServerCompact">
       <HintPath>..\packages\EntityFramework.SqlServerCompact.6.0.2\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.Entity" />
+    <Reference Include="Microsoft.CSharp">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.Entity">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
     </Reference>
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Web.DynamicData" />
-    <Reference Include="System.Web.Entity" />
-    <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.Routing" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Web.Services" />
-    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Drawing">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DynamicData">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Entity">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.ApplicationServices">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Abstractions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Routing">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Configuration">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Transactions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.EnterpriseServices">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -82,11 +124,13 @@
       <HintPath>..\packages\Newtonsoft.Json.4.5.6\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -218,6 +262,10 @@
     <Compile Include="Migrations\201401280833139_tasktablechange.Designer.cs">
       <DependentUpon>201401280833139_tasktablechange.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201402041157019_taskstatuschange.cs" />
+    <Compile Include="Migrations\201402041157019_taskstatuschange.Designer.cs">
+      <DependentUpon>201402041157019_taskstatuschange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Notification.cs" />
@@ -251,6 +299,7 @@
     <Content Include="Content\themes\site\css\bootstrap-fileupload.min.css" />
     <Content Include="Content\themes\site\css\bootstrap-responsive.css" />
     <Content Include="Content\themes\site\css\bootstrap-responsive.min.css" />
+    <Content Include="Content\themes\site\css\bootstrap-tag-cloud.css" />
     <Content Include="Content\themes\site\css\bootstrap-timepicker.min.css" />
     <Content Include="Content\themes\site\css\bootstrap.css" />
     <Content Include="Content\themes\site\css\bootstrap.min.css" />
@@ -446,6 +495,7 @@
     <Content Include="Content\themes\site\img\username.png" />
     <Content Include="Content\themes\site\img\widgets.png" />
     <Content Include="Content\themes\site\js\bootstrap-fileupload.min.js" />
+    <Content Include="Content\themes\site\js\bootstrap-tag-cloud.js" />
     <Content Include="Content\themes\site\js\bootstrap-timepicker.min.js" />
     <Content Include="Content\themes\site\js\bootstrap.js" />
     <Content Include="Content\themes\site\js\bootstrap.min.js" />
@@ -835,7 +885,6 @@
     <Content Include="Content\themes\site\prettify\prettify.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Content\themes\site\js\.DS_Store" />
     <Content Include="Content\themes\site\img\colorbox\ie6\vssver2.scc" />
     <Content Include="Content\themes\site\img\colorbox\vssver2.scc" />
     <Content Include="Content\themes\site\img\colorpicker\Thumbs.db" />
@@ -933,6 +982,13 @@
     <Content Include="Content\themes\site\fonts\Roboto-ThinItalic-webfont.woff" />
     <Content Include="Views\Home\_Notification.cshtml" />
     <Content Include="Views\Home\_NotificationReadAll.cshtml" />
+    <Content Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
+    <Content Include="_bin_deployableAssemblies\System.Web.Helpers.dll" />
+    <Content Include="_bin_deployableAssemblies\System.Web.Razor.dll" />
+    <Content Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />
+    <Content Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
+    <None Include="Properties\PublishProfiles\Najib.pubxml" />
+    <None Include="Properties\PublishProfiles\PMTool.pubxml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -1033,7 +1089,11 @@
     <EmbeddedResource Include="Migrations\201401280833139_tasktablechange.resx">
       <DependentUpon>201401280833139_tasktablechange.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402041157019_taskstatuschange.resx">
+      <DependentUpon>201402041157019_taskstatuschange.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

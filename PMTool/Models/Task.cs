@@ -100,6 +100,6 @@ namespace PMTool.Models
         public PMTool.Models.EnumCollection.TaskStatus Status { get; set; }
 
 
-
+        public  string allStatus { get; set; }
     }
 }

@@ -169,3 +169,21 @@
         @Html.ValidationMessageFor(model => model.Status)
     </td>
 </tr>
+
+@*<script>
+    jQuery(document).ready(function () {
+        jQuery("#btn2").click(function () {
+            var id = jQuery("#items").children().length;
+            if (id > 1) {
+                id = id - 1;
+            }
+
+            if (jQuery("#itemText").val() != "") {
+                jQuery("#items").append("<span class='tag' " + " id=" + "'tags[" + id + "]'" + ">" + jQuery("#itemText").val() + "&nbsp;&nbsp;<a href='#' title='Removing tag'>x</a></span>");
+                jQuery("#allStatus").val(jQuery("#allStatus").val() + jQuery("#itemText").val() + ",");
+                jQuery("#itemText").val("");
+            }
+            return false;
+        });
+    });
+</script>*@
