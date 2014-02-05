@@ -40,13 +40,13 @@ namespace PMTool.Repository
             return query;
         }
 
-        public IQueryable<Task> ByProjectIncluding(long projectID,params Expression<Func<Task, object>>[] includeProperties)
+        public IQueryable<Task> ByProjectIncluding(long projectID, params Expression<Func<Task, object>>[] includeProperties)
         {
-            IQueryable<Task> query = context.Tasks.Where(t=>t.ProjectID==projectID && t.ParentTaskId==null);
+            IQueryable<Task> query = context.Tasks.Where(t => t.ProjectID == projectID && t.ParentTaskId == null);
             foreach (var includeProperty in includeProperties)
             {
                 query = query.Include(includeProperty);
-                
+
             }
             foreach (Task task in query)
             {
@@ -54,6 +54,27 @@ namespace PMTool.Repository
             }
             return query;
         }
+
+        public IQueryable<Task> ByProjectIncluding(long projectID,User user,params Expression<Func<Task, object>>[] includeProperties)
+        {
+            IQueryable<Task> query = context.Tasks.Where(t => t.ProjectID == projectID && t.ParentTaskId == null && t.Users.Any(U=>U.UserId==user.UserId));
+            //IQueryable<Task> query = context.Tasks.Where(t => t.ProjectID == projectID && t.ParentTaskId == null && t.Users == user);
+            //IQueryable<Task> query = context.Tasks.Where(t => t.ProjectID == projectID && t.ParentTaskId == null);
+
+            //IQueryable<Task> query = context.Tasks.Where(t => t.ProjectID == projectID && t.ParentTaskId == null);
+           
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+            foreach (Task task in query.ToList())
+            {
+                task.ChildTask = context.Tasks.Where(t => t.ParentTaskId == task.TaskID).ToList();
+            }
+            return query;
+        }
+
+        
 
         public IQueryable<Task> AllSubTaskByProjectIncluding(long projectID,long TaskID, params Expression<Func<Task, object>>[] includeProperties)
         {

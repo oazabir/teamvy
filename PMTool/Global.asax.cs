@@ -33,7 +33,7 @@ namespace PMTool
 
 
             //Create some defult user for testing
-            MembershipUser user = WebSecurity.FindUsersByEmail("demo@demo.com", 0, 10).FirstOrDefault();
+            MembershipUser user = WebSecurity.FindUsersByEmail("demo@gmail.com", 0, 10).FirstOrDefault();
             if (user == null)
             {
                 WebSecurity.Register("demo@gmail.com", "123456", "demo@gmail.com", true, "Demo", "Demo");

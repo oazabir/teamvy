@@ -85,7 +85,7 @@ namespace PMTool.Models
         public virtual List<Label> Labels { get; set; }
 
 
-        public virtual long UserID { get; set; }
+        //public virtual long UserID { get; set; }
 
         public List<string> SelectedAssignedUsers { get; set; }
 

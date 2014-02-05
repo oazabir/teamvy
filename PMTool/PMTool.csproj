@@ -234,37 +234,9 @@
     <Compile Include="Membership\CodeFirstRoleProvider.cs" />
     <Compile Include="Membership\Crypto.cs" />
     <Compile Include="Membership\WebSecurity.cs" />
-    <Compile Include="Migrations\201401211252489_firstmigration.cs" />
-    <Compile Include="Migrations\201401211252489_firstmigration.Designer.cs">
-      <DependentUpon>201401211252489_firstmigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201401220819299_taskstatusenum.cs" />
-    <Compile Include="Migrations\201401220819299_taskstatusenum.Designer.cs">
-      <DependentUpon>201401220819299_taskstatusenum.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201401221231002_notificationFatureCreated.cs" />
-    <Compile Include="Migrations\201401221231002_notificationFatureCreated.Designer.cs">
-      <DependentUpon>201401221231002_notificationFatureCreated.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201401221243048_notificationuseradded.cs" />
-    <Compile Include="Migrations\201401221243048_notificationuseradded.Designer.cs">
-      <DependentUpon>201401221243048_notificationuseradded.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201401221253058_notificationtaskporpertychange.cs" />
-    <Compile Include="Migrations\201401221253058_notificationtaskporpertychange.Designer.cs">
-      <DependentUpon>201401221253058_notificationtaskporpertychange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201401221308177_notificationtaskporpertychange2.cs" />
-    <Compile Include="Migrations\201401221308177_notificationtaskporpertychange2.Designer.cs">
-      <DependentUpon>201401221308177_notificationtaskporpertychange2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201401280833139_tasktablechange.cs" />
-    <Compile Include="Migrations\201401280833139_tasktablechange.Designer.cs">
-      <DependentUpon>201401280833139_tasktablechange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201402041157019_taskstatuschange.cs" />
-    <Compile Include="Migrations\201402041157019_taskstatuschange.Designer.cs">
-      <DependentUpon>201402041157019_taskstatuschange.cs</DependentUpon>
+    <Compile Include="Migrations\201402051057368_testmig.cs" />
+    <Compile Include="Migrations\201402051057368_testmig.Designer.cs">
+      <DependentUpon>201402051057368_testmig.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
@@ -1068,32 +1040,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201401211252489_firstmigration.resx">
-      <DependentUpon>201401211252489_firstmigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201401220819299_taskstatusenum.resx">
-      <DependentUpon>201401220819299_taskstatusenum.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201401221231002_notificationFatureCreated.resx">
-      <DependentUpon>201401221231002_notificationFatureCreated.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201401221243048_notificationuseradded.resx">
-      <DependentUpon>201401221243048_notificationuseradded.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201401221253058_notificationtaskporpertychange.resx">
-      <DependentUpon>201401221253058_notificationtaskporpertychange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201401221308177_notificationtaskporpertychange2.resx">
-      <DependentUpon>201401221308177_notificationtaskporpertychange2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201401280833139_tasktablechange.resx">
-      <DependentUpon>201401280833139_tasktablechange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402041157019_taskstatuschange.resx">
-      <DependentUpon>201402041157019_taskstatuschange.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201402051057368_testmig.resx">
+      <DependentUpon>201402051057368_testmig.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
