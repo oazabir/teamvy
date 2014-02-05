@@ -7,13 +7,13 @@ namespace PMTool.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.0.2-21211")]
-    public sealed partial class tasktablechange : IMigrationMetadata
+    public sealed partial class testmig : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(tasktablechange));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(testmig));
         
         string IMigrationMetadata.Id
         {
-            get { return "201401280833139_tasktablechange"; }
+            get { return "201402051057368_testmig"; }
         }
         
         string IMigrationMetadata.Source

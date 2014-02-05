@@ -30,18 +30,22 @@ namespace PMTool
 
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<PMToolContext, PMTool.Migrations.Configuration>());
             //Database.SetInitializer(new CreateDatabaseIfNotExists<PMToolContext>());
-            MembershipUser user = WebSecurity.FindUsersByEmail("demo@demo.com", 0, 10).FirstOrDefault();
+
+
+            //Create some defult user for testing
+            MembershipUser user = WebSecurity.FindUsersByEmail("demo@gmail.com", 0, 10).FirstOrDefault();
             if (user == null)
             {
-            
-
-            WebSecurity.Register("Demo", "123456", "demo@demo.com", true, "Demo", "Demo");
-            Roles.CreateRole("Admin");
-            Roles.AddUserToRole("Demo", "Admin");
+                WebSecurity.Register("demo@gmail.com", "123456", "demo@gmail.com", true, "Demo", "Demo");
+                Roles.CreateRole("Admin");
+                Roles.AddUserToRole("demo@gmail.com", "Admin");
             }
-            WebSecurity.Register("Najib", "123456", "najib@demo.com", true, "najib", "hasan");
+            WebSecurity.Register("najib@gmail.com", "123456", "najib@gmail.com", true, "najib", "hasan");
             //Roles.CreateRole("Admin");
-            Roles.AddUserToRole("Demo", "Admin");
+            Roles.AddUserToRole("najib@gmail.com", "Admin");
+            WebSecurity.Register("mahedee.hasan@gmail.com", "123456", "mahedee.hasan@gmail.com", true, "Mahedee", "Hasan");
+            //Roles.CreateRole("Admin");
+            Roles.AddUserToRole("mahedee.hasan@gmail.com", "Admin");
         }
     }
 }

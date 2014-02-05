@@ -3,7 +3,7 @@ namespace PMTool.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class firstmigration : DbMigration
+    public partial class testmig : DbMigration
     {
         public override void Up()
         {
@@ -67,7 +67,6 @@ namespace PMTool.Migrations
                         EndDate = c.DateTime(nullable: false),
                         TaskHour = c.Decimal(nullable: false, precision: 18, scale: 2),
                         PriorityID = c.Int(nullable: false),
-                        IsLocked = c.Boolean(nullable: false),
                         IsActive = c.Boolean(nullable: false),
                         ParentTaskId = c.Long(),
                         Attachments = c.String(),
@@ -76,7 +75,8 @@ namespace PMTool.Migrations
                         CreateDate = c.DateTime(nullable: false),
                         ModificationDate = c.DateTime(nullable: false),
                         ActionDate = c.DateTime(nullable: false),
-                        UserID = c.Long(nullable: false),
+                        Status = c.Int(nullable: false),
+                        allStatus = c.String(),
                         ParentTask_TaskID = c.Long(),
                         CreatedByUser_UserId = c.Guid(),
                         ModifiedByUser_UserId = c.Guid(),
@@ -135,6 +135,26 @@ namespace PMTool.Migrations
                         Description = c.String(),
                     })
                 .PrimaryKey(t => t.RoleId);
+            
+            CreateTable(
+                "dbo.Notifications",
+                c => new
+                    {
+                        NotificationID = c.Long(nullable: false, identity: true),
+                        Title = c.String(nullable: false),
+                        Description = c.String(nullable: false),
+                        IsNoticed = c.Boolean(nullable: false),
+                        TaskID = c.Long(),
+                        ProjectID = c.Long(),
+                        UserID = c.Guid(nullable: false),
+                    })
+                .PrimaryKey(t => t.NotificationID)
+                .ForeignKey("dbo.Projects", t => t.ProjectID)
+                .ForeignKey("dbo.Tasks", t => t.TaskID)
+                .ForeignKey("dbo.Users", t => t.UserID)
+                .Index(t => t.ProjectID)
+                .Index(t => t.TaskID)
+                .Index(t => t.UserID);
             
             CreateTable(
                 "dbo.UserProfile",
@@ -215,6 +235,9 @@ namespace PMTool.Migrations
         
         public override void Down()
         {
+            DropForeignKey("dbo.Notifications", "UserID", "dbo.Users");
+            DropForeignKey("dbo.Notifications", "TaskID", "dbo.Tasks");
+            DropForeignKey("dbo.Notifications", "ProjectID", "dbo.Projects");
             DropForeignKey("dbo.Labels", "ModifiedByUser_UserId", "dbo.Users");
             DropForeignKey("dbo.Labels", "CreatedByUser_UserId", "dbo.Users");
             DropForeignKey("dbo.RoleUsers", "User_UserId", "dbo.Users");
@@ -234,6 +257,9 @@ namespace PMTool.Migrations
             DropForeignKey("dbo.TaskFollowers", "UserId", "dbo.Tasks");
             DropForeignKey("dbo.Tasks", "CreatedByUser_UserId", "dbo.Users");
             DropForeignKey("dbo.Tasks", "ParentTask_TaskID", "dbo.Tasks");
+            DropIndex("dbo.Notifications", new[] { "UserID" });
+            DropIndex("dbo.Notifications", new[] { "TaskID" });
+            DropIndex("dbo.Notifications", new[] { "ProjectID" });
             DropIndex("dbo.Labels", new[] { "ModifiedByUser_UserId" });
             DropIndex("dbo.Labels", new[] { "CreatedByUser_UserId" });
             DropIndex("dbo.RoleUsers", new[] { "User_UserId" });
@@ -259,6 +285,7 @@ namespace PMTool.Migrations
             DropTable("dbo.TaskLabels");
             DropTable("dbo.TaskFollowers");
             DropTable("dbo.UserProfile");
+            DropTable("dbo.Notifications");
             DropTable("dbo.Roles");
             DropTable("dbo.Projects");
             DropTable("dbo.Priorities");
