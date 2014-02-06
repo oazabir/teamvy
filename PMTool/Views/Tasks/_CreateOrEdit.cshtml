@@ -155,7 +155,7 @@
 </tr>
 
 
-<tr>
+@*<tr>
     <td>Status
     </td>
     <td>
@@ -168,9 +168,32 @@
         </select>
         @Html.ValidationMessageFor(model => model.Status)
     </td>
-</tr>
+</tr>*@
+<tr>
+    <td>Status
+    </td>
+    <td>
+        <input type="text" id="itemText" value="" placeholder="Add tags" />
+        <button id="btn2">add  </button>
+        <div id="items" class="tagsinput">
+            @{
+                if(Model.allStatus!=null)
+                {
+                    List<string> statuses = Model.allStatus.Split(',').ToList();
+                    foreach (string status in statuses)
+                    {
+                        <span id="dfsdf" class="tag">@status  
+                        <a title="Removing tag" onclick="removeit(@status)">x</a>
+                        </span>
+                    }
+                }
+            }
 
-@*<script>
+        </div>
+         @Html.HiddenFor(model => model.allStatus, new{@id="hdnStatus" })
+    </td>
+</tr>
+<script>
     jQuery(document).ready(function () {
         jQuery("#btn2").click(function () {
             var id = jQuery("#items").children().length;
@@ -179,11 +202,35 @@
             }
 
             if (jQuery("#itemText").val() != "") {
-                jQuery("#items").append("<span class='tag' " + " id=" + "'tags[" + id + "]'" + ">" + jQuery("#itemText").val() + "&nbsp;&nbsp;<a href='#' title='Removing tag'>x</a></span>");
-                jQuery("#allStatus").val(jQuery("#allStatus").val() + jQuery("#itemText").val() + ",");
+                jQuery("#items").append("<span class='tag' " + " id=" + "'" + jQuery("#itemText").val() + "'" + ">" + jQuery("#itemText").val() + "&nbsp;&nbsp;<a    onclick='removeit(" + jQuery("#itemText").val() + ")' title='Removing tag'>x</a></span>");
+                
+                //jQuery("#allStatus").val(jQuery("#allStatus").val() + jQuery("#itemText").val() + ",");
+                if (jQuery("#hdnStatus").val() != "") {
+                    jQuery("#hdnStatus").val(jQuery("#hdnStatus").val() + "," + jQuery("#itemText").val());
+                }
+                else {
+                    jQuery("#hdnStatus").val(jQuery("#itemText").val());
+                }
+
                 jQuery("#itemText").val("");
             }
             return false;
         });
     });
-</script>*@
+
+    function removeit(id) {
+        var val = jQuery("#hdnStatus").val();
+        var newVal = "";
+        var replaceStr = "";
+        if (val.indexOf(id.id + ",") == -1) {
+            replaceStr = "," + id.id;
+            newVal = val.replace(replaceStr, "");
+        }
+        else {
+            replaceStr = id.id + ","
+            newVal = val.replace(replaceStr, "");
+        }
+        id.remove();
+        jQuery("#hdnStatus").val(newVal);
+    }
+</script>
