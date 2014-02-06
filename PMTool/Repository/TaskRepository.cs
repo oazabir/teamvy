@@ -58,11 +58,7 @@ namespace PMTool.Repository
         public IQueryable<Task> ByProjectIncluding(long projectID,User user,params Expression<Func<Task, object>>[] includeProperties)
         {
             IQueryable<Task> query = context.Tasks.Where(t => t.ProjectID == projectID && t.ParentTaskId == null && t.Users.Any(U=>U.UserId==user.UserId));
-            //IQueryable<Task> query = context.Tasks.Where(t => t.ProjectID == projectID && t.ParentTaskId == null && t.Users == user);
-            //IQueryable<Task> query = context.Tasks.Where(t => t.ProjectID == projectID && t.ParentTaskId == null);
-
-            //IQueryable<Task> query = context.Tasks.Where(t => t.ProjectID == projectID && t.ParentTaskId == null);
-           
+            
             foreach (var includeProperty in includeProperties)
             {
                 query = query.Include(includeProperty);

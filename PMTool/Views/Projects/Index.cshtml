@@ -52,7 +52,7 @@
                     @Html.DisplayTextFor(_ => item.IsActive).ToString()
                 </td>
                 <td>
-                    @Html.ActionLink("Add Tasks", "Create","Tasks", new { ProjectID = item.ProjectID }, new { @title = "Show Tasks" })
+                    @Html.ActionLink("Add Tasks", "Create","Tasks", new { ProjectID = item.ProjectID }, new { @title = "Create Tasks" })
                 </td>
                 <td>
                     @Html.ActionLink("Show Tasks", "ProjectTasks","Tasks", new { ProjectID = item.ProjectID }, new { @title = "Show Tasks" })

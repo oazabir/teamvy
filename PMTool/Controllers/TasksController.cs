@@ -23,30 +23,21 @@ namespace PMTool.Controllers
             return View(unitOfWork.TaskRepository.AllIncluding(task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList());
         }
 
-        //
-        // GET: /Tasks/ProjectTasks?ProjectID=5
+        
+        //GET: /Tasks/ProjectTasks?ProjectID=5
         public ViewResult ProjectTasks(long projectID)
         { 
+            List<Task> taskList = new List<Task>();
             User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
-            List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID,user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-            //List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, user.UserId, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-            ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectID);
+            Project project = unitOfWork.ProjectRepository.Find(projectID);
+            //If this project is created by the current user. Then he can see all task.
+            if (project.CreatedBy == user.UserId) 
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            else
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID,user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            ViewBag.CurrentProject = project;
             return View(taskList);
         }
-
-        //
-        // GET: /Tasks/ProjectTasks?ProjectID=5
-        //public ViewResult ProjectTasks(long projectID, bool isCreator)
-        //{
-        //    //if (!isCreator) return;
-        //    List<Task> taskList = new List<Task>();
-        //    //User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
-        //    if(isCreator)
-        //        taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-        //    //List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, user.UserId, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-        //    ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectID);
-        //    return View(taskList);
-        //}
 
         //
         // GET: /Tasks/SubTaskList?taskID=5
