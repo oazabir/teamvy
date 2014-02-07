@@ -95,7 +95,6 @@ namespace PMTool.Models
         public List<string> SelectedLabels { get; set; }
 
 
-        [Required]
         [Display(Name = "Status")]
         public string Status { get; set; }
 
