@@ -19,8 +19,8 @@
 
 <p>
     @Html.ActionLink("Create New", "Create", new { @ProjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID }, new { @title = "Add Task", @class = "btn btn-primary" })
-@*||
-    @Html.ActionLink("View Kanban", "Kanban", new { @ProjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID }, new { @title = "View Kanban", @class = "btn btn-inverse" })*@
+||
+    @Html.ActionLink("View Kanban", "Kanban", new { @ProjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID }, new { @title = "View Kanban", @class = "btn btn-inverse" })
 </p>
 <table class="table table-bordered" id="dyntable">
     <thead>
