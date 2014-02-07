@@ -97,7 +97,7 @@ namespace PMTool.Models
 
         [Required]
         [Display(Name = "Status")]
-        public PMTool.Models.EnumCollection.TaskStatus Status { get; set; }
+        public string Status { get; set; }
 
 
         public  string allStatus { get; set; }

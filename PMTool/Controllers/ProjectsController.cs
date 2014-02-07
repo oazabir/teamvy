@@ -60,7 +60,9 @@ namespace PMTool.Controllers
         {
             List<SelectListItem> allUsers = GetAllUser();
             ViewBag.PossibleUsers = allUsers;
-            return View();
+            Project project = new Project();
+            project.allStatus = "";
+            return View(project);
         }
 
         /// <summary>

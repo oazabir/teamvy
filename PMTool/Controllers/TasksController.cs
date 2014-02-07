@@ -83,23 +83,40 @@ namespace PMTool.Controllers
         private void GetAllStatus(Task task)
         {
             List<SelectListItem> statusList = new List<SelectListItem>();
-            foreach (var item in Enum.GetValues(typeof(PMTool.Models.EnumCollection.TaskStatus)))
+            //foreach (var item in Enum.GetValues(typeof(PMTool.Models.EnumCollection.TaskStatus)))
+            //{
+            //    SelectListItem listitem = new SelectListItem();
+
+            //    listitem.Value = Convert.ToString((int)item);
+            //    listitem.Text = Enum.GetName(typeof(PMTool.Models.EnumCollection.TaskStatus), item).Replace("_", " ");
+            //    if ((int)item == (int)task.Status)
+            //    {
+            //        listitem.Selected = true;
+            //    }
+            //    else
+            //    {
+            //        listitem.Selected = false;
+            //    }
+            //    statusList.Add(listitem);
+            //}
+            foreach (string item in task.Project.allStatus.Split(',').ToList())
             {
-                SelectListItem listitem = new SelectListItem();
-
-                listitem.Value = Convert.ToString((int)item);
-                listitem.Text = Enum.GetName(typeof(PMTool.Models.EnumCollection.TaskStatus), item).Replace("_", " ");
-                if ((int)item == (int)task.Status)
+                if (!string.IsNullOrEmpty(item))
                 {
-                    listitem.Selected = true;
+                    SelectListItem listitem = new SelectListItem();
+                    listitem.Value = item;
+                    listitem.Text = item;
+                    if (item == task.Status)
+                    {
+                        listitem.Selected = true;
+                    }
+                    else
+                    {
+                        listitem.Selected = false;
+                    }
+                    statusList.Add(listitem);
                 }
-                else
-                {
-                    listitem.Selected = false;
-                }
-                statusList.Add(listitem);
             }
-
             ViewBag.PossibleTaskStatus = statusList;
         }
 
@@ -392,27 +409,19 @@ namespace PMTool.Controllers
             task.ActionDate = DateTime.Now;
             if (ModelState.IsValid)
             {
-                if (ValidTaskStatus(task))
-                {
-                    AddAssignUser(task);
-                    AddFollower(task);
-                    AddLabel(task);
+                AddAssignUser(task);
+                AddFollower(task);
+                AddLabel(task);
 
-                    bool isStatusChanged = unitOfWork.TaskRepository.InsertOrUpdate(task);
-                    unitOfWork.Save();
-                    if (task.ParentTaskId != null)
-                    {
-                        SaveNotification(task, false, true, isStatusChanged);
-                    }
-                    else
-                    {
-                        SaveNotification(task, false, false, isStatusChanged);
-                    }
-                    //return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
+                bool isStatusChanged = unitOfWork.TaskRepository.InsertOrUpdate(task);
+                unitOfWork.Save();
+                if (task.ParentTaskId != null)
+                {
+                    SaveNotification(task, false, true, isStatusChanged);
                 }
                 else
                 {
-                    TempData["Message"] = "One or more subtask is not closed yet!!!";
+                    SaveNotification(task, false, false, isStatusChanged);
                 }
             }
 
@@ -481,28 +490,21 @@ namespace PMTool.Controllers
             task.ActionDate = DateTime.Now;
             if (ModelState.IsValid)
             {
-                if (ValidTaskStatus(task))
-                {
-                    AddAssignUser(task);
-                    AddFollower(task);
-                    AddLabel(task);
+                AddAssignUser(task);
+                AddFollower(task);
+                AddLabel(task);
 
-                  bool isStatusChanged=  unitOfWork.TaskRepository.InsertOrUpdate(task);
-                    unitOfWork.Save();
-                    if (task.ParentTaskId != null)
-                    {
-                        SaveNotification(task, false, false, isStatusChanged);
-                    }
-                    else
-                    {
-                        SaveNotification(task, false, true, isStatusChanged);
-                    }
-                    return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
+                bool isStatusChanged=  unitOfWork.TaskRepository.InsertOrUpdate(task);
+                unitOfWork.Save();
+                if (task.ParentTaskId != null)
+                {
+                    SaveNotification(task, false, false, isStatusChanged);
                 }
                 else
                 {
-                    TempData["Message"] = "One or more subtask is not closed yet!!!";
+                    SaveNotification(task, false, true, isStatusChanged);
                 }
+                return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
             }
 
             List<SelectListItem> allUsers = GetAllUser(task.ProjectID);
@@ -537,27 +539,15 @@ namespace PMTool.Controllers
         }
 
 
-        private bool ValidTaskStatus(Task task)
-        {
-            bool isvalid = true;
-            if (task.Status == PMTool.Models.EnumCollection.TaskStatus.Closed)
-            {
-                List<Task> subTaskList = unitOfWork.TaskRepository.AllSubTaskByProjectIncluding(task.ProjectID, task.TaskID, t => t.Project).Include(t => t.Priority).Include(t => t.ChildTask).Include(t => t.Users).Include(t => t.Followers).Include(t => t.Labels).ToList();
-                if (subTaskList.Any(st => st.Status != PMTool.Models.EnumCollection.TaskStatus.Closed))
-                {
-                    isvalid = false;
-                }
-            }
-            return isvalid;
-        }
 
         public ActionResult Kanban(long ProjectID)
         {
             List<Task> tasklist = unitOfWork.TaskRepository.ByProjectIncluding(ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-            ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(ProjectID);
+            Project  project=unitOfWork.ProjectRepository.Find(ProjectID);
+            ViewBag.CurrentProject = project;
 
 
-            List<PMTool.Models.EnumCollection.TaskStatus> statusList = Enum.GetValues(typeof(PMTool.Models.EnumCollection.TaskStatus)).Cast<PMTool.Models.EnumCollection.TaskStatus>().ToList();
+            List<string> statusList = project.allStatus.Split(',').ToList();
             ViewBag.AllStatus = statusList;
             return View(tasklist);
         }
@@ -571,9 +561,9 @@ namespace PMTool.Controllers
                 try
                 {
                     Task task = unitOfWork.TaskRepository.Find(Convert.ToInt64(taskid));
-                    if ((int)task.Status != Convert.ToInt32(statusid))
+                    if (task.Status != statusid)
                     {
-                        task.Status = (PMTool.Models.EnumCollection.TaskStatus)Convert.ToInt32(statusid);
+                        task.Status = statusid;
                         unitOfWork.TaskRepository.InsertOrUpdate(task);
                         unitOfWork.Save();
                         ststus = "Task- " + task.Title + " is moved to " + task.Status.ToString().Replace("_", " ") + " successfully!!!";

@@ -77,14 +77,14 @@
 </script>
 <div style="background-color: #f7de55">
 
-    @foreach (var status in (List<PMTool.Models.EnumCollection.TaskStatus>)ViewBag.AllStatus)
+    @foreach (string status in (List<string>)ViewBag.AllStatus)
     {
-        <fieldset class='column' id='@Convert.ToInt32(status)'>
+        <fieldset class='column' id='@status'>
 
             <legend class="widgettitle ctitle">@Convert.ToString(status).Replace("_", " ")</legend>
             @foreach (var item in Model)
             {
-                if (Convert.ToInt32(status) == Convert.ToInt32(item.Status))
+                if (status == item.Status)
                 {
                 <div class="dragbox" id="@item.TaskID">
                     <h2>@item.Title</h2>

@@ -77,3 +77,87 @@
             new { @class = "chosen", multiple = "multiple", style = "width: 350px;" })
     </td>
 </tr>
+<tr>
+    <td>Status
+    </td>
+    <td>
+        <input type="text" id="itemText" value="" placeholder="Add Status" />
+        <button id="btn2" class="btn">+  </button>
+        <div id="items" class="tagsinput">
+            @{
+                    if (Model.allStatus != null)
+                    {
+                        List<string> statuses = Model.allStatus.Split(',').ToList();
+                        foreach (string status in statuses)
+                        {
+                            if (!string.IsNullOrEmpty(status.Trim()))
+                            {
+                                    <span id="@status" class="tag">@status
+                                        <a title="Removing Status" onclick="removeitbyID('@status')">x</a>
+                                    </span>
+                            }
+                        }
+                    }
+                }
+        </div>
+         @Html.HiddenFor(model => model.allStatus, new{@id="hdnStatus" })
+    </td>
+</tr>
+<script>
+    jQuery(document).ready(function () {
+        jQuery("#btn2").click(function () {
+            var id = jQuery("#items").children().length;
+            id = id + 1;
+            if (jQuery("#itemText").val() != "") {
+                jQuery("#items").append("<span class='tag' " + " id=" + "'" + jQuery("#itemText").val() + "'" + ">" + jQuery("#itemText").val() + "&nbsp;&nbsp;<a    onclick='removeit(" + jQuery("#itemText").val() + ")' title='Removing tag'>x</a></span>");
+
+                //jQuery("#allStatus").val(jQuery("#allStatus").val() + jQuery("#itemText").val() + ",");
+                if (jQuery("#hdnStatus").val() != "") {
+                    jQuery("#hdnStatus").val(jQuery("#hdnStatus").val() + "," + jQuery("#itemText").val());
+                }
+                else {
+                    jQuery("#hdnStatus").val(jQuery("#itemText").val());
+                }
+
+                jQuery("#itemText").val("");
+            }
+            return false;
+        });
+    });
+
+    function removeit(id) {
+        var val = jQuery("#hdnStatus").val();
+        var newVal = "";
+        var replaceStr = "";
+        if (val.indexOf(id.id + ",") == -1) {
+            replaceStr = "," + id.id;
+            newVal = val.replace(replaceStr, "");
+        }
+        else {
+            replaceStr = id.id + ","
+            newVal = val.replace(replaceStr, "");
+        }
+        id.remove();
+        jQuery("#hdnStatus").val(newVal);
+    }
+</script>
+
+
+<script type="text/javascript">
+
+    function removeitbyID(id) {
+        var val = jQuery("#hdnStatus").val();
+        var newVal = "";
+        var replaceStr = "";
+        if (val.indexOf(id + ",") == -1) {
+            replaceStr = "," + id;
+            newVal = val.replace(replaceStr, "");
+        }
+        else {
+            replaceStr = id + ","
+            newVal = val.replace(replaceStr, "");
+        }
+        jQuery("#" + id).hide();
+        jQuery("#hdnStatus").val(newVal);
+    }
+</script>
