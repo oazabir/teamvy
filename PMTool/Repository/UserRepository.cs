@@ -21,6 +21,11 @@ namespace PMTool.Repository
             return context.Users.Where(Usr => Usr.Email == email).FirstOrDefault();
         }
 
+        public User GetUserByUserName(string userName)
+        {
+            return context.Users.Where(Usr => Usr.Username == userName).FirstOrDefault();
+        }
+
         public User GetUserByUserID(Guid userID)
         {
             return context.Users.Where(Usr => Usr.UserId == userID).FirstOrDefault();

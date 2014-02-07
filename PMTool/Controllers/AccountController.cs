@@ -385,7 +385,7 @@ namespace PMTool.Controllers
         public ActionResult EditProfile()
         {
             UnitOfWork unitofWork = new UnitOfWork();
-            User user =unitofWork.UserRepository.GetUserByEmail(User.Identity.Name);
+            User user =unitofWork.UserRepository.GetUserByUserName(User.Identity.Name);
             return View(user);
         }
 
@@ -402,6 +402,27 @@ namespace PMTool.Controllers
             unitofWork.Save();
             return View();
         }
+
+        [Authorize]
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        //[Authorize]
+        //[HttpPost]
+        //public ActionResult ChangePassword(RegisterModel registerModel)
+        //{
+        //       if (ModelState.IsValid)
+        //    {
+        //    UnitOfWork unitofWork = new UnitOfWork();
+        //    User user = unitofWork.UserRepository.GetUserByUserName(User.Identity.Name);
+
+        //    //WebSecurity.User.Identity.Name
+        //    MembershipUser membershipUser = Membership.GetUser(user.Username);
+        //    membershipUser.ChangePassword(membershipUser.GetPassword(), registerModel.Password); //oldpassword, new password
+        //    return View();
+        //}
 
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)
