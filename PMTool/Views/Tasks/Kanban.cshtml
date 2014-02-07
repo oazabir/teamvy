@@ -76,12 +76,12 @@
     }
 </script>
 <div style="background-color: #f7de55">
-
+    
     @foreach (string status in (List<string>)ViewBag.AllStatus)
     {
         <fieldset class='column' id='@status'>
 
-            <legend class="widgettitle ctitle">@Convert.ToString(status).Replace("_", " ")</legend>
+            <legend class="widgettitle ctitle">@Convert.ToString(status)</legend>
             @foreach (var item in Model)
             {
                 if (status == item.Status)
