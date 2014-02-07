@@ -174,8 +174,9 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">Hi, @ViewBag.UserName! <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="@Url.Action("EditProfile", "Account")"><span class="icon-edit"></span>Edit Profile</a></li>
+                            <li><a href="@Url.Action("Manage", "Account")"><span class="icon-eye-open"></span>Change Password</a></li>
                             <li><a href=""><span class="icon-wrench"></span>Account Settings</a></li>
-                            <li><a href=""><span class="icon-eye-open"></span>Privacy Settings</a></li>
+
                             <li class="divider"></li>
                             <li>
                                 <a href="@Url.Action("LogOff", "Account")">
@@ -196,7 +197,7 @@
                 <ul class="breadcrumb">
                     <li>
                         @*<a href="dashboard.html">Home</a> *@
-                        <a href ="@Url.Action("Index","Home")">Home</a>
+                        <a href ="@Url.Action("Index", "Home")">Home</a>
                         
                         <span class="divider">/</span></li>
                     <li class="active">Dashboard</li>

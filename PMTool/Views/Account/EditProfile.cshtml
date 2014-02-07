@@ -43,6 +43,29 @@
                     @Html.ValidationMessageFor(model => model.LastName)
                 </td>
             </tr>
+
+     @*       <tr>
+                <td>
+                    @Html.LabelFor(model => model.Password)
+                </td>
+                <td>
+                    @Html.PasswordFor(model => model.Password)
+                    @Html.ValidationMessageFor(model => model.Password)
+                </td>
+            </tr>*@
+
+@*             <tr>
+                <td>
+              
+                   <label> Confirm Password </label>
+                </td>
+                <td>
+           
+                    <input type="password" name="ConfirmPassword" id="ConfirmPassword">
+                    <span data-valmsg-replace="true" data-valmsg-for="ConfirmPassword" class="field-validation-valid"></span>
+                </td>
+            </tr>*@
+
             <tr>
                 <td>
                 </td>
@@ -52,4 +75,28 @@
             </tr>
         </tbody>
     </table>
+    
+    @*
+    
+        <script type="text/javascript">
+        jQuery.noConflict();
+
+        jQuery(document).ready(function () {
+
+    
+            jQuery('input[type="submit"]').click(function () {
+                //alert('Work');
+                if (!jQuery.browser.msie) {
+                    if (jQuery('#Password').val() == '' || jQuery('#ConfirmPassword').val() == '') {
+            
+                        if (jQuery('#Password').val() == '') jQuery('#Password').addClass('error'); else jQuery('#Password').removeClass('error');
+                        if (jQuery('#ConfirmPassword').val() == '') jQuery('#ConfirmPassword').addClass('error'); else jQuery('#ConfirmPassword').removeClass('error');
+                        if (jQuery('#ConfirmPassword').val() != ('#ConfirmPassword').val()) jQuery('#ConfirmPassword').addClass('error'); else jQuery('#ConfirmPassword').removeClass('error');
+                                            return false;
+                    }
+                }
+            })
+            });
+    </script>*@
+    
 }
