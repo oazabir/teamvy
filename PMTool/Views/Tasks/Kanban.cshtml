@@ -77,7 +77,7 @@
 </script>
 <div style="background-color: #f7de55">
     
-    @foreach (string status in (List<string>)ViewBag.AllStatus)
+    @*@foreach (string status in (List<string>)ViewBag.AllStatus)
     {
         <fieldset class='column' id='@status'>
 
@@ -96,7 +96,44 @@
                 }
             }
         </fieldset>
-    }
+    }*@
+
+    @{
+        List<string> statusList = (List<string>)ViewBag.AllStatus;
+        List<PMTool.Models.Task> taskList = (List<PMTool.Models.Task>)Model;
+        
+        <fieldset class='column' id=' '>
+            <legend class="widgettitle ctitle">UnAssigned</legend>
+            @foreach (PMTool.Models.Task item in taskList.Where(t => t.Status == "" || t.Status==null))
+            {
+                <div class="dragbox" id="@item.TaskID">
+                        <h2>@item.Title</h2>
+                        <div class="dragbox-content" style="display: none;">
+                            @item.Description
+                            <a id="showdata" onclick="return ShowForm(@item.TaskID)">Edit </a>
+                        </div>
+                    </div>
+            }
+        </fieldset>
+        
+        foreach (string status in statusList)
+        {
+            <fieldset class='column' id='@status'>
+                <legend class="widgettitle ctitle">@Convert.ToString(status)</legend>
+                @foreach (PMTool.Models.Task item in taskList.Where(t => t.Status == status))
+                {
+                    <div class="dragbox" id="@item.TaskID">
+                        <h2>@item.Title</h2>
+                        <div class="dragbox-content" style="display: none;">
+                            @item.Description
+                            <a id="showdata" onclick="return ShowForm(@item.TaskID)">Edit </a>
+                        </div>
+                    </div>
+                }
+            </fieldset>
+        }
+        
+        }
 </div>
 <hr style="clear: both;" />
 <div id='Modalpopup' class='modal hide fade in' data-url='@Url.Action("EditFromKanban", "Tasks")'>

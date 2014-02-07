@@ -99,22 +99,26 @@ namespace PMTool.Controllers
             //    }
             //    statusList.Add(listitem);
             //}
-            foreach (string item in task.Project.allStatus.Split(',').ToList())
+            task.Project = unitOfWork.ProjectRepository.Find(task.ProjectID);
+            if (!string.IsNullOrEmpty(task.Project.allStatus))
             {
-                if (!string.IsNullOrEmpty(item))
+                foreach (string item in task.Project.allStatus.Split(',').ToList())
                 {
-                    SelectListItem listitem = new SelectListItem();
-                    listitem.Value = item;
-                    listitem.Text = item;
-                    if (item == task.Status)
+                    if (!string.IsNullOrEmpty(item))
                     {
-                        listitem.Selected = true;
+                        SelectListItem listitem = new SelectListItem();
+                        listitem.Value = item;
+                        listitem.Text = item;
+                        if (item == task.Status)
+                        {
+                            listitem.Selected = true;
+                        }
+                        else
+                        {
+                            listitem.Selected = false;
+                        }
+                        statusList.Add(listitem);
                     }
-                    else
-                    {
-                        listitem.Selected = false;
-                    }
-                    statusList.Add(listitem);
                 }
             }
             ViewBag.PossibleTaskStatus = statusList;
@@ -565,10 +569,20 @@ namespace PMTool.Controllers
                     Task task = unitOfWork.TaskRepository.Find(Convert.ToInt64(taskid));
                     if (task.Status != statusid)
                     {
-                        task.Status = statusid;
+                        string stat = "";
+                        if (statusid.Trim() == "")
+                        {
+                            stat = "Unassigned"; 
+                            task.Status = string.Empty;
+                        }
+                        else
+                        {
+                            stat = statusid;
+                            task.Status = statusid;
+                        }
                         unitOfWork.TaskRepository.InsertOrUpdate(task);
                         unitOfWork.Save();
-                        ststus = "Task- " + task.Title + " is moved to " + task.Status.ToString().Replace("_", " ") + " successfully!!!";
+                        ststus = "Task- " + task.Title + " is moved to " + stat + " successfully!!!";
                     }
                 }
                 catch

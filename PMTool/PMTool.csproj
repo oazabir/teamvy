@@ -242,6 +242,10 @@
     <Compile Include="Migrations\201402070658323_taskstatusproperty.Designer.cs">
       <DependentUpon>201402070658323_taskstatusproperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201402071001247_taskstatuspropchange.cs" />
+    <Compile Include="Migrations\201402071001247_taskstatuspropchange.Designer.cs">
+      <DependentUpon>201402071001247_taskstatuspropchange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Notification.cs" />
@@ -1158,6 +1162,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201402070658323_taskstatusproperty.resx">
       <DependentUpon>201402070658323_taskstatusproperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402071001247_taskstatuspropchange.resx">
+      <DependentUpon>201402071001247_taskstatuspropchange.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
