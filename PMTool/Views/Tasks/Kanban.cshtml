@@ -19,8 +19,18 @@
 <br />
 <br />
 
+<div>
+    @{
+    if (ViewBag.CurrentProject != null)
+    {
+        PMTool.Models.Project projetc = (PMTool.Models.Project)ViewBag.CurrentProject;
+        <a id="showdata" onclick="return ShowProjectForm(@projetc.ProjectID)" class="btn btn-primary">Change Column </a>
+    }
+}
+
+</div>
 <script type="text/javascript" >
-    jQuery(function () {
+    jQuery(document).ready(function () {
         jQuery('.dragbox')
         .each(function () {
             jQuery(this).hover(function () {
@@ -76,41 +86,19 @@
     }
 </script>
 <div style="background-color: #f7de55">
-    
-    @*@foreach (string status in (List<string>)ViewBag.AllStatus)
-    {
-        <fieldset class='column' id='@status'>
-
-            <legend class="widgettitle ctitle">@Convert.ToString(status)</legend>
-            @foreach (var item in Model)
-            {
-                if (status == item.Status)
-                {
-                <div class="dragbox" id="@item.TaskID">
-                    <h2>@item.Title</h2>
-                    <div class="dragbox-content" style="display: none;">
-                        @item.Description
-                        <a id="showdata" onclick="return ShowForm(@item.TaskID)">Edit </a>
-                    </div>
-                </div>
-                }
-            }
-        </fieldset>
-    }*@
-
     @{
         List<string> statusList = (List<string>)ViewBag.AllStatus;
         List<PMTool.Models.Task> taskList = (List<PMTool.Models.Task>)Model;
         
         <fieldset class='column' id=' '>
             <legend class="widgettitle ctitle">UnAssigned</legend>
-            @foreach (PMTool.Models.Task item in taskList.Where(t => t.Status == "" || t.Status==null))
+            @foreach (PMTool.Models.Task item in taskList.Where(t => t.Status == "" || t.Status == null))
             {
                 <div class="dragbox" id="@item.TaskID">
                         <h2>@item.Title</h2>
                         <div class="dragbox-content" style="display: none;">
                             @item.Description
-                            <a id="showdata" onclick="return ShowForm(@item.TaskID)">Edit </a>
+                            <a id="showdata" onclick="return ShowEditForm(@item.TaskID)">Edit </a>
                         </div>
                     </div>
             }
@@ -126,7 +114,7 @@
                         <h2>@item.Title</h2>
                         <div class="dragbox-content" style="display: none;">
                             @item.Description
-                            <a id="showdata" onclick="return ShowForm(@item.TaskID)">Edit </a>
+                            <a id="showdata" onclick="return ShowEditForm(@item.TaskID)">Edit </a>
                         </div>
                     </div>
                 }
@@ -140,9 +128,13 @@
     <div id='popupcontainer'>
     </div>
 </div>
+<div id='ModalpopupProject' class='modal hide fade in' data-url='@Url.Action("CreateStatus", "Projects")'>
+    <div id='popupcontainerProject'>
+    </div>
+</div>
 <script type="text/javascript">
 
-    function ShowForm(id) {
+    function ShowEditForm(id) {
         var url = jQuery('#Modalpopup').data('url')+"/"+id;
 
         jQuery.ajax({
@@ -151,6 +143,20 @@
             success: function (data) {
                 jQuery('#popupcontainer').html(data);
                 jQuery("#Modalpopup").modal('show');
+            }
+        });
+        return false;
+    }
+
+    function ShowProjectForm(id) {
+        var url = jQuery('#ModalpopupProject').data('url') + "/" + id;
+
+        jQuery.ajax({
+            url: url,
+            cache: false,
+            success: function (data) {
+                jQuery('#popupcontainerProject').html(data);
+                jQuery("#ModalpopupProject").modal('show');
             }
         });
         return false;

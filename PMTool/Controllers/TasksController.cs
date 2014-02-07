@@ -558,6 +558,20 @@ namespace PMTool.Controllers
             return View(tasklist);
         }
 
+        public ActionResult _Kanban(long ProjectID)
+        {
+            List<Task> tasklist = unitOfWork.TaskRepository.ByProjectIncluding(ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            Project project = unitOfWork.ProjectRepository.Find(ProjectID);
+            ViewBag.CurrentProject = project;
+            List<string> statusList = new List<string>();
+            if (!string.IsNullOrEmpty(project.allStatus))
+            {
+                statusList = project.allStatus.Split(',').ToList();
+            }
+            ViewBag.AllStatus = statusList;
+            return View(tasklist);
+        }
+
         [HttpPost]
         public ActionResult Kanban(string taskid, string statusid)
         {

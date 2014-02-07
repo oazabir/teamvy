@@ -201,11 +201,10 @@
         </tbody>
     </table>
 }
-<script type="text/javascript">
+@*<script type="text/javascript">
 
     jQuery(function () {
         jQuery('form').submit(function () {
-            if (jQuery(this).valid()) {
                 jQuery.ajax({
                     url: this.action,
                     type: this.method,
@@ -221,14 +220,14 @@
                     },
                     success: function (result) {
                         jQuery.jGrowl('Success!!!', { life: 5000 });
+                        jQuery("#Modalpopup").modal('show');
                     },
                     error: function () {
                         jQuery.jGrowl('somethis is wrong!!!', { life: 5000 });
                     }
                 });
-            }
             return false;
         });
     });
-</script>
+</script>*@
 
