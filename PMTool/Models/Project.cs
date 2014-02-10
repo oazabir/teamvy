@@ -50,7 +50,17 @@ namespace PMTool.Models
 
         public virtual List<User> Users { get; set; }
 
+        //New added for - Project Owner
+        public virtual List<User> ProjectOwners { get; set; }
+        public List<string> SelectedProjectsOwners { get; set; }
+
+        //public virtual List<User> ProjectOwners { get; set; }
+        //public virtual ICollection<ProjectOwner> ProjectOwner { get; set; }
+
         public List<string> SelectedAssignedUsers { get; set; }
+
+        //New added for - Project Owner
+        //public List<string> SelectedProjectOwner { get; set; }
 
 
         public string allStatus { get; set; }

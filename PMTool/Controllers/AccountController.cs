@@ -153,12 +153,21 @@ namespace PMTool.Controllers
 
         public ActionResult Manage(ManageMessageId? message)
         {
+            UnitOfWork unitofwork = new UnitOfWork();
+
+
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : "";
-            ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            User user = unitofwork.UserRepository.GetUserByUserName(User.Identity.Name);
+            if (user != null)
+                ViewBag.HasLocalPassword = true;
+            else
+                ViewBag.HasLocalPassword = false;
+
+                //OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
         }
@@ -170,7 +179,14 @@ namespace PMTool.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Manage(LocalPasswordModel model)
         {
-            bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            bool hasLocalAccount;
+            UnitOfWork unitofwork = new UnitOfWork();
+            User user = unitofwork.UserRepository.GetUserByUserName(User.Identity.Name);
+            if (user != null)
+                hasLocalAccount = true;
+            else
+                hasLocalAccount = false;
+            //= OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.HasLocalPassword = hasLocalAccount;
             ViewBag.ReturnUrl = Url.Action("Manage");
             if (hasLocalAccount)
@@ -336,7 +352,7 @@ namespace PMTool.Controllers
         [ChildActionOnly]
         public ActionResult RemoveExternalLogins()
         {
-            ICollection<OAuthAccount> accounts = OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name);
+            ICollection<OAuthAccount>accounts = OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name);
             List<ExternalLogin> externalLogins = new List<ExternalLogin>();
             foreach (OAuthAccount account in accounts)
             {

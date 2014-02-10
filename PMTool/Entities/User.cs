@@ -44,4 +44,10 @@ using PMTool.Models;
         public virtual List<Task> Tasks { get; set; }
 
         public virtual List<Task> FollowerTasks { get; set; }
+
+        //New added for Project Owner
+        public virtual List<Project> OwnerProjects { get; set; }
+
+        //public virtual List<Project> OwnerProject { get; set; }
+        //public virtual ICollection<ProjectOwner> ProjectOwner { get; set; }
     }

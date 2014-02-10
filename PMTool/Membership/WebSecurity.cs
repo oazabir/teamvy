@@ -100,6 +100,12 @@ using PMTool.Repository;
             return Membership.DeleteUser(Username);
         }
 
+        //public static int GetUserId(string userName)
+        //{
+        //    MembershipUser user = Membership.GetUser(userName);
+        //    return (int)user.ProviderUserKey;
+        //}
+
         public static int GetUserId(string userName)
         {
             MembershipUser user = Membership.GetUser(userName);

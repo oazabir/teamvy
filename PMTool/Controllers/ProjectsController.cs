@@ -97,6 +97,7 @@ namespace PMTool.Controllers
             {
                 unitOfWork.ProjectRepository.InsertOrUpdate(project);
                 AddAssignUser(project);
+                AddProjectOwner(project);
                 unitOfWork.Save();
                 SaveNotification(project,true);
                 
@@ -149,6 +150,19 @@ namespace PMTool.Controllers
             }
         }
 
+        private void AddProjectOwner(Project project)
+        {
+            project.ProjectOwners = new List<User>();
+            if (project.SelectedProjectsOwners != null)
+            {
+                foreach (string userID in project.SelectedProjectsOwners)
+                {
+                    User user = unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
+                    project.ProjectOwners.Add(user);
+                }
+            }
+        }
+
         //
         // GET: /Projects/Edit/5
 
@@ -158,6 +172,7 @@ namespace PMTool.Controllers
             List<SelectListItem> allUsers = GetAllUser();
             ViewBag.PossibleUsers = allUsers;
             project.SelectedAssignedUsers = project.Users.Select(u => u.UserId.ToString()).ToList();
+            project.SelectedProjectsOwners = project.ProjectOwners.Select(u => u.UserId.ToString()).ToList();
             return View(project);
         }
 
@@ -174,6 +189,7 @@ namespace PMTool.Controllers
             if (ModelState.IsValid)
             {
                 AddAssignUser(project);
+                AddProjectOwner(project);
                userList= unitOfWork.ProjectRepository.InsertOrUpdate(project);
                 unitOfWork.Save();
                 SaveNotification(project, false);

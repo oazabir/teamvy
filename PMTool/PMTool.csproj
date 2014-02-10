@@ -234,17 +234,13 @@
     <Compile Include="Membership\CodeFirstRoleProvider.cs" />
     <Compile Include="Membership\Crypto.cs" />
     <Compile Include="Membership\WebSecurity.cs" />
-    <Compile Include="Migrations\201402051057368_testmig.cs" />
-    <Compile Include="Migrations\201402051057368_testmig.Designer.cs">
-      <DependentUpon>201402051057368_testmig.cs</DependentUpon>
+    <Compile Include="Migrations\201402101112357_ProjectOwners.cs" />
+    <Compile Include="Migrations\201402101112357_ProjectOwners.Designer.cs">
+      <DependentUpon>201402101112357_ProjectOwners.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201402070658323_taskstatusproperty.cs" />
-    <Compile Include="Migrations\201402070658323_taskstatusproperty.Designer.cs">
-      <DependentUpon>201402070658323_taskstatusproperty.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201402071001247_taskstatuspropchange.cs" />
-    <Compile Include="Migrations\201402071001247_taskstatuspropchange.Designer.cs">
-      <DependentUpon>201402071001247_taskstatuspropchange.cs</DependentUpon>
+    <Compile Include="Migrations\201402101158187_ProjectOwners1.cs" />
+    <Compile Include="Migrations\201402101158187_ProjectOwners1.Designer.cs">
+      <DependentUpon>201402101158187_ProjectOwners1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
@@ -258,7 +254,6 @@
     <Compile Include="Repository\PriorityRepository.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Repository\ProjectRepository.cs" />
-    <Compile Include="Models\ProjectUser.cs" />
     <Compile Include="Models\Task.cs" />
     <Compile Include="Models\TaskFollower.cs" />
     <Compile Include="Models\TaskLabel.cs" />
@@ -1161,14 +1156,11 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201402051057368_testmig.resx">
-      <DependentUpon>201402051057368_testmig.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201402101112357_ProjectOwners.resx">
+      <DependentUpon>201402101112357_ProjectOwners.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402070658323_taskstatusproperty.resx">
-      <DependentUpon>201402070658323_taskstatusproperty.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402071001247_taskstatuspropchange.resx">
-      <DependentUpon>201402071001247_taskstatuspropchange.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201402101158187_ProjectOwners1.resx">
+      <DependentUpon>201402101158187_ProjectOwners1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

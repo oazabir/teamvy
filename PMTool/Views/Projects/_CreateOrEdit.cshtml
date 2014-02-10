@@ -68,6 +68,19 @@
         jQuery('.chzn-select').trigger('chosen:updated');
     }
 
+    var selectedProjectsOwnersID = jQuery('Select#ProjectsOwners').val();
+    var owner = "";
+    if (selectedUserID != null) {
+        jQuery.each(selectedUserID, function (index, value) {
+            Users = Users + value + ",";
+        });
+
+        var UserArray = new Array();
+        jQuery('Select#Users').val(UserArray);
+
+        jQuery('.chzn-select').trigger('chosen:updated');
+    }
+
 </script>
 <tr>
     <td>Assigned To
@@ -77,6 +90,16 @@
             new { @class = "chosen", multiple = "multiple", style = "width: 350px;" })
     </td>
 </tr>
+
+<tr>
+    <td>Project Owner
+    </td>
+    <td>
+        @Html.ListBoxFor(m => m.SelectedProjectsOwners, (IEnumerable<SelectListItem>)ViewBag.PossibleUsers,
+            new { @class = "chosen", multiple = "multiple", style = "width: 350px;" })
+    </td>
+</tr>
+
 <tr>
     <td>Status
     </td>
