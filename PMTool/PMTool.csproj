@@ -1078,6 +1078,7 @@
     <Content Include="Content\themes\site\js\tinymce\vssver2.scc" />
     <None Include="Properties\PublishProfiles\Najib.pubxml" />
     <None Include="Properties\PublishProfiles\PMTool.pubxml" />
+    <Content Include="Views\Projects\CreateStatus.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
