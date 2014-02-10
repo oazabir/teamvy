@@ -1,6 +1,8 @@
-﻿
-<script type="text/javascript" >
+﻿<script type="text/javascript" >
     jQuery(document).ready(function () {
+        jQuery("#Modalpopup").modal('hide');
+        jQuery("#ModalpopupProject").modal('hide');
+        jQuery("#ModalpopupTask").modal('hide');
         jQuery('.dragbox')
         .each(function () {
             jQuery(this).hover(function () {
@@ -55,8 +57,9 @@
         });
     }
 </script>
-<div style="background-color: #f7de55">
-    @{
+
+@model IEnumerable<PMTool.Models.Task>
+@{
         List<string> statusList = (List<string>)ViewBag.AllStatus;
         List<PMTool.Models.Task> taskList = (List<PMTool.Models.Task>)Model;
         
@@ -76,8 +79,14 @@
         
         foreach (string status in statusList)
         {
+            if (!string.IsNullOrEmpty(status))
+            {
             <fieldset class='column' id='@status'>
-                <legend class="widgettitle ctitle">@Convert.ToString(status)</legend>
+                <legend class="widgettitle ctitle">@Convert.ToString(status) 
+                    @*<a style="float:right" class="icon-remove" onclick="RemoveStatusFormKanban(@status)"></a>*@
+                     @Ajax.ActionLink(" ", "RemoveStatusFormKanban", "Tasks", new { status = status, projectID = @Model.FirstOrDefault().ProjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard" }, new { @class="icon-remove",@style="float:right;"})
+
+                </legend>
                 @foreach (PMTool.Models.Task item in taskList.Where(t => t.Status == status))
                 {
                     <div class="dragbox" id="@item.TaskID">
@@ -89,7 +98,7 @@
                     </div>
                 }
             </fieldset>
+            }
         }
         
         }
-</div>

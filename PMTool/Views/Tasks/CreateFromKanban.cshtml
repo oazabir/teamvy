@@ -1,7 +1,7 @@
 @model PMTool.Models.Task
 
 @{
-    ViewBag.Title = "Edit | Task";
+    ViewBag.Title = "Add | Task";
 }
 
 
@@ -19,17 +19,12 @@
     </h1>
     <span>Edit Task below....</span>
 </div>
- @using (Ajax.BeginForm("EditFromKanban", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard" }))
- {
+@using (Ajax.BeginForm("CreateFromKanban", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard" }, new { id="CreateTask"}))
+{
     @Html.ValidationSummary(true)
      
 
-    @Html.HiddenFor(model => model.TaskID)
-    @Html.HiddenFor(model => model.CreatedBy)
-    @Html.HiddenFor(model => model.CreateDate)
     @Html.HiddenFor(model => model.ProjectID)
-    @Html.HiddenFor(model => model.ParentTaskId)
-    @Html.HiddenFor(model => model.Status)
    
     <table class="table table-bordered table-invoice">
         <tbody>
@@ -193,6 +188,19 @@
             </tr>
 
             <tr>
+                <td>Status
+                </td>
+                <td>
+                    <select id="Status" name="Status">
+                        <option value="">Choose...</option>
+                        @foreach (SelectListItem item in (IEnumerable<SelectListItem>)ViewBag.PossibleTaskStatus)
+                        {
+                            <option value="@item.Value" selected="@item.Selected">@item.Text</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
                 <td class="width30"></td>
                 <td>
                     <input type="submit" id="btnSave" value="Save" class="btn btn-primary" />
@@ -201,33 +209,22 @@
         </tbody>
     </table>
 }
-@*<script type="text/javascript">
+<script type="text/javascript">
+    
+    jQuery("#CreateTask").load(function () {
+        if (jQuery('.datepicker').length > 0) {
+            jQuery(".datepicker").datepicker({
+                dateFormat: "dd/mm/yy",
+                showStatus: true,
+                showWeeks: true,
+                currentText: 'Now',
+                autoSize: true,
+                gotoCurrent: true,
+                showAnim: 'blind',
+                highlightWeek: true
+            });
 
-    jQuery(function () {
-        jQuery('form').submit(function () {
-                jQuery.ajax({
-                    url: this.action,
-                    type: this.method,
-                    // you can post your model with this line
-                    data: jQuery(this).serialize(),
-                    beforeSend: function () {
-                        var btn = jQuery('#btnSave');
-                        btn.button('loading');
-                    },
-                    complete: function () {
-                        var btn = jQuery('#btnSave');
-                        btn.button('Save');
-                    },
-                    success: function (result) {
-                        jQuery.jGrowl('Success!!!', { life: 5000 });
-                        jQuery("#Modalpopup").modal('show');
-                    },
-                    error: function () {
-                        jQuery.jGrowl('somethis is wrong!!!', { life: 5000 });
-                    }
-                });
-            return false;
-        });
+        }
     });
-</script>*@
+</script>
 
