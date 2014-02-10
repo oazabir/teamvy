@@ -1,0 +1,44 @@
+﻿@model IEnumerable<PMTool.Models.Task>
+@{
+        List<string> statusList = (List<string>)ViewBag.AllStatus;
+        List<PMTool.Models.Task> taskList = (List<PMTool.Models.Task>)Model;
+        
+        <fieldset class='column' id=' '>
+            <legend class="widgettitle ctitle">UnAssigned</legend>
+            @foreach (PMTool.Models.Task item in taskList.Where(t => t.Status == "" || t.Status == null))
+            {
+                <div class="dragbox" id="@item.TaskID">
+                        <h2>@item.Title</h2>
+                        <div class="dragbox-content" style="display: none;">
+                            @item.Description
+                            <a id="showdata" onclick="return ShowEditForm(@item.TaskID)">Edit </a>
+                        </div>
+                    </div>
+            }
+        </fieldset>
+        
+        foreach (string status in statusList)
+        {
+            if (!string.IsNullOrEmpty(status))
+            {
+            <fieldset class='column' id='@status'>
+                <legend class="widgettitle ctitle">@Convert.ToString(status) >
+                    @*<a style="float:right" class="icon-remove" onclick="RemoveStatusFormKanban(@status)"></a>*@
+                     @Ajax.ActionLink("X", "RemoveStatusFormKanban", "Tasks", new {status=status,projectID=@Model.FirstOrDefault().ProjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard" })
+
+                </legend>
+                @foreach (PMTool.Models.Task item in taskList.Where(t => t.Status == status))
+                {
+                    <div class="dragbox" id="@item.TaskID">
+                        <h2>@item.Title</h2>
+                        <div class="dragbox-content" style="display: none;">
+                            @item.Description
+                            <a id="showdata" onclick="return ShowEditForm(@item.TaskID)">Edit </a>
+                        </div>
+                    </div>
+                }
+            </fieldset>
+            }
+        }
+        
+        }

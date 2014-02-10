@@ -238,33 +238,42 @@ namespace PMTool.Controllers
         //
         // GET: /Projects/Edit/5
 
-        public PartialViewResult CreateStatus(long id)
-        {
-            Project project = unitOfWork.ProjectRepository.Find(id);
-            if (string.IsNullOrEmpty(project.allStatus))
-            {
-                project.allStatus = string.Empty;
-            }
-            return PartialView(project);
-        }
+        //public PartialViewResult CreateStatus(long id)
+        //{
+        //    Project project = unitOfWork.ProjectRepository.Find(id);
+        //    if (string.IsNullOrEmpty(project.allStatus))
+        //    {
+        //        project.allStatus = string.Empty;
+        //    }
+        //    return PartialView(project);
+        //}
 
-        [HttpPost]
-        public ActionResult CreateStatus(Project project)
-        {
-            Project projectOld = unitOfWork.ProjectRepository.Find(project.ProjectID);
-            try
-            {
-                projectOld.allStatus = project.allStatus;
-                unitOfWork.ProjectRepository.InsertOrUpdate(projectOld);
-                unitOfWork.Save();
-            }
-            catch
-            {
-                return View(projectOld);
-            }
-            return RedirectToAction("Kanban", "Tasks", new { @ProjectID = project.ProjectID });
+        //[HttpPost]
+        //public PartialViewResult CreateStatus(Project project)
+        //{
+        //    Project projectOld = unitOfWork.ProjectRepository.Find(project.ProjectID);
+        //    List<Task> taskList = new List<Task>();
+        //    try
+        //    {
+        //        projectOld.allStatus = project.allStatus;
+        //        unitOfWork.ProjectRepository.InsertOrUpdate(projectOld);
+        //        unitOfWork.Save();
+        //        taskList = unitOfWork.TaskRepository.ByProjectIncluding(project.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+        //        foreach (Task task in taskList)
+        //        {
+        //            task.Status = string.Empty;
+        //            unitOfWork.Save();
+        //        }
+        //    }
+        //    catch
+        //    {
+        //       // return View(projectOld);
+        //    }
+        //    //return RedirectToAction("Kanban", "Tasks", new { @ProjectID = project.ProjectID });
+        //    return PartialView("_Kanban", taskList);
+        //}
 
-        }
+       
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(long id)

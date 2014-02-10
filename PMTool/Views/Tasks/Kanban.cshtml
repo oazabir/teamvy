@@ -15,8 +15,6 @@
     <h1>@(((PMTool.Models.Project)ViewBag.CurrentProject).Name) Kanban Board</h1>
     <span>@(((PMTool.Models.Project)ViewBag.CurrentProject).Name)  Kanban Board....</span>
 </div>
-
-<br />
 <br />
 
 <div>
@@ -24,112 +22,29 @@
     if (ViewBag.CurrentProject != null)
     {
         PMTool.Models.Project projetc = (PMTool.Models.Project)ViewBag.CurrentProject;
-        <a id="showdata" onclick="return ShowProjectForm(@projetc.ProjectID)" class="btn btn-primary">Change Column </a>
+        <a id="showdata" onclick="return ShowProjectForm(@projetc.ProjectID)"><span class="icon-plus" for="showdata"></span>Add Column</a>
+        <span>&nbsp; &nbsp; &nbsp; &nbsp;</span>
+        <a id="showTask" onclick="return ShowTaskForm(@projetc.ProjectID)"><span class="icon-plus" for="showTask"></span>Add Task</a>
     }
 }
 
 </div>
-<script type="text/javascript" >
-    jQuery(document).ready(function () {
-        jQuery('.dragbox')
-        .each(function () {
-            jQuery(this).hover(function () {
-                //jQuery(this).find('h2').addClass('collapse');
-            }, function () {
-                //jQuery(this).find('h2').removeClass('collapse');
-            })
-            .find('h2').hover(function () {
-                //jQuery(this).find('.configure').css('visibility', 'visible');
-            }, function () {
-                //jQuery(this).find('.configure').css('visibility', 'hidden');
-            })
-            .click(function () {
-                jQuery(this).siblings('.dragbox-content').toggle();
-            })
-            .end();
-            //.find('.configure').css('visibility', 'hidden');
-        });
-        jQuery('.column').sortable({
-            connectWith: '.column',
-            handle: 'h2',
-            cursor: 'move',
-            placeholder: 'placeholder',
-            forcePlaceholderSize: true,
-            opacity: 0.4,
-            receive: function (event, ui) {
-                //jQuery(ui.item).find('h2').click();
-                //var sortorder = '';
+<br />
 
-                var columnId = jQuery(this).attr('id');
-                var taskId = ui.item[0].id;
-                if (taskId != null && columnId!=null)
-                UpdateRecord(taskId, columnId);
-                /*Pass sortorder variable to server using ajax to save state*/
-            }
-        })
-        .disableSelection();
-    });
-    function UpdateRecord(task, status) {
-        jQuery.ajax({
-            url: '@Url.Action("Kanban", "Tasks")',
-            data: { taskid: task, statusid: status },
-            type: 'POST',
-            success: function (data) {
-                var msg = new String(data);
-                if (msg.indexOf('T') == 0)
-                    jQuery.jGrowl(data, { life: 5000 });
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                jQuery.jGrowl('somethig is wrong', { life: 5000 });
-            }
-        });
-    }
-</script>
-<div style="background-color: #f7de55">
-    @{
-        List<string> statusList = (List<string>)ViewBag.AllStatus;
-        List<PMTool.Models.Task> taskList = (List<PMTool.Models.Task>)Model;
-        
-        <fieldset class='column' id=' '>
-            <legend class="widgettitle ctitle">UnAssigned</legend>
-            @foreach (PMTool.Models.Task item in taskList.Where(t => t.Status == "" || t.Status == null))
-            {
-                <div class="dragbox" id="@item.TaskID">
-                        <h2>@item.Title</h2>
-                        <div class="dragbox-content" style="display: none;">
-                            @item.Description
-                            <a id="showdata" onclick="return ShowEditForm(@item.TaskID)">Edit </a>
-                        </div>
-                    </div>
-            }
-        </fieldset>
-        
-        foreach (string status in statusList)
-        {
-            <fieldset class='column' id='@status'>
-                <legend class="widgettitle ctitle">@Convert.ToString(status)</legend>
-                @foreach (PMTool.Models.Task item in taskList.Where(t => t.Status == status))
-                {
-                    <div class="dragbox" id="@item.TaskID">
-                        <h2>@item.Title</h2>
-                        <div class="dragbox-content" style="display: none;">
-                            @item.Description
-                            <a id="showdata" onclick="return ShowEditForm(@item.TaskID)">Edit </a>
-                        </div>
-                    </div>
-                }
-            </fieldset>
-        }
-        
-        }
+<div style="background-color: #f7de55" id="kanbanBoard">
+     @{Html.RenderAction("_Kanban", "Tasks", new { ProjectID = @Model.FirstOrDefault().ProjectID });}
 </div>
 <hr style="clear: both;" />
-<div id='Modalpopup' class='modal hide fade in' data-url='@Url.Action("EditFromKanban", "Tasks")'>
+<div id='Modalpopup'  data-url='@Url.Action("EditFromKanban", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
     <div id='popupcontainer'>
     </div>
 </div>
-<div id='ModalpopupProject' class='modal hide fade in' data-url='@Url.Action("CreateStatus", "Projects")'>
+<div id='ModalpopupProject' data-url='@Url.Action("CreateStatus", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
     <div id='popupcontainerProject'>
+    </div>
+</div>
+<div id='ModalpopupTask' data-url='@Url.Action("CreateFromKanban", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerTask'>
     </div>
 </div>
 <script type="text/javascript">
@@ -160,5 +75,38 @@
             }
         });
         return false;
+    }
+    
+    function ShowTaskForm(id) {
+        var url = jQuery('#ModalpopupTask').data('url') + "/" + id;
+
+        jQuery.ajax({
+            url: url,
+            cache: false,
+            success: function (data) {
+                jQuery('#popupcontainerTask').html(data);
+                jQuery("#ModalpopupTask").modal('show');
+            }
+        });
+        return false;
+    }
+
+    function RemoveStatusFormKanban(id) {
+        var projectID=@Model.FirstOrDefault().ProjectID;
+        jQuery.ajax({
+            url: '@Url.Action("RemoveStatusFormKanban", "Projects")',
+            data: { status: id.id , projectID: projectID },
+            type: 'POST',
+            cache: false,
+            success: function (data) {
+                jQuery(id).hide();
+                jQuery.jGrowl('Column Removed', { life: 5000 });
+                //window.location.reload(true);
+            },
+            error: function () {
+                jQuery(id).show();
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
     }
 </script>

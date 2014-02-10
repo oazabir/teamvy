@@ -55,6 +55,21 @@ namespace PMTool.Repository
             return query;
         }
 
+        public IQueryable<Task> ByProjectAndStatusIncluding(long projectID,string status, params Expression<Func<Task, object>>[] includeProperties)
+        {
+            IQueryable<Task> query = context.Tasks.Where(t => t.ProjectID == projectID && t.ParentTaskId == null && t.Status==status);
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+
+            }
+            foreach (Task task in query)
+            {
+                task.ChildTask = context.Tasks.Where(t => t.ParentTaskId == task.TaskID).ToList();
+            }
+            return query;
+        }
+
         public IQueryable<Task> ByProjectIncluding(long projectID,User user,params Expression<Func<Task, object>>[] includeProperties)
         {
             IQueryable<Task> query = context.Tasks.Where(t => t.ProjectID == projectID && t.ParentTaskId == null && t.Users.Any(U=>U.UserId==user.UserId));
@@ -186,6 +201,7 @@ namespace PMTool.Repository
     {
         IQueryable<Task> All { get; }
         IQueryable<Task> AllIncluding(params Expression<Func<Task, object>>[] includeProperties);
+        IQueryable<Task> ByProjectAndStatusIncluding(long projectID, string status, params Expression<Func<Task, object>>[] includeProperties);
         Task Find(long id);
         bool InsertOrUpdate(Task task);
         void Delete(long id);

@@ -129,10 +129,9 @@ font-weight: bold;
 	width:18% !important;
 	margin-right:.5% !important;
 	min-height:300px !important;
-	background:#fff !important;
 	float:left !important;
     text-align: center;
-    background-color: #3B6998 !important
+    background-image: url("../img/mainbg2.png") !important;
 }
 .column .dragbox{
 	margin:5px 2px  20px !important;
@@ -182,6 +181,8 @@ font-weight: bold;
      font-size: 13px;
      color:#FFFFFF;
      text-align: center;
+     background:#3B6998 !important;
+      
 }
 .modal
 {
@@ -194,4 +195,9 @@ overflow:scroll !important;
     display: inline-flex;
     float: right;
     padding: 7px 14px 0 0;
+}
+.dashboard
+{
+    min-height:650px !important;
+    padding: 15px !important;
 }

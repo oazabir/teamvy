@@ -1,0 +1,104 @@
+﻿<script type="text/javascript" >
+    jQuery(document).ready(function () {
+        jQuery("#Modalpopup").modal('hide');
+        jQuery("#ModalpopupProject").modal('hide');
+        jQuery("#ModalpopupTask").modal('hide');
+        jQuery('.dragbox')
+        .each(function () {
+            jQuery(this).hover(function () {
+                //jQuery(this).find('h2').addClass('collapse');
+            }, function () {
+                //jQuery(this).find('h2').removeClass('collapse');
+            })
+            .find('h2').hover(function () {
+                //jQuery(this).find('.configure').css('visibility', 'visible');
+            }, function () {
+                //jQuery(this).find('.configure').css('visibility', 'hidden');
+            })
+            .click(function () {
+                jQuery(this).siblings('.dragbox-content').toggle();
+            })
+            .end();
+            //.find('.configure').css('visibility', 'hidden');
+        });
+        jQuery('.column').sortable({
+            connectWith: '.column',
+            handle: 'h2',
+            cursor: 'move',
+            placeholder: 'placeholder',
+            forcePlaceholderSize: true,
+            opacity: 0.4,
+            receive: function (event, ui) {
+                //jQuery(ui.item).find('h2').click();
+                //var sortorder = '';
+
+                var columnId = jQuery(this).attr('id');
+                var taskId = ui.item[0].id;
+                if (taskId != null && columnId!=null)
+                UpdateRecord(taskId, columnId);
+                /*Pass sortorder variable to server using ajax to save state*/
+            }
+        })
+        .disableSelection();
+    });
+    function UpdateRecord(task, status) {
+        jQuery.ajax({
+            url: '@Url.Action("Kanban", "Tasks")',
+            data: { taskid: task, statusid: status },
+            type: 'POST',
+            success: function (data) {
+                var msg = new String(data);
+                if (msg.indexOf('T') == 0)
+                    jQuery.jGrowl(data, { life: 5000 });
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+    }
+</script>
+
+@model IEnumerable<PMTool.Models.Task>
+@{
+        List<string> statusList = (List<string>)ViewBag.AllStatus;
+        List<PMTool.Models.Task> taskList = (List<PMTool.Models.Task>)Model;
+        
+        <fieldset class='column' id=' '>
+            <legend class="widgettitle ctitle">UnAssigned</legend>
+            @foreach (PMTool.Models.Task item in taskList.Where(t => t.Status == "" || t.Status == null))
+            {
+                <div class="dragbox" id="@item.TaskID">
+                        <h2>@item.Title</h2>
+                        <div class="dragbox-content" style="display: none;">
+                            @item.Description
+                            <a id="showdata" onclick="return ShowEditForm(@item.TaskID)">Edit </a>
+                        </div>
+                    </div>
+            }
+        </fieldset>
+        
+        foreach (string status in statusList)
+        {
+            if (!string.IsNullOrEmpty(status))
+            {
+            <fieldset class='column' id='@status'>
+                <legend class="widgettitle ctitle">@Convert.ToString(status) 
+                    @*<a style="float:right" class="icon-remove" onclick="RemoveStatusFormKanban(@status)"></a>*@
+                     @Ajax.ActionLink(" ", "RemoveStatusFormKanban", "Tasks", new { status = status, projectID = @Model.FirstOrDefault().ProjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard" }, new { @class="icon-remove",@style="float:right;"})
+
+                </legend>
+                @foreach (PMTool.Models.Task item in taskList.Where(t => t.Status == status))
+                {
+                    <div class="dragbox" id="@item.TaskID">
+                        <h2>@item.Title</h2>
+                        <div class="dragbox-content" style="display: none;">
+                            @item.Description
+                            <a id="showdata" onclick="return ShowEditForm(@item.TaskID)">Edit </a>
+                        </div>
+                    </div>
+                }
+            </fieldset>
+            }
+        }
+        
+        }
