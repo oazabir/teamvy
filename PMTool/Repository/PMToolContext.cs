@@ -74,6 +74,64 @@ namespace PMTool.Repository
                   mc.MapLeftKey("LabelId");
                   mc.ToTable("TaskLabels");
               });
+
+            modelBuilder.Entity<Project>()
+                .HasMany(i => i.ProjectOwners)
+                .WithMany(c => c.OwnerProjects)
+                .Map(mc =>
+                    {
+                        mc.MapRightKey("UserId");
+                        mc.MapLeftKey("ProjectID");
+                        mc.ToTable("ProjectOwners");
+                    });
+            //modelBuilder.Entity<Project>().
+            //    HasMany(i => i.ProjectOwner).
+            //    WithMany(c =>c.OwnerProject).
+            //    Map(mc =>
+            //    {
+            //        mc.MapRightKey("ProjectID");
+            //        mc.MapLeftKey("UserId");
+            //        mc.ToTable("ProjectOwner");
+            //    });
+
+            //modelBuilder.Entity<Project>().
+            //   HasMany(i => i.Pro).
+            //   WithMany(c => c.FollowerTasks).
+            //   Map(mc =>
+            //   {
+            //       mc.MapRightKey("TaskId");
+            //       mc.MapLeftKey("UserId");
+            //       mc.ToTable("TaskFollowers");
+            //   });
+
+            //modelBuilder.Entity<Project>().
+            //    HasMany(i => i.ProjectOwner).
+            //    WithMany(c => c.OwnerProject).
+            //    Map(mc =>
+            //        {
+            //            mc.MapRightKey("ProjectID");
+            //            mc.MapLeftKey("UserId");
+            //            mc.ToTable("ProjectOwner");
+            //        });
+
+            //modelBuilder.Entity<Project>()
+            // .HasMany(c => c.ProjectOwner)
+            // .WithRequired()
+            // .HasForeignKey(c => c.ProjectID);
+
+         //   modelBuilder.Entity<User>()
+         //.HasMany(c => c.ProjectOwner)
+         //.WithRequired()
+         //.HasForeignKey(c => c.ProjectID);
+
+
+
+            //           modelBuilder.Entity<User>()
+            //           .HasMany(c => c)
+            //.WithRequired()
+            //.HasForeignKey(c => c.ProjectID);
+
+
         }
 
     }

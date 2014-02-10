@@ -3,7 +3,7 @@ namespace PMTool.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class testmig : DbMigration
+    public partial class ProjectOwners : DbMigration
     {
         public override void Up()
         {
@@ -75,7 +75,7 @@ namespace PMTool.Migrations
                         CreateDate = c.DateTime(nullable: false),
                         ModificationDate = c.DateTime(nullable: false),
                         ActionDate = c.DateTime(nullable: false),
-                        Status = c.Int(nullable: false),
+                        Status = c.String(),
                         allStatus = c.String(),
                         ParentTask_TaskID = c.Long(),
                         CreatedByUser_UserId = c.Guid(),
@@ -117,6 +117,7 @@ namespace PMTool.Migrations
                         CreateDate = c.DateTime(nullable: false),
                         ModificationDate = c.DateTime(nullable: false),
                         ActionDate = c.DateTime(nullable: false),
+                        allStatus = c.String(),
                         CreatedByUser_UserId = c.Guid(),
                         ModifiedByUser_UserId = c.Guid(),
                     })
@@ -193,6 +194,19 @@ namespace PMTool.Migrations
                 .Index(t => t.TaskId);
             
             CreateTable(
+                "dbo.ProjectOwners",
+                c => new
+                    {
+                        UserId = c.Long(nullable: false),
+                        ProjectID = c.Guid(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.UserId, t.ProjectID })
+                .ForeignKey("dbo.Projects", t => t.UserId, cascadeDelete: true)
+                .ForeignKey("dbo.Users", t => t.ProjectID, cascadeDelete: true)
+                .Index(t => t.UserId)
+                .Index(t => t.ProjectID);
+            
+            CreateTable(
                 "dbo.ProjectUsers",
                 c => new
                     {
@@ -247,6 +261,8 @@ namespace PMTool.Migrations
             DropForeignKey("dbo.Tasks", "ProjectID", "dbo.Projects");
             DropForeignKey("dbo.ProjectUsers", "UserId", "dbo.Users");
             DropForeignKey("dbo.ProjectUsers", "ProjectId", "dbo.Projects");
+            DropForeignKey("dbo.ProjectOwners", "ProjectID", "dbo.Users");
+            DropForeignKey("dbo.ProjectOwners", "UserId", "dbo.Projects");
             DropForeignKey("dbo.Projects", "ModifiedByUser_UserId", "dbo.Users");
             DropForeignKey("dbo.Projects", "CreatedByUser_UserId", "dbo.Users");
             DropForeignKey("dbo.Tasks", "PriorityID", "dbo.Priorities");
@@ -269,6 +285,8 @@ namespace PMTool.Migrations
             DropIndex("dbo.Tasks", new[] { "ProjectID" });
             DropIndex("dbo.ProjectUsers", new[] { "UserId" });
             DropIndex("dbo.ProjectUsers", new[] { "ProjectId" });
+            DropIndex("dbo.ProjectOwners", new[] { "ProjectID" });
+            DropIndex("dbo.ProjectOwners", new[] { "UserId" });
             DropIndex("dbo.Projects", new[] { "ModifiedByUser_UserId" });
             DropIndex("dbo.Projects", new[] { "CreatedByUser_UserId" });
             DropIndex("dbo.Tasks", new[] { "PriorityID" });
@@ -282,6 +300,7 @@ namespace PMTool.Migrations
             DropTable("dbo.RoleUsers");
             DropTable("dbo.TaskUsers");
             DropTable("dbo.ProjectUsers");
+            DropTable("dbo.ProjectOwners");
             DropTable("dbo.TaskLabels");
             DropTable("dbo.TaskFollowers");
             DropTable("dbo.UserProfile");
