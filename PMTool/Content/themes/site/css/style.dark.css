@@ -189,6 +189,7 @@ font-weight: bold;
     width:600px !important;
 height:450px !important;
 overflow:scroll !important;
+
 }
 
 .headerright {
@@ -201,3 +202,4 @@ overflow:scroll !important;
     min-height:650px !important;
     padding: 15px !important;
 }
+.datepicker {z-index: 9999999 !important;position: absolute !important;display:none;}

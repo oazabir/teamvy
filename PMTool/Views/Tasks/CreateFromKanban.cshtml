@@ -63,7 +63,7 @@
                 </td>
                 <td>
 
-                    @Html.TextBoxFor(model => model.StartDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" })
+                    @Html.TextBoxFor(model => model.StartDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" , @style="z-index:2000;"})
                     @Html.ValidationMessageFor(model => model.StartDate)
                 </td>
             </tr>
@@ -73,7 +73,7 @@
                     @Html.LabelFor(model => model.EndDate)
                 </td>
                 <td>
-                    @Html.TextBoxFor(model => model.EndDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" })
+                    @Html.TextBoxFor(model => model.EndDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" , @style="z-index:2000;"})
                     @Html.ValidationMessageFor(model => model.EndDate)
                 </td>
             </tr>
@@ -209,22 +209,3 @@
         </tbody>
     </table>
 }
-<script type="text/javascript">
-    
-    jQuery("#CreateTask").load(function () {
-        if (jQuery('.datepicker').length > 0) {
-            jQuery(".datepicker").datepicker({
-                dateFormat: "dd/mm/yy",
-                showStatus: true,
-                showWeeks: true,
-                currentText: 'Now',
-                autoSize: true,
-                gotoCurrent: true,
-                showAnim: 'blind',
-                highlightWeek: true
-            });
-
-        }
-    });
-</script>
-

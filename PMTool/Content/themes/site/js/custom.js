@@ -224,7 +224,7 @@ jQuery(document).ready(function(){
 		});
 	}
 
-	
+	var DEFAULT_Z_INDEX = 10;
 	// date picker
 	if (jQuery('.datepicker').length > 0) {
 	    jQuery(".datepicker").datepicker({
@@ -236,11 +236,24 @@ jQuery(document).ready(function(){
 	        gotoCurrent: true,
 	        showAnim: 'blind',
 	        highlightWeek: true
-	    });
+	    })
+            .on('show', function() {
 
-	}
+	        // Make sure that z-index is above any open modal.
+	        var jQueryinput= jQuery(this);
+	        var modalZIndex = jQueryinput.closest('.modal').css('z-index');
+	        var zIndex = DEFAULT_Z_INDEX;
+	        if (modalZIndex) {
+	            zIndex = parseInt(modalZIndex) + 1;
+	        }
 
-	if (jQuery('#datepicker').length > 0) {
+	        jQuery('.datepicker').css("z-index", zIndex);;
+
+            });
+	    
+	    }
+
+	if (('#datepicker').length > 0) {
 	    jQuery("#datepicker").datepicker({
 	        dateFormat: "dd/mm/yy",
 	        showStatus: true,
@@ -253,6 +266,8 @@ jQuery(document).ready(function(){
 	    });
 
 	}
+
+
 	// growl notification
 	if(jQuery('#growl').length > 0) {
 		jQuery('#growl').click(function(){
