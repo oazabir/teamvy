@@ -1077,7 +1077,6 @@
     <Content Include="Views\Tasks\_Kanban.cshtml" />
     <Content Include="Views\Projects\RemoveStatusFormKanban.cshtml" />
     <Content Include="Views\Tasks\CreateFromKanban.cshtml" />
-    <Content Include="Views\Projects\OwnProjects.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />

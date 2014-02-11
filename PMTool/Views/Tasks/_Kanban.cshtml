@@ -79,13 +79,15 @@
         
         foreach (string status in statusList)
         {
+            long CurrentPorjectID=((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID ;
             if (!string.IsNullOrEmpty(status))
             {
-            <fieldset class='column' id='@status'>
+            <fieldset class='column' id='@status.Replace(" ","_")'>
                 <legend class="widgettitle ctitle">@Convert.ToString(status) 
                     @*<a style="float:right" class="icon-remove" onclick="RemoveStatusFormKanban(@status)"></a>*@
-                     @Ajax.ActionLink(" ", "RemoveStatusFormKanban", "Tasks", new { status = status, projectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard" }, new { @class="icon-remove",@style="float:right;"})
-
+                     @Ajax.ActionLink(" ", "RemoveStatusFormKanban", "Tasks", new { status = status, projectID = CurrentPorjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard" }, new { @class="icon-remove",@style="float:right;"})
+                    &nbsp;&nbsp;&nbsp;
+                    <a onclick="return ShowStatusEditForm(@status.Replace(" ","_"),@CurrentPorjectID)" class="icon-edit" style="float:left"> </a>
                 </legend>
                 @foreach (PMTool.Models.Task item in taskList.Where(t => t.Status == status))
                 {

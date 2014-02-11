@@ -17,21 +17,29 @@
 </div>
 <br />
 
-<div>
-    @{
-    if (ViewBag.CurrentProject != null)
-    {
-        PMTool.Models.Project projetc = (PMTool.Models.Project)ViewBag.CurrentProject;
-        <a id="showdata" onclick="return ShowProjectForm(@projetc.ProjectID)"><span class="icon-plus" for="showdata"></span>Add Column</a>
-        <span>&nbsp; &nbsp; &nbsp; &nbsp;</span>
-        <a id="showTask" onclick="return ShowTaskForm(@projetc.ProjectID)"><span class="icon-plus" for="showTask"></span>Add Task</a>
+<div class="msghead">
+    <ul class="msghead_menu">
+        @{
+            if (ViewBag.CurrentProject != null)
+            {
+                PMTool.Models.Project projetc = (PMTool.Models.Project)ViewBag.CurrentProject;
+            <li>
+                <a id="showdata" onclick="return ShowProjectForm(@projetc.ProjectID)"><span class="icon-plus" for="showdata"></span>Add Column</a>
+            </li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <a id="showTask" onclick="return ShowTaskForm(@projetc.ProjectID)"><span class="icon-plus" for="showTask"></span>Add Task</a>
+            </li>
     }
-}
+        }
+    </ul>
 </div>
 <br />
-<div style="background-color: #f7de55" id="kanbanBoard">
+<div>
+<div id="kanbanBoard" class="kanbanBoard">
      @{Html.RenderAction("_Kanban", "Tasks", new { ProjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID });}
 </div>
+    </div>
 <hr style="clear: both;" />
 <div id='Modalpopup'  data-url='@Url.Action("EditFromKanban", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
     <div id='popupcontainer'>
@@ -43,6 +51,10 @@
 </div>
 <div id='ModalpopupTask' data-url='@Url.Action("CreateFromKanban", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
     <div id='popupcontainerTask'>
+    </div>
+</div>
+<div id='ModalpopupEditStatus' data-url='@Url.Action("EditStatus", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerEditStatus'>
     </div>
 </div>
 <script type="text/javascript">
@@ -89,6 +101,21 @@
         return false;
     }
 
+    function ShowStatusEditForm(ststus,projectID) {
+        var url = jQuery('#ModalpopupEditStatus').data('url');
+       
+
+        jQuery.ajax({
+            url: url,
+            data: { status: ststus.id, projectID: projectID },
+            cache: false,
+            success: function (data) {
+                jQuery('#popupcontainerEditStatus').html(data);
+                jQuery("#ModalpopupEditStatus").modal('show');
+            }
+        });
+        return false;
+    }
     @*function RemoveStatusFormKanban(id,projectID) {
         jQuery.ajax({
             url: '@Url.Action("RemoveStatusFormKanban", "Projects")',
