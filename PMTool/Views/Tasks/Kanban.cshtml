@@ -27,10 +27,8 @@
         <a id="showTask" onclick="return ShowTaskForm(@projetc.ProjectID)"><span class="icon-plus" for="showTask"></span>Add Task</a>
     }
 }
-
 </div>
 <br />
-
 <div style="background-color: #f7de55" id="kanbanBoard">
      @{Html.RenderAction("_Kanban", "Tasks", new { ProjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID });}
 </div>

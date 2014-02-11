@@ -202,4 +202,10 @@ overflow:scroll !important;
     min-height:650px !important;
     padding: 15px !important;
 }
-.datepicker {z-index: 9999999 !important;position: absolute !important;display:none;}
+
+.ui-datepicker-div {z-index: 9999999 !important;}
+.ui-datepicker {
+    margin-top: -1px !important;
+    padding: 5px !important;
+    z-index: 9999999 !important;
+}

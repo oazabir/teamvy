@@ -209,3 +209,35 @@
         </tbody>
     </table>
 }
+
+<script type="text/javascript">
+
+    jQuery(document).ready(function () {
+        if (jQuery('.datepicker').length > 0) {
+            jQuery(".datepicker").datepicker({
+                dateFormat: "dd/mm/yy",
+                showStatus: true,
+                showWeeks: true,
+                currentText: 'Now',
+                autoSize: true,
+                gotoCurrent: true,
+                showAnim: 'blind',
+                highlightWeek: true
+            })
+                .on('show', function () {
+
+                    // Make sure that z-index is above any open modal.
+                    var jQueryinput = jQuery(this);
+                    var modalZIndex = jQueryinput.closest('.modal').css('z-index');
+                    var zIndex = DEFAULT_Z_INDEX;
+                    if (modalZIndex) {
+                        zIndex = parseInt(modalZIndex) + 1;
+                    }
+
+                    jQuery('.datepicker').css("z-index", zIndex);;
+
+                });
+
+        }
+    });
+</script>
