@@ -51,6 +51,7 @@ namespace PMTool.Repository
             foreach (Task task in query)
             {
                 task.ChildTask = context.Tasks.Where(t => t.ParentTaskId == task.TaskID).ToList();
+                task.CreatedByUser = context.Users.Where(t => t.UserId == task.CreatedBy).FirstOrDefault();
             }
             return query;
         }
@@ -104,7 +105,18 @@ namespace PMTool.Repository
 
         public Task Find(long id)
         {
-            return context.Tasks.Where(t => t.TaskID == id).Include(task => task.Users).Include(task => task.Followers).FirstOrDefault();
+            Task objTask = new Task();
+            //return 
+            objTask = context.Tasks.Where(t => t.TaskID == id).Include(task => task.Users).Include(task => task.Followers).Include(task => task.CreatedByUser).FirstOrDefault();
+            objTask.CreatedByUser = context.Users.Where(t => t.UserId == objTask.CreatedBy).FirstOrDefault();
+
+            //Task tasks = new Task();
+            //tasks = context.Tasks.Where(t => t.TaskID == id).Include(task => tasks.Users).Include(task => task.Followers).Include(task => task.CreatedByUser).FirstOrDefault();
+            //return tasks;
+            //return context.Tasks.Where(t => t.TaskID == id).Include(task => task.Users).Include(task => task.Followers).FirstOrDefault()
+            //    .CreatedByUser = context.Users.Where(t => t.UserId = ;
+
+            return objTask;
         }
 
         public bool InsertOrUpdate(Task task)
