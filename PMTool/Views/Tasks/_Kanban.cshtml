@@ -84,7 +84,7 @@
             <fieldset class='column' id='@status'>
                 <legend class="widgettitle ctitle">@Convert.ToString(status) 
                     @*<a style="float:right" class="icon-remove" onclick="RemoveStatusFormKanban(@status)"></a>*@
-                     @Ajax.ActionLink(" ", "RemoveStatusFormKanban", "Tasks", new { status = status, projectID = @Model.FirstOrDefault().ProjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard" }, new { @class="icon-remove",@style="float:right;"})
+                     @Ajax.ActionLink(" ", "RemoveStatusFormKanban", "Tasks", new { status = status, projectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard" }, new { @class="icon-remove",@style="float:right;"})
 
                 </legend>
                 @foreach (PMTool.Models.Task item in taskList.Where(t => t.Status == status))

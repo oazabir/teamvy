@@ -189,6 +189,7 @@ font-weight: bold;
     width:600px !important;
 height:450px !important;
 overflow:scroll !important;
+
 }
 
 .headerright {
@@ -200,4 +201,11 @@ overflow:scroll !important;
 {
     min-height:650px !important;
     padding: 15px !important;
+}
+
+.ui-datepicker-div {z-index: 9999999 !important;}
+.ui-datepicker {
+    margin-top: -1px !important;
+    padding: 5px !important;
+    z-index: 9999999 !important;
 }
