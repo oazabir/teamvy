@@ -32,7 +32,7 @@
 <br />
 
 <div style="background-color: #f7de55" id="kanbanBoard">
-     @{Html.RenderAction("_Kanban", "Tasks", new { ProjectID = @Model.FirstOrDefault().ProjectID });}
+     @{Html.RenderAction("_Kanban", "Tasks", new { ProjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID });}
 </div>
 <hr style="clear: both;" />
 <div id='Modalpopup'  data-url='@Url.Action("EditFromKanban", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -91,8 +91,7 @@
         return false;
     }
 
-    function RemoveStatusFormKanban(id) {
-        var projectID=@Model.FirstOrDefault().ProjectID;
+    @*function RemoveStatusFormKanban(id,projectID) {
         jQuery.ajax({
             url: '@Url.Action("RemoveStatusFormKanban", "Projects")',
             data: { status: id.id , projectID: projectID },
@@ -108,5 +107,5 @@
                 jQuery.jGrowl('somethig is wrong', { life: 5000 });
             }
         });
-    }
+    }*@
 </script>
