@@ -126,9 +126,9 @@ font-weight: bold;
 
 
 .column{
-	width:18% !important;
+	width:175px !important;
 	margin-right:.5% !important;
-	min-height:300px !important;
+	min-height:555px !important;
 	float:left !important;
     text-align: center;
     background-image: url("../img/mainbg2.png") !important;
@@ -193,7 +193,7 @@ overflow:scroll !important;
 }
 
 .headerright {
-    display: inline-flex;
+    display:inline-flex;
     float: right;
     padding: 7px 14px 0 0;
 }
@@ -208,4 +208,14 @@ overflow:scroll !important;
     margin-top: -1px !important;
     padding: 5px !important;
     z-index: 9999999 !important;
+}
+.kanbanBoard
+{
+     /*background-color: #F7DE55 !important;*/
+    border: 1px solid #000000 !important;
+    padding: 5px !important;
+    min-height: 555px !important;
+    float:left !important;
+    overflow-x:scroll; overflow-y:hidden;height:600px;
+     width: 100%;
 }

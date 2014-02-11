@@ -1,0 +1,58 @@
+﻿@model PMTool.Models.Project
+
+@{
+    ViewBag.Title = "Edit | Project";
+}
+
+
+
+
+<div class="pagetitle">
+    <h1>Project Status Edit
+    </h1>
+    <span>Edit Project below....</span>
+</div>
+     @using (Ajax.BeginForm("EditStatus", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard" }))
+ {
+    @Html.ValidationSummary(true)
+     
+
+    @Html.HiddenFor(model => model.ProjectID)
+    @Html.HiddenFor(model => model.CreatedBy)
+    @Html.HiddenFor(model => model.CreateDate)
+
+    <table class="table table-bordered table-invoice">
+        <tbody>
+
+            <tr>
+                <td>Status
+                </td>
+                <td>
+                    @Html.HiddenFor(model => model.allStatus, new { @id = "hdnStatus" })
+                    <input type="text" id="itemText" value="@ViewBag.CurrentStatus" placeholder="Add Status" />
+                    <button id="btn2" class="btn">+  </button>
+                    <input type="hidden" id="hdnCurrentStatus" value="@ViewBag.CurrentStatus" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+<script>
+    jQuery(document).ready(function () {
+        jQuery("#btn2").click(function () {
+            //if (jQuery("#hdnStatus").val() != "") {
+            //    jQuery("#hdnStatus").val(jQuery("#hdnStatus").val() + "," + jQuery("#itemText").val());
+            //}
+            //else {
+            //    jQuery("#hdnStatus").val(jQuery("#itemText").val());
+            //}
+            if (jQuery("#hdnStatus").val() != "") {
+                var value = jQuery("#hdnStatus").val();
+                value = value.replace(jQuery("#hdnCurrentStatus").val(), jQuery("#itemText").val());
+                // can then use it as
+                jQuery("#hdnStatus").val(value);
+            }
+        });
+    });
+</script>

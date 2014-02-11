@@ -785,6 +785,68 @@ namespace PMTool.Controllers
             return PartialView("_Kanban", taskList);
         }
 
+        public PartialViewResult EditStatus(string status,long projectID)
+        {
+            Project project = unitOfWork.ProjectRepository.Find(projectID);
+            if (string.IsNullOrEmpty(project.allStatus))
+            {
+                project.allStatus = string.Empty;
+            }
+            ViewBag.CurrentStatus = status.Replace("_"," ");
+            return PartialView(project);
+        }
+
+        [HttpPost]
+        public PartialViewResult EditStatus(Project project)
+        {
+            string newlyaddedStatus = "";
+            string previousStatus = "";
+            Project projectOld = unitOfWork.ProjectRepository.Find(project.ProjectID);
+
+            List<string> oldStatus = projectOld.allStatus.Split(',').ToList();
+            List<string> newStatus = project.allStatus.Split(',').ToList();
+            int i = 0;
+            foreach (string item in newStatus)
+            {
+                if (!oldStatus.Contains(item))
+                {
+
+                    newlyaddedStatus = item;
+                    previousStatus = oldStatus[i];
+                    break;
+                }
+                i++;
+            }
+            List<Task> taskList = new List<Task>();
+            try
+            {
+                projectOld.allStatus = project.allStatus;
+                unitOfWork.ProjectRepository.InsertOrUpdate(projectOld);
+                unitOfWork.Save();
+                
+                ViewBag.CurrentProject = projectOld;
+                List<string> statusList = new List<string>();
+                if (!string.IsNullOrEmpty(project.allStatus))
+                {
+                    statusList = project.allStatus.Split(',').ToList();
+                }
+                ViewBag.AllStatus = statusList;
+                taskList = unitOfWork.TaskRepository.ByProjectAndStatusIncluding(project.ProjectID, previousStatus, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+                foreach (Task task in taskList)
+                {
+                    task.Status = newlyaddedStatus;
+                    unitOfWork.Save();
+                }
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(project.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            }
+            catch
+            {
+                // return View(projectOld);
+            }
+            //return RedirectToAction("Kanban", "Tasks", new { @ProjectID = project.ProjectID });
+            return PartialView("_Kanban", taskList);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
