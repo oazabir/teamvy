@@ -1,0 +1,160 @@
+﻿@model IEnumerable<PMTool.Models.Project>
+
+@{
+    ViewBag.Title = "Index | Project";
+}
+@if (TempData["Message"]!=null)
+{
+<div class="alert alert-info">
+    <button class="close" data-dismiss="alert" type="button">×</button>
+    <strong>Warning!</strong>
+    @TempData["Message"]
+</div>
+}
+
+<div class="pagetitle">
+    <h1>Project List</h1>
+    <span>List of Projects....</span>
+</div>
+
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @title = "Add Project", @class = "btn btn-primary" })
+</p>
+<table class="table table-bordered" id="dyntable">
+    <thead>
+        <tr>
+            <th>Project Name
+            </th>
+           @* <th>Is Locked</th>*@
+
+            <th>Is Active
+            </th>
+            <th>Add Tasks
+            </th>
+            <th>Show Tasks
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+              @*  <td>
+                   @Html.DisplayTextFor(_ =>item.IsLocked).ToString()
+                </td>*@
+
+                <td>
+                    @Html.DisplayTextFor(_ => item.IsActive).ToString()
+                </td>
+                <td>
+                    @Html.ActionLink("Add Tasks", "Create","Tasks", new { ProjectID = item.ProjectID }, new { @title = "Create Tasks" })
+                </td>
+                <td>
+                    @Html.ActionLink("Show Tasks", "ProjectTasks","Tasks", new { ProjectID = item.ProjectID }, new { @title = "Show Tasks" })
+                </td>
+                <td align="center">
+                    @Html.ActionLink(" ", "Edit", new { id = item.ProjectID }, new { @class = "icon-edit", @title = "Edit" })
+                    |
+                    @Html.ActionLink(" ", "Details", new { id = item.ProjectID }, new { @class = "icon-list-alt", @title = "Details" })
+                    |
+                    @Html.ActionLink(" ", "Delete", new { id = item.ProjectID }, new { @class = "icon-trash", @title = "Delete" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@*@model IEnumerable<PMTool.Models.Project>
+
+@{
+    ViewBag.Title = "OwnProjects";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>OwnProjects</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsLocked)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifieddBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModificationDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ActionDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.allStatus)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsLocked)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsActive)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifieddBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreateDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModificationDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ActionDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.allStatus)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ProjectID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ProjectID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ProjectID })
+        </td>
+    </tr>
+}
+
+</table>*@

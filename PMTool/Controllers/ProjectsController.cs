@@ -24,6 +24,14 @@ namespace PMTool.Controllers
             return View(unitOfWork.ProjectRepository.AllbyUserIncluding((Guid)Membership.GetUser(User.Identity.Name).ProviderUserKey, project => project.Users).ToList());
         }
 
+
+        public ViewResult OwnProjects()
+        {
+            TempData["Message"] = TempData["Message"];
+            return View(unitOfWork.ProjectRepository.AllbyOwnerIncluding((Guid)Membership.GetUser(User.Identity.Name).ProviderUserKey, project => project.Users).ToList());
+        }
+
+
         //
         // GET: /Projects/Details/5
 

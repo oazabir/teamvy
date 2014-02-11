@@ -10,7 +10,6 @@
 
 
 
-
 <div class="pagetitle">
     <h1>Task List</h1>
     <span>@(((PMTool.Models.Project)ViewBag.CurrentProject).Name)  Tasks....</span>
@@ -19,20 +18,24 @@
 
 <p>
     @Html.ActionLink("Create New", "Create", new { @ProjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID }, new { @title = "Add Task", @class = "btn btn-primary" })
-||
+    ||
     @Html.ActionLink("View Kanban", "Kanban", new { @ProjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID }, new { @title = "View Kanban", @class = "btn btn-inverse" })
 </p>
 <table class="table table-bordered" id="dyntable">
     <thead>
         <tr>
+
+            <th>Task Title
+            </th>
             <th>Project Name
             </th>
-            <th>Title
-            </th>
-            <th>Description</th>
+            @*            <th>Description</th>*@
+            <th>Start Date</th>
+            <th>End Date</th>
             <th>Sub Tasks
             </th>
             <th>Add Sub Task</th>
+            <th>Created by</th>
             <th></th>
         </tr>
     </thead>
@@ -40,15 +43,24 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @item.Project.Name
-                </td>
+
                 <td>
                     @Html.DisplayTextFor(_ => item.Title).ToString()
                 </td>
                 <td>
-                    @Html.DisplayTextFor(_ => item.Description).ToString()
+                    @item.Project.Name
                 </td>
+                @*       <td>
+                    @Html.DisplayTextFor(_ => item.Description).ToString()
+                </td>*@
+                <td>
+                    @item.StartDate.ToString("dd/MM/yyyy")
+                </td>
+
+                <td>
+                    @item.EndDate.ToString("dd/MM/yyyy")
+                </td>
+
                 <td>
                     @if (item.ChildTask.Count > 0)
                     {
@@ -77,6 +89,10 @@
                 <td>
                     @Html.ActionLink("Add SubTask", "CreateSubTask", new { ProjectID = item.ProjectID, TaskID = item.TaskID }, new { @title = "Add SubTask" })
                 </td>
+                <td>
+
+                    @Html.DisplayTextFor(_ => item.CreatedByUser.FirstName).ToString()
+                </td>
                 <td align="center">
                     @Html.ActionLink(" ", "Edit", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
                     |
@@ -91,45 +107,43 @@
 
 
 <script type="text/javascript">
-		
-		function onAddTag(tag) {
-			alert("Added a tag: " + tag);
-		}
-		function onRemoveTag(tag) {
-			alert("Removed a tag: " + tag);
-		}
-		
-		function onChangeTag(input,tag) {
-			alert("Changed a tag: " + tag);
-		}
-		
-		jQuery(function() {
 
-			jQuery('#tags_1').tagsInput({width:'auto'});
-			jQuery('#tags_2').tagsInput({
-				width: 'auto',
-				onChange: function(elem, elem_tags)
-				{
-					var languages = ['php','ruby','javascript'];
-					jQuery('.tag', elem_tags).each(function()
-					{
-						if(jQuery(this).text().search(new RegExp('\\b(' + languages.join('|') + ')\\b')) >= 0)
-							jQuery(this).css('background-color', 'yellow');
-					});
-				}
-			});
-			jQuery('#tags_3').tagsInput({
-				width: 'auto',
+    function onAddTag(tag) {
+        alert("Added a tag: " + tag);
+    }
+    function onRemoveTag(tag) {
+        alert("Removed a tag: " + tag);
+    }
 
-				//autocomplete_url:'test/fake_plaintext_endpoint.html' //jquery.autocomplete (not jquery ui)
-				autocomplete_url:'test/fake_json_endpoint.html' // jquery ui autocomplete requires a json endpoint
-			});
-			
+    function onChangeTag(input, tag) {
+        alert("Changed a tag: " + tag);
+    }
 
-// Uncomment this line to see the callback functions in action
-//			jQuery('input.tags').tagsInput({onAddTag:onAddTag,onRemoveTag:onRemoveTag,onChange: onChangeTag});		
+    jQuery(function () {
 
-// Uncomment this line to see an input with no interface for adding new tags.
-//			jQuery('input.tags').tagsInput({interactive:false});
-		});
-    </script>
+        jQuery('#tags_1').tagsInput({ width: 'auto' });
+        jQuery('#tags_2').tagsInput({
+            width: 'auto',
+            onChange: function (elem, elem_tags) {
+                var languages = ['php', 'ruby', 'javascript'];
+                jQuery('.tag', elem_tags).each(function () {
+                    if (jQuery(this).text().search(new RegExp('\\b(' + languages.join('|') + ')\\b')) >= 0)
+                        jQuery(this).css('background-color', 'yellow');
+                });
+            }
+        });
+        jQuery('#tags_3').tagsInput({
+            width: 'auto',
+
+            //autocomplete_url:'test/fake_plaintext_endpoint.html' //jquery.autocomplete (not jquery ui)
+            autocomplete_url: 'test/fake_json_endpoint.html' // jquery ui autocomplete requires a json endpoint
+        });
+
+
+        // Uncomment this line to see the callback functions in action
+        //			jQuery('input.tags').tagsInput({onAddTag:onAddTag,onRemoveTag:onRemoveTag,onChange: onChangeTag});		
+
+        // Uncomment this line to see an input with no interface for adding new tags.
+        //			jQuery('input.tags').tagsInput({interactive:false});
+    });
+</script>

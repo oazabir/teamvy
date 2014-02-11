@@ -33,6 +33,11 @@ namespace PMTool.Controllers
             //If this project is created by the current user. Then he can see all task.
             if (project.CreatedBy == user.UserId) 
                 taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+
+            //If this project is owned by the current user. Then he can see all task.
+            else if (project.ProjectOwners.Contains(user))
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+
             else
                 taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID,user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
             ViewBag.CurrentProject = project;
@@ -366,7 +371,8 @@ namespace PMTool.Controllers
             task.SelectedFollowedUsers = task.Followers.Select(u => u.UserId.ToString()).ToList();
             task.SelectedLabels = task.Labels.Select(u => u.LabelID.ToString()).ToList();
             List<string> statusList = new List<string>();
-            statusList.Add( task.Status.ToString());
+            if(task.Status != null)
+                statusList.Add( task.Status.ToString());
             List<SelectListItem> allLabels = GetAllLabel();
             ViewBag.PossibleLabels = allLabels;
 

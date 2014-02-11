@@ -22,7 +22,7 @@
         </tr>
         <tr>
             <td class="width30">
-                Title
+               Task Title
             </td>
             <td>
                 @Html.DisplayTextFor(_ => Model.Title).ToString()
@@ -34,6 +34,46 @@
             </td>
             <td>
                 @Html.DisplayTextFor(_ => Model.Description).ToString()
+            </td>
+        </tr>
+        <tr>
+            <td class="width30">
+                Start Date
+            </td>
+            <td>
+                @Model.StartDate.ToString("dd/MM/yyyy")
+               @* @Html.DisplayTextFor(_ => Model.StartDate).ToString()*@
+            </td>
+        </tr>
+
+        <tr>
+            <td class="width30">
+                End Date
+            </td>
+            <td>
+                @Model.EndDate.ToString("dd/MM/yyyy")
+                @*@Html.DisplayTextFor(_ => Model.EndDate).ToString()*@
+            </td>
+        </tr>
+         <tr>
+            <td class="width30">
+                Created By
+            </td>
+            <td>
+                @Html.DisplayTextFor(_ => Model.CreatedByUser.FirstName).ToString()
+            </td>
+        </tr>
+         <tr>
+            <td class="width30">
+                Assign To
+            </td>
+            <td>
+                @foreach (User user in Model.Users)
+                {
+   
+                    <span>@user.FirstName,</span>
+                }
+                @*@Html.DisplayTextFor(_ => Model.CreatedByUser.FirstName).ToString()*@
             </td>
         </tr>
     </tbody>
