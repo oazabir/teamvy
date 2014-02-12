@@ -107,7 +107,7 @@
         <input type="text" id="itemText" value="" placeholder="Add Status" />
         <button id="btn2" class="btn">+  </button>
         <div id="items" class="tagsinput">
-            @{
+            @*@{
                     if (Model.allStatus != null)
                     {
                         List<string> statuses = Model.allStatus.Split(',').ToList();
@@ -122,8 +122,21 @@
                         }
                     }
                 }
+            *@
+
+            @{
+                if (Model.ProjectColumns != null)
+                {
+                    foreach (PMTool.Models.ProjectColumn col in Model.ProjectColumns)
+                    {
+                        <span id="@col.ProjectColumnID" class="tag">@col.Name
+                              <a title="Removing Status" onclick="removeitbyID('@col.ProjectColumnID','@col.Name')">x</a>
+                        </span>
+                    }
+                }
+                }
         </div>
-         @Html.HiddenFor(model => model.allStatus, new{@id="hdnStatus" })
+         @Html.HiddenFor(model => model.allStatus, new { @id = "hdnStatus" })
     </td>
 </tr>
 <script>
@@ -132,7 +145,7 @@
             var id = jQuery("#items").children().length;
             id = id + 1;
             if (jQuery("#itemText").val() != "") {
-                jQuery("#items").append("<span class='tag' " + " id=" + "'" + jQuery("#itemText").val() + "'" + ">" + jQuery("#itemText").val() + "&nbsp;&nbsp;<a    onclick='removeit(" + jQuery("#itemText").val() + ")' title='Removing tag'>x</a></span>");
+                jQuery("#items").append("<span class='tag' " + " id=" + "'" + id + "'" + ">" + jQuery("#itemText").val() + "&nbsp;&nbsp;<a    onclick='removeit(" + id + ",\"" + jQuery("#itemText").val() + "\")' title='Removing tag'>x</a></span>");
 
                 //jQuery("#allStatus").val(jQuery("#allStatus").val() + jQuery("#itemText").val() + ",");
                 if (jQuery("#hdnStatus").val() != "") {
@@ -148,19 +161,13 @@
         });
     });
 
-    function removeit(id) {
+    function removeit(id,text) {
         var val = jQuery("#hdnStatus").val();
         var newVal = "";
-        var replaceStr = "";
-        if (val.indexOf(id.id + ",") == -1) {
-            replaceStr = "," + id.id;
-            newVal = val.replace(replaceStr, "");
-        }
-        else {
-            replaceStr = id.id + ","
-            newVal = val.replace(replaceStr, "");
-        }
-        id.remove();
+        var replaceStr = text;
+        
+        newVal = val.replace(replaceStr, "");
+        jQuery("#" + id).hide();
         jQuery("#hdnStatus").val(newVal);
     }
 </script>
@@ -168,18 +175,13 @@
 
 <script type="text/javascript">
 
-    function removeitbyID(id) {
+    function removeitbyID(id,name) {
         var val = jQuery("#hdnStatus").val();
         var newVal = "";
-        var replaceStr = "";
-        if (val.indexOf(id + ",") == -1) {
-            replaceStr = "," + id;
-            newVal = val.replace(replaceStr, "");
-        }
-        else {
-            replaceStr = id + ","
-            newVal = val.replace(replaceStr, "");
-        }
+        var replaceStr = name;
+        
+
+        newVal = val.replace(replaceStr, "");
         jQuery("#" + id).hide();
         jQuery("#hdnStatus").val(newVal);
     }

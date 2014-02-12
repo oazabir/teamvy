@@ -112,6 +112,21 @@ namespace PMTool.Repository
             }
         }
 
+        private ProjectColumnRepository _projectColumnRepository;
+
+        public ProjectColumnRepository ProjectColumnRepository
+        {
+            get
+            {
+
+                if (this._projectColumnRepository == null)
+                {
+                    this._projectColumnRepository = new ProjectColumnRepository(context);
+                }
+                return _projectColumnRepository;
+            }
+        }
+
         public void Save()
         {
             context.SaveChanges();

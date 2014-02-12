@@ -1,4 +1,4 @@
-@model PMTool.Models.Project
+@model PMTool.Models.ProjectColumn
 
 @{
     ViewBag.Title = "Edit | Project";
@@ -18,8 +18,6 @@
      
 
     @Html.HiddenFor(model => model.ProjectID)
-    @Html.HiddenFor(model => model.CreatedBy)
-    @Html.HiddenFor(model => model.CreateDate)
 
     <table class="table table-bordered table-invoice">
         <tbody>
@@ -28,8 +26,10 @@
                 <td>Status
                 </td>
                 <td>
-                    @Html.HiddenFor(model => model.allStatus, new { @id = "hdnStatus" })
-                    <input type="text" id="itemText" value="" placeholder="Add Status" />
+                    @*<input type="text" id="itemText" value="@ViewBag.CurrentStatus" placeholder="Add Status" />
+                    <button id="btn2" class="btn">+  </button>
+                    <input type="hidden" id="hdnCurrentStatus" value="@ViewBag.CurrentStatus" />*@
+                    @Html.TextBoxFor(model => model.Name)
                     <button id="btn2" class="btn">+  </button>
                 </td>
             </tr>
@@ -37,7 +37,7 @@
     </table>
 }
 
-<script>
+<@*script>
     jQuery(document).ready(function () {
         jQuery("#btn2").click(function () {
             if (jQuery("#hdnStatus").val() != "") {
@@ -48,4 +48,4 @@
             }
         });
     });
-</script>
+</script>*@

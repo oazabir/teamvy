@@ -107,7 +107,7 @@
 
         jQuery.ajax({
             url: url,
-            data: { status: ststus.id, projectID: projectID },
+            data: { status: ststus, projectID: projectID },
             cache: false,
             success: function (data) {
                 jQuery('#popupcontainerEditStatus').html(data);

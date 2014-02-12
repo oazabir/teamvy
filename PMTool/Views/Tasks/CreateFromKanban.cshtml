@@ -187,17 +187,17 @@
                 </td>
             </tr>
 
+
             <tr>
                 <td>Status
                 </td>
                 <td>
-                    <select id="Status" name="Status">
-                        <option value="">Choose...</option>
-                        @foreach (SelectListItem item in (IEnumerable<SelectListItem>)ViewBag.PossibleTaskStatus)
-                        {
-                            <option value="@item.Value" selected="@item.Selected">@item.Text</option>
-                        }
-                    </select>
+                    @Html.DropDownListFor(model => model.ProjectColumnID, ((IEnumerable<PMTool.Models.ProjectColumn>)ViewBag.PossibleTaskStatus).Select(option => new SelectListItem
+                       {
+                           Text = (option == null ? "None" : option.Name),
+                           Value = option.ProjectColumnID.ToString(),
+                           Selected = (Model != null) && (option.ProjectColumnID == Model.ProjectColumnID)
+                       }), "Choose...")
                 </td>
             </tr>
             <tr>
