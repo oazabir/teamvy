@@ -12,7 +12,7 @@
     </h1>
     <span>Edit Project below....</span>
 </div>
-     @using (Ajax.BeginForm("CreateStatus", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard" }))
+     @using (Ajax.BeginForm("CreateStatus", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard", OnBegin = "Loading()" }))
  {
     @Html.ValidationSummary(true)
      
@@ -37,15 +37,8 @@
     </table>
 }
 
-<@*script>
-    jQuery(document).ready(function () {
-        jQuery("#btn2").click(function () {
-            if (jQuery("#hdnStatus").val() != "") {
-                jQuery("#hdnStatus").val(jQuery("#hdnStatus").val() + "," + jQuery("#itemText").val());
-            }
-            else {
-                jQuery("#hdnStatus").val(jQuery("#itemText").val());
-            }
-        });
-    });
-</script>*@
+<script>
+    function Loading() {
+        alert("Loading....");
+    }
+</script>
