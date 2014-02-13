@@ -45,7 +45,7 @@
     <div id='popupcontainer'>
     </div>
 </div>
-<div id='ModalpopupProject' data-url='@Url.Action("CreateStatus", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+<div id='ModalpopupProject' data-url='@Url.Action("CreateStatus", "Tasks")' style="width:400px !important;height:160px !important;" class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
     <div id='popupcontainerProject'>
     </div>
 </div>
@@ -116,21 +116,4 @@
         });
         return false;
     }
-    @*function RemoveStatusFormKanban(id,projectID) {
-        jQuery.ajax({
-            url: '@Url.Action("RemoveStatusFormKanban", "Projects")',
-            data: { status: id.id , projectID: projectID },
-            type: 'POST',
-            cache: false,
-            success: function (data) {
-                jQuery(id).hide();
-                jQuery.jGrowl('Column Removed', { life: 5000 });
-                //window.location.reload(true);
-            },
-            error: function () {
-                jQuery(id).show();
-                jQuery.jGrowl('somethig is wrong', { life: 5000 });
-            }
-        });
-    }*@
 </script>

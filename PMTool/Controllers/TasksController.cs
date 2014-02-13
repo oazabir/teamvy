@@ -186,6 +186,8 @@ namespace PMTool.Controllers
 
                         User createdUser = unitOfWork.UserRepository.GetUserByUserID(task.CreatedBy);
                         notification.Title = createdUser.FirstName + " " + createdUser.LastName + phrase + task.Title;
+
+                       
                     }
                     else
                     {
@@ -202,13 +204,19 @@ namespace PMTool.Controllers
                         }
                         else
                         {
+                            string status = "";
                             if (!isSubTask)
                             {
-                                phrase = string.Format(" Has changed the task status to {0} --",task.Status.ToString());
+                                if (task.ProjectColumnID != null)
+                                {
+                                    ProjectColumn col = unitOfWork.ProjectColumnRepository.Find(Convert.ToInt64(task.ProjectColumnID));
+                                    status = col.Name;
+                                }
+                                phrase = string.Format(" Has changed the task status to {0} --", status);
                             }
                             else
                             {
-                                phrase = string.Format(" Has changed the subtask status to {0} --",task.Status.ToString());
+                                phrase = string.Format(" Has changed the subtask status to {0} --", status);
                             }
                         }
                         User modifiedUser = unitOfWork.UserRepository.GetUserByUserID(task.ModifieddBy);

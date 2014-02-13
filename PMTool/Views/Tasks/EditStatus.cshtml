@@ -12,7 +12,7 @@
     </h1>
     <span>Edit Project below....</span>
 </div>
-     @using (Ajax.BeginForm("EditStatus", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard" }))
+     @using (Ajax.BeginForm("EditStatus", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard" ,OnBegin = "Loading()",OnComplete="Unload()" }))
  {
     @Html.ValidationSummary(true)
      

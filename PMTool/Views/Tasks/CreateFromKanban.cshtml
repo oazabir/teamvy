@@ -19,7 +19,7 @@
     </h1>
     <span>Edit Task below....</span>
 </div>
-@using (Ajax.BeginForm("CreateFromKanban", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard" }, new { id="CreateTask"}))
+@using (Ajax.BeginForm("CreateFromKanban", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard", OnBegin = "Loading()", OnComplete = "Unload()" }, new { id = "CreateTask" }))
 {
     @Html.ValidationSummary(true)
      

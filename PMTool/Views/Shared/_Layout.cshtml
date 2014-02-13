@@ -239,3 +239,17 @@
 </div>
 
 
+<script>
+    function Loading() {
+        jQuery("#ModalLoading").modal('show');
+    }
+</script>
+
+<script>
+    function Unload() {
+        jQuery("#ModalLoading").modal('hide');
+    }
+</script>
+<div id='ModalLoading' class="modal hide fade" tabindex="-1" style="width:50px!important;height:50px!important;overflow:hidden!important;" role="dialog"  aria-hidden="true">
+    <img src="~/Content/themes/site/img/loaders/loader19.gif" /><br />Loading....
+</div>
