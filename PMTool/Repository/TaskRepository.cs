@@ -52,7 +52,7 @@ namespace PMTool.Repository
             {
                 task.ChildTask = context.Tasks.Where(t => t.ParentTaskId == task.TaskID).ToList();
                 task.CreatedByUser = context.Users.Where(t => t.UserId == task.CreatedBy).FirstOrDefault();
-                task.ProjectColumn = context.ProjectColumns.Where(t => t.ProjectColumnID == task.ProjectColumnID).FirstOrDefault();
+                task.ProjectStatus = context.ProjectStatuses.Where(t => t.ProjectStatusID == task.ProjectStatusID).FirstOrDefault();
             }
             return query;
         }
@@ -110,7 +110,7 @@ namespace PMTool.Repository
             //return 
             objTask = context.Tasks.Where(t => t.TaskID == id).Include(task => task.Users).Include(task => task.Followers).Include(task => task.CreatedByUser).FirstOrDefault();
             objTask.CreatedByUser = context.Users.Where(t => t.UserId == objTask.CreatedBy).FirstOrDefault();
-            objTask.ProjectColumn = context.ProjectColumns.Where(t => t.ProjectColumnID == objTask.ProjectColumnID).FirstOrDefault();
+            objTask.ProjectStatus = context.ProjectStatuses.Where(t => t.ProjectStatusID == objTask.ProjectStatusID).FirstOrDefault();
 
             //Task tasks = new Task();
             //tasks = context.Tasks.Where(t => t.TaskID == id).Include(task => tasks.Users).Include(task => task.Followers).Include(task => task.CreatedByUser).FirstOrDefault();
