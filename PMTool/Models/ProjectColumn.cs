@@ -7,10 +7,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PMTool.Models
 {
-    public class ProjectColumn
+    public class ProjectStatus
     {
         [Required, Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long ProjectColumnID { get; set; }
+        public long ProjectStatusID { get; set; }
 
         [Required]
         [Display(Name = "Project Name")]

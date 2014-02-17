@@ -89,13 +89,13 @@ namespace PMTool.Models
 
 
         [Display(Name = "Status")]
-        public long? ProjectColumnID { get; set; }
+        public long? ProjectStatusID { get; set; }
 
 
         public  string allStatus { get; set; }
 
 
-        public virtual ProjectColumn ProjectColumn { get; set; }
+        public virtual ProjectStatus ProjectStatus { get; set; }
 
         [Required]
         public Guid CreatedBy { get; set; }

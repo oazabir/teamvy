@@ -9,62 +9,62 @@ using PMTool.Repository;
 
 namespace PMTool.Models
 { 
-    public class ProjectColumnRepository : IProjectColumnRepository
+    public class ProjectStatusRepository : IProjectStatusRepository
     {
         PMToolContext context = new PMToolContext();
         
-          public  ProjectColumnRepository()
+          public  ProjectStatusRepository()
             : this(new PMToolContext())
         {
             
         }
-          public ProjectColumnRepository(PMToolContext context)
+          public ProjectStatusRepository(PMToolContext context)
         {
             
             this.context = context;
         }
 
-        public IQueryable<ProjectColumn> All
+          public IQueryable<ProjectStatus> All
         {
-            get { return context.ProjectColumns; }
+            get { return context.ProjectStatuses; }
         }
 
-        public IQueryable<ProjectColumn> AllIncluding(params Expression<Func<ProjectColumn, object>>[] includeProperties)
+          public IQueryable<ProjectStatus> AllIncluding(params Expression<Func<ProjectStatus, object>>[] includeProperties)
         {
-            IQueryable<ProjectColumn> query = context.ProjectColumns;
+            IQueryable<ProjectStatus> query = context.ProjectStatuses;
             foreach (var includeProperty in includeProperties) {
                 query = query.Include(includeProperty);
             }
             return query;
         }
 
-        public ProjectColumn Find(long id)
+          public ProjectStatus Find(long id)
         {
-            return context.ProjectColumns.Find(id);
+            return context.ProjectStatuses.Find(id);
         }
 
-        public void InsertOrUpdate(ProjectColumn projectcolumn)
+          public void InsertOrUpdate(ProjectStatus ProjectStatus)
         {
-            if (projectcolumn.ProjectColumnID == default(long)) {
+            if (ProjectStatus.ProjectStatusID == default(long)) {
                 // New entity
-                context.ProjectColumns.Add(projectcolumn);
+                context.ProjectStatuses.Add(ProjectStatus);
             } else {
                 // Existing entity
-                context.Entry(projectcolumn).State = System.Data.Entity.EntityState.Modified;
+                context.Entry(ProjectStatus).State = System.Data.Entity.EntityState.Modified;
             }
         }
 
         public void Delete(long id)
         {
-            var projectcolumn = context.ProjectColumns.Find(id);
-            context.ProjectColumns.Remove(projectcolumn);
+            var ProjectStatus = context.ProjectStatuses.Find(id);
+            context.ProjectStatuses.Remove(ProjectStatus);
         }
 
 
         public void DeletebyProjectID(long ProjectID)
         {
-            var projectcolumn = context.ProjectColumns.Where(p=>p.ProjectID==ProjectID).ToList();
-             context.ProjectColumns.RemoveRange(projectcolumn);
+            var ProjectStatus = context.ProjectStatuses.Where(p => p.ProjectID == ProjectID).ToList();
+            context.ProjectStatuses.RemoveRange(ProjectStatus);
         }
 
         public void Save()
@@ -79,25 +79,25 @@ namespace PMTool.Models
 
         public void DeleteByProjectIDAndColID(long status, long projectID)
         {
-            var projectcolumn = context.ProjectColumns.Where(p=>p.ProjectColumnID==status && p.ProjectID==projectID).FirstOrDefault();
-            context.ProjectColumns.Remove(projectcolumn); 
+            var ProjectStatus = context.ProjectStatuses.Where(p => p.ProjectStatusID == status && p.ProjectID == projectID).FirstOrDefault();
+            context.ProjectStatuses.Remove(ProjectStatus); 
         }
 
-        public ProjectColumn FindbyProjectIDAndProjectColumnID(long projectID, long status)
+        public ProjectStatus FindbyProjectIDAndProjectStatusID(long projectID, long status)
         {
-            return context.ProjectColumns.Where(p => p.ProjectColumnID == status && p.ProjectID == projectID).FirstOrDefault();
+            return context.ProjectStatuses.Where(p => p.ProjectStatusID == status && p.ProjectID == projectID).FirstOrDefault();
         }
     }
 
-    public interface IProjectColumnRepository : IDisposable
+    public interface IProjectStatusRepository : IDisposable
     {
-        IQueryable<ProjectColumn> All { get; }
-        IQueryable<ProjectColumn> AllIncluding(params Expression<Func<ProjectColumn, object>>[] includeProperties);
-        ProjectColumn Find(long id);
-        void InsertOrUpdate(ProjectColumn projectcolumn);
+        IQueryable<ProjectStatus> All { get; }
+        IQueryable<ProjectStatus> AllIncluding(params Expression<Func<ProjectStatus, object>>[] includeProperties);
+        ProjectStatus Find(long id);
+        void InsertOrUpdate(ProjectStatus ProjectStatus);
         void Delete(long id);
         void DeleteByProjectIDAndColID(long status, long projectID);
-        ProjectColumn FindbyProjectIDAndProjectColumnID(long projectID, long status);
+        ProjectStatus FindbyProjectIDAndProjectStatusID(long projectID, long status);
         void Save();
     }
 }

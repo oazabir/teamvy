@@ -250,6 +250,10 @@
     <Compile Include="Migrations\201402170835212_taskChange2.Designer.cs">
       <DependentUpon>201402170835212_taskChange2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201402171130069_ProjectStatusChange.cs" />
+    <Compile Include="Migrations\201402171130069_ProjectStatusChange.Designer.cs">
+      <DependentUpon>201402171130069_ProjectStatusChange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\ProjectColumn.cs" />
@@ -1178,6 +1182,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201402170835212_taskChange2.resx">
       <DependentUpon>201402170835212_taskChange2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402171130069_ProjectStatusChange.resx">
+      <DependentUpon>201402171130069_ProjectStatusChange.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

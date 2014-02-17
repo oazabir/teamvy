@@ -61,16 +61,16 @@
 
 @model IEnumerable<PMTool.Models.Task>
 @{
-        List<PMTool.Models.ProjectColumn> columnList = new List<PMTool.Models.ProjectColumn>();
-        if(((PMTool.Models.Project)ViewBag.CurrentProject).ProjectColumns!=null)
+        List<PMTool.Models.ProjectStatus> columnList = new List<PMTool.Models.ProjectStatus>();
+        if(((PMTool.Models.Project)ViewBag.CurrentProject).ProjectStatuses!=null)
         {
-            columnList = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectColumns;
+            columnList = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectStatuses;
         }
         List<PMTool.Models.Task> taskList = (List<PMTool.Models.Task>)Model;
         
         <fieldset class='column' id=' '>
             <legend class="widgettitle ctitle">UnAssigned</legend>
-            @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectColumnID == null ))
+            @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectStatusID == null ))
             {
                 <div class="dragbox" id="@item.TaskID">
                         <h2>@item.Title</h2>
@@ -82,16 +82,16 @@
             }
         </fieldset>
         
-    foreach (PMTool.Models.ProjectColumn status in columnList)
+    foreach (PMTool.Models.ProjectStatus status in columnList)
         {
             long CurrentPorjectID=((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID ;
-            <fieldset class='column' id='@status.ProjectColumnID'>
+            <fieldset class='column' id='@status.ProjectStatusID'>
                 <legend class="widgettitle ctitle">@status.Name 
-                     @Ajax.ActionLink(" ", "RemoveStatusFormKanban", "Tasks", new { status = status.ProjectColumnID, projectID = CurrentPorjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard",OnBegin="return confirm('Are you suer???\\nAll tasks under this column will go to UnAssigned!!!')" }, new { @class="icon-remove",@style="float:right;"})
+                     @Ajax.ActionLink(" ", "RemoveStatusFormKanban", "Tasks", new { status = status.ProjectStatusID, projectID = CurrentPorjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard",OnBegin="return confirm('Are you suer???\\nAll tasks under this column will go to UnAssigned!!!')" }, new { @class="icon-remove",@style="float:right;"})
                     
-                    <a onclick="return ShowStatusEditForm(@status.ProjectColumnID,@CurrentPorjectID)" class="icon-edit" style="float:left"> </a>
+                    <a onclick="return ShowStatusEditForm(@status.ProjectStatusID,@CurrentPorjectID)" class="icon-edit" style="float:left"> </a>
                 </legend>
-                @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectColumnID == status.ProjectColumnID))
+                @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectStatusID == status.ProjectStatusID))
                 {
                     <div class="dragbox" id="@item.TaskID">
                         <h2>@item.Title</h2>

@@ -125,12 +125,12 @@
             *@
 
             @{
-                if (Model.ProjectColumns != null)
+                if (Model.ProjectStatuses != null)
                 {
-                    foreach (PMTool.Models.ProjectColumn col in Model.ProjectColumns)
+                    foreach (PMTool.Models.ProjectStatus col in Model.ProjectStatuses)
                     {
-                        <span id="@col.ProjectColumnID" class="tag">@col.Name
-                              <a title="Removing Status" onclick="removeitbyID('@col.ProjectColumnID','@col.Name')">x</a>
+                        <span id="@col.ProjectStatusID" class="tag">@col.Name
+                              <a title="Removing Status" onclick="removeitbyID('@col.ProjectStatusID','@col.Name')">x</a>
                         </span>
                     }
                 }
