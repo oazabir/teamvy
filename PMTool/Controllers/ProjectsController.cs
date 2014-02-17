@@ -99,7 +99,7 @@ namespace PMTool.Controllers
             project.CreateDate = DateTime.Now;
             project.ActionDate = DateTime.Now;
             project.CreatedBy = (Guid)Membership.GetUser().ProviderUserKey;
-            project.ModifieddBy = (Guid)Membership.GetUser().ProviderUserKey;
+            project.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
 
             if (ModelState.IsValid)
             {
@@ -155,7 +155,7 @@ namespace PMTool.Controllers
                     }
                     else
                     {
-                        User modifiedUser = unitOfWork.UserRepository.GetUserByUserID(project.ModifieddBy);
+                        User modifiedUser = unitOfWork.UserRepository.GetUserByUserID(project.ModifiedBy);
                         notification.Title = modifiedUser.FirstName + " " + modifiedUser.LastName + " Has modify the porject --" + project.Name;
                     }
                     notification.UserID = user.UserId;
@@ -215,7 +215,7 @@ namespace PMTool.Controllers
         {
             project.ModificationDate = DateTime.Now;
             project.ActionDate = DateTime.Now;
-            project.ModifieddBy = (Guid)Membership.GetUser().ProviderUserKey;
+            project.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
             List<User> userList = new List<User>();
             if (ModelState.IsValid)
             {

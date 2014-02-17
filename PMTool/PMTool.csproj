@@ -234,37 +234,21 @@
     <Compile Include="Membership\CodeFirstRoleProvider.cs" />
     <Compile Include="Membership\Crypto.cs" />
     <Compile Include="Membership\WebSecurity.cs" />
-    <Compile Include="Migrations\201402101112357_ProjectOwners.cs" />
-    <Compile Include="Migrations\201402101112357_ProjectOwners.Designer.cs">
-      <DependentUpon>201402101112357_ProjectOwners.cs</DependentUpon>
+    <Compile Include="Migrations\201402170744093_init.cs" />
+    <Compile Include="Migrations\201402170744093_init.Designer.cs">
+      <DependentUpon>201402170744093_init.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201402101158187_ProjectOwners1.cs" />
-    <Compile Include="Migrations\201402101158187_ProjectOwners1.Designer.cs">
-      <DependentUpon>201402101158187_ProjectOwners1.cs</DependentUpon>
+    <Compile Include="Migrations\201402170828271_projectChange.cs" />
+    <Compile Include="Migrations\201402170828271_projectChange.Designer.cs">
+      <DependentUpon>201402170828271_projectChange.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201402120700533_ProjectColumnadded.cs" />
-    <Compile Include="Migrations\201402120700533_ProjectColumnadded.Designer.cs">
-      <DependentUpon>201402120700533_ProjectColumnadded.cs</DependentUpon>
+    <Compile Include="Migrations\201402170833507_taskChange.cs" />
+    <Compile Include="Migrations\201402170833507_taskChange.Designer.cs">
+      <DependentUpon>201402170833507_taskChange.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201402120834424_ProjectColumnModified.cs" />
-    <Compile Include="Migrations\201402120834424_ProjectColumnModified.Designer.cs">
-      <DependentUpon>201402120834424_ProjectColumnModified.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201402120847338_taskModfied.cs" />
-    <Compile Include="Migrations\201402120847338_taskModfied.Designer.cs">
-      <DependentUpon>201402120847338_taskModfied.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201402120849208_taskModfied2.cs" />
-    <Compile Include="Migrations\201402120849208_taskModfied2.Designer.cs">
-      <DependentUpon>201402120849208_taskModfied2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201402120850306_taskModfied3.cs" />
-    <Compile Include="Migrations\201402120850306_taskModfied3.Designer.cs">
-      <DependentUpon>201402120850306_taskModfied3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201402121051295_taskModfied4.cs" />
-    <Compile Include="Migrations\201402121051295_taskModfied4.Designer.cs">
-      <DependentUpon>201402121051295_taskModfied4.cs</DependentUpon>
+    <Compile Include="Migrations\201402170835212_taskChange2.cs" />
+    <Compile Include="Migrations\201402170835212_taskChange2.Designer.cs">
+      <DependentUpon>201402170835212_taskChange2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
@@ -1183,29 +1167,17 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201402101112357_ProjectOwners.resx">
-      <DependentUpon>201402101112357_ProjectOwners.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201402170744093_init.resx">
+      <DependentUpon>201402170744093_init.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402101158187_ProjectOwners1.resx">
-      <DependentUpon>201402101158187_ProjectOwners1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201402170828271_projectChange.resx">
+      <DependentUpon>201402170828271_projectChange.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402120700533_ProjectColumnadded.resx">
-      <DependentUpon>201402120700533_ProjectColumnadded.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201402170833507_taskChange.resx">
+      <DependentUpon>201402170833507_taskChange.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402120834424_ProjectColumnModified.resx">
-      <DependentUpon>201402120834424_ProjectColumnModified.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402120847338_taskModfied.resx">
-      <DependentUpon>201402120847338_taskModfied.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402120849208_taskModfied2.resx">
-      <DependentUpon>201402120849208_taskModfied2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402120850306_taskModfied3.resx">
-      <DependentUpon>201402120850306_taskModfied3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402121051295_taskModfied4.resx">
-      <DependentUpon>201402121051295_taskModfied4.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201402170835212_taskChange2.resx">
+      <DependentUpon>201402170835212_taskChange2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

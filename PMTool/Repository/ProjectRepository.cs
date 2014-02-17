@@ -42,7 +42,7 @@ namespace PMTool.Repository
 
         public IQueryable<Project> AllbyUserIncluding(Guid userID,params Expression<Func<Project, object>>[] includeProperties)
         {
-            IQueryable<Project> query = context.Projects.Where(p => p.CreatedBy == userID);
+            IQueryable<Project> query = context.Projects.Where(p => p.CreatedBy== userID);
             foreach (var includeProperty in includeProperties)
             {
                 query = query.Include(includeProperty);

@@ -14,14 +14,14 @@ namespace PMTool.Controllers
     [Authorize]
     public class LabelsController : BaseController
     {
-        private UnitOfWork uitofWork = new UnitOfWork();
+        private UnitOfWork unitofWork = new UnitOfWork();
 
         //
         // GET: /Labels/
 
         public ViewResult Index()
         {
-            return View(uitofWork.LabelRepository.AllIncluding(label => label.Tasks).ToList());
+            return View(unitofWork.LabelRepository.AllIncluding(label => label.Tasks).ToList());
         }
 
         //
@@ -29,7 +29,7 @@ namespace PMTool.Controllers
 
         public ViewResult Details(long id)
         {
-            Label label = uitofWork.LabelRepository.Find(id);
+            Label label = unitofWork.LabelRepository.Find(id);
             return View(label);
         }
 
@@ -50,12 +50,12 @@ namespace PMTool.Controllers
             label.ModificationDate = DateTime.Now;
             label.CreateDate = DateTime.Now;
             label.ActionDate = DateTime.Now;
-            label.CreatedBy = (Guid)Membership.GetUser().ProviderUserKey;
-            label.ModifieddBy = (Guid)Membership.GetUser().ProviderUserKey;
+            label.CreatedBy =(Guid)Membership.GetUser().ProviderUserKey;
+            label.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
             if (ModelState.IsValid)
             {
-                uitofWork.LabelRepository.InsertOrUpdate(label);
-                uitofWork.Save();
+                unitofWork.LabelRepository.InsertOrUpdate(label);
+                unitofWork.Save();
                 return RedirectToAction("Index");  
             }
 
@@ -67,7 +67,7 @@ namespace PMTool.Controllers
  
         public ActionResult Edit(long id)
         {
-            Label label = uitofWork.LabelRepository.Find(id);
+            Label label = unitofWork.LabelRepository.Find(id);
             return View(label);
         }
 
@@ -79,11 +79,11 @@ namespace PMTool.Controllers
         {
             label.ModificationDate = DateTime.Now;
             label.ActionDate = DateTime.Now;
-            label.ModifieddBy = (Guid)Membership.GetUser().ProviderUserKey;
+            label.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
             if (ModelState.IsValid)
             {
-                uitofWork.LabelRepository.InsertOrUpdate(label);
-                uitofWork.Save();
+                unitofWork.LabelRepository.InsertOrUpdate(label);
+                unitofWork.Save();
                 return RedirectToAction("Index");
             }
             return View(label);
@@ -94,7 +94,7 @@ namespace PMTool.Controllers
  
         public ActionResult Delete(long id)
         {
-            Label label = uitofWork.LabelRepository.Find(id);
+            Label label = unitofWork.LabelRepository.Find(id);
             return View(label);
         }
 
@@ -104,8 +104,8 @@ namespace PMTool.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(long id)
         {
-            uitofWork.LabelRepository.Delete(id);
-            uitofWork.Save();
+            unitofWork.LabelRepository.Delete(id);
+            unitofWork.Save();
             return RedirectToAction("Index");
         }
 

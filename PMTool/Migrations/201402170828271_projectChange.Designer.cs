@@ -7,13 +7,13 @@ namespace PMTool.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.0.2-21211")]
-    public sealed partial class ProjectColumnModified : IMigrationMetadata
+    public sealed partial class projectChange : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ProjectColumnModified));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(projectChange));
         
         string IMigrationMetadata.Id
         {
-            get { return "201402120834424_ProjectColumnModified"; }
+            get { return "201402170828271_projectChange"; }
         }
         
         string IMigrationMetadata.Source

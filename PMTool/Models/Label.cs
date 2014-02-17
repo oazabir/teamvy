@@ -25,15 +25,9 @@ namespace PMTool.Models
         [Display(Name = "Label Is Active")]
         public bool IsActive { get; set; }
 
-        [Required]
-        public Guid CreatedBy { get; set; }
 
-        public virtual User CreatedByUser { get; set; }
 
-        [Required]
-        public Guid ModifieddBy { get; set; }
-
-        public virtual User ModifiedByUser { get; set; }
+        
 
         [Required]
         public DateTime CreateDate { get; set; }
@@ -45,5 +39,19 @@ namespace PMTool.Models
         public DateTime ActionDate { get; set; }
 
         public virtual List<Task> Tasks { get; set; }
+
+
+        [Required]
+        public Guid CreatedBy { get; set; }
+
+        [Required]
+        public Guid ModifiedBy { get; set; }
+
+
+        [ForeignKey("ModifiedBy")]
+        public virtual User ModifiedByUser { get; set; }
+
+        [ForeignKey("CreatedBy")]
+        public virtual User CreatedByUser { get; set; }
     }
 }

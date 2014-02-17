@@ -44,9 +44,6 @@ namespace PMTool.Models
 
         public virtual Priority Priority { get; set; }
 
-        //[Required]
-        //[Display(Name = "Project Is Locked")]
-        //public bool IsLocked { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
@@ -55,19 +52,12 @@ namespace PMTool.Models
 
         public virtual List<Task> ChildTask { get; set; }
 
+        [ForeignKey("ParentTaskId")]
         public virtual Task ParentTask { get; set; }
 
         public string Attachments { get; set; }
 
-        [Required]
-        public Guid CreatedBy { get; set; }
-
-        public virtual User CreatedByUser { get; set; }
-
-        [Required]
-        public Guid ModifieddBy { get; set; }
-
-        public virtual User ModifiedByUser { get; set; }
+        
 
         [Required]
         public DateTime CreateDate { get; set; }
@@ -85,7 +75,6 @@ namespace PMTool.Models
         public virtual List<Label> Labels { get; set; }
 
 
-        //public virtual long UserID { get; set; }
 
         public List<string> SelectedAssignedUsers { get; set; }
 
@@ -107,5 +96,18 @@ namespace PMTool.Models
 
 
         public virtual ProjectColumn ProjectColumn { get; set; }
+
+        [Required]
+        public Guid CreatedBy { get; set; }
+
+        [Required]
+        public Guid ModifiedBy { get; set; }
+
+
+        [ForeignKey("ModifiedBy")]
+        public virtual User ModifiedByUser { get; set; }
+
+        [ForeignKey("CreatedBy")]
+        public virtual User CreatedByUser { get; set; }
     }
 }

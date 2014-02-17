@@ -29,11 +29,7 @@ namespace PMTool.Models
         [Display(Name = "Project Is Active")]
         public bool IsActive { get; set; }
 
-        [Required]
-        public Guid CreatedBy { get; set; }
-
-        [Required]
-        public Guid ModifieddBy { get; set; }
+       
 
         [Required]
         public DateTime CreateDate { get; set; }
@@ -44,28 +40,35 @@ namespace PMTool.Models
         [Required]
         public DateTime ActionDate { get; set; }
 
-        public virtual User CreatedByUser { get; set; }
-        public virtual User ModifiedByUser { get; set; }
+       
 
 
         public virtual List<User> Users { get; set; }
 
-        //New added for - Project Owner
         public virtual List<User> ProjectOwners { get; set; }
         public List<string> SelectedProjectsOwners { get; set; }
 
-        //public virtual List<User> ProjectOwners { get; set; }
-        //public virtual ICollection<ProjectOwner> ProjectOwner { get; set; }
 
         public List<string> SelectedAssignedUsers { get; set; }
 
-        //New added for - Project Owner
-        //public List<string> SelectedProjectOwner { get; set; }
 
 
         public string allStatus { get; set; }
 
         public virtual List<ProjectColumn> ProjectColumns { get; set; }
+
+        [Required]
+        public Guid CreatedBy { get; set; }
+
+        [Required]
+        public Guid ModifiedBy { get; set; }
+
+
+        [ForeignKey("ModifiedBy")]
+        public virtual User ModifiedByUser { get; set; }
+
+        [ForeignKey("CreatedBy")]
+        public virtual User CreatedByUser { get; set; }
 
 
     }

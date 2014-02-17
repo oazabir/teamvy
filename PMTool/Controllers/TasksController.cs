@@ -31,7 +31,7 @@ namespace PMTool.Controllers
             User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
             Project project = unitOfWork.ProjectRepository.Find(projectID);
             //If this project is created by the current user. Then he can see all task.
-            if (project.CreatedBy == user.UserId) 
+            if (project.CreatedBy== user.UserId) 
                 taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
 
             //If this project is owned by the current user. Then he can see all task.
@@ -139,7 +139,7 @@ namespace PMTool.Controllers
         public ActionResult Create(Task task)
         {
             task.CreatedBy = (Guid)Membership.GetUser().ProviderUserKey;
-            task.ModifieddBy = (Guid)Membership.GetUser().ProviderUserKey;
+            task.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
             task.CreateDate = DateTime.Now;
             task.ModificationDate = DateTime.Now;
             task.ActionDate = DateTime.Now;
@@ -219,7 +219,7 @@ namespace PMTool.Controllers
                                 phrase = string.Format(" Has changed the subtask status to {0} --", status);
                             }
                         }
-                        User modifiedUser = unitOfWork.UserRepository.GetUserByUserID(task.ModifieddBy);
+                        User modifiedUser = unitOfWork.UserRepository.GetUserByUserID(task.ModifiedBy);
                         notification.Title = modifiedUser.FirstName + " " + modifiedUser.LastName + phrase + task.Title;
                     }
                     notification.UserID = user.UserId;
@@ -258,7 +258,7 @@ namespace PMTool.Controllers
                         {
                             phrase = " Has modify the Subtask --";
                         }
-                        User modifiedUser = unitOfWork.UserRepository.GetUserByUserID(task.ModifieddBy);
+                        User modifiedUser = unitOfWork.UserRepository.GetUserByUserID(task.ModifiedBy);
                         notification.Title = modifiedUser.FirstName + " " + modifiedUser.LastName + phrase + task.Title;
                     }
                     notification.UserID = user.UserId;
@@ -279,7 +279,7 @@ namespace PMTool.Controllers
         {
             task.TaskID = 0;
             task.CreatedBy = (Guid)Membership.GetUser().ProviderUserKey;
-            task.ModifieddBy = (Guid)Membership.GetUser().ProviderUserKey;
+            task.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
             task.CreateDate = DateTime.Now;
             task.ModificationDate = DateTime.Now;
             task.ActionDate = DateTime.Now;
@@ -406,7 +406,7 @@ namespace PMTool.Controllers
         [HttpPost]
         public PartialViewResult EditFromKanban(Task task)
         {
-            task.ModifieddBy = (Guid)Membership.GetUser().ProviderUserKey;
+            task.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
             task.ModificationDate = DateTime.Now;
             task.ActionDate = DateTime.Now;
             if (ModelState.IsValid)
@@ -487,7 +487,7 @@ namespace PMTool.Controllers
         {
 
             task.CreatedBy = (Guid)Membership.GetUser().ProviderUserKey;
-            task.ModifieddBy = (Guid)Membership.GetUser().ProviderUserKey;
+            task.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
             task.CreateDate = DateTime.Now;
             task.ModificationDate = DateTime.Now;
             task.ActionDate = DateTime.Now;
@@ -583,7 +583,7 @@ namespace PMTool.Controllers
         [HttpPost]
         public ActionResult Edit(Task task)
         {
-            task.ModifieddBy = (Guid)Membership.GetUser().ProviderUserKey;
+            task.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
             task.ModificationDate = DateTime.Now;
             task.ActionDate = DateTime.Now;
             if (ModelState.IsValid)
