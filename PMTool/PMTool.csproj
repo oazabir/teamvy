@@ -256,11 +256,11 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\ProjectColumn.cs" />
+    <Compile Include="Models\ProjectStatus.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\EnumCollection.cs" />
     <Compile Include="Models\Label.cs" />
-    <Compile Include="Models\ProjectColumnRepository.cs" />
+    <Compile Include="Repository\ProjectStatusRepository.cs" />
     <Compile Include="Models\Search.cs" />
     <Compile Include="Repository\NotificationRepository.cs" />
     <Compile Include="Repository\LabelRepository.cs" />

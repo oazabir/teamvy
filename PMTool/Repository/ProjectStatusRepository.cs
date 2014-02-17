@@ -5,9 +5,10 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
+using PMTool.Models;
 using PMTool.Repository;
 
-namespace PMTool.Models
+namespace PMTool.Repository
 { 
     public class ProjectStatusRepository : IProjectStatusRepository
     {
