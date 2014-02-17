@@ -19,7 +19,7 @@ namespace PMTool.Controllers
 
         public ViewResult Index()
         {
-            return View(unitofWork.PriorityRepository.All);
+            return View(unitofWork.PriorityRepository.All); 
         }
 
         //
