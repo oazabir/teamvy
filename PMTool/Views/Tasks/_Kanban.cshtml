@@ -64,7 +64,7 @@
         List<PMTool.Models.ProjectStatus> columnList = new List<PMTool.Models.ProjectStatus>();
         if(((PMTool.Models.Project)ViewBag.CurrentProject).ProjectStatuses!=null)
         {
-            columnList = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectStatuses;
+            columnList = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectStatuses.OrderBy(p=>p.ProjectStatusID).ToList();
         }
         List<PMTool.Models.Task> taskList = (List<PMTool.Models.Task>)Model;
         
