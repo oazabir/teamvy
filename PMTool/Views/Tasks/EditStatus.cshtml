@@ -1,4 +1,4 @@
-﻿@model PMTool.Models.ProjectColumn
+﻿@model PMTool.Models.ProjectStatus
 
 @{
     ViewBag.Title = "Edit | Project";
@@ -18,7 +18,7 @@
      
 
     @Html.HiddenFor(model => model.ProjectID)
-    @Html.HiddenFor(model => model.ProjectColumnID)
+    @Html.HiddenFor(model => model.ProjectStatusID)
 
     <table class="table table-bordered table-invoice">
         <tbody>

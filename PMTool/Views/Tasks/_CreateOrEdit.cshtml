@@ -173,11 +173,11 @@
     <td>Status
     </td>
     <td>
-        @Html.DropDownListFor(model => model.ProjectColumnID, ((IEnumerable<PMTool.Models.ProjectColumn>)ViewBag.PossibleTaskStatus).Select(option => new SelectListItem
+        @Html.DropDownListFor(model => model.ProjectStatusID, ((IEnumerable<PMTool.Models.ProjectStatus>)ViewBag.PossibleTaskStatus).Select(option => new SelectListItem
    {
        Text = (option == null ? "None" : option.Name),
-       Value = option.ProjectColumnID.ToString(),
-       Selected = (Model != null) && (option.ProjectColumnID == Model.ProjectColumnID)
+       Value = option.ProjectStatusID.ToString(),
+       Selected = (Model != null) && (option.ProjectStatusID == Model.ProjectStatusID)
    }), "Choose...")
     </td>
 </tr>

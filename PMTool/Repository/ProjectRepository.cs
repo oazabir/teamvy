@@ -50,10 +50,10 @@ namespace PMTool.Repository
             return query;
         }
 
-        public Project FindIncludingProjectColumn(long projectID)
+        public Project FindIncludingProjectStatus(long projectID)
         {
 
-            Project project = context.Projects.Where(p => p.ProjectID == projectID).Include("ProjectColumns").FirstOrDefault();
+            Project project = context.Projects.Where(p => p.ProjectID == projectID).Include("ProjectStatuses").FirstOrDefault();
 
             return project;
         }
@@ -203,6 +203,6 @@ namespace PMTool.Repository
         void Save();
         List<Project> GetAssignedProjectByUser(User user);
         List<Project> GetListbyName(string searchParam, params Expression<Func<Project, object>>[] includeProperties);
-        Project FindIncludingProjectColumn(long projectID);
+        Project FindIncludingProjectStatus(long projectID);
     }
 }

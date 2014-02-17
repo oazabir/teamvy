@@ -58,7 +58,7 @@ namespace PMTool.Repository
 
         public IQueryable<Task> ByProjectAndStatusIncluding(long projectID,long status, params Expression<Func<Task, object>>[] includeProperties)
         {
-            IQueryable<Task> query = context.Tasks.Where(t => t.ProjectID == projectID && t.ParentTaskId == null && t.ProjectColumnID==status);
+            IQueryable<Task> query = context.Tasks.Where(t => t.ProjectID == projectID && t.ParentTaskId == null && t.ProjectStatusID==status);
             foreach (var includeProperty in includeProperties)
             {
                 query = query.Include(includeProperty);

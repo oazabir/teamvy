@@ -55,7 +55,7 @@ namespace PMTool.Models
 
         public string allStatus { get; set; }
 
-        public virtual List<ProjectColumn> ProjectColumns { get; set; }
+        public virtual List<ProjectStatus> ProjectStatuses { get; set; }
 
         [Required]
         public Guid CreatedBy { get; set; }

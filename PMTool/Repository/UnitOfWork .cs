@@ -112,18 +112,18 @@ namespace PMTool.Repository
             }
         }
 
-        private ProjectColumnRepository _projectColumnRepository;
+        private ProjectStatusRepository _ProjectStatusRepository;
 
-        public ProjectColumnRepository ProjectColumnRepository
+        public ProjectStatusRepository ProjectStatusRepository
         {
             get
             {
 
-                if (this._projectColumnRepository == null)
+                if (this._ProjectStatusRepository == null)
                 {
-                    this._projectColumnRepository = new ProjectColumnRepository(context);
+                    this._ProjectStatusRepository = new ProjectStatusRepository(context);
                 }
-                return _projectColumnRepository;
+                return _ProjectStatusRepository;
             }
         }
 

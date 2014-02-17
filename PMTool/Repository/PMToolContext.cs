@@ -27,7 +27,7 @@ namespace PMTool.Repository
 
         public DbSet<PMTool.Models.Notification> Notifications { get; set; }
 
-        public DbSet<PMTool.Models.ProjectColumn> ProjectColumns { get; set; }
+        public DbSet<PMTool.Models.ProjectStatus> ProjectStatuses { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

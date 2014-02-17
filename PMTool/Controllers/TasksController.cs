@@ -88,15 +88,15 @@ namespace PMTool.Controllers
         private void GetAllStatus(Task task)
         {
             List<SelectListItem> statusList = new List<SelectListItem>();
-            task.Project = unitOfWork.ProjectRepository.FindIncludingProjectColumn(task.ProjectID);
-            //if (task.Project.ProjectColumns!=null)
+            task.Project = unitOfWork.ProjectRepository.FindIncludingProjectStatus(task.ProjectID);
+            //if (task.Project.ProjectStatuses!=null)
             //{
-            //    foreach (ProjectColumn item in task.Project.ProjectColumns)
+            //    foreach (ProjectStatus item in task.Project.ProjectStatuses)
             //    {
             //        SelectListItem listitem = new SelectListItem();
-            //        listitem.Value = item.ProjectColumnID.ToString();
+            //        listitem.Value = item.ProjectStatusID.ToString();
             //        listitem.Text = item.Name;
-            //        if (item.ProjectColumnID == task.ProjectColumnID)
+            //        if (item.ProjectStatusID == task.ProjectStatusID)
             //        {
             //            listitem.Selected = true;
             //        }
@@ -107,7 +107,7 @@ namespace PMTool.Controllers
             //        statusList.Add(listitem);
             //    }
             //}
-            ViewBag.PossibleTaskStatus = task.Project.ProjectColumns;
+            ViewBag.PossibleTaskStatus = task.Project.ProjectStatuses;
         }
 
         //
@@ -207,9 +207,9 @@ namespace PMTool.Controllers
                             string status = "";
                             if (!isSubTask)
                             {
-                                if (task.ProjectColumnID != null)
+                                if (task.ProjectStatusID != null)
                                 {
-                                    ProjectColumn col = unitOfWork.ProjectColumnRepository.Find(Convert.ToInt64(task.ProjectColumnID));
+                                    ProjectStatus col = unitOfWork.ProjectStatusRepository.Find(Convert.ToInt64(task.ProjectStatusID));
                                     status = col.Name;
                                 }
                                 phrase = string.Format(" Has changed the task status to {0} --", status);
@@ -678,18 +678,18 @@ namespace PMTool.Controllers
                     string stat = "";
                     if (!string.IsNullOrEmpty(statusid.Trim()))
                     {
-                        if (task.ProjectColumnID != Convert.ToInt64(statusid))
+                        if (task.ProjectStatusID != Convert.ToInt64(statusid))
                         {
                             if (statusid.Trim() == "")
                             {
                                 stat = "Unassigned";
                                 task.Status = string.Empty;
-                                task.ProjectColumnID = null;
+                                task.ProjectStatusID = null;
                             }
                             else
                             {
-                                stat = unitOfWork.ProjectColumnRepository.Find(Convert.ToInt64(statusid)).Name;
-                                task.ProjectColumnID = Convert.ToInt64(statusid);
+                                stat = unitOfWork.ProjectStatusRepository.Find(Convert.ToInt64(statusid)).Name;
+                                task.ProjectStatusID = Convert.ToInt64(statusid);
                             }
                         }
                     }
@@ -697,7 +697,7 @@ namespace PMTool.Controllers
                     {
                         stat = "Unassigned";
                         task.Status = string.Empty;
-                        task.ProjectColumnID = null;
+                        task.ProjectStatusID = null;
                     }
                     unitOfWork.TaskRepository.InsertOrUpdate(task);
                     unitOfWork.Save();
@@ -722,9 +722,9 @@ namespace PMTool.Controllers
                 taskList = unitOfWork.TaskRepository.ByProjectAndStatusIncluding(projectID,status ,task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
                 foreach (Task task in taskList)
                 {
-                    task.ProjectColumnID = null;
+                    task.ProjectStatusID = null;
                 }
-                unitOfWork.ProjectColumnRepository.DeleteByProjectIDAndColID(status, projectID);
+                unitOfWork.ProjectStatusRepository.DeleteByProjectIDAndColID(status, projectID);
                 unitOfWork.Save();
                 taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
             }
@@ -740,16 +740,16 @@ namespace PMTool.Controllers
         public PartialViewResult CreateStatus(long id)
         {
 
-            ProjectColumn projectCol = new ProjectColumn();
+            ProjectStatus projectCol = new ProjectStatus();
             projectCol.ProjectID = id;
             return PartialView(projectCol);
         }
 
         [HttpPost]
-        public PartialViewResult CreateStatus(ProjectColumn projectcol)
+        public PartialViewResult CreateStatus(ProjectStatus projectcol)
         {
 
-            unitOfWork.ProjectColumnRepository.InsertOrUpdate(projectcol);
+            unitOfWork.ProjectStatusRepository.InsertOrUpdate(projectcol);
             unitOfWork.Save();
             List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectcol.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
             ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectcol.ProjectID);
@@ -782,14 +782,14 @@ namespace PMTool.Controllers
 
         public PartialViewResult EditStatus(long status,long projectID)
         {
-            ProjectColumn projectCol = unitOfWork.ProjectColumnRepository.FindbyProjectIDAndProjectColumnID(projectID,status);
+            ProjectStatus projectCol = unitOfWork.ProjectStatusRepository.FindbyProjectIDAndProjectStatusID(projectID,status);
             return PartialView(projectCol);
         }
 
         [HttpPost]
-        public PartialViewResult EditStatus(ProjectColumn projectcol)
+        public PartialViewResult EditStatus(ProjectStatus projectcol)
         {
-            unitOfWork.ProjectColumnRepository.InsertOrUpdate(projectcol);
+            unitOfWork.ProjectStatusRepository.InsertOrUpdate(projectcol);
             unitOfWork.Save();
             List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectcol.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
             ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectcol.ProjectID);
