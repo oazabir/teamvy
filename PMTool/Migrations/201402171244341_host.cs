@@ -3,7 +3,7 @@ namespace PMTool.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class init : DbMigration
+    public partial class host : DbMigration
     {
         public override void Up()
         {
@@ -68,28 +68,25 @@ namespace PMTool.Migrations
                         IsActive = c.Boolean(nullable: false),
                         ParentTaskId = c.Long(),
                         Attachments = c.String(),
-                        CreatedBy = c.Guid(nullable: false),
-                        ModifieddBy = c.Guid(nullable: false),
                         CreateDate = c.DateTime(nullable: false),
                         ModificationDate = c.DateTime(nullable: false),
                         ActionDate = c.DateTime(nullable: false),
                         Status = c.String(),
                         ProjectStatusID = c.Long(),
                         allStatus = c.String(),
-                        ParentTask_TaskID = c.Long(),
-                        CreatedByUser_UserId = c.Guid(),
-                        ModifiedByUser_UserId = c.Guid(),
+                        CreatedBy = c.Guid(nullable: false),
+                        ModifiedBy = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.TaskID)
-                .ForeignKey("dbo.Tasks", t => t.ParentTask_TaskID)
-                .ForeignKey("dbo.Users", t => t.CreatedByUser_UserId)
-                .ForeignKey("dbo.Users", t => t.ModifiedByUser_UserId)
+                .ForeignKey("dbo.Tasks", t => t.ParentTaskId)
+                .ForeignKey("dbo.Users", t => t.CreatedBy)
+                .ForeignKey("dbo.Users", t => t.ModifiedBy)
                 .ForeignKey("dbo.Priorities", t => t.PriorityID)
                 .ForeignKey("dbo.Projects", t => t.ProjectID)
-                .ForeignKey("dbo.ProjectStatuses", t => t.ProjectStatusID)
-                .Index(t => t.ParentTask_TaskID)
-                .Index(t => t.CreatedByUser_UserId)
-                .Index(t => t.ModifiedByUser_UserId)
+                .ForeignKey("dbo.ProjectStatus", t => t.ProjectStatusID)
+                .Index(t => t.ParentTaskId)
+                .Index(t => t.CreatedBy)
+                .Index(t => t.ModifiedBy)
                 .Index(t => t.PriorityID)
                 .Index(t => t.ProjectID)
                 .Index(t => t.ProjectStatusID);
@@ -117,17 +114,17 @@ namespace PMTool.Migrations
                         ModificationDate = c.DateTime(nullable: false),
                         ActionDate = c.DateTime(nullable: false),
                         allStatus = c.String(),
-                        CreatedBy_UserId = c.Guid(nullable: false),
-                        ModifiedBy_UserId = c.Guid(nullable: false),
+                        CreatedBy = c.Guid(nullable: false),
+                        ModifiedBy = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.ProjectID)
-                .ForeignKey("dbo.Users", t => t.CreatedBy_UserId)
-                .ForeignKey("dbo.Users", t => t.ModifiedBy_UserId)
-                .Index(t => t.CreatedBy_UserId)
-                .Index(t => t.ModifiedBy_UserId);
+                .ForeignKey("dbo.Users", t => t.CreatedBy)
+                .ForeignKey("dbo.Users", t => t.ModifiedBy)
+                .Index(t => t.CreatedBy)
+                .Index(t => t.ModifiedBy);
             
             CreateTable(
-                "dbo.ProjectStatuses",
+                "dbo.ProjectStatus",
                 c => new
                     {
                         ProjectStatusID = c.Long(nullable: false, identity: true),
@@ -269,23 +266,23 @@ namespace PMTool.Migrations
             DropForeignKey("dbo.RoleUsers", "Role_RoleId", "dbo.Roles");
             DropForeignKey("dbo.TaskUsers", "UserId", "dbo.Users");
             DropForeignKey("dbo.TaskUsers", "TaskId", "dbo.Tasks");
-            DropForeignKey("dbo.Tasks", "ProjectStatusID", "dbo.ProjectStatuses");
+            DropForeignKey("dbo.Tasks", "ProjectStatusID", "dbo.ProjectStatus");
             DropForeignKey("dbo.Tasks", "ProjectID", "dbo.Projects");
             DropForeignKey("dbo.ProjectUsers", "UserId", "dbo.Users");
             DropForeignKey("dbo.ProjectUsers", "ProjectId", "dbo.Projects");
+            DropForeignKey("dbo.ProjectStatus", "ProjectID", "dbo.Projects");
             DropForeignKey("dbo.ProjectOwners", "UserId", "dbo.Users");
             DropForeignKey("dbo.ProjectOwners", "ProjectID", "dbo.Projects");
-            DropForeignKey("dbo.ProjectStatuses", "ProjectID", "dbo.Projects");
-            DropForeignKey("dbo.Projects", "ModifiedBy_UserId", "dbo.Users");
-            DropForeignKey("dbo.Projects", "CreatedBy_UserId", "dbo.Users");
+            DropForeignKey("dbo.Projects", "ModifiedBy", "dbo.Users");
+            DropForeignKey("dbo.Projects", "CreatedBy", "dbo.Users");
             DropForeignKey("dbo.Tasks", "PriorityID", "dbo.Priorities");
-            DropForeignKey("dbo.Tasks", "ModifiedByUser_UserId", "dbo.Users");
+            DropForeignKey("dbo.Tasks", "ModifiedBy", "dbo.Users");
             DropForeignKey("dbo.TaskLabels", "TaskId", "dbo.Labels");
             DropForeignKey("dbo.TaskLabels", "LabelId", "dbo.Tasks");
             DropForeignKey("dbo.TaskFollowers", "TaskId", "dbo.Users");
             DropForeignKey("dbo.TaskFollowers", "UserId", "dbo.Tasks");
-            DropForeignKey("dbo.Tasks", "CreatedByUser_UserId", "dbo.Users");
-            DropForeignKey("dbo.Tasks", "ParentTask_TaskID", "dbo.Tasks");
+            DropForeignKey("dbo.Tasks", "CreatedBy", "dbo.Users");
+            DropForeignKey("dbo.Tasks", "ParentTaskId", "dbo.Tasks");
             DropIndex("dbo.Notifications", new[] { "UserID" });
             DropIndex("dbo.Notifications", new[] { "TaskID" });
             DropIndex("dbo.Notifications", new[] { "ProjectID" });
@@ -299,19 +296,19 @@ namespace PMTool.Migrations
             DropIndex("dbo.Tasks", new[] { "ProjectID" });
             DropIndex("dbo.ProjectUsers", new[] { "UserId" });
             DropIndex("dbo.ProjectUsers", new[] { "ProjectId" });
+            DropIndex("dbo.ProjectStatus", new[] { "ProjectID" });
             DropIndex("dbo.ProjectOwners", new[] { "UserId" });
             DropIndex("dbo.ProjectOwners", new[] { "ProjectID" });
-            DropIndex("dbo.ProjectStatuses", new[] { "ProjectID" });
-            DropIndex("dbo.Projects", new[] { "ModifiedBy_UserId" });
-            DropIndex("dbo.Projects", new[] { "CreatedBy_UserId" });
+            DropIndex("dbo.Projects", new[] { "ModifiedBy" });
+            DropIndex("dbo.Projects", new[] { "CreatedBy" });
             DropIndex("dbo.Tasks", new[] { "PriorityID" });
-            DropIndex("dbo.Tasks", new[] { "ModifiedByUser_UserId" });
+            DropIndex("dbo.Tasks", new[] { "ModifiedBy" });
             DropIndex("dbo.TaskLabels", new[] { "TaskId" });
             DropIndex("dbo.TaskLabels", new[] { "LabelId" });
             DropIndex("dbo.TaskFollowers", new[] { "TaskId" });
             DropIndex("dbo.TaskFollowers", new[] { "UserId" });
-            DropIndex("dbo.Tasks", new[] { "CreatedByUser_UserId" });
-            DropIndex("dbo.Tasks", new[] { "ParentTask_TaskID" });
+            DropIndex("dbo.Tasks", new[] { "CreatedBy" });
+            DropIndex("dbo.Tasks", new[] { "ParentTaskId" });
             DropTable("dbo.RoleUsers");
             DropTable("dbo.TaskUsers");
             DropTable("dbo.ProjectUsers");
@@ -321,7 +318,7 @@ namespace PMTool.Migrations
             DropTable("dbo.UserProfile");
             DropTable("dbo.Notifications");
             DropTable("dbo.Roles");
-            DropTable("dbo.ProjectStatuses");
+            DropTable("dbo.ProjectStatus");
             DropTable("dbo.Projects");
             DropTable("dbo.Priorities");
             DropTable("dbo.Tasks");
