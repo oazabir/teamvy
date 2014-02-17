@@ -65,6 +65,8 @@ namespace PMTool.Models
 
         public string allStatus { get; set; }
 
+        public virtual List<ProjectColumn> ProjectColumns { get; set; }
+
 
     }
 }

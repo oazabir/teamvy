@@ -24,11 +24,11 @@
             {
                 PMTool.Models.Project projetc = (PMTool.Models.Project)ViewBag.CurrentProject;
             <li>
-                <a id="showdata" onclick="return ShowProjectForm(@projetc.ProjectID)"><span class="icon-plus" for="showdata"></span>Add Column</a>
+                <a data-original-title="Tooltip on left" data-rel="tooltip" data-placement="left" rel="tooltip" href="#" id="showdata" onclick="return ShowProjectForm(@projetc.ProjectID)"><span class="icon-plus" for="showdata"></span>Add Column</a>
             </li>
             <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
             <li>
-                <a id="showTask" onclick="return ShowTaskForm(@projetc.ProjectID)"><span class="icon-plus" for="showTask"></span>Add Task</a>
+                <a data-original-title="Tooltip on left" data-rel="tooltip" data-placement="left" rel="tooltip" href="#"  id="showTask" onclick="return ShowTaskForm(@projetc.ProjectID)"><span class="icon-plus" for="showTask"></span>Add Task</a>
             </li>
     }
         }
@@ -45,7 +45,7 @@
     <div id='popupcontainer'>
     </div>
 </div>
-<div id='ModalpopupProject' data-url='@Url.Action("CreateStatus", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+<div id='ModalpopupProject' data-url='@Url.Action("CreateStatus", "Tasks")' style="width:400px !important;height:160px !important;" class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
     <div id='popupcontainerProject'>
     </div>
 </div>
@@ -107,7 +107,7 @@
 
         jQuery.ajax({
             url: url,
-            data: { status: ststus.id, projectID: projectID },
+            data: { status: ststus, projectID: projectID },
             cache: false,
             success: function (data) {
                 jQuery('#popupcontainerEditStatus').html(data);
@@ -116,21 +116,4 @@
         });
         return false;
     }
-    @*function RemoveStatusFormKanban(id,projectID) {
-        jQuery.ajax({
-            url: '@Url.Action("RemoveStatusFormKanban", "Projects")',
-            data: { status: id.id , projectID: projectID },
-            type: 'POST',
-            cache: false,
-            success: function (data) {
-                jQuery(id).hide();
-                jQuery.jGrowl('Column Removed', { life: 5000 });
-                //window.location.reload(true);
-            },
-            error: function () {
-                jQuery(id).show();
-                jQuery.jGrowl('somethig is wrong', { life: 5000 });
-            }
-        });
-    }*@
 </script>

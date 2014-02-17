@@ -3,6 +3,7 @@
         jQuery("#Modalpopup").modal('hide');
         jQuery("#ModalpopupProject").modal('hide');
         jQuery("#ModalpopupTask").modal('hide');
+        jQuery("#ModalpopupEditStatus").modal('hide');
         jQuery('.dragbox')
         .each(function () {
             jQuery(this).hover(function () {
@@ -60,12 +61,16 @@
 
 @model IEnumerable<PMTool.Models.Task>
 @{
-        List<string> statusList = (List<string>)ViewBag.AllStatus;
+        List<PMTool.Models.ProjectColumn> columnList = new List<PMTool.Models.ProjectColumn>();
+        if(((PMTool.Models.Project)ViewBag.CurrentProject).ProjectColumns!=null)
+        {
+            columnList = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectColumns;
+        }
         List<PMTool.Models.Task> taskList = (List<PMTool.Models.Task>)Model;
         
         <fieldset class='column' id=' '>
             <legend class="widgettitle ctitle">UnAssigned</legend>
-            @foreach (PMTool.Models.Task item in taskList.Where(t => t.Status == "" || t.Status == null))
+            @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectColumnID == null ))
             {
                 <div class="dragbox" id="@item.TaskID">
                         <h2>@item.Title</h2>
@@ -77,19 +82,16 @@
             }
         </fieldset>
         
-        foreach (string status in statusList)
+    foreach (PMTool.Models.ProjectColumn status in columnList)
         {
             long CurrentPorjectID=((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID ;
-            if (!string.IsNullOrEmpty(status))
-            {
-            <fieldset class='column' id='@status.Replace(" ","_")'>
-                <legend class="widgettitle ctitle">@Convert.ToString(status) 
-                    @*<a style="float:right" class="icon-remove" onclick="RemoveStatusFormKanban(@status)"></a>*@
-                     @Ajax.ActionLink(" ", "RemoveStatusFormKanban", "Tasks", new { status = status, projectID = CurrentPorjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard" }, new { @class="icon-remove",@style="float:right;"})
-                    &nbsp;&nbsp;&nbsp;
-                    <a onclick="return ShowStatusEditForm(@status.Replace(" ","_"),@CurrentPorjectID)" class="icon-edit" style="float:left"> </a>
+            <fieldset class='column' id='@status.ProjectColumnID'>
+                <legend class="widgettitle ctitle">@status.Name 
+                     @Ajax.ActionLink(" ", "RemoveStatusFormKanban", "Tasks", new { status = status.ProjectColumnID, projectID = CurrentPorjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard",OnBegin="return confirm('Are you suer???\\nAll tasks under this column will go to UnAssigned!!!')" }, new { @class="icon-remove",@style="float:right;"})
+                    
+                    <a onclick="return ShowStatusEditForm(@status.ProjectColumnID,@CurrentPorjectID)" class="icon-edit" style="float:left"> </a>
                 </legend>
-                @foreach (PMTool.Models.Task item in taskList.Where(t => t.Status == status))
+                @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectColumnID == status.ProjectColumnID))
                 {
                     <div class="dragbox" id="@item.TaskID">
                         <h2>@item.Title</h2>
@@ -100,7 +102,6 @@
                     </div>
                 }
             </fieldset>
-            }
         }
         
         }

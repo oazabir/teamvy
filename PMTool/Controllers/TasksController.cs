@@ -88,45 +88,26 @@ namespace PMTool.Controllers
         private void GetAllStatus(Task task)
         {
             List<SelectListItem> statusList = new List<SelectListItem>();
-            //foreach (var item in Enum.GetValues(typeof(PMTool.Models.EnumCollection.TaskStatus)))
+            task.Project = unitOfWork.ProjectRepository.FindIncludingProjectColumn(task.ProjectID);
+            //if (task.Project.ProjectColumns!=null)
             //{
-            //    SelectListItem listitem = new SelectListItem();
-
-            //    listitem.Value = Convert.ToString((int)item);
-            //    listitem.Text = Enum.GetName(typeof(PMTool.Models.EnumCollection.TaskStatus), item).Replace("_", " ");
-            //    if ((int)item == (int)task.Status)
+            //    foreach (ProjectColumn item in task.Project.ProjectColumns)
             //    {
-            //        listitem.Selected = true;
+            //        SelectListItem listitem = new SelectListItem();
+            //        listitem.Value = item.ProjectColumnID.ToString();
+            //        listitem.Text = item.Name;
+            //        if (item.ProjectColumnID == task.ProjectColumnID)
+            //        {
+            //            listitem.Selected = true;
+            //        }
+            //        else
+            //        {
+            //            listitem.Selected = false;
+            //        }
+            //        statusList.Add(listitem);
             //    }
-            //    else
-            //    {
-            //        listitem.Selected = false;
-            //    }
-            //    statusList.Add(listitem);
             //}
-            task.Project = unitOfWork.ProjectRepository.Find(task.ProjectID);
-            if (!string.IsNullOrEmpty(task.Project.allStatus))
-            {
-                foreach (string item in task.Project.allStatus.Split(',').ToList())
-                {
-                    if (!string.IsNullOrEmpty(item))
-                    {
-                        SelectListItem listitem = new SelectListItem();
-                        listitem.Value = item;
-                        listitem.Text = item;
-                        if (item == task.Status)
-                        {
-                            listitem.Selected = true;
-                        }
-                        else
-                        {
-                            listitem.Selected = false;
-                        }
-                        statusList.Add(listitem);
-                    }
-                }
-            }
-            ViewBag.PossibleTaskStatus = statusList;
+            ViewBag.PossibleTaskStatus = task.Project.ProjectColumns;
         }
 
         //
@@ -205,6 +186,8 @@ namespace PMTool.Controllers
 
                         User createdUser = unitOfWork.UserRepository.GetUserByUserID(task.CreatedBy);
                         notification.Title = createdUser.FirstName + " " + createdUser.LastName + phrase + task.Title;
+
+                       
                     }
                     else
                     {
@@ -221,13 +204,19 @@ namespace PMTool.Controllers
                         }
                         else
                         {
+                            string status = "";
                             if (!isSubTask)
                             {
-                                phrase = string.Format(" Has changed the task status to {0} --",task.Status.ToString());
+                                if (task.ProjectColumnID != null)
+                                {
+                                    ProjectColumn col = unitOfWork.ProjectColumnRepository.Find(Convert.ToInt64(task.ProjectColumnID));
+                                    status = col.Name;
+                                }
+                                phrase = string.Format(" Has changed the task status to {0} --", status);
                             }
                             else
                             {
-                                phrase = string.Format(" Has changed the subtask status to {0} --",task.Status.ToString());
+                                phrase = string.Format(" Has changed the subtask status to {0} --", status);
                             }
                         }
                         User modifiedUser = unitOfWork.UserRepository.GetUserByUserID(task.ModifieddBy);
@@ -686,27 +675,37 @@ namespace PMTool.Controllers
                 try
                 {
                     Task task = unitOfWork.TaskRepository.Find(Convert.ToInt64(taskid));
-                    if (task.Status != statusid)
+                    string stat = "";
+                    if (!string.IsNullOrEmpty(statusid.Trim()))
                     {
-                        string stat = "";
-                        if (statusid.Trim() == "")
+                        if (task.ProjectColumnID != Convert.ToInt64(statusid))
                         {
-                            stat = "Unassigned"; 
-                            task.Status = string.Empty;
+                            if (statusid.Trim() == "")
+                            {
+                                stat = "Unassigned";
+                                task.Status = string.Empty;
+                                task.ProjectColumnID = null;
+                            }
+                            else
+                            {
+                                stat = unitOfWork.ProjectColumnRepository.Find(Convert.ToInt64(statusid)).Name;
+                                task.ProjectColumnID = Convert.ToInt64(statusid);
+                            }
                         }
-                        else
-                        {
-                            stat = statusid;
-                            task.Status = statusid;
-                        }
-                        unitOfWork.TaskRepository.InsertOrUpdate(task);
-                        unitOfWork.Save();
-                        ststus = "Task- " + task.Title + " is moved to " + stat + " successfully!!!";
                     }
+                    else
+                    {
+                        stat = "Unassigned";
+                        task.Status = string.Empty;
+                        task.ProjectColumnID = null;
+                    }
+                    unitOfWork.TaskRepository.InsertOrUpdate(task);
+                    unitOfWork.Save();
+                    ststus = "Task- " + task.Title + " is moved to " + stat + " successfully!!!";
                 }
                 catch
                 {
-
+                    ststus = "Something Wrong!!!";
                 }
                 return Content(ststus);
             }
@@ -714,142 +713,129 @@ namespace PMTool.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult RemoveStatusFormKanban(string status, long projectID)
+        public PartialViewResult RemoveStatusFormKanban(long status, long projectID)
         {
             List<Task> taskList = new List<Task>();
             Project projectOld = unitOfWork.ProjectRepository.Find(projectID);
             try
             {
-                projectOld.allStatus = projectOld.allStatus.Replace(status + ",", "");
-                projectOld.allStatus = projectOld.allStatus.Replace("," + status, "");
-                projectOld.allStatus = projectOld.allStatus.Replace(status, "");
-                unitOfWork.ProjectRepository.InsertOrUpdate(projectOld);
-                unitOfWork.Save();
-                Project project = unitOfWork.ProjectRepository.Find(projectID);
-                ViewBag.CurrentProject = project;
-                List<string> statusList = new List<string>();
-                if (!string.IsNullOrEmpty(project.allStatus))
-                {
-                    statusList = project.allStatus.Split(',').ToList();
-                }
-                ViewBag.AllStatus = statusList;
                 taskList = unitOfWork.TaskRepository.ByProjectAndStatusIncluding(projectID,status ,task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
                 foreach (Task task in taskList)
                 {
-                    task.Status = string.Empty;
-                    unitOfWork.Save();
+                    task.ProjectColumnID = null;
                 }
+                unitOfWork.ProjectColumnRepository.DeleteByProjectIDAndColID(status, projectID);
+                unitOfWork.Save();
                 taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
             }
             catch
             {
                 //return View(projectOld);
             }
+            ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectID);
             return PartialView("_Kanban", taskList);//RedirectToAction("Kanban", "Tasks", new { @ProjectID = projectOld.ProjectID });
 
         }
 
         public PartialViewResult CreateStatus(long id)
         {
-            Project project = unitOfWork.ProjectRepository.Find(id);
-            if (string.IsNullOrEmpty(project.allStatus))
-            {
-                project.allStatus = string.Empty;
-            }
-            return PartialView(project);
+
+            ProjectColumn projectCol = new ProjectColumn();
+            projectCol.ProjectID = id;
+            return PartialView(projectCol);
         }
 
         [HttpPost]
-        public PartialViewResult CreateStatus(Project project)
+        public PartialViewResult CreateStatus(ProjectColumn projectcol)
         {
-            Project projectOld = unitOfWork.ProjectRepository.Find(project.ProjectID);
-            List<Task> taskList = new List<Task>();
-            try
-            {
-                projectOld.allStatus = project.allStatus;
-                unitOfWork.ProjectRepository.InsertOrUpdate(projectOld);
-                unitOfWork.Save();
-                taskList = unitOfWork.TaskRepository.ByProjectIncluding(project.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-                foreach (Task task in taskList)
-                {
-                    task.Status = string.Empty;
-                    unitOfWork.Save();
-                }
-                ViewBag.CurrentProject = projectOld;
-                List<string> statusList = new List<string>();
-                if (!string.IsNullOrEmpty(project.allStatus))
-                {
-                    statusList = project.allStatus.Split(',').ToList();
-                }
-                ViewBag.AllStatus = statusList;
-            }
-            catch
-            {
-                // return View(projectOld);
-            }
-            //return RedirectToAction("Kanban", "Tasks", new { @ProjectID = project.ProjectID });
+
+            unitOfWork.ProjectColumnRepository.InsertOrUpdate(projectcol);
+            unitOfWork.Save();
+            List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectcol.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectcol.ProjectID);
+            //Project projectOld = unitOfWork.ProjectRepository.Find(project.ProjectID);
+            //List<Task> taskList = new List<Task>();
+            //try
+            //{
+            //    projectOld.allStatus = project.allStatus;
+            //    unitOfWork.ProjectRepository.InsertOrUpdate(projectOld);
+            //    unitOfWork.Save();
+            //    taskList = unitOfWork.TaskRepository.ByProjectIncluding(project.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            //    foreach (Task task in taskList)
+            //    {
+            //        task.Status = string.Empty;
+            //        unitOfWork.Save();
+            //    }
+            //    ViewBag.CurrentProject = projectOld;
+            //    List<string> statusList = new List<string>();
+            //    if (!string.IsNullOrEmpty(project.allStatus))
+            //    {
+            //        statusList = project.allStatus.Split(',').ToList();
+            //    }
+            //    ViewBag.AllStatus = statusList;
+            //}
+            //catch
+            //{
+            //}
             return PartialView("_Kanban", taskList);
         }
 
-        public PartialViewResult EditStatus(string status,long projectID)
+        public PartialViewResult EditStatus(long status,long projectID)
         {
-            Project project = unitOfWork.ProjectRepository.Find(projectID);
-            if (string.IsNullOrEmpty(project.allStatus))
-            {
-                project.allStatus = string.Empty;
-            }
-            ViewBag.CurrentStatus = status.Replace("_"," ");
-            return PartialView(project);
+            ProjectColumn projectCol = unitOfWork.ProjectColumnRepository.FindbyProjectIDAndProjectColumnID(projectID,status);
+            return PartialView(projectCol);
         }
 
         [HttpPost]
-        public PartialViewResult EditStatus(Project project)
+        public PartialViewResult EditStatus(ProjectColumn projectcol)
         {
-            string newlyaddedStatus = "";
-            string previousStatus = "";
-            Project projectOld = unitOfWork.ProjectRepository.Find(project.ProjectID);
+            unitOfWork.ProjectColumnRepository.InsertOrUpdate(projectcol);
+            unitOfWork.Save();
+            List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectcol.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectcol.ProjectID);
+            //string newlyaddedStatus = "";
+            //string previousStatus = "";
+            //Project projectOld = unitOfWork.ProjectRepository.Find(project.ProjectID);
 
-            List<string> oldStatus = projectOld.allStatus.Split(',').ToList();
-            List<string> newStatus = project.allStatus.Split(',').ToList();
-            int i = 0;
-            foreach (string item in newStatus)
-            {
-                if (!oldStatus.Contains(item))
-                {
+            //List<string> oldStatus = projectOld.allStatus.Split(',').ToList();
+            //List<string> newStatus = project.allStatus.Split(',').ToList();
+            //int i = 0;
+            //foreach (string item in newStatus)
+            //{
+            //    if (!oldStatus.Contains(item))
+            //    {
 
-                    newlyaddedStatus = item;
-                    previousStatus = oldStatus[i];
-                    break;
-                }
-                i++;
-            }
-            List<Task> taskList = new List<Task>();
-            try
-            {
-                projectOld.allStatus = project.allStatus;
-                unitOfWork.ProjectRepository.InsertOrUpdate(projectOld);
-                unitOfWork.Save();
+            //        newlyaddedStatus = item;
+            //        previousStatus = oldStatus[i];
+            //        break;
+            //    }
+            //    i++;
+            //}
+            //List<Task> taskList = new List<Task>();
+            //try
+            //{
+            //    projectOld.allStatus = project.allStatus;
+            //    unitOfWork.ProjectRepository.InsertOrUpdate(projectOld);
+            //    unitOfWork.Save();
                 
-                ViewBag.CurrentProject = projectOld;
-                List<string> statusList = new List<string>();
-                if (!string.IsNullOrEmpty(project.allStatus))
-                {
-                    statusList = project.allStatus.Split(',').ToList();
-                }
-                ViewBag.AllStatus = statusList;
-                taskList = unitOfWork.TaskRepository.ByProjectAndStatusIncluding(project.ProjectID, previousStatus, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-                foreach (Task task in taskList)
-                {
-                    task.Status = newlyaddedStatus;
-                    unitOfWork.Save();
-                }
-                taskList = unitOfWork.TaskRepository.ByProjectIncluding(project.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-            }
-            catch
-            {
-                // return View(projectOld);
-            }
-            //return RedirectToAction("Kanban", "Tasks", new { @ProjectID = project.ProjectID });
+            //    ViewBag.CurrentProject = projectOld;
+            //    List<string> statusList = new List<string>();
+            //    if (!string.IsNullOrEmpty(project.allStatus))
+            //    {
+            //        statusList = project.allStatus.Split(',').ToList();
+            //    }
+            //    ViewBag.AllStatus = statusList;
+            //    taskList = unitOfWork.TaskRepository.ByProjectAndStatusIncluding(project.ProjectID, previousStatus, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            //    foreach (Task task in taskList)
+            //    {
+            //        task.Status = newlyaddedStatus;
+            //        unitOfWork.Save();
+            //    }
+            //    taskList = unitOfWork.TaskRepository.ByProjectIncluding(project.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            //}
+            //catch
+            //{
+            //}
             return PartialView("_Kanban", taskList);
         }
 

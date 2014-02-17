@@ -195,14 +195,6 @@
             </div>
             <!--headerpanel-->
             <div class="breadcrumbwidget">
-                <ul class="breadcrumb">
-                    <li>
-                        @*<a href="dashboard.html">Home</a> *@
-                        <a href ="@Url.Action("Index", "Home")">Home</a>
-                        
-                        <span class="divider">/</span></li>
-                    <li class="active">Dashboard</li>
-                </ul>
             </div>
             <!--breadcrumbwidget-->
             <!--pagetitle-->
@@ -218,6 +210,7 @@
         </div>
         <!--mainright-->
         <!-- END OF RIGHT PANEL -->
+
 
         <div class="clearfix"></div>
 
@@ -238,4 +231,17 @@
 </div>
 
 
+<script>
+    function Loading() {
+        jQuery("#ModalLoading").modal('show');
+    }
+</script>
 
+<script>
+    function Unload() {
+        jQuery("#ModalLoading").modal('hide');
+    }
+</script>
+<div id='ModalLoading' class="modal hide fade" tabindex="-1" style="width:50px!important;height:50px!important;overflow:hidden!important;" role="dialog"  aria-hidden="true">
+    <img src="~/Content/themes/site/img/loaders/loader19.gif" /><br />Loading....
+</div>

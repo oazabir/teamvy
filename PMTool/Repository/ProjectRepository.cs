@@ -50,6 +50,14 @@ namespace PMTool.Repository
             return query;
         }
 
+        public Project FindIncludingProjectColumn(long projectID)
+        {
+
+            Project project = context.Projects.Where(p => p.ProjectID == projectID).Include("ProjectColumns").FirstOrDefault();
+
+            return project;
+        }
+
         //public IQueryable<Project> AllbyOwnerIncluding(Guid ownerId, params Expression<Func<Project, object>>[] includeProperties)
         public List<Project> AllbyOwnerIncluding(Guid ownerId, params Expression<Func<Project, object>>[] includeProperties)
         {
@@ -195,5 +203,6 @@ namespace PMTool.Repository
         void Save();
         List<Project> GetAssignedProjectByUser(User user);
         List<Project> GetListbyName(string searchParam, params Expression<Func<Project, object>>[] includeProperties);
+        Project FindIncludingProjectColumn(long projectID);
     }
 }

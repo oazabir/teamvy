@@ -242,11 +242,37 @@
     <Compile Include="Migrations\201402101158187_ProjectOwners1.Designer.cs">
       <DependentUpon>201402101158187_ProjectOwners1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201402120700533_ProjectColumnadded.cs" />
+    <Compile Include="Migrations\201402120700533_ProjectColumnadded.Designer.cs">
+      <DependentUpon>201402120700533_ProjectColumnadded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201402120834424_ProjectColumnModified.cs" />
+    <Compile Include="Migrations\201402120834424_ProjectColumnModified.Designer.cs">
+      <DependentUpon>201402120834424_ProjectColumnModified.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201402120847338_taskModfied.cs" />
+    <Compile Include="Migrations\201402120847338_taskModfied.Designer.cs">
+      <DependentUpon>201402120847338_taskModfied.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201402120849208_taskModfied2.cs" />
+    <Compile Include="Migrations\201402120849208_taskModfied2.Designer.cs">
+      <DependentUpon>201402120849208_taskModfied2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201402120850306_taskModfied3.cs" />
+    <Compile Include="Migrations\201402120850306_taskModfied3.Designer.cs">
+      <DependentUpon>201402120850306_taskModfied3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201402121051295_taskModfied4.cs" />
+    <Compile Include="Migrations\201402121051295_taskModfied4.Designer.cs">
+      <DependentUpon>201402121051295_taskModfied4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\ProjectColumn.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\EnumCollection.cs" />
     <Compile Include="Models\Label.cs" />
+    <Compile Include="Models\ProjectColumnRepository.cs" />
     <Compile Include="Models\Search.cs" />
     <Compile Include="Repository\NotificationRepository.cs" />
     <Compile Include="Repository\LabelRepository.cs" />
@@ -1077,7 +1103,7 @@
     <Content Include="Views\Tasks\_Kanban.cshtml" />
     <Content Include="Views\Projects\RemoveStatusFormKanban.cshtml" />
     <Content Include="Views\Tasks\CreateFromKanban.cshtml" />
-    <Content Include="Views\Projects\OwnProjects.cshtml" />
+    <Content Include="Views\Tasks\EditStatus.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -1162,6 +1188,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201402101158187_ProjectOwners1.resx">
       <DependentUpon>201402101158187_ProjectOwners1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402120700533_ProjectColumnadded.resx">
+      <DependentUpon>201402120700533_ProjectColumnadded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402120834424_ProjectColumnModified.resx">
+      <DependentUpon>201402120834424_ProjectColumnModified.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402120847338_taskModfied.resx">
+      <DependentUpon>201402120847338_taskModfied.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402120849208_taskModfied2.resx">
+      <DependentUpon>201402120849208_taskModfied2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402120850306_taskModfied3.resx">
+      <DependentUpon>201402120850306_taskModfied3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402121051295_taskModfied4.resx">
+      <DependentUpon>201402121051295_taskModfied4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

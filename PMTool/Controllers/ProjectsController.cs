@@ -106,6 +106,8 @@ namespace PMTool.Controllers
                 unitOfWork.ProjectRepository.InsertOrUpdate(project);
                 AddAssignUser(project);
                 AddProjectOwner(project);
+                AddProjectColumn(project);
+                project.allStatus = "";
                 unitOfWork.Save();
                 SaveNotification(project,true);
                 
@@ -114,6 +116,27 @@ namespace PMTool.Controllers
             List<SelectListItem> allUsers = GetAllUser();
             ViewBag.PossibleUsers = allUsers;
             return View(project);
+        }
+
+        private void AddProjectColumn(Project project)
+        {
+            unitOfWork.ProjectColumnRepository.DeletebyProjectID(project.ProjectID);
+
+            List<string> statuses = new List<string>();
+            if (!string.IsNullOrEmpty(project.allStatus))
+            {
+                statuses = project.allStatus.Split(',').Distinct().ToList();
+                foreach (string status in statuses)
+                {
+                    if (!string.IsNullOrEmpty(status))
+                    {
+                        ProjectColumn col = new ProjectColumn();
+                        col.Name = status;
+                        col.ProjectID = project.ProjectID;
+                        unitOfWork.ProjectColumnRepository.InsertOrUpdate(col);
+                    }
+                }
+            }
         }
 
         private void SaveNotification(Project project,bool isProjectInsert)
@@ -198,7 +221,9 @@ namespace PMTool.Controllers
             {
                 AddAssignUser(project);
                 AddProjectOwner(project);
+                AddProjectColumn(project);
                userList= unitOfWork.ProjectRepository.InsertOrUpdate(project);
+               project.allStatus = "";
                 unitOfWork.Save();
                 SaveNotification(project, false);
                 string msg = "";

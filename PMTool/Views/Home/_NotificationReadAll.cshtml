@@ -9,6 +9,8 @@
         }
     </a>
     <ul class="dropdown-menu">
+        @if (Model.Count() > 0)
+        {
         <li class="nav-header">Notifications
              @if (Model.Count() > 0)
              {
@@ -16,8 +18,6 @@
                 @Ajax.ActionLink("mark all as read", "_NotificationReadAll", "Home", new AjaxOptions { UpdateTargetId = "result" }, new {  @class = "label label-info" })
              }
         </li>
-        @if (Model.Count() > 0)
-        {
             foreach (PMTool.Models.Notification notification in Model)
             {
                 if (notification.TaskID == null)
