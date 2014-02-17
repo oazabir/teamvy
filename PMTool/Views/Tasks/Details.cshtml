@@ -24,7 +24,6 @@
             <td class="width30">
                Task Title
             </td>
-
             <td>
                 @Html.DisplayTextFor(_ => Model.Title).ToString()
             </td>
@@ -56,6 +55,25 @@
                 @*@Html.DisplayTextFor(_ => Model.EndDate).ToString()*@
             </td>
         </tr>
+                <tr>
+            <td class="width30">
+                Task Hour
+            </td>
+            <td> 
+                @Model.TaskHour
+                @*@Html.DisplayTextFor(_ => Model.EndDate).ToString()*@
+            </td>
+        </tr>
+
+          <tr>
+            <td class="width30">
+                Task Status
+            </td>
+            <td>
+               @Html.DisplayTextFor(_ => Model.ProjectColumn.Name).ToString()
+            </td>
+        </tr>
+
          <tr>
             <td class="width30">
                 Created By
