@@ -12,7 +12,7 @@ namespace PMTool.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "PMTool.Repository.PMToolContext";
+            ContextKey = "PMTool.Repository.PMToolContext"; 
         }
 
         protected override void Seed(PMTool.Repository.PMToolContext context)
