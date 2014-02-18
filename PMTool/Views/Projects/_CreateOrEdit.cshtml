@@ -123,14 +123,13 @@
                     }
                 }
             *@
-
             @{
                 if (Model.ProjectStatuses != null)
                 {
                     foreach (PMTool.Models.ProjectStatus col in Model.ProjectStatuses)
                     {
                         <span id="@col.ProjectStatusID" class="tag">@col.Name
-                              <a title="Removing Status" onclick="removeitbyID('@col.ProjectStatusID','@col.Name')">x</a>
+                              <a title="Removing Status" onclick="removeitbyID('@col.ProjectStatusID','@col.Name')" >x</a>
                         </span>
                     }
                 }
@@ -175,14 +174,35 @@
 
 <script type="text/javascript">
 
-    function removeitbyID(id,name) {
+    function removeitbyID(id, name) {
+        var projectID =  @Model.ProjectID ;
         var val = jQuery("#hdnStatus").val();
         var newVal = "";
         var replaceStr = name;
-        
+        jQuery.ajax({
+            url: '@Url.Action("DeleteStatusByProject", "Projects")',
+            data: { projectID: projectID, statsusID: id },
+            type: 'POST',
+            success: function (data) {
+                var msg = new String(data);
+                if(msg=='success')
+                {
+                    newVal = val.replace(replaceStr, "");
+                    jQuery("#" + id).hide();
+                    jQuery("#hdnStatus").val(newVal);
+                    jQuery.jGrowl('Success', { life: 5000 });
+                }
+                else
+                {
+                    jQuery.jGrowl(msg, { life: 5000 });
+                }
 
-        newVal = val.replace(replaceStr, "");
-        jQuery("#" + id).hide();
-        jQuery("#hdnStatus").val(newVal);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+
+       
     }
 </script>
