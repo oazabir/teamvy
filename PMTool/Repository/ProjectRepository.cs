@@ -94,10 +94,36 @@ namespace PMTool.Repository
 
                 userList = UpdateAssignedUsers(project, existingProject);
                 ownerList = UpdateProjectOwners(project, existingProject);
+                //List<ProjectStatus> projectStatusList =UpdateProjectStatuses(project, existingProject);
+
                 context.Entry(existingProject).CurrentValues.SetValues(project);
             }
             return userList;
         }
+
+        //private List<ProjectStatus> UpdateProjectStatuses(Project project, Project existingProject)
+        //{
+        //    List<ProjectStatus> statusList = new List<ProjectStatus>();
+        //    var deletedStatus = existingProject.ProjectStatuses.ToList<ProjectStatus>();
+        //    var addedStatus = project.ProjectStatuses.ToList<ProjectStatus>();
+
+        //    foreach (ProjectStatus item in existingProject.ProjectStatuses.ToList())
+        //    {
+        //        List<Task> taskList = context.Tasks.Where(t => t.ProjectStatus == item).ToList();
+        //        if (taskList.Count == 0)
+        //            existingProject.ProjectStatuses.Remove(item);
+        //        else
+        //            statusList.Add(item);
+        //    }
+        //    foreach (ProjectStatus c in addedStatus)
+        //    {
+
+        //        if (context.Entry(c).State == System.Data.Entity.EntityState.Detached)
+        //            context.ProjectStatuses.Attach(c);
+        //        existingProject.ProjectStatuses.Add(c);
+        //    }
+        //    return statusList;
+        //}
 
         private List<User> UpdateAssignedUsers(Project project, Project existingProject)
         {

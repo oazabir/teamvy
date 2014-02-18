@@ -64,8 +64,16 @@ namespace PMTool.Repository
 
         public void DeletebyProjectID(long ProjectID)
         {
-            var ProjectStatus = context.ProjectStatuses.Where(p => p.ProjectID == ProjectID).ToList();
-            context.ProjectStatuses.RemoveRange(ProjectStatus);
+            List<Task> tasks=context.Tasks.Where(p=>p.ProjectID==ProjectID).ToList();
+            var ProjectStatuses = context.ProjectStatuses.Where(p => p.ProjectID == ProjectID).ToList();
+            foreach (ProjectStatus item in ProjectStatuses)
+            {
+                if (!tasks.Any(t => t.ProjectStatusID == item.ProjectStatusID))
+                {
+
+                    context.ProjectStatuses.Remove(item);
+                }
+            }
         }
 
         public void Save()
@@ -88,6 +96,13 @@ namespace PMTool.Repository
         {
             return context.ProjectStatuses.Where(p => p.ProjectStatusID == status && p.ProjectID == projectID).FirstOrDefault();
         }
+
+
+        public ProjectStatus FindbyProjectIDAndProjectStatusName(long projectID, string status)
+        {
+            return context.ProjectStatuses.Where(p => p.Name == status && p.ProjectID == projectID).FirstOrDefault();
+        }
+
     }
 
     public interface IProjectStatusRepository : IDisposable
@@ -99,6 +114,7 @@ namespace PMTool.Repository
         void Delete(long id);
         void DeleteByProjectIDAndColID(long status, long projectID);
         ProjectStatus FindbyProjectIDAndProjectStatusID(long projectID, long status);
+        ProjectStatus FindbyProjectIDAndProjectStatusName(long projectID, string status);
         void Save();
     }
 }

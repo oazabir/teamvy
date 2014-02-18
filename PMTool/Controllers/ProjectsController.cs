@@ -128,7 +128,7 @@ namespace PMTool.Controllers
                 statuses = project.allStatus.Split(',').Distinct().ToList();
                 foreach (string status in statuses)
                 {
-                    if (!string.IsNullOrEmpty(status))
+                    if (!string.IsNullOrEmpty(status) && IsSattusExistinroject(status, project))
                     {
                         ProjectStatus col = new ProjectStatus();
                         col.Name = status;
@@ -137,6 +137,17 @@ namespace PMTool.Controllers
                     }
                 }
             }
+        }
+
+        private bool IsSattusExistinroject(string status,Project project)
+        {
+            bool isvalid = false;
+            ProjectStatus projectStatus = unitOfWork.ProjectStatusRepository.FindbyProjectIDAndProjectStatusName(project.ProjectID, status);
+           if (status != null)
+           {
+               isvalid = true;
+           }
+           return isvalid;
         }
 
         private void SaveNotification(Project project,bool isProjectInsert)
