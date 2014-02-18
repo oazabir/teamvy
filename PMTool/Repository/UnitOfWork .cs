@@ -127,6 +127,21 @@ namespace PMTool.Repository
             }
         }
 
+        private SprintRepository _sprintRepository;
+
+        public SprintRepository SprintRepository
+        {
+            get
+            {
+
+                if (this._sprintRepository == null)
+                {
+                    this._sprintRepository = new SprintRepository(context);
+                }
+                return _sprintRepository;
+            }
+        }
+
         public void Save()
         {
             context.SaveChanges();

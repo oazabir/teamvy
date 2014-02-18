@@ -7,13 +7,13 @@ namespace PMTool.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.0.2-21211")]
-    public sealed partial class sdasd : IMigrationMetadata
+    public sealed partial class sprintadded : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(sdasd));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(sprintadded));
         
         string IMigrationMetadata.Id
         {
-            get { return "201402181248403_sdasd"; }
+            get { return "201402181301321_sprintadded"; }
         }
         
         string IMigrationMetadata.Source

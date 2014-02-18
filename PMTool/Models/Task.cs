@@ -115,9 +115,9 @@ namespace PMTool.Models
         public decimal ActualTaskHoure { get; set; }
 
 
-        //public long SprintID { get; set; }
+        public long? SprintID { get; set; }
 
-
-        //public virtual Sprint Sprint { get; set; }
+        [ForeignKey("SprintID")]
+        public virtual Sprint Sprint { get; set; }
     }
 }

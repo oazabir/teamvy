@@ -244,9 +244,9 @@
     <Compile Include="Migrations\201402181153056_taskActualhrAdded.Designer.cs">
       <DependentUpon>201402181153056_taskActualhrAdded.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201402181248403_sdasd.cs" />
-    <Compile Include="Migrations\201402181248403_sdasd.Designer.cs">
-      <DependentUpon>201402181248403_sdasd.cs</DependentUpon>
+    <Compile Include="Migrations\201402181301321_sprintadded.cs" />
+    <Compile Include="Migrations\201402181301321_sprintadded.Designer.cs">
+      <DependentUpon>201402181301321_sprintadded.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
@@ -255,6 +255,7 @@
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\EnumCollection.cs" />
     <Compile Include="Models\Label.cs" />
+    <Compile Include="Repository\SprintRepository.cs" />
     <Compile Include="Repository\ProjectStatusRepository.cs" />
     <Compile Include="Models\Search.cs" />
     <Compile Include="Repository\NotificationRepository.cs" />
@@ -1173,8 +1174,8 @@
     <EmbeddedResource Include="Migrations\201402181153056_taskActualhrAdded.resx">
       <DependentUpon>201402181153056_taskActualhrAdded.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402181248403_sdasd.resx">
-      <DependentUpon>201402181248403_sdasd.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201402181301321_sprintadded.resx">
+      <DependentUpon>201402181301321_sprintadded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

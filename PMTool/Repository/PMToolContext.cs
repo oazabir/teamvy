@@ -87,5 +87,7 @@ namespace PMTool.Repository
 
         }
 
+        public DbSet<PMTool.Models.Sprint> Sprints { get; set; }
+
     }
 }
