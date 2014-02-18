@@ -1,0 +1,132 @@
+﻿@model PMTool.Models.Sprint
+
+@{
+    ViewBag.Title = "Add | Sprint";
+}
+
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">
+        <button class="close" data-dismiss="alert" type="button">×</button>
+        <strong>Warning!</strong>
+        @TempData["Message"]
+    </div>
+}
+
+<div class="pagetitle">
+    <h1>Task Edit
+    </h1>
+    <span>Edit Task below....</span>
+</div>
+@using (Ajax.BeginForm("CreateFromKanban", "Sprints", new AjaxOptions { UpdateTargetId = "kanbanBoard", OnBegin = "Loading()", OnComplete = "Unload()" }, new { id = "CreateSprint" }))
+{
+    @Html.ValidationSummary(true)
+     
+
+    @Html.HiddenFor(model => model.ProjectID)
+   
+    <table class="table table-bordered table-invoice">
+        <tbody>
+            <tr>
+                <td class="width30">Project
+                </td>
+                <td>
+                    @Html.DisplayTextFor(model => model.Project.Name)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Name)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name)
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Description)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Description)
+                    @Html.ValidationMessageFor(model => model.Description)
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.StartDate)
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(model => model.StartDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" , @style="z-index:2000;"})
+                    @Html.ValidationMessageFor(model => model.StartDate)
+                </td>
+            </tr>
+            
+
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.EndDate)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.EndDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" , @style="z-index:2000;"})
+                    @Html.ValidationMessageFor(model => model.EndDate)
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.IsActive)
+                </td>
+                <td>
+
+                    @Html.CheckBoxFor(model => model.IsActive)
+                    @Html.ValidationMessageFor(model => model.IsActive)
+                </td>
+            </tr>
+            <tr>
+                <td class="width30"></td>
+                <td>
+                    <input type="submit" id="btnSave" value="Save" class="btn btn-primary" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+<script type="text/javascript">
+
+    jQuery(document).ready(function () {
+        if (jQuery('.datepicker').length > 0) {
+            jQuery(".datepicker").datepicker({
+                dateFormat: "dd/mm/yy",
+                showStatus: true,
+                showWeeks: true,
+                currentText: 'Now',
+                autoSize: true,
+                gotoCurrent: true,
+                showAnim: 'blind',
+                highlightWeek: true
+            })
+                .on('show', function () {
+
+                    // Make sure that z-index is above any open modal.
+                    var jQueryinput = jQuery(this);
+                    var modalZIndex = jQueryinput.closest('.modal').css('z-index');
+                    var zIndex = DEFAULT_Z_INDEX;
+                    if (modalZIndex) {
+                        zIndex = parseInt(modalZIndex) + 1;
+                    }
+
+                    jQuery('.datepicker').css("z-index", zIndex);;
+
+                });
+
+        }
+    });
+</script>

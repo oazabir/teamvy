@@ -225,6 +225,7 @@
     <Compile Include="Controllers\LabelsController.cs" />
     <Compile Include="Controllers\PrioritiesController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="Controllers\SprintsController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\User.cs" />
@@ -247,6 +248,14 @@
     <Compile Include="Migrations\201402181301321_sprintadded.cs" />
     <Compile Include="Migrations\201402181301321_sprintadded.Designer.cs">
       <DependentUpon>201402181301321_sprintadded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201402181313019_sprintmodified.cs" />
+    <Compile Include="Migrations\201402181313019_sprintmodified.Designer.cs">
+      <DependentUpon>201402181313019_sprintmodified.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201402181314390_sprintmodified2.cs" />
+    <Compile Include="Migrations\201402181314390_sprintmodified2.Designer.cs">
+      <DependentUpon>201402181314390_sprintmodified2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
@@ -1089,6 +1098,8 @@
     <Content Include="Views\Tasks\CreateFromKanban.cshtml" />
     <Content Include="Views\Tasks\EditStatus.cshtml" />
     <Content Include="Views\Projects\OwnProjects.cshtml" />
+    <Content Include="Views\Sprints\CreateFromKanban.cshtml" />
+    <Content Include="Views\Sprints\EditFromKanban.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -1176,6 +1187,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201402181301321_sprintadded.resx">
       <DependentUpon>201402181301321_sprintadded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402181313019_sprintmodified.resx">
+      <DependentUpon>201402181313019_sprintmodified.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402181314390_sprintmodified2.resx">
+      <DependentUpon>201402181314390_sprintmodified2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -455,6 +455,8 @@ namespace PMTool.Controllers
         public ActionResult CreateFromKanban(long id)
         {
             Task task = new Task();
+            task.StartDate = DateTime.Now;
+            task.EndDate = DateTime.Now;
             task.ProjectID = id;
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
             ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;

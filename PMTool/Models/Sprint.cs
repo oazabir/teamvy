@@ -14,11 +14,11 @@ namespace PMTool.Models
 
 
         [Required]
-        [Display(Name = "Priority Name")]
+        [Display(Name = "Sprint Name")]
         public string Name { get; set; }
 
         [Required]
-        [Display(Name = "Priority Description")]
+        [Display(Name = "Sprint Description")]
         public string Description { get; set; }
 
         [Required]
@@ -32,5 +32,11 @@ namespace PMTool.Models
 
 
         public virtual List<Task> Tasks { get; set; }
+
+        [Display(Name = "Start Date")]
+        public DateTime StartDate { get; set; }
+
+        [Display(Name = "End Date")]
+        public DateTime EndDate { get; set; }
     }
 }

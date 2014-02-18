@@ -56,6 +56,18 @@ namespace PMTool.Repository
             }
             return query;
         }
+        
+        public List<Task> GetTasksBySprintID(long sprintID)
+        {
+            List<Task> taskList = context.Tasks.Where(t => t.SprintID == sprintID).ToList();
+            foreach (Task task in taskList)
+            {
+                task.ChildTask = context.Tasks.Where(t => t.ParentTaskId == task.TaskID).ToList();
+                task.CreatedByUser = context.Users.Where(t => t.UserId == task.CreatedBy).FirstOrDefault();
+                task.ProjectStatus = context.ProjectStatuses.Where(t => t.ProjectStatusID == task.ProjectStatusID).FirstOrDefault();
+            }
+            return taskList;
+        }
 
         public IQueryable<Task> ByProjectAndStatusIncluding(long projectID,long status, params Expression<Func<Task, object>>[] includeProperties)
         {
@@ -220,5 +232,6 @@ namespace PMTool.Repository
         bool InsertOrUpdate(Task task);
         void Delete(long id);
         void Save();
+        List<Task> GetTasksBySprintID(long sprintID);
     }
 }
