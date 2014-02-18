@@ -88,6 +88,15 @@
                 </td>
             </tr>
             <tr>
+                <td>
+                    @Html.LabelFor(model => model.ActualTaskHoure)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.ActualTaskHoure)
+                    @Html.ValidationMessageFor(model => model.ActualTaskHoure)
+                </td>
+            </tr>
+            <tr>
                 <td>Priority
                 </td>
                 <td>

@@ -240,6 +240,10 @@
     <Compile Include="Migrations\201402171244341_host.Designer.cs">
       <DependentUpon>201402171244341_host.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201402181153056_taskActualhrAdded.cs" />
+    <Compile Include="Migrations\201402181153056_taskActualhrAdded.Designer.cs">
+      <DependentUpon>201402181153056_taskActualhrAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\ProjectStatus.cs" />
@@ -1160,6 +1164,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201402171244341_host.resx">
       <DependentUpon>201402171244341_host.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402181153056_taskActualhrAdded.resx">
+      <DependentUpon>201402181153056_taskActualhrAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -36,7 +36,7 @@ namespace PMTool.Models
         public DateTime EndDate { get; set; }
 
         [Required]
-        [Display(Name = "Task Hour")]
+        [Display(Name = "Estimated Task Hour")]
         public decimal TaskHour { get; set; }
 
         [Required]
@@ -109,5 +109,10 @@ namespace PMTool.Models
 
         [ForeignKey("CreatedBy")]
         public virtual User CreatedByUser { get; set; }
+
+
+        [Display(Name = "Actual Task Hour")]
+        public decimal ActualTaskHoure { get; set; }
+
     }
 }
