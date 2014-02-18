@@ -236,25 +236,9 @@
     <Compile Include="Membership\CodeFirstRoleProvider.cs" />
     <Compile Include="Membership\Crypto.cs" />
     <Compile Include="Membership\WebSecurity.cs" />
-    <Compile Include="Migrations\201402170744093_init.cs" />
-    <Compile Include="Migrations\201402170744093_init.Designer.cs">
-      <DependentUpon>201402170744093_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201402170828271_projectChange.cs" />
-    <Compile Include="Migrations\201402170828271_projectChange.Designer.cs">
-      <DependentUpon>201402170828271_projectChange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201402170833507_taskChange.cs" />
-    <Compile Include="Migrations\201402170833507_taskChange.Designer.cs">
-      <DependentUpon>201402170833507_taskChange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201402170835212_taskChange2.cs" />
-    <Compile Include="Migrations\201402170835212_taskChange2.Designer.cs">
-      <DependentUpon>201402170835212_taskChange2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201402171130069_ProjectStatusChange.cs" />
-    <Compile Include="Migrations\201402171130069_ProjectStatusChange.Designer.cs">
-      <DependentUpon>201402171130069_ProjectStatusChange.cs</DependentUpon>
+    <Compile Include="Migrations\201402171244341_host.cs" />
+    <Compile Include="Migrations\201402171244341_host.Designer.cs">
+      <DependentUpon>201402171244341_host.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
@@ -1094,6 +1078,7 @@
     <Content Include="Views\Projects\RemoveStatusFormKanban.cshtml" />
     <Content Include="Views\Tasks\CreateFromKanban.cshtml" />
     <Content Include="Views\Tasks\EditStatus.cshtml" />
+    <Content Include="Views\Projects\OwnProjects.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -1173,20 +1158,8 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201402170744093_init.resx">
-      <DependentUpon>201402170744093_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402170828271_projectChange.resx">
-      <DependentUpon>201402170828271_projectChange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402170833507_taskChange.resx">
-      <DependentUpon>201402170833507_taskChange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402170835212_taskChange2.resx">
-      <DependentUpon>201402170835212_taskChange2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402171130069_ProjectStatusChange.resx">
-      <DependentUpon>201402171130069_ProjectStatusChange.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201402171244341_host.resx">
+      <DependentUpon>201402171244341_host.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

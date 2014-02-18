@@ -7,13 +7,13 @@ namespace PMTool.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.0.2-21211")]
-    public sealed partial class taskChange : IMigrationMetadata
+    public sealed partial class host : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(taskChange));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(host));
         
         string IMigrationMetadata.Id
         {
-            get { return "201402170833507_taskChange"; }
+            get { return "201402171244341_host"; }
         }
         
         string IMigrationMetadata.Source
