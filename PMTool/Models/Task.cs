@@ -114,5 +114,10 @@ namespace PMTool.Models
         [Display(Name = "Actual Task Hour")]
         public decimal ActualTaskHoure { get; set; }
 
+
+        //public long SprintID { get; set; }
+
+
+        //public virtual Sprint Sprint { get; set; }
     }
 }
