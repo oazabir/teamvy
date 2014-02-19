@@ -75,6 +75,12 @@ namespace PMTool.Repository
         {
           return  context.Notifications.Where(n=>n.UserID==user.UserId && n.IsNoticed==false).ToList();
         }
+
+        internal List<Notification> FindNotification(long ProjectID)
+        {
+            List<Notification> notification = context.Notifications.Where(n => n.ProjectID == ProjectID).ToList();
+            return notification;
+        }
     }
 
     public interface INotificationRepository : IDisposable
