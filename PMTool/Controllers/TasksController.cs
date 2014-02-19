@@ -645,6 +645,7 @@ namespace PMTool.Controllers
         {
            Task task= unitOfWork.TaskRepository.Find(id);
             unitOfWork.TaskRepository.Delete(id);
+            unitOfWork.Save();
             return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
         }
 
