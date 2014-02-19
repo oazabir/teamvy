@@ -70,6 +70,8 @@ namespace PMTool.Models
         [ForeignKey("CreatedBy")]
         public virtual User CreatedByUser { get; set; }
 
+        public virtual List<Sprint> Sprints { get; set; }
+
 
     }
 }
