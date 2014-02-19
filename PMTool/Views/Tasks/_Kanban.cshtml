@@ -1,4 +1,4 @@
-﻿<script type="text/javascript" >
+﻿<script type="text/javascript">
     jQuery(document).ready(function () {
         jQuery("#Modalpopup").modal('hide');
         jQuery("#ModalpopupProject").modal('hide');
@@ -36,8 +36,8 @@
 
                 var columnId = jQuery(this).attr('id');
                 var taskId = ui.item[0].id;
-                if (taskId != null && columnId!=null)
-                UpdateRecord(taskId, columnId);
+                if (taskId != null && columnId != null)
+                    UpdateRecord(taskId, columnId);
                 /*Pass sortorder variable to server using ajax to save state*/
             }
         })
@@ -68,7 +68,8 @@
         columnList = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectStatuses.OrderBy(p => p.ProjectStatusID).ToList();
     }
     List<PMTool.Models.Task> taskList = (List<PMTool.Models.Task>)Model;
-    <div class="tabbable tabs-below">
+    PMTool.Models.Project currentProject = ((PMTool.Models.Project)ViewBag.CurrentProject);
+@*<div class="tabbable tabs-below">
         <!-- change tabs-left for left-->
         <ul class="nav nav-tabs">
             <li class=""><a data-toggle="tab" href="#A">Section 1</a></li>
@@ -85,40 +86,88 @@
             <div id="C" class="tab-pane">C... </div>
             ...
         </div>
-    </div>
-        <fieldset class='column' id=' '>
-            <legend class="widgettitle ctitle">UnAssigned</legend>
-            @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectStatusID == null))
+
+
+    </div>*@
+    if (currentProject.Sprints != null)
+    {
+    <div class="tabbable tabs-below">
+        <ul class="nav nav-tabs">
+            @foreach (PMTool.Models.Sprint sprint in currentProject.Sprints)
             {
-                <div class="dragbox" id="@item.TaskID">
-                        <h2>@item.Title</h2>
-                        <div class="dragbox-content" style="display: none;">
-                            @item.Description
-                            <a id="showdata" onclick="return ShowEditForm(@item.TaskID)">Edit </a>
-                        </div>
-                    </div>
+                <!-- change tabs-left for left-->
+                
+                <li class=""><a data-toggle="tab" href="#A">@sprint.Name</a></li>
             }
-        </fieldset>
+        </ul>
+        <div class="tab-content">
+
+            @foreach (PMTool.Models.Sprint sprint in currentProject.Sprints)
+            {
+                <div id="A" class="tab-pane">
+                    A
         
-        foreach (PMTool.Models.ProjectStatus status in columnList)
+                </div>
+          
+            }
+
+        </div>
+
+        @*
+
+                    <ul class="nav nav-tabs">
+                    <li class=""><a data-toggle="tab" href="#A">Section 1</a></li>
+                    <li class=""><a data-toggle="tab" href="#B">Section 2</a></li>
+                    <li class=""><a data-toggle="tab" href="#C">Section 3</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="A" class="tab-pane">
+
+                        A...
+        
+                    </div>
+                    <div id="B" class="tab-pane">B... </div>
+                    <div id="C" class="tab-pane">C... </div>
+                    ...
+                </div>*@
+
+
+        @*               }*@
+    </div>
+    }
+    <fieldset class='column' id=' '>
+        <legend class="widgettitle ctitle">UnAssigned</legend>
+        @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectStatusID == null))
         {
-            long CurrentPorjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID;
-                <fieldset class='column' id='@status.ProjectStatusID'>
-                    <legend class="widgettitle ctitle">@status.Name 
-                            @Ajax.ActionLink(" ", "RemoveStatusFormKanban", "Tasks", new { status = status.ProjectStatusID, projectID = CurrentPorjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard", OnBegin = "return confirm('Are you suer???\\nAll tasks under this column will go to UnAssigned!!!')" }, new { @class = "icon-remove", @style = "float:right;" })
-                    
-                        <a onclick="return ShowStatusEditForm(@status.ProjectStatusID,@CurrentPorjectID)" class="icon-edit" style="float:left"> </a>
-                    </legend>
-                    @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectStatusID == status.ProjectStatusID))
-                    {
-                        <div class="dragbox" id="@item.TaskID">
-                            <h2>@item.Title</h2>
-                            <div class="dragbox-content" style="display: none;">
-                                @item.Description
-                                <a id="showdata" onclick="return ShowEditForm(@item.TaskID)">Edit </a>
-                            </div>
-                        </div>
-                    }
-                </fieldset>
+            <div class="dragbox" id="@item.TaskID">
+                <h2>@item.Title</h2>
+                <div class="dragbox-content" style="display: none;">
+                    @item.Description
+                    <a id="showdata" onclick="return ShowEditForm(@item.TaskID)">Edit </a>
+                </div>
+            </div>
         }
+    </fieldset>
+        
+    foreach (PMTool.Models.ProjectStatus status in columnList)
+    {
+        long CurrentPorjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID;
+    <fieldset class='column' id='@status.ProjectStatusID'>
+        <legend class="widgettitle ctitle">@status.Name
+            @Ajax.ActionLink(" ", "RemoveStatusFormKanban", "Tasks", new { status = status.ProjectStatusID, projectID = CurrentPorjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard", OnBegin = "return confirm('Are you suer???\\nAll tasks under this column will go to UnAssigned!!!')" }, new { @class = "icon-remove", @style = "float:right;" })
+
+            <a onclick="return ShowStatusEditForm(@status.ProjectStatusID,@CurrentPorjectID)" class="icon-edit" style="float:left"></a>
+        </legend>
+        @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectStatusID == status.ProjectStatusID))
+        {
+            <div class="dragbox" id="@item.TaskID">
+                <h2>@item.Title</h2>
+                <div class="dragbox-content" style="display: none;">
+                    @item.Description
+                    <a id="showdata" onclick="return ShowEditForm(@item.TaskID)">Edit </a>
+                </div>
+            </div>
+        }
+    </fieldset>
+    }
 }
