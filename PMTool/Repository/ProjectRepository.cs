@@ -217,9 +217,9 @@ namespace PMTool.Repository
             return query.ToList();
         }
 
-        internal Project FindincludingSprint(long ProjectID)
+        public Project FindincludingSprint(long ProjectID)
         {
-            Project project = context.Projects.Where(p => p.ProjectID == ProjectID)/*.Include("")*/.FirstOrDefault();
+            Project project = context.Projects.Where(p => p.ProjectID == ProjectID).Include("Sprints").FirstOrDefault();
             return project;
         }
     }
