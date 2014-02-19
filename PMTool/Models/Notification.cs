@@ -32,8 +32,6 @@ namespace PMTool.Models
         public virtual Task Task { get; set; }
 
 
-        public virtual Project Project { get; set; }
-
         [Required]
         public Guid UserID { get; set; }
 
