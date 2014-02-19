@@ -72,6 +72,7 @@ namespace PMTool.Controllers
 
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
             ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+            ViewBag.PossibleSprints = unitOfWork.SprintRepository.AllByProjectID(ProjectID);
 
             List<SelectListItem> allLabels = GetAllLabel();
             ViewBag.PossibleLabels = allLabels;
@@ -119,6 +120,7 @@ namespace PMTool.Controllers
             ViewBag.PossibleUsers = allUsers;
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
             ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+            ViewBag.PossibleSprints = unitOfWork.SprintRepository.AllByProjectID(ProjectID);
 
             List<SelectListItem> allLabels = GetAllLabel();
             ViewBag.PossibleLabels = allLabels;
@@ -158,6 +160,7 @@ namespace PMTool.Controllers
             ViewBag.PossibleUsers = allUsers;
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
             ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+            ViewBag.PossibleSprints = unitOfWork.SprintRepository.AllByProjectID(task.ProjectID);
 
             List<SelectListItem> allLabels = GetAllLabel();
             ViewBag.PossibleLabels = allLabels;
@@ -297,6 +300,7 @@ namespace PMTool.Controllers
             ViewBag.PossibleUsers = allUsers;
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
             ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+            ViewBag.PossibleSprints = unitOfWork.SprintRepository.AllByProjectID(task.ProjectID);
 
             List<SelectListItem> allLabels = GetAllLabel();
             ViewBag.PossibleLabels = allLabels;
@@ -352,6 +356,7 @@ namespace PMTool.Controllers
             Task task = unitOfWork.TaskRepository.Find(id);
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
             ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+            ViewBag.PossibleSprints = unitOfWork.SprintRepository.AllByProjectID(task.ProjectID);
 
             List<SelectListItem> allUsers = GetAllUser(task.ProjectID);
             ViewBag.PossibleUsers = allUsers;
@@ -379,6 +384,7 @@ namespace PMTool.Controllers
             Task task = unitOfWork.TaskRepository.Find(id);
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
             ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+            ViewBag.PossibleSprints = unitOfWork.SprintRepository.AllByProjectID(task.ProjectID);
 
             List<SelectListItem> allUsers = GetAllUser(task.ProjectID);
             ViewBag.PossibleUsers = allUsers;
@@ -431,6 +437,7 @@ namespace PMTool.Controllers
             ViewBag.PossibleUsers = allUsers;
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
             ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+            ViewBag.PossibleSprints = unitOfWork.SprintRepository.AllByProjectID(task.ProjectID);
 
             List<SelectListItem> allLabels = GetAllLabel();
             ViewBag.PossibleLabels = allLabels;
@@ -460,6 +467,7 @@ namespace PMTool.Controllers
             task.ProjectID = id;
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
             ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+            ViewBag.PossibleSprints = unitOfWork.SprintRepository.AllByProjectID(task.ProjectID);
 
             List<SelectListItem> allUsers = GetAllUser(task.ProjectID);
             ViewBag.PossibleUsers = allUsers;
@@ -516,6 +524,7 @@ namespace PMTool.Controllers
             ViewBag.PossibleUsers = allUsers;
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
             ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+            ViewBag.PossibleSprints = unitOfWork.SprintRepository.AllByProjectID(task.ProjectID);
 
             List<SelectListItem> allLabels = GetAllLabel();
             ViewBag.PossibleLabels = allLabels;
@@ -611,6 +620,7 @@ namespace PMTool.Controllers
             ViewBag.PossibleUsers = allUsers;
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
             ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+            ViewBag.PossibleSprints = unitOfWork.SprintRepository.AllByProjectID(task.ProjectID);
 
             List<SelectListItem> allLabels = GetAllLabel();
             ViewBag.PossibleLabels = allLabels;
@@ -669,7 +679,7 @@ namespace PMTool.Controllers
         }
 
         [HttpPost]
-        public ActionResult Kanban(string taskid, string statusid)
+        public ActionResult Kanban(string taskid, string statusid, string sprintid)
         {
             string ststus = "";
             if (taskid != null && statusid != null)
@@ -677,35 +687,47 @@ namespace PMTool.Controllers
                 try
                 {
                     Task task = unitOfWork.TaskRepository.Find(Convert.ToInt64(taskid));
-                    string stat = "";
+                    string status = "";
+                    string sprint = "";
                     if (!string.IsNullOrEmpty(statusid.Trim()))
                     {
                         if (task.ProjectStatusID != Convert.ToInt64(statusid))
                         {
                             if (statusid.Trim() == "")
                             {
-                                stat = "Unassigned";
+                                status = "Unassigned";
                                 task.Status = string.Empty;
                                 task.ProjectStatusID = null;
                             }
                             else
                             {
-                                stat = unitOfWork.ProjectStatusRepository.Find(Convert.ToInt64(statusid)).Name;
+                                status = unitOfWork.ProjectStatusRepository.Find(Convert.ToInt64(statusid)).Name;
                                 task.ProjectStatusID = Convert.ToInt64(statusid);
                             }
+
                         }
                     }
                     else
                     {
-                        stat = "Unassigned";
+                        status = "Unassigned";
                         task.Status = string.Empty;
                         task.ProjectStatusID = null;
                     }
+
+                    if (sprintid.Trim() == "")
+                    {
+                        task.SprintID = null;
+                    }
+                    else
+                    {
+                        sprint = " under the sprint: " + unitOfWork.SprintRepository.Find(Convert.ToInt64(sprintid)).Name;
+                        task.SprintID = Convert.ToInt64(sprintid);
+                    }
                     unitOfWork.TaskRepository.InsertOrUpdate(task);
                     unitOfWork.Save();
-                    ststus = "Task- " + task.Title + " is moved to " + stat + " successfully!!!";
+                    ststus = "Task- " + task.Title + " is moved to " + status + sprint+" successfully!!!";
                 }
-                catch
+                catch 
                 {
                     ststus = "Something Wrong!!!";
                 }
@@ -838,6 +860,36 @@ namespace PMTool.Controllers
             //catch
             //{
             //}
+            return PartialView("_Kanban", taskList);
+        }
+
+
+        public ActionResult CreateSprintFromKanban(long id)
+        {
+            Sprint sprint = new Sprint();
+            sprint.StartDate = DateTime.Now;
+            sprint.EndDate = DateTime.Now;
+            sprint.ProjectID = id;
+            sprint.Project = unitOfWork.ProjectRepository.Find(sprint.ProjectID);
+
+            return PartialView(sprint);
+        }
+
+        [HttpPost]
+        public PartialViewResult CreateSprintFromKanban(Sprint sprint)
+        {
+
+            if (ModelState.IsValid)
+            {
+                unitOfWork.SprintRepository.InsertOrUpdate(sprint);
+                unitOfWork.Save();
+            }
+
+            Project project = unitOfWork.ProjectRepository.Find(sprint.ProjectID);
+            ViewBag.CurrentProject = project;
+            List<Task> taskList = new List<Task>();
+            taskList = unitOfWork.TaskRepository.GetTasksBySprintID(sprint.SprintID);
+
             return PartialView("_Kanban", taskList);
         }
 

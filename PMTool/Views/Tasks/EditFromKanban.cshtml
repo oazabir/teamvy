@@ -200,7 +200,20 @@
             new { @class = "chosen", multiple = "multiple", style = "width: 350px;" })
                 </td>
             </tr>
-
+            
+            <tr>
+                <td>Sprint
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.SprintID, ((IEnumerable<PMTool.Models.Sprint>)ViewBag.PossibleSprints).Select(option => new SelectListItem
+                    {
+                        Text = (option == null ? "None" : option.Name),
+                        Value = option.SprintID.ToString(),
+                        Selected = (Model != null) && (option.SprintID == Model.SprintID)
+                    }), "Choose...")
+                    @Html.ValidationMessageFor(model => model.SprintID)
+                </td>
+            </tr>
             <tr>
                 <td class="width30"></td>
                 <td>

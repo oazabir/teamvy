@@ -32,7 +32,7 @@
             </li>
             <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
             <li>
-                <a data-original-title="Tooltip on left" data-rel="tooltip" data-placement="left" rel="tooltip" href="#"  id="showTask" onclick="return ShowSprintForm(@projetc.ProjectID)"><span class="icon-plus" for="showTask"></span>Add Sprint</a>
+                <a data-original-title="Tooltip on left" data-rel="tooltip" data-placement="left" rel="tooltip" href="#"  id="showSprint" onclick="return ShowSprintForm(@projetc.ProjectID)"><span class="icon-plus" for="showSprint"></span>Add Sprint</a>
             </li>
     }
         }
@@ -41,6 +41,7 @@
 <br />
 <div>
 <div id="kanbanBoard" class="kanbanBoard">
+   
      @{Html.RenderAction("_Kanban", "Tasks", new { ProjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID });}
 </div>
     </div>
@@ -61,7 +62,7 @@
     <div id='popupcontainerEditStatus'>
     </div>
 </div>
-<div id='ModalpopupCreateSprint' data-url='@Url.Action("CreateFromKanban", "Sprints")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+<div id='ModalpopupCreateSprint' data-url='@Url.Action("CreateSprintFromKanban", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
     <div id='popupcontainerCreateSprint'>
     </div>
 </div>
@@ -109,7 +110,7 @@
         return false;
     }
     function ShowSprintForm(id) {
-        var url = jQuery('#ModalpopupTask').data('url') + "/" + id;
+        var url = jQuery('#ModalpopupCreateSprint').data('url') + "/" + id;
 
         jQuery.ajax({
             url: url,

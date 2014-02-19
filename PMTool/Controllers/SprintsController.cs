@@ -13,18 +13,19 @@ namespace PMTool.Controllers
         //
         // GET: /Sprints/
         UnitOfWork unitOfWork = new UnitOfWork();
-        public ActionResult CreateFromKanban(long projectID)
+        public ActionResult CreateSprintFromKanban(long id)
         {
             Sprint sprint = new Sprint();
             sprint.StartDate = DateTime.Now;
             sprint.EndDate = DateTime.Now;
-            sprint.ProjectID = projectID;
+            sprint.ProjectID = id;
+            sprint.Project = unitOfWork.ProjectRepository.Find(sprint.ProjectID);
 
-            return PartialView(); 
+            return PartialView(sprint); 
         } 
 
         [HttpPost]
-        public PartialViewResult CreateFromKanban(Sprint sprint)
+        public PartialViewResult CreateSprintFromKanban(Sprint sprint)
         {
 
             if (ModelState.IsValid)
@@ -38,7 +39,7 @@ namespace PMTool.Controllers
             List<Task> taskList = new List<Task>();
             taskList = unitOfWork.TaskRepository.GetTasksBySprintID(sprint.SprintID);
 
-            return PartialView("_Kanban", taskList);
+            return PartialView("~/Views/Tasks/_Kanban",taskList);
         }
 
 

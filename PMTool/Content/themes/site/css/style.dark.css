@@ -222,4 +222,19 @@ overflow:scroll !important;
      width: 100%;
 }
 
-/*Ajax Loader CSS*/
+.projectBacklog
+{
+    width:20% !important;
+    float: left !important;
+}
+
+.sprintDashboard
+{
+    width:79% !important;
+    float: left !important;
+}
+
+.tab-content
+{
+    height:600px !important;
+}

@@ -69,6 +69,11 @@ namespace PMTool.Models
         {
             context.Dispose();
         }
+
+        public List<Sprint> AllByProjectID(long projectID)
+        {
+            return context.Sprints.Where(s => s.ProjectID == projectID).ToList();
+        }
     }
 
     public interface ISprintRepository : IDisposable
@@ -79,5 +84,6 @@ namespace PMTool.Models
         void InsertOrUpdate(Sprint sprint);
         void Delete(long id);
         void Save();
+        List<Sprint> AllByProjectID(long projectID);
     }
 }

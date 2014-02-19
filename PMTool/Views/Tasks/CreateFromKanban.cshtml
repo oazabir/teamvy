@@ -63,7 +63,7 @@
                 </td>
                 <td>
 
-                    @Html.TextBoxFor(model => model.StartDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" , @style="z-index:2000;"})
+                    @Html.TextBoxFor(model => model.StartDate, "{0:dd/MM/yyyy}", new { @class = "datepicker", @style = "z-index:2000;" })
                     @Html.ValidationMessageFor(model => model.StartDate)
                 </td>
             </tr>
@@ -73,7 +73,7 @@
                     @Html.LabelFor(model => model.EndDate)
                 </td>
                 <td>
-                    @Html.TextBoxFor(model => model.EndDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" , @style="z-index:2000;"})
+                    @Html.TextBoxFor(model => model.EndDate, "{0:dd/MM/yyyy}", new { @class = "datepicker", @style = "z-index:2000;" })
                     @Html.ValidationMessageFor(model => model.EndDate)
                 </td>
             </tr>
@@ -207,6 +207,20 @@
                            Value = option.ProjectStatusID.ToString(),
                            Selected = (Model != null) && (option.ProjectStatusID == Model.ProjectStatusID)
                        }), "Choose...")
+                </td>
+            </tr>
+
+            <tr>
+                <td>Sprint
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.SprintID, ((IEnumerable<PMTool.Models.Sprint>)ViewBag.PossibleSprints).Select(option => new SelectListItem
+                    {
+                        Text = (option == null ? "None" : option.Name),
+                        Value = option.SprintID.ToString(),
+                        Selected = (Model != null) && (option.SprintID == Model.SprintID)
+                    }), "Choose...")
+                    @Html.ValidationMessageFor(model => model.SprintID)
                 </td>
             </tr>
             <tr>

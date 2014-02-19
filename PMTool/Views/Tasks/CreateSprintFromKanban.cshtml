@@ -19,7 +19,7 @@
     </h1>
     <span>Edit Task below....</span>
 </div>
-@using (Ajax.BeginForm("CreateFromKanban", "Sprints", new AjaxOptions { UpdateTargetId = "kanbanBoard", OnBegin = "Loading()", OnComplete = "Unload()" }, new { id = "CreateSprint" }))
+@using (Ajax.BeginForm("CreateSprintFromKanban", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard", OnBegin = "Loading()", OnComplete = "Unload()" }, new { id = "CreateSprint" }))
 {
     @Html.ValidationSummary(true)
      
@@ -102,7 +102,6 @@
 <script type="text/javascript">
 
     jQuery(document).ready(function () {
-        if (jQuery('.datepicker').length > 0) {
             jQuery(".datepicker").datepicker({
                 dateFormat: "dd/mm/yy",
                 showStatus: true,
@@ -126,7 +125,5 @@
                     jQuery('.datepicker').css("z-index", zIndex);;
 
                 });
-
-        }
     });
 </script>
