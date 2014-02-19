@@ -96,16 +96,17 @@
             @foreach (PMTool.Models.Sprint sprint in currentProject.Sprints)
             {
                 <!-- change tabs-left for left-->
-                
-                <li class=""><a data-toggle="tab" href="#A">@sprint.Name</a></li>
+                string gsprintId = "sprintId"+sprint.SprintID;
+                <li class=""><a data-toggle="tab" href="#@gsprintId">@sprint.Name</a></li>
             }
         </ul>
         <div class="tab-content">
 
             @foreach (PMTool.Models.Sprint sprint in currentProject.Sprints)
             {
-                <div id="A" class="tab-pane">
-                    A
+                string gsprintId = "sprintId" + sprint.SprintID;
+                <div id="@gsprintId" class="tab-pane">
+                    @sprint.Description
         
                 </div>
           
