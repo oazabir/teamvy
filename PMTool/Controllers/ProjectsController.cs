@@ -301,6 +301,7 @@ namespace PMTool.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(long id)
         {
+            Project project = unitOfWork.ProjectRepository.FindAllDependancyOfProject(id);
             unitOfWork.ProjectRepository.Delete(id);
             unitOfWork.Save();
             return RedirectToAction("Index");
