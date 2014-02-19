@@ -38,6 +38,9 @@ namespace PMTool.Controllers
         public ViewResult Details(long id)
         {
             Project project = unitOfWork.ProjectRepository.Find(id);
+            long notificationID =Convert.ToInt64(Request.QueryString["notificationID"]);
+            unitOfWork.NotificationRepository.Delete(notificationID);
+            unitOfWork.Save();
             MakeNotificationReadonly();
             return View(project);
         }
@@ -301,9 +304,24 @@ namespace PMTool.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(long id)
         {
-            unitOfWork.ProjectRepository.Delete(id);
-            unitOfWork.Save();
-            return RedirectToAction("Index");
+            Project project = unitOfWork.ProjectRepository.FindAllDependancyOfProject(id);
+            if (project.Users.Count == 0 && project.ProjectOwners.Count == 0 && project.ProjectStatuses.Count == 0)
+            {
+                if (project.Tasks.Count == 0)
+                {
+                    unitOfWork.ProjectRepository.Delete(id);
+                    unitOfWork.Save();
+                    return RedirectToAction("Index");
+                }
+                else {
+                    TempData["Message"] = "Delete project task";
+                    return RedirectToAction("Index");
+                }
+            }
+            else {
+                TempData["Message"] = "Delete project users,owners and status";
+                return RedirectToAction("Edit", new { id=id});
+            }
 
         }
 

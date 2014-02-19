@@ -257,6 +257,10 @@
     <Compile Include="Migrations\201402181314390_sprintmodified2.Designer.cs">
       <DependentUpon>201402181314390_sprintmodified2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201402191220258_pm.cs" />
+    <Compile Include="Migrations\201402191220258_pm.Designer.cs">
+      <DependentUpon>201402191220258_pm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Sprint.cs" />
@@ -1193,6 +1197,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201402181314390_sprintmodified2.resx">
       <DependentUpon>201402181314390_sprintmodified2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402191220258_pm.resx">
+      <DependentUpon>201402191220258_pm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

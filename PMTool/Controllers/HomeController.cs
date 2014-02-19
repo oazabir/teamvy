@@ -52,6 +52,7 @@ namespace PMTool.Controllers
             {
                 item.IsNoticed = true;
                 unitOfWork.NotificationRepository.InsertOrUpdate(item);
+                unitOfWork.NotificationRepository.Delete(item.NotificationID);
             }
             unitOfWork.Save();
             return PartialView("_Notification", notificationListNew);
