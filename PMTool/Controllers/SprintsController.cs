@@ -20,7 +20,7 @@ namespace PMTool.Controllers
             sprint.EndDate = DateTime.Now;
             sprint.ProjectID = projectID;
 
-            return PartialView();
+            return PartialView(); 
         }
 
         [HttpPost]
