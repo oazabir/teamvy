@@ -72,6 +72,8 @@ namespace PMTool.Models
 
         public virtual List<Sprint> Sprints { get; set; }
 
+        public virtual List<Task> Tasks { get; set; }
+
 
     }
 }
