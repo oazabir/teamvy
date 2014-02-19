@@ -70,6 +70,8 @@ namespace PMTool.Models
         [ForeignKey("CreatedBy")]
         public virtual User CreatedByUser { get; set; }
 
+        public virtual List<Task> Tasks { get; set; }
+
 
     }
 }
