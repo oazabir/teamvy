@@ -21,7 +21,7 @@ namespace PMTool.Controllers
             sprint.ProjectID = projectID;
 
             return PartialView(); 
-        }
+        } 
 
         [HttpPost]
         public PartialViewResult CreateFromKanban(Sprint sprint)
