@@ -216,6 +216,12 @@ namespace PMTool.Repository
             }
             return query.ToList();
         }
+
+        internal Project FindincludingSprint(long ProjectID)
+        {
+            Project project = context.Projects.Where(p => p.ProjectID == ProjectID)/*.Include("")*/.FirstOrDefault();
+            return project;
+        }
     }
 
     public interface IProjectRepository : IDisposable

@@ -30,6 +30,10 @@
             <li>
                 <a data-original-title="Tooltip on left" data-rel="tooltip" data-placement="left" rel="tooltip" href="#"  id="showTask" onclick="return ShowTaskForm(@projetc.ProjectID)"><span class="icon-plus" for="showTask"></span>Add Task</a>
             </li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <a data-original-title="Tooltip on left" data-rel="tooltip" data-placement="left" rel="tooltip" href="#"  id="showTask" onclick="return ShowSprintForm(@projetc.ProjectID)"><span class="icon-plus" for="showTask"></span>Add Sprint</a>
+            </li>
     }
         }
     </ul>
@@ -55,6 +59,10 @@
 </div>
 <div id='ModalpopupEditStatus' data-url='@Url.Action("EditStatus", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
     <div id='popupcontainerEditStatus'>
+    </div>
+</div>
+<div id='ModalpopupCreateSprint' data-url='@Url.Action("CreateFromKanban", "Sprints")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerCreateSprint'>
     </div>
 </div>
 <script type="text/javascript">
@@ -100,7 +108,19 @@
         });
         return false;
     }
+    function ShowSprintForm(id) {
+        var url = jQuery('#ModalpopupTask').data('url') + "/" + id;
 
+        jQuery.ajax({
+            url: url,
+            cache: false,
+            success: function (data) {
+                jQuery('#popupcontainerCreateSprint').html(data);
+                jQuery("#ModalpopupCreateSprint").modal('show');
+            }
+        });
+        return false;
+    }
     function ShowStatusEditForm(ststus,projectID) {
         var url = jQuery('#ModalpopupEditStatus').data('url');
        
