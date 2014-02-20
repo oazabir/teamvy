@@ -261,13 +261,19 @@
     <Compile Include="Migrations\201402191220258_pm.Designer.cs">
       <DependentUpon>201402191220258_pm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201402200737161_taskactivitylogCreated.cs" />
+    <Compile Include="Migrations\201402200737161_taskactivitylogCreated.Designer.cs">
+      <DependentUpon>201402200737161_taskactivitylogCreated.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\TaskActivityLog.cs" />
     <Compile Include="Models\Sprint.cs" />
     <Compile Include="Models\ProjectStatus.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\EnumCollection.cs" />
     <Compile Include="Models\Label.cs" />
+    <Compile Include="Repository\TaskActivityLogRepository.cs" />
     <Compile Include="Repository\SprintRepository.cs" />
     <Compile Include="Repository\ProjectStatusRepository.cs" />
     <Compile Include="Models\Search.cs" />
@@ -1200,6 +1206,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201402191220258_pm.resx">
       <DependentUpon>201402191220258_pm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402200737161_taskactivitylogCreated.resx">
+      <DependentUpon>201402200737161_taskactivitylogCreated.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
