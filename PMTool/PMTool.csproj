@@ -265,6 +265,10 @@
     <Compile Include="Migrations\201402200737161_taskactivitylogCreated.Designer.cs">
       <DependentUpon>201402200737161_taskactivitylogCreated.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201402201258039_logmodified.cs" />
+    <Compile Include="Migrations\201402201258039_logmodified.Designer.cs">
+      <DependentUpon>201402201258039_logmodified.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\TaskActivityLog.cs" />
@@ -314,6 +318,7 @@
     <Content Include="Content\themes\site\css\fullcalendar.css" />
     <Content Include="Content\themes\site\css\jquery.alerts.css" />
     <Content Include="Content\themes\site\css\jquery.chosen.css" />
+    <Content Include="Content\themes\site\css\jquery.fileupload.css" />
     <Content Include="Content\themes\site\css\jquery.jgrowl.css" />
     <Content Include="Content\themes\site\css\jquery.tagsinput.css" />
     <Content Include="Content\themes\site\css\jquery.ui.css" />
@@ -630,18 +635,17 @@
     <Content Include="Content\themes\site\js\jquery.cookie.js" />
     <Content Include="Content\themes\site\js\jquery.dataTables.min.js" />
     <Content Include="Content\themes\site\js\jquery.dataTables.nightly.js" />
-    <Content Include="Content\themes\site\js\jquery.fileupload-ui.js" />
     <Content Include="Content\themes\site\js\jquery.fileupload.js" />
     <Content Include="Content\themes\site\js\jquery.flot.min.js" />
     <Content Include="Content\themes\site\js\jquery.flot.pack.js" />
     <Content Include="Content\themes\site\js\jquery.flot.pie.js" />
     <Content Include="Content\themes\site\js\jquery.flot.pie.resize_update.js" />
     <Content Include="Content\themes\site\js\jquery.flot.resize.min.js" />
-    <Content Include="Content\themes\site\js\jquery.iframe-transport.js" />
     <Content Include="Content\themes\site\js\jquery.jgrowl.js" />
     <Content Include="Content\themes\site\js\jquery.min.js" />
     <Content Include="Content\themes\site\js\jquery.smartWizard.min.js" />
     <Content Include="Content\themes\site\js\jquery.tagsinput.min.js" />
+    <Content Include="Content\themes\site\js\jquery.ui.widget.js" />
     <Content Include="Content\themes\site\js\jquery.uniform.min.js" />
     <Content Include="Content\themes\site\js\jquery.validate.min.js" />
     <Content Include="Content\themes\site\js\media.js" />
@@ -1214,6 +1218,12 @@
     <EmbeddedResource Include="Migrations\201402200737161_taskactivitylogCreated.resx">
       <DependentUpon>201402200737161_taskactivitylogCreated.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402201258039_logmodified.resx">
+      <DependentUpon>201402201258039_logmodified.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UploadedDocument\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

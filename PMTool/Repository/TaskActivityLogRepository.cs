@@ -71,6 +71,11 @@ namespace PMTool.Repository
         {
             context.Dispose();
         }
+
+        public List<TaskActivityLog> AllByTaskID(long taskID)
+        {
+            return context.TaskActivityLogs.Where(a => a.TaskID == taskID).OrderByDescending(a=>a.ModificationDate).ToList();
+        }
     }
 
     public interface ITaskActivityLogRepository : IDisposable

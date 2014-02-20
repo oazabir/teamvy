@@ -907,32 +907,46 @@ namespace PMTool.Controllers
             TaskActivityLog log = new TaskActivityLog();
             log.TaskID = taskID;
             ViewBag.CurrentTask = unitOfWork.TaskRepository.Find(taskID);
+            ViewBag.PossibleActivities = unitOfWork.TaskActivityLogRepository.AllByTaskID(taskID);
             return PartialView(log);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public PartialViewResult Activity()
+        public virtual PartialViewResult ActivityAdd(long taskID)
         {
             if (ModelState.IsValid)
             {
-                //if (File != null && File.ContentLength > 0)
-                //{
-                //    log.CreateDate = DateTime.Now;
-                //    log.ModificationDate = DateTime.Now;
-                //    unitOfWork.TaskActivityLogRepository.InsertOrUpdate(log);
-                //    unitOfWork.Save();
-                //    var fileName = Path.GetFileName(File.FileName);
-                    
-                //    var path = Path.Combine(Server.MapPath("~/Content/"),"T-",log.TaskID.ToString(),"L-",log.TaskActivityLogID.ToString());
-                //    log.FileUrl="~/Content/"+"T-"+log.TaskID.ToString()+"L-"+log.TaskActivityLogID.ToString();
-                //    unitOfWork.TaskActivityLogRepository.InsertOrUpdate(log);
-                //    unitOfWork.Save();
-                //    File.SaveAs(Path.Combine(Server.MapPath("~/Content/"), fileName));
-                //}
+
+                //var r = new List<ViewDataUploadFilesResult>();
+                string comment = "";
+                User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+                foreach (string file in Request.Files)
+                {
+                    HttpPostedFileBase hpf = Request.Files[file] as HttpPostedFileBase;
+                    if (hpf.ContentLength == 0)
+                        continue;
+                    comment = user.FirstName + " " + user.LastName + " Added a file " + Path.GetFileName(hpf.FileName);
+
+
+                    TaskActivityLog log = new TaskActivityLog();
+                    log.TaskID = taskID;
+                    log.CreateDate = DateTime.Now;
+                    log.ModificationDate = DateTime.Now;
+                    log.Comment = comment;
+                    log.FileDisplayName = Path.GetFileName(hpf.FileName);
+                    unitOfWork.TaskActivityLogRepository.InsertOrUpdate(log);
+                    unitOfWork.Save();
+
+                    var path = Server.MapPath("~/UploadedDocument/") + "T-" + log.TaskID.ToString() + "L-" + log.TaskActivityLogID.ToString() +Path.GetExtension(hpf.FileName);
+                    log.FileUrl = "~/UploadedDocument/" + "T-" + log.TaskID.ToString() + "L-" + log.TaskActivityLogID.ToString() + Path.GetExtension(hpf.FileName);
+                    unitOfWork.TaskActivityLogRepository.InsertOrUpdate(log);
+                    unitOfWork.Save();
+                    hpf.SaveAs(Server.MapPath( log.FileUrl));
+
+                }
+
             }
-            TaskActivityLog log = new TaskActivityLog();
-            Task task= unitOfWork.TaskRepository.Find(log.TaskID);
+            Task task = unitOfWork.TaskRepository.Find(taskID);
             Project project = unitOfWork.ProjectRepository.Find(task.ProjectID);
             ViewBag.CurrentProject = project;
             List<Task> taskList = new List<Task>();

@@ -22,6 +22,9 @@ namespace PMTool.Models
         [Required]
         public DateTime CreateDate { get; set; }
 
+
+        public string FileDisplayName { get; set; }
+
         [Required]
         public DateTime ModificationDate { get; set; }
 
