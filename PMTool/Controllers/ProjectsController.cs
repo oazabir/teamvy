@@ -312,7 +312,6 @@ namespace PMTool.Controllers
                     unitOfWork.ProjectRepository.Delete(id);
                     List<Notification> notifications = unitOfWork.NotificationRepository.FindNotification(id);
                     notifications.ForEach(n => unitOfWork.NotificationRepository.Delete(n.NotificationID));
-                   // unitOfWork.NotificationRepository.Delete(notification.Select();
                     unitOfWork.Save();
                     return RedirectToAction("Index");
                 }
