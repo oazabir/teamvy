@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -897,6 +898,44 @@ namespace PMTool.Controllers
             ViewBag.CurrentProject = project;
             List<Task> taskList = new List<Task>();
             taskList = unitOfWork.TaskRepository.GetTasksBySprintID(sprint.SprintID);
+
+            return PartialView("_Kanban", taskList);
+        }
+
+        public PartialViewResult Activity(long taskID)
+        {
+            TaskActivityLog log = new TaskActivityLog();
+            log.TaskID = taskID;
+            ViewBag.CurrentTask = unitOfWork.TaskRepository.Find(taskID);
+            return PartialView(log);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public PartialViewResult Activity()
+        {
+            if (ModelState.IsValid)
+            {
+                //if (File != null && File.ContentLength > 0)
+                //{
+                //    log.CreateDate = DateTime.Now;
+                //    log.ModificationDate = DateTime.Now;
+                //    unitOfWork.TaskActivityLogRepository.InsertOrUpdate(log);
+                //    unitOfWork.Save();
+                //    var fileName = Path.GetFileName(File.FileName);
+                    
+                //    var path = Path.Combine(Server.MapPath("~/Content/"),"T-",log.TaskID.ToString(),"L-",log.TaskActivityLogID.ToString());
+                //    log.FileUrl="~/Content/"+"T-"+log.TaskID.ToString()+"L-"+log.TaskActivityLogID.ToString();
+                //    unitOfWork.TaskActivityLogRepository.InsertOrUpdate(log);
+                //    unitOfWork.Save();
+                //    File.SaveAs(Path.Combine(Server.MapPath("~/Content/"), fileName));
+                //}
+            }
+            Task task= unitOfWork.TaskRepository.Find(log.TaskID);
+            Project project = unitOfWork.ProjectRepository.Find(task.ProjectID);
+            ViewBag.CurrentProject = project;
+            List<Task> taskList = new List<Task>();
+            taskList = unitOfWork.TaskRepository.GetTasksByProjectID(task.ProjectID);
 
             return PartialView("_Kanban", taskList);
         }

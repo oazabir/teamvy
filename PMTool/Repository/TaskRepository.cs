@@ -221,6 +221,11 @@ namespace PMTool.Repository
         {
             context.Dispose();
         }
+
+        public List<Task> GetTasksByProjectID(long projectID)
+        {
+            return context.Tasks.Where(t => t.ProjectID == projectID).ToList();
+        }
     }
 
     public interface ITaskRepository : IDisposable
@@ -233,5 +238,6 @@ namespace PMTool.Repository
         void Delete(long id);
         void Save();
         List<Task> GetTasksBySprintID(long sprintID);
+        List<Task> GetTasksByProjectID(long projectID);
     }
 }

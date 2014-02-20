@@ -27,5 +27,8 @@ namespace PMTool.Models
 
         public long TaskID { get; set; }
 
+        [NotMapped]
+        public HttpPostedFileBase AtachFile { get; set; }
+
     }
 }
