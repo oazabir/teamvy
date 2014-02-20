@@ -218,6 +218,7 @@ namespace PMTool.Controllers
             ViewBag.PossibleUsers = allUsers;
             project.SelectedAssignedUsers = project.Users.Select(u => u.UserId.ToString()).ToList();
             project.SelectedProjectsOwners = project.ProjectOwners.Select(u => u.UserId.ToString()).ToList();
+            
             return View(project);
         }
 
