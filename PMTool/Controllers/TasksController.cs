@@ -12,7 +12,7 @@ using PMTool.Repository;
 namespace PMTool.Controllers
 {
     [Authorize]
-    public class TasksController : BaseController
+    public class TasksController : BaseController 
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
         //
@@ -645,6 +645,7 @@ namespace PMTool.Controllers
         {
            Task task= unitOfWork.TaskRepository.Find(id);
             unitOfWork.TaskRepository.Delete(id);
+            unitOfWork.Save();
             return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
         }
 
@@ -709,7 +710,14 @@ namespace PMTool.Controllers
                     }
                     else
                     {
-                        status = "Unassigned";
+                        if (string.IsNullOrEmpty(status.Trim()) && string.IsNullOrEmpty(sprintid.Trim()))
+                        {
+                            status = "Project Backlog";
+                        }
+                        else if (string.IsNullOrEmpty(status.Trim()) && !string.IsNullOrEmpty(sprintid.Trim()))
+                        {
+                            status = unitOfWork.SprintRepository.Find(Convert.ToInt64(sprintid)).Name + " Backlog";
+                        }
                         task.Status = string.Empty;
                         task.ProjectStatusID = null;
                     }
