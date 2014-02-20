@@ -1,0 +1,171 @@
+﻿@model PMTool.Models.TaskActivityLog
+
+@{
+    ViewBag.Title = "Add | Activity";
+}
+
+    <script src="~/Content/themes/site/js/jquery.fileupload.js"></script>
+    <script src="~/Content/themes/site/js/jquery.fileupload-ui.js"></script>
+    <script src="~/Content/themes/site/js/jquery.iframe-transport.js"></script>
+<script type="text/javascript">
+
+        var jqXHRData;
+
+        jQuery(document).ready(function () {
+
+            initSimpleFileUpload();
+            initAutoFileUpload();
+            initFileUploadWithCheckingSize();
+
+            jQuery("#hl-start-upload").on('click', function () {
+                if (jqXHRData) {
+                    jqXHRData.submit();
+                }
+                return false;
+            });
+
+            jQuery("#hl-start-upload-with-size").on('click', function () {
+                if (jqXHRData) {
+                    var isStartUpload = true;
+                    var uploadFile = jqXHRData.files[0];
+
+                    if (!(/\.(gif|jpg|jpeg|tiff|png)jQuery/i).test(uploadFile.name)) {
+                        alert('You must select an image file only');
+                        isStartUpload = false;
+                    } else if (uploadFile.size > 4000000) { // 4mb
+                        alert('Please upload a smaller image, max size is 4 MB');
+                        isStartUpload = false;
+                    }
+                    if (isStartUpload) {
+                        jqXHRData.submit();
+                    }
+                }
+                return false;
+            });
+        });
+
+        function initSimpleFileUpload() {
+            'use strict';
+
+            jQuery('#fu-my-simple-upload').fileupload({
+                url: '@Url.Action("Activity", "Tasks")',
+                dataType: 'json',
+                add: function (e, data) {
+                    jqXHRData = data
+                },
+                done: function (event, data) {
+                    if (data.result.isUploaded) {
+
+                    }
+                    else {
+
+                    }
+                    alert(data.result.message);
+                },
+                fail: function (event, data) {
+                    if (data.files[0].error) {
+                        alert(data.files[0].error);
+                    }
+                }
+            });
+        }
+
+        function initAutoFileUpload() {
+            'use strict';
+
+            jQuery('#fu-my-auto-upload').fileupload({
+                autoUpload: true,
+                url: '/File/UploadFile',
+                dataType: 'json',
+                add: function (e, data) {
+                    var jqXHR = data.submit()
+                        .success(function (data, textStatus, jqXHR) {
+                            if (data.isUploaded) {
+
+                            }
+                            else {
+
+                            }
+                            alert(data.message);
+                        })
+                        .error(function (data, textStatus, errorThrown) {
+                            if (typeof (data) != 'undefined' || typeof (textStatus) != 'undefined' || typeof (errorThrown) != 'undefined') {
+                                alert(textStatus + errorThrown + data);
+                            }
+                        });
+                },
+                fail: function (event, data) {
+                    if (data.files[0].error) {
+                        alert(data.files[0].error);
+                    }
+                }
+            });
+        }
+
+        function initFileUploadWithCheckingSize() {
+            'use strict';
+
+            jQuery('#fu-my-simple-upload-with-size').fileupload({
+                url: '/File/UploadFile',
+                dataType: 'json',
+                add: function (e, data) {
+                    jqXHRData = data;
+
+                },
+                done: function (event, data) {
+                    if (data.result.isUploaded) {
+
+                    }
+                    else {
+
+                    }
+                    alert(data.result.message);
+                },
+                fail: function (event, data) {
+                    if (data.files[0].error) {
+                        alert(data.files[0].error);
+                    }
+                }
+            });
+        }
+
+    </script>
+
+<div class="pagetitle">
+    <h1>Activity
+    </h1>
+    <span>Create Activity....</span>
+</div>
+
+    @Html.ValidationSummary(true)
+     @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.TaskID)
+   
+    <table class="table table-bordered table-invoice">
+        <tbody>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Comment)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Comment)
+                </td>
+            </tr>
+            <tr>
+                    <td></td>
+                <td>
+                    
+                <input type="file" name="AtachFile" id="fu-my-simple-upload-with-size" />
+                &nbsp;<a href="#" id="hl-start-upload-with-size">Start upload</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="width30"></td>
+                <td>
+                    <input type="submit" id="btnSave" value="Save" class="btn btn-primary" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+

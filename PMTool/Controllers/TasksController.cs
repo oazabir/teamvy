@@ -931,6 +931,7 @@ namespace PMTool.Controllers
                 //    File.SaveAs(Path.Combine(Server.MapPath("~/Content/"), fileName));
                 //}
             }
+            TaskActivityLog log = new TaskActivityLog();
             Task task= unitOfWork.TaskRepository.Find(log.TaskID);
             Project project = unitOfWork.ProjectRepository.Find(task.ProjectID);
             ViewBag.CurrentProject = project;
