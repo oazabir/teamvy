@@ -10,16 +10,75 @@
 
 <div class="maincontent">
     <div class="contentinner content-dashboard">
-        <div class="alert alert-info">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <strong>Welcome!</strong> To Project Management Tool.
+        <div class="">
+            <h5>Task Assigned to you</h5>
+            <table class="table table-bordered" id="dyntable">
+                <thead>
+                    <tr>
+
+                        <th>Task Title
+                        </th>
+                        <th>Project Name
+                        </th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Status</th>
+                        <th></th>
+                        @* <th>Sub Tasks
+                        </th>*@
+                        @*    <th>Add Sub Task</th>
+
+                        <th>Assign To</th>
+                        <th>Created by</th>
+
+                        <th></th>*@
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var task in (List<PMTool.Models.Task>)ViewBag.TodaysTask)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayTextFor(_ => task.Title).ToString()
+                            </td>
+                            <td>
+                                @task.Project.Name
+                            </td>
+
+                            <td>
+                                @task.StartDate.ToString("dd/MM/yyyy")
+                            </td>
+
+                            <td>
+                                @task.EndDate.ToString("dd/MM/yyyy")
+                            </td>
+
+                            <td>
+                                @if (task.ProjectStatusID != null)
+                                {
+                                    @task.ProjectStatus.Name
+                                }
+                            </td>
+                            <td align="center">
+                                @Html.ActionLink(" ", "Edit","Tasks", new { id = task.TaskID }, new { @class = "icon-edit", @title = "Edit" })
+                                |
+                                @Html.ActionLink(" ", "Details", "Tasks", new { id = task.TaskID }, new { @class = "icon-list-alt", @title = "Details" })
+                                |
+                                @Html.ActionLink(" ", "Delete", "Tasks", new { id = task.TaskID }, new { @class = "icon-trash", @title = "Delete" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
         <!--alert-->
 
         <div class="row-fluid">
             <div class="span8">
                 <ul class="widgeticons row-fluid">
-            @*       <li class="one_fifth"><a href="#"><img src="../../Content/themes/site/img/gemicon/edit.png" alt="" /><span>New Project</span></a></li>
+                    @*       <li class="one_fifth"><a href="#"><img src="../../Content/themes/site/img/gemicon/edit.png" alt="" /><span>New Project</span></a></li>
                             <li class="one_fifth"><a href="#"><img src="../../Content/themes/site/img/gemicon/image.png" alt="" /><span>Add Task</span></a></li>
                             <li class="one_fifth"><a href="#"><img src="../../Content/themes/site/img/gemicon/reports.png" alt="" /><span>Edit Profile</span></a></li>
                             <li class="one_fifth"><a href="#">
@@ -31,12 +90,12 @@
                 </ul>
 
                 <br />
-                
-             
+
+
 
             </div>
             <!--span8-->
-            <div class="span4">
+            @* <div class="span4">
                 <h4 class="widgettitle nomargin">Calendar</h4>
                 <div class="widgetcontent bordered" id="datepicker">
                 </div>
@@ -45,7 +104,7 @@
                 <!--widgetcontent-->
 
                 <!--widgetcontent-->
-            </div>
+            </div>*@
             <!--span4-->
         </div>
         <!--row-fluid-->

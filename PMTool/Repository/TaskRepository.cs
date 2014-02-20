@@ -84,6 +84,21 @@ namespace PMTool.Repository
             return query;
         }
 
+
+
+        public IQueryable<Task> GetTasksByUser(User user)
+        {
+            IQueryable<Task> query = context.Tasks.Where(t => t.ParentTaskId == null && t.Users.Any(U => U.UserId == user.UserId));
+
+            foreach (Task task in query.ToList())
+            {
+                task.ChildTask = context.Tasks.Where(t => t.ParentTaskId == task.TaskID).ToList();
+                task.CreatedByUser = context.Users.Where(t => t.UserId == task.CreatedBy).FirstOrDefault();
+                task.ProjectStatus = context.ProjectStatuses.Where(t => t.ProjectStatusID == task.ProjectStatusID).FirstOrDefault();
+            }
+            return query;
+        }
+
         public IQueryable<Task> ByProjectIncluding(long projectID,User user,params Expression<Func<Task, object>>[] includeProperties)
         {
             IQueryable<Task> query = context.Tasks.Where(t => t.ProjectID == projectID && t.ParentTaskId == null && t.Users.Any(U=>U.UserId==user.UserId));
