@@ -10,7 +10,7 @@
 
 <div class="maincontent">
     <div class="contentinner content-dashboard">
-        <div class="alert alert-info">
+        <div class="">
             <h5>Task Assigned to you</h5>
             <table class="table table-bordered" id="dyntable">
                 <thead>
@@ -62,11 +62,11 @@
                                 }
                             </td>
                             <td align="center">
-                                @Html.ActionLink(" ", "Edit", new { id = task.TaskID }, new { @class = "icon-edit", @title = "Edit" })
+                                @Html.ActionLink(" ", "Edit","Tasks", new { id = task.TaskID }, new { @class = "icon-edit", @title = "Edit" })
                                 |
-                                @Html.ActionLink(" ", "Details", new { id = task.TaskID }, new { @class = "icon-list-alt", @title = "Details" })
+                                @Html.ActionLink(" ", "Details", "Tasks", new { id = task.TaskID }, new { @class = "icon-list-alt", @title = "Details" })
                                 |
-                                @Html.ActionLink(" ", "Delete", new { id = task.TaskID }, new { @class = "icon-trash", @title = "Delete" })
+                                @Html.ActionLink(" ", "Delete", "Tasks", new { id = task.TaskID }, new { @class = "icon-trash", @title = "Delete" })
                             </td>
                         </tr>
                     }
