@@ -710,7 +710,14 @@ namespace PMTool.Controllers
                     }
                     else
                     {
-                        status = "Unassigned";
+                        if (string.IsNullOrEmpty(status.Trim()) && string.IsNullOrEmpty(sprintid.Trim()))
+                        {
+                            status = "Project Backlog";
+                        }
+                        else if (string.IsNullOrEmpty(status.Trim()) && !string.IsNullOrEmpty(sprintid.Trim()))
+                        {
+                            status = unitOfWork.SprintRepository.Find(Convert.ToInt64(sprintid)).Name + " Backlog";
+                        }
                         task.Status = string.Empty;
                         task.ProjectStatusID = null;
                     }
