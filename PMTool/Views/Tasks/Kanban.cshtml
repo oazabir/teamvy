@@ -128,8 +128,8 @@
         return false;
     }
     function ShowSprintForm(id) {
+        //jQuery("#hideUl").css("display", "block");
         var url = jQuery('#ModalpopupCreateSprint').data('url') + "/" + id;
-
         jQuery.ajax({
             url: url,
             cache: false,

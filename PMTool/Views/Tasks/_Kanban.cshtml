@@ -50,11 +50,13 @@
     });
 
     function activate_tab() {
-        //jQuery('ul.nav > li').click(function (e) {
-        //    jQuery('ul.nav > li').removeClass('active');
-        //    jQuery(this).addClass('active');
-        //    //e.preventDefault();
-        //});
+        var countContain = jQuery('.ui-sortable');
+        if (countContain.length > 1) {
+            jQuery("#hideUl").css("display", "block");
+        }
+        else {
+            jQuery("#hideUl").css("display", "none");
+        }
     }
     function UpdateRecord(task, status, sprintId) {
         jQuery.ajax({
@@ -112,7 +114,7 @@
             string Cssclass = "active";
             string CssclassPanActive = "tab-pane active";
         <div class="tabbable tabs-below">
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs" id="hideUl">
 
                 @foreach (PMTool.Models.Sprint sprint in currentProject.Sprints)
                 {
