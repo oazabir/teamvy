@@ -1,0 +1,49 @@
+﻿@model PMTool.Models.Task
+@*<div class="dragbox" id="@Model.TaskID">
+<h2>@Model.Title</h2>
+<div class="dragbox-content" style="display: none;">
+    Start Date : <b>@Model.StartDate.ToShortDateString()</b>
+    <br />
+    End Date :<b> @Model.EndDate.ToShortDateString() </b>
+    <br />
+    Estimated Houre(s) :<b> @Model.TaskHour.ToString()</b><br />
+    Actual Houre(s) :<b> @Model.ActualTaskHoure.ToString()</b><br />
+    Priority :<b> @Model.Priority.Name</b><br />
+    @if (Model.Labels.Count > 0)
+    {
+        foreach (PMTool.Models.Label label in Model.Labels)
+        {
+        <span class="label label-important">@label.Name</span>
+        }
+    }
+    <br />
+
+    <a href="#" title="Edit" id="showdata" onclick="return ShowEditForm(@Model.TaskID)"><span class="icon-edit" for="showSprint"></span>Edit </a>
+    &nbsp;&nbsp;
+    <a  href="#" title="Attachments"  onclick="return ShowActivity(@Model.TaskID)"><span class="iconsweets-paperclip" for="showSprint"></span>Attachments</a>
+</div>
+</div>*@
+
+
+<div class="dragbox" id="@Model.TaskID">
+<h2>@Model.Title</h2>
+<div class="dragbox-content" style="display: none;">
+    @{
+    if (@Model.Description.Length>150)
+    {
+       
+     <span>@Model.Description.Substring(0,150) ...</span><br />
+        <a href="#" title="Edit" id="showdata" onclick="return ShowEditForm(@Model.TaskID)"><span class="icon-edit" for="showSprint"></span>Edit </a>
+    
+    <a  href="#" title="Attachments"  onclick="return ShowActivity(@Model.TaskID)"><span class="iconsweets-paperclip" for="showSprint"></span>Attachments</a>
+    }
+    else
+    {
+     <span>@Model.Description </span><br />
+    <a href="#" title="Edit" id="showdata" onclick="return ShowEditForm(@Model.TaskID)"><span class="icon-edit" for="showSprint"></span>Edit </a>
+    
+    <a  href="#" title="Attachments"  onclick="return ShowActivity(@Model.TaskID)"><span class="iconsweets-paperclip" for="showSprint"></span>Attachments</a>
+    }
+    }
+</div>
+</div>

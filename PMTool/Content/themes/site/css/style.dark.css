@@ -116,7 +116,7 @@ font-weight: bold;
 
 .label-important,
 .badge-important {
-  background-color: #E41B17 !important;
+  background-color: #b94a48 !important;
 }
 
 .label-important[href],
@@ -237,4 +237,8 @@ overflow:scroll !important;
 .tab-content
 {
     height:600px !important;
+}
+.label
+{
+    margin: 1px !important;
 }

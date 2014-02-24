@@ -955,6 +955,12 @@ namespace PMTool.Controllers
             return PartialView("_Kanban", taskList);
         }
 
+        public PartialViewResult _KanbanTaskDetail(long taskID)
+        {
+            Task task = unitOfWork.TaskRepository.Find(taskID);
+            return PartialView("_KanbanTaskDetail", task);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

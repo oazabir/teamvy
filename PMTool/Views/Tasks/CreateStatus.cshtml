@@ -1,16 +1,16 @@
 @model PMTool.Models.ProjectStatus
 
 @{
-    ViewBag.Title = "Edit | Project";
+    ViewBag.Title = "Add | Status";
 }
 
 
 
 
 <div class="pagetitle">
-    <h1>Project Edit
+    <h1>Status Add
     </h1>
-    <span>Edit Project below....</span>
+    <span>Add Status below....</span>
 </div>
      @using (Ajax.BeginForm("CreateStatus", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard", OnBegin = "Loading()",OnComplete="Unload()" }))
  {
