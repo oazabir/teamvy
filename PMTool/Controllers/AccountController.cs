@@ -18,7 +18,7 @@ namespace PMTool.Controllers
 {
     [Authorize]
     [InitializeSimpleMembership]
-    public class AccountController :BaseController
+    public class AccountController : BaseController
     {
         //
         // GET: /Account/Login
@@ -167,7 +167,7 @@ namespace PMTool.Controllers
             else
                 ViewBag.HasLocalPassword = false;
 
-                //OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            //OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
         }
@@ -352,7 +352,7 @@ namespace PMTool.Controllers
         [ChildActionOnly]
         public ActionResult RemoveExternalLogins()
         {
-            ICollection<OAuthAccount>accounts = OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name);
+            ICollection<OAuthAccount> accounts = OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name);
             List<ExternalLogin> externalLogins = new List<ExternalLogin>();
             foreach (OAuthAccount account in accounts)
             {
@@ -401,14 +401,14 @@ namespace PMTool.Controllers
         public ActionResult EditProfile()
         {
             UnitOfWork unitofWork = new UnitOfWork();
-            User user =unitofWork.UserRepository.GetUserByUserName(User.Identity.Name);
+            User user = unitofWork.UserRepository.GetUserByUserName(User.Identity.Name);
             return View(user);
         }
 
 
         [Authorize]
         [HttpPost]
-        public ActionResult EditProfile(User user) 
+        public ActionResult EditProfile(User user)
         {
             UnitOfWork unitofWork = new UnitOfWork();
             //User userNew = unitofWork.UserRepository.GetUserByEmail(User.Identity.Name);
@@ -573,11 +573,19 @@ namespace PMTool.Controllers
             {
                 message = new MailMessage(ConfigurationManager.AppSettings["EmailFrom"].ToString(), userEmail)
                 {
-                    Subject = "Invitation from PMTool",
-                    Body = "You are invited to PMTool. Please click on the below link and signup. " + verifyUrl
+                    Subject = "Invitation from PMTool"
 
                 };
-
+                string Body = "You are invited to PMTool. Please click on accept and signup.<br><a href='" + verifyUrl + "'>" + "<img src='cid:imageId' align=baseline border=0 />" + "</a>";
+                 AlternateView htmlView = AlternateView.CreateAlternateViewFromString(Body, null, "text/html");
+                 LinkedResource imagelink = new LinkedResource(@"D:\BT\Projects\teamvy\PMTool\Content\images\accept.png");
+                 imagelink.ContentId = "imageId";
+                 imagelink.TransferEncoding = System.Net.Mime.TransferEncoding.Base64;
+                 htmlView.LinkedResources.Add(imagelink);
+                 message.AlternateViews.Add(htmlView);
+                 SmtpClient smtp = new SmtpClient();
+                 smtp.DeliveryMethod = SmtpDeliveryMethod.PickupDirectoryFromIis;
+                 message.IsBodyHtml = true;
                 client.Credentials = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["EmailFrom"].ToString(), ConfigurationManager.AppSettings["EmailFromPass"].ToString());
             }
 
