@@ -225,7 +225,7 @@ namespace PMTool.Repository
 
         internal Project FindAllDependancyOfProject(long ProjectID)
         {
-            Project project = context.Projects.Where(p => p.ProjectID == ProjectID).Include("Users").Include("ProjectOwners").Include("ProjectStatuses").Include("Tasks").FirstOrDefault();
+            Project project = context.Projects.Where(p => p.ProjectID == ProjectID).Include("Users").Include("ProjectOwners").Include("ProjectStatuses").Include("Tasks").Include("Sprints").FirstOrDefault();
             return project;
         }
 

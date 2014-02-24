@@ -306,7 +306,7 @@ namespace PMTool.Controllers
         public ActionResult DeleteConfirmed(long id)
         {
             Project project = unitOfWork.ProjectRepository.FindAllDependancyOfProject(id);
-            if (project.Users.Count == 0 && project.ProjectOwners.Count == 0 && project.ProjectStatuses.Count == 0)
+            if (project.Users.Count == 0 && project.ProjectOwners.Count == 0 && project.ProjectStatuses.Count == 0 && project.Sprints.Count == 0)
             {
                 if (project.Tasks.Count == 0)
                 {
@@ -322,7 +322,7 @@ namespace PMTool.Controllers
                 }
             }
             else {
-                TempData["Message"] = "Delete project users,owners and status";
+                TempData["Message"] = "Delete project users,owners,sprint and status";
                 return RedirectToAction("Edit", new { id=id}); 
             }
 
