@@ -41,6 +41,13 @@ namespace PMTool.Controllers
 
             else
                 taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID,user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+
+
+            List<SelectListItem> statusList = new List<SelectListItem>();
+            ViewBag.TaskStatus = unitOfWork.ProjectRepository.FindIncludingProjectStatus(projectID).ProjectStatuses;
+                
+                //task.Project.ProjectStatuses;
+            
             ViewBag.CurrentProject = project;
             return View(taskList);
         }
