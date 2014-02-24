@@ -14,7 +14,7 @@ namespace PMTool.Controllers
     [Authorize]
     public class ProjectsController :BaseController
     {
-        private UnitOfWork unitOfWork = new UnitOfWork();
+        private UnitOfWork unitOfWork = new UnitOfWork(); 
         //
         // GET: /Projects/
 
