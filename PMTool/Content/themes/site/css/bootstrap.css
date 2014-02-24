@@ -5305,6 +5305,7 @@ input[type="submit"].btn.btn-mini {
 .tooltip.top {
   padding: 5px 0;
   margin-top: -3px;
+  z-index:99999999 !important;
 }
 
 .tooltip.right {
