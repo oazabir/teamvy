@@ -89,5 +89,7 @@ namespace PMTool.Repository
 
         public DbSet<PMTool.Models.Sprint> Sprints { get; set; }
 
+        public DbSet<PMTool.Models.TaskActivityLog> TaskActivityLogs { get; set; }
+
     }
 }

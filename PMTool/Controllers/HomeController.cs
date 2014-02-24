@@ -12,9 +12,16 @@ namespace PMTool.Controllers
     [Authorize]
     public class HomeController : BaseController
     {
+        private UnitOfWork unitOfWork = new UnitOfWork();
+
         public ActionResult Index()
         {
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
+            User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            List<Task> todaysTaskList = new List<Task>();
+            todaysTaskList = unitOfWork.TaskRepository.GetTasksByUser(user).ToList();
+                //.ByProjectIncluding(projectID, user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            ViewBag.TodaysTask = todaysTaskList;
 
             return View();
         }

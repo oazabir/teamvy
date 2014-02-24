@@ -142,6 +142,21 @@ namespace PMTool.Repository
             }
         }
 
+        private TaskActivityLogRepository _taskActivityLogRepository;
+
+        public TaskActivityLogRepository TaskActivityLogRepository
+        {
+            get
+            {
+
+                if (this._taskActivityLogRepository == null)
+                {
+                    this._taskActivityLogRepository = new TaskActivityLogRepository(context);
+                }
+                return _taskActivityLogRepository;
+            }
+        }
+
         public void Save()
         {
             context.SaveChanges();
