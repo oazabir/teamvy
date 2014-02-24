@@ -316,7 +316,7 @@ namespace PMTool.Controllers
                     unitOfWork.Save();
                     return RedirectToAction("Index");
                 }
-                else {
+                else { 
                     TempData["Message"] = "Delete project task";
                     return RedirectToAction("Index");
                 }
