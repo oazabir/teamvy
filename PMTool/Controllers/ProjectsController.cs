@@ -218,6 +218,7 @@ namespace PMTool.Controllers
             ViewBag.PossibleUsers = allUsers;
             project.SelectedAssignedUsers = project.Users.Select(u => u.UserId.ToString()).ToList();
             project.SelectedProjectsOwners = project.ProjectOwners.Select(u => u.UserId.ToString()).ToList();
+            
             return View(project);
         }
 
@@ -305,25 +306,24 @@ namespace PMTool.Controllers
         public ActionResult DeleteConfirmed(long id)
         {
             Project project = unitOfWork.ProjectRepository.FindAllDependancyOfProject(id);
-            if (project.Users.Count == 0 && project.ProjectOwners.Count == 0 && project.ProjectStatuses.Count == 0)
+            if (project.Users.Count == 0 && project.ProjectOwners.Count == 0 && project.ProjectStatuses.Count == 0 && project.Sprints.Count == 0)
             {
                 if (project.Tasks.Count == 0)
                 {
                     unitOfWork.ProjectRepository.Delete(id);
                     List<Notification> notifications = unitOfWork.NotificationRepository.FindNotification(id);
                     notifications.ForEach(n => unitOfWork.NotificationRepository.Delete(n.NotificationID));
-                   // unitOfWork.NotificationRepository.Delete(notification.Select();
                     unitOfWork.Save();
                     return RedirectToAction("Index");
                 }
-                else {
+                else { 
                     TempData["Message"] = "Delete project task";
                     return RedirectToAction("Index");
                 }
             }
             else {
-                TempData["Message"] = "Delete project users,owners and status";
-                return RedirectToAction("Edit", new { id=id});
+                TempData["Message"] = "Delete project users,owners,sprint and status";
+                return RedirectToAction("Edit", new { id=id}); 
             }
 
         }
