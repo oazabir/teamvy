@@ -323,7 +323,7 @@ namespace PMTool.Controllers
             }
             else {
                 TempData["Message"] = "Delete project users,owners and status";
-                return RedirectToAction("Edit", new { id=id});
+                return RedirectToAction("Edit", new { id=id}); 
             }
 
         }
