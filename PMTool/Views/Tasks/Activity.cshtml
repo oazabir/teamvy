@@ -18,6 +18,7 @@
 			url: url,
 			autoUpload: true,
 			done: function (e, data) {
+			    jQuery("#ModalpopupShowActivity").modal('hide');
 				jQuery('.file_name').html(data.result.name);
 				jQuery('.file_type').html(data.result.type);
 				jQuery('.file_size').html(data.result.size);

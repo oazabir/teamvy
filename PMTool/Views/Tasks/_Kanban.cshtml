@@ -5,6 +5,7 @@
         jQuery("#ModalpopupTask").modal('hide');
         jQuery("#ModalpopupEditStatus").modal('hide');
         jQuery("#ModalpopupCreateSprint").modal('hide');
+        jQuery("#ModalpopupShowActivity").modal('hide');
         jQuery('.dragbox')
         .each(function () {
             jQuery(this).hover(function () {
@@ -86,6 +87,7 @@
                 <div class="dragbox-content" style="display: none;">
                     @item.Description
                     <a id="showdata" onclick="return ShowEditForm(@item.TaskID)">Edit </a>
+                    <a  href="#"  onclick="return ShowActivity(@item.TaskID)"><span class="icon-plus" for="showSprint"></span>Show Activity</a>
                 </div>
             </div>
             }
@@ -143,7 +145,7 @@
                                 <h2>@item.Title</h2>
                                 <div class="dragbox-content" style="display: none;">
                                     @item.Description
-                                    <a id="showdata" onclick="return ShowEditForm(@item.TaskID)">Edit </a>
+                                    <a onclick="return ShowEditForm(@item.TaskID)">Edit </a>
                                     <a  href="#"  onclick="return ShowActivity(@item.TaskID)"><span class="icon-plus" for="showSprint"></span>Show Activity</a>
                                 </div>
                             </div>
@@ -166,6 +168,7 @@
                                     <div class="dragbox-content" style="display: none;">
                                         @item.Description
                                         <a id="showdata" onclick="return ShowEditForm(@item.TaskID)">Edit </a>
+                                    <a  href="#"  onclick="return ShowActivity(@item.TaskID)"><span class="icon-plus" for="showSprint"></span>Show Activity</a>
                                     </div>
                                 </div>
                             }
