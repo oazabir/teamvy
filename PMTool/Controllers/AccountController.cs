@@ -92,7 +92,7 @@ namespace PMTool.Controllers
                         {
                             try
                             {
-                                SendConfirmationEmail(model.UserName,model.FirstName,model.LastName,model.Password); //Send confirmation email
+                                SendConfirmationEmail(model.UserName,model.FirstName,model.LastName,model.Password); //Send confirmation email 
                             }
                             catch (Exception exp)
                             {
