@@ -137,15 +137,15 @@ namespace PMTool.Controllers
             //List<SelectListItem> statusList = new List<SelectListItem>();
             //statusList = unitOfWork.ProjectRepository.FindIncludingProjectStatus(projectID).ProjectStatuses.ToList();
             ViewBag.TaskStatus = GetAllStatus(projectID);
-
-            //task.Project.ProjectStatuses;
-
+                
+                //task.Project.ProjectStatuses;
+            
             ViewBag.CurrentProject = project;
             return View(taskList);
         }
         **/
     
-      
+
         //
         // GET: /Tasks/SubTaskList?taskID=5
         public ViewResult SubTaskList(long projectID,long taskID)
@@ -192,24 +192,24 @@ namespace PMTool.Controllers
         {
             List<SelectListItem> statusList = new List<SelectListItem>();
             task.Project = unitOfWork.ProjectRepository.FindIncludingProjectStatus(task.ProjectID);
-            //if (task.Project.ProjectStatuses!=null)
-            //{
-            //    foreach (ProjectStatus item in task.Project.ProjectStatuses)
-            //    {
-            //        SelectListItem listitem = new SelectListItem();
-            //        listitem.Value = item.ProjectStatusID.ToString();
-            //        listitem.Text = item.Name;
-            //        if (item.ProjectStatusID == task.ProjectStatusID)
-            //        {
-            //            listitem.Selected = true;
-            //        }
-            //        else
-            //        {
-            //            listitem.Selected = false;
-            //        }
-            //        statusList.Add(listitem);
-            //    }
-            //}
+            if (task.Project.ProjectStatuses != null)
+            {
+                foreach (ProjectStatus item in task.Project.ProjectStatuses)
+                {
+                    SelectListItem listitem = new SelectListItem();
+                    listitem.Value = item.ProjectStatusID.ToString();
+                    listitem.Text = item.Name;
+                    if (item.ProjectStatusID == task.ProjectStatusID)
+                    {
+                        listitem.Selected = true;
+                    }
+                    else
+                    {
+                        listitem.Selected = false;
+                    }
+                    statusList.Add(listitem);
+                }
+            }
             ViewBag.PossibleTaskStatus = task.Project.ProjectStatuses;
         }
 
@@ -900,32 +900,33 @@ namespace PMTool.Controllers
 
             unitOfWork.ProjectStatusRepository.InsertOrUpdate(projectcol);
             unitOfWork.Save();
+            Project project = new Project();
             List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectcol.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
             ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectcol.ProjectID);
-            //Project projectOld = unitOfWork.ProjectRepository.Find(project.ProjectID);
+            Project projectOld = unitOfWork.ProjectRepository.Find(project.ProjectID);
             //List<Task> taskList = new List<Task>();
-            //try
-            //{
-            //    projectOld.allStatus = project.allStatus;
-            //    unitOfWork.ProjectRepository.InsertOrUpdate(projectOld);
-            //    unitOfWork.Save();
-            //    taskList = unitOfWork.TaskRepository.ByProjectIncluding(project.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-            //    foreach (Task task in taskList)
-            //    {
-            //        task.Status = string.Empty;
-            //        unitOfWork.Save();
-            //    }
-            //    ViewBag.CurrentProject = projectOld;
-            //    List<string> statusList = new List<string>();
-            //    if (!string.IsNullOrEmpty(project.allStatus))
-            //    {
-            //        statusList = project.allStatus.Split(',').ToList();
-            //    }
-            //    ViewBag.AllStatus = statusList;
-            //}
-            //catch
-            //{
-            //}
+            try
+            {
+                projectOld.allStatus = project.allStatus;
+                unitOfWork.ProjectRepository.InsertOrUpdate(projectOld);
+                unitOfWork.Save();
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(project.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+                foreach (Task task in taskList)
+                {
+                    task.Status = string.Empty;
+                    unitOfWork.Save();
+                }
+                ViewBag.CurrentProject = projectOld;
+                List<string> statusList = new List<string>();
+                if (!string.IsNullOrEmpty(project.allStatus))
+                {
+                    statusList = project.allStatus.Split(',').ToList();
+                }
+                ViewBag.AllStatus = statusList;
+            }
+            catch
+            {
+            }
             return PartialView("_Kanban", taskList);
         }
 
@@ -940,51 +941,52 @@ namespace PMTool.Controllers
         {
             unitOfWork.ProjectStatusRepository.InsertOrUpdate(projectcol);
             unitOfWork.Save();
+            Project project = new Project();
             List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectcol.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
             ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectcol.ProjectID);
-            //string newlyaddedStatus = "";
-            //string previousStatus = "";
-            //Project projectOld = unitOfWork.ProjectRepository.Find(project.ProjectID);
+            string newlyaddedStatus = "";
+            string previousStatus = "";
+            Project projectOld = unitOfWork.ProjectRepository.Find(project.ProjectID);
 
-            //List<string> oldStatus = projectOld.allStatus.Split(',').ToList();
-            //List<string> newStatus = project.allStatus.Split(',').ToList();
-            //int i = 0;
-            //foreach (string item in newStatus)
-            //{
-            //    if (!oldStatus.Contains(item))
-            //    {
+            List<string> oldStatus = projectOld.allStatus.Split(',').ToList();
+            List<string> newStatus = project.allStatus.Split(',').ToList();
+            int i = 0;
+            foreach (string item in newStatus)
+            {
+                if (!oldStatus.Contains(item))
+                {
 
-            //        newlyaddedStatus = item;
-            //        previousStatus = oldStatus[i];
-            //        break;
-            //    }
-            //    i++;
-            //}
+                    newlyaddedStatus = item;
+                    previousStatus = oldStatus[i];
+                    break;
+                }
+                i++;
+            }
             //List<Task> taskList = new List<Task>();
-            //try
-            //{
-            //    projectOld.allStatus = project.allStatus;
-            //    unitOfWork.ProjectRepository.InsertOrUpdate(projectOld);
-            //    unitOfWork.Save();
+            try
+            {
+                projectOld.allStatus = project.allStatus;
+                unitOfWork.ProjectRepository.InsertOrUpdate(projectOld);
+                unitOfWork.Save();
                 
-            //    ViewBag.CurrentProject = projectOld;
-            //    List<string> statusList = new List<string>();
-            //    if (!string.IsNullOrEmpty(project.allStatus))
-            //    {
-            //        statusList = project.allStatus.Split(',').ToList();
-            //    }
-            //    ViewBag.AllStatus = statusList;
-            //    taskList = unitOfWork.TaskRepository.ByProjectAndStatusIncluding(project.ProjectID, previousStatus, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-            //    foreach (Task task in taskList)
-            //    {
-            //        task.Status = newlyaddedStatus;
-            //        unitOfWork.Save();
-            //    }
-            //    taskList = unitOfWork.TaskRepository.ByProjectIncluding(project.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-            //}
-            //catch
-            //{
-            //}
+                ViewBag.CurrentProject = projectOld;
+                List<string> statusList = new List<string>();
+                if (!string.IsNullOrEmpty(project.allStatus))
+                {
+                    statusList = project.allStatus.Split(',').ToList();
+                }
+                ViewBag.AllStatus = statusList;
+                //taskList = unitOfWork.TaskRepository.ByProjectAndStatusIncluding(project.ProjectID, previousStatus, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+                foreach (Task task in taskList)
+                {
+                    task.Status = newlyaddedStatus;
+                    unitOfWork.Save();
+                }
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(project.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            }
+            catch
+            {
+            }
             return PartialView("_Kanban", taskList);
         }
 
@@ -1124,7 +1126,6 @@ namespace PMTool.Controllers
 
             return taskList;
         }
-
 
         protected override void Dispose(bool disposing)
         {

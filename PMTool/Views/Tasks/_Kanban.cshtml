@@ -50,11 +50,13 @@
     });
 
     function activate_tab() {
-        //jQuery('ul.nav > li').click(function (e) {
-        //    jQuery('ul.nav > li').removeClass('active');
-        //    jQuery(this).addClass('active');
-        //    //e.preventDefault();
-        //});
+        var countContain = jQuery('.ui-sortable');
+        if (countContain.length > 1) {
+            jQuery("#hideUl").css("display", "block");
+        }
+        else {
+            jQuery("#hideUl").css("display", "none");
+        }
     }
     function UpdateRecord(task, status, sprintId) {
         jQuery.ajax({
@@ -82,14 +84,7 @@
             
             foreach (PMTool.Models.Task item in Model.Where(t => t.ProjectStatusID == null && t.SprintID == null))
             {
-            <div class="dragbox" id="@item.TaskID">
-                <h2>@item.Title</h2>
-                <div class="dragbox-content" style="display: none;">
-                    @item.Description
-                    <a id="showdata" onclick="return ShowEditForm(@item.TaskID)">Edit </a>
-                    <a  href="#"  onclick="return ShowActivity(@item.TaskID)"><span class="icon-plus" for="showSprint"></span>Show Activity</a>
-                </div>
-            </div>
+                { Html.RenderAction("_KanbanTaskDetail", "Tasks", new { taskID = item.TaskID }); }
             }
         }
     </fieldset>
@@ -112,7 +107,7 @@
             string Cssclass = "active";
             string CssclassPanActive = "tab-pane active";
         <div class="tabbable tabs-below">
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs" id="hideUl">
 
                 @foreach (PMTool.Models.Sprint sprint in currentProject.Sprints)
                 {
@@ -122,7 +117,7 @@
                     
                     <li class="@Cssclass"><a data-toggle="tab" href="#@gsprintId">@sprint.Name</a></li>
                     Cssclass = "";
-                   
+
                 }
             </ul>
             <div class="tab-content">
@@ -141,14 +136,7 @@
                         <legend class="widgettitle ctitle">@sprint.Name  Backlog</legend>
                         @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectStatusID == null && t.SprintID == sprint.SprintID))
                         {
-                            <div class="dragbox" id="@item.TaskID">
-                                <h2>@item.Title</h2>
-                                <div class="dragbox-content" style="display: none;">
-                                    @item.Description
-                                    <a onclick="return ShowEditForm(@item.TaskID)">Edit </a>
-                                    <a  href="#"  onclick="return ShowActivity(@item.TaskID)"><span class="icon-plus" for="showSprint"></span>Show Activity</a>
-                                </div>
-                            </div>
+                            { Html.RenderAction("_KanbanTaskDetail", "Tasks", new { taskID = item.TaskID }); }
                         }
                     </fieldset>
 
@@ -163,20 +151,13 @@
                             </legend>
                             @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectStatusID == status.ProjectStatusID && t.SprintID == sprint.SprintID))
                             {
-                                <div class="dragbox" id="@item.TaskID">
-                                    <h2>@item.Title</h2>
-                                    <div class="dragbox-content" style="display: none;">
-                                        @item.Description
-                                        <a id="showdata" onclick="return ShowEditForm(@item.TaskID)">Edit </a>
-                                    <a  href="#"  onclick="return ShowActivity(@item.TaskID)"><span class="icon-plus" for="showSprint"></span>Show Activity</a>
-                                    </div>
-                                </div>
+                                { Html.RenderAction("_KanbanTaskDetail", "Tasks", new { taskID = item.TaskID }); }
                             }
                         </fieldset>
                     }
                 </div>
           
-                CssclassPanActive = "tab-pane";
+                    CssclassPanActive = "tab-pane";
             }
 
             </div>
