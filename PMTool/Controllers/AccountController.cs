@@ -92,7 +92,7 @@ namespace PMTool.Controllers
                         {
                             try
                             {
-                                SendConfirmationEmail(model.UserName); //Send confirmation email
+                                SendConfirmationEmail(model.UserName,model.FirstName,model.LastName,model.Password); //Send confirmation email
                             }
                             catch (Exception exp)
                             {
@@ -518,7 +518,7 @@ namespace PMTool.Controllers
 
         #region Invitation & Verification
 
-        public void SendConfirmationEmail(string userName)
+        public void SendConfirmationEmail(string userName,string firstName,string lastName,string password)
         {
             var message = new MailMessage();
             var client = new SmtpClient();
@@ -532,10 +532,20 @@ namespace PMTool.Controllers
             {
                 message = new MailMessage(ConfigurationManager.AppSettings["EmailFrom"].ToString(), userName)
                 {
-                    Subject = "Hi " + userName + ", Please confirm your email",
-                    Body = "Dear " + userName + ", Please confirm your account by clicking the following URL. " + verifyUrl
+                    Subject = "Hi " + " "+ "" + firstName + "" + " "+"" + lastName + "" +" "+"Please confirm your email."
+                    //Body = "<b>Dear</b>" + "<b>" + userName + "</b>" + "," + "Your user name:" + userName + " and password:" + "Please confirm your account by clicking the following URL. " + verifyUrl
 
                 };
+                string Body = "<b>Dear</b>" + " " + "<b>" + firstName + "</b>" + " " + "<b>" + lastName + "</b>" + ",<br>" + "Your user name:"+" "+"<b>"+ userName +"</b>"+" "+"and password:"+" "+"<b>"+ password +"</b>." + "Please confirm your account by clicking on accept.<br><br><a href='" + verifyUrl + "'>" + "<img src='cid:imageId' align=baseline border=0 />" + "</a>";
+                AlternateView htmlView = AlternateView.CreateAlternateViewFromString(Body, null, "text/html");
+                LinkedResource imagelink = new LinkedResource(Server.MapPath("~/UploadedDocument/accept.png"));
+                imagelink.ContentId = "imageId";
+                imagelink.TransferEncoding = System.Net.Mime.TransferEncoding.Base64;
+                htmlView.LinkedResources.Add(imagelink);
+                message.AlternateViews.Add(htmlView);
+                SmtpClient smtp = new SmtpClient();
+                smtp.DeliveryMethod = SmtpDeliveryMethod.PickupDirectoryFromIis;
+                message.IsBodyHtml = true;
 
                 client.Credentials = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["EmailFrom"].ToString(), ConfigurationManager.AppSettings["EmailFromPass"].ToString());
             }
@@ -576,9 +586,9 @@ namespace PMTool.Controllers
                     Subject = "Invitation from PMTool"
 
                 };
-                string Body = "You are invited to PMTool. Please click on accept and signup.<br><a href='" + verifyUrl + "'>" + "<img src='cid:imageId' align=baseline border=0 />" + "</a>";
+                string Body = "You are invited to PMTool. Please click on accept and signup.<br><br><a href='" + verifyUrl + "'>" + "<img src='cid:imageId' align=baseline border=0 />" + "</a>";
                  AlternateView htmlView = AlternateView.CreateAlternateViewFromString(Body, null, "text/html");
-                 LinkedResource imagelink = new LinkedResource(@"D:\BT\Projects\teamvy\PMTool\Content\images\accept.png");
+                 LinkedResource imagelink = new LinkedResource(Server.MapPath("~/UploadedDocument/accept.png"));
                  imagelink.ContentId = "imageId";
                  imagelink.TransferEncoding = System.Net.Mime.TransferEncoding.Base64;
                  htmlView.LinkedResources.Add(imagelink);

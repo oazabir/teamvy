@@ -302,6 +302,7 @@
   <ItemGroup>
     <Content Include="App_Data\PMDB.sdf" />
     <Content Include="collapse.png" />
+    <Content Include="UploadedDocument\accept.png" />
     <Content Include="Content\themes\site\css\animate.delay.css" />
     <Content Include="Content\themes\site\css\animate.min.css" />
     <Content Include="Content\themes\site\css\bootstrap-fileupload.min.css" />
@@ -1223,9 +1224,7 @@
       <DependentUpon>201402201258039_logmodified.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UploadedDocument\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
