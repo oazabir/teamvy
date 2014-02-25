@@ -18,7 +18,7 @@ namespace PMTool.Controllers
         private UnitOfWork unitOfWork = new UnitOfWork();
         //
         // GET: /Tasks/
-
+         
         public ViewResult Index()
         {
             return View(unitOfWork.TaskRepository.AllIncluding(task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList());
