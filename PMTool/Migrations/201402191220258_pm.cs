@@ -6,7 +6,7 @@ namespace PMTool.Migrations
     public partial class pm : DbMigration
     {
         public override void Up()
-        {
+        {    
             DropForeignKey("dbo.Notifications", "ProjectID", "dbo.Projects");    
             DropIndex("dbo.Notifications", new[] { "ProjectID" });
         }
