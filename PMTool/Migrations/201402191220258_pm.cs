@@ -7,7 +7,7 @@ namespace PMTool.Migrations
     {
         public override void Up()
         {
-            DropForeignKey("dbo.Notifications", "ProjectID", "dbo.Projects");
+            DropForeignKey("dbo.Notifications", "ProjectID", "dbo.Projects");    
             DropIndex("dbo.Notifications", new[] { "ProjectID" });
         }
         
