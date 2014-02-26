@@ -17,7 +17,7 @@ namespace PMTool.Models
         [Display(Name = "Priority Name")]
         public string Name { get; set; }
 
-        [Required]
+        [Required] 
         [Display(Name = "Priority Description")]
         public string Description { get; set; }
 
