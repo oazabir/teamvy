@@ -302,6 +302,7 @@
   <ItemGroup>
     <Content Include="App_Data\PMDB.sdf" />
     <Content Include="collapse.png" />
+    <Content Include="Scripts\requiredIf.js" />
     <Content Include="UploadedDocument\accept.png" />
     <Content Include="Content\themes\site\css\animate.delay.css" />
     <Content Include="Content\themes\site\css\animate.min.css" />

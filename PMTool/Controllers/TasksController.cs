@@ -533,31 +533,35 @@ namespace PMTool.Controllers
                 {
                     SaveNotification(task, false, false, isStatusChanged);
                 }
+                List<SelectListItem> allUsers = GetAllUser(task.ProjectID);
+                ViewBag.PossibleUsers = allUsers;
+                ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
+                ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+                ViewBag.PossibleSprints = unitOfWork.SprintRepository.AllByProjectID(task.ProjectID);
+
+                List<SelectListItem> allLabels = GetAllLabel();
+                ViewBag.PossibleLabels = allLabels;
+                GetAllStatus(task);
+
+                Project project = unitOfWork.ProjectRepository.Find(task.ProjectID);
+                ViewBag.CurrentProject = project;
+                List<string> statusList = new List<string>();
+                if (!string.IsNullOrEmpty(project.allStatus))
+                {
+                    statusList = project.allStatus.Split(',').ToList();
+                }
+                ViewBag.AllStatus = statusList;
+                List<Task> taskList = new List<Task>();
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(task.ProjectID, t => t.Project).Include(t => t.Priority).Include(t => t.ChildTask).Include(t => t.Users).Include(t => t.Followers).Include(t => t.Labels).ToList();
+
+                // return RedirectToAction("Kanban", new { @ProjectID = task.ProjectID });
+                return PartialView("_Kanban", taskList);
             }
-
-            List<SelectListItem> allUsers = GetAllUser(task.ProjectID);
-            ViewBag.PossibleUsers = allUsers;
-            ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
-            ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
-            ViewBag.PossibleSprints = unitOfWork.SprintRepository.AllByProjectID(task.ProjectID);
-
-            List<SelectListItem> allLabels = GetAllLabel();
-            ViewBag.PossibleLabels = allLabels;
-            GetAllStatus(task);
-
-            Project project = unitOfWork.ProjectRepository.Find(task.ProjectID);
-            ViewBag.CurrentProject = project;
-            List<string> statusList = new List<string>();
-            if (!string.IsNullOrEmpty(project.allStatus))
+            else
             {
-                statusList = project.allStatus.Split(',').ToList();
+                ModelState.AddModelError("Error", "Ex: This login failed");
             }
-            ViewBag.AllStatus = statusList;
-            List<Task> taskList = new List<Task>();
-            taskList = unitOfWork.TaskRepository.ByProjectIncluding(task.ProjectID, t => t.Project).Include(t => t.Priority).Include(t => t.ChildTask).Include(t => t.Users).Include(t => t.Followers).Include(t => t.Labels).ToList();
-           
-           // return RedirectToAction("Kanban", new { @ProjectID = task.ProjectID });
-            return PartialView("_Kanban", taskList);
+            return null;
         }
 
 
@@ -903,7 +907,7 @@ namespace PMTool.Controllers
             Project project = new Project();
             List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectcol.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
             ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectcol.ProjectID);
-            Project projectOld = unitOfWork.ProjectRepository.Find(project.ProjectID);
+            Project projectOld = unitOfWork.ProjectRepository.Find(projectcol.ProjectID);
             //List<Task> taskList = new List<Task>();
             try
             {
@@ -941,52 +945,8 @@ namespace PMTool.Controllers
         {
             unitOfWork.ProjectStatusRepository.InsertOrUpdate(projectcol);
             unitOfWork.Save();
-            Project project = new Project();
             List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectcol.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
             ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectcol.ProjectID);
-            string newlyaddedStatus = "";
-            string previousStatus = "";
-            Project projectOld = unitOfWork.ProjectRepository.Find(project.ProjectID);
-
-            List<string> oldStatus = projectOld.allStatus.Split(',').ToList();
-            List<string> newStatus = project.allStatus.Split(',').ToList();
-            int i = 0;
-            foreach (string item in newStatus)
-            {
-                if (!oldStatus.Contains(item))
-                {
-
-                    newlyaddedStatus = item;
-                    previousStatus = oldStatus[i];
-                    break;
-                }
-                i++;
-            }
-            //List<Task> taskList = new List<Task>();
-            try
-            {
-                projectOld.allStatus = project.allStatus;
-                unitOfWork.ProjectRepository.InsertOrUpdate(projectOld);
-                unitOfWork.Save();
-                
-                ViewBag.CurrentProject = projectOld;
-                List<string> statusList = new List<string>();
-                if (!string.IsNullOrEmpty(project.allStatus))
-                {
-                    statusList = project.allStatus.Split(',').ToList();
-                }
-                ViewBag.AllStatus = statusList;
-                //taskList = unitOfWork.TaskRepository.ByProjectAndStatusIncluding(project.ProjectID, previousStatus, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-                foreach (Task task in taskList)
-                {
-                    task.Status = newlyaddedStatus;
-                    unitOfWork.Save();
-                }
-                taskList = unitOfWork.TaskRepository.ByProjectIncluding(project.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-            }
-            catch
-            {
-            }
             return PartialView("_Kanban", taskList);
         }
 
@@ -1030,14 +990,18 @@ namespace PMTool.Controllers
         }
 
         [HttpPost]
-        public virtual PartialViewResult ActivityAdd(long taskID)
+        public virtual ContentResult ActivityAdd(long taskID)
         {
+                string content="";
             if (ModelState.IsValid)
             {
 
                 //var r = new List<ViewDataUploadFilesResult>();
                 string comment = "";
                 User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+                string Name = "";
+                string Length = "";
+                string Type = "";
                 foreach (string file in Request.Files)
                 {
                     HttpPostedFileBase hpf = Request.Files[file] as HttpPostedFileBase;
@@ -1061,16 +1025,22 @@ namespace PMTool.Controllers
                     unitOfWork.Save();
                     hpf.SaveAs(Server.MapPath( log.FileUrl));
 
+
+                        Name = hpf.FileName;
+                        Length = hpf.ContentLength.ToString();
+                        Type = hpf.ContentType;
+                        content = "{\"name\":\"" + Name + "\",\"type\":\"" + Type + "\",\"size\":\"" + string.Format("{0} bytes", Length) + "\"}";
                 }
 
             }
-            Task task = unitOfWork.TaskRepository.Find(taskID);
-            Project project = unitOfWork.ProjectRepository.Find(task.ProjectID);
-            ViewBag.CurrentProject = project;
-            List<Task> taskList = new List<Task>();
-            taskList = unitOfWork.TaskRepository.GetTasksByProjectID(task.ProjectID);
+            return Content(content, "application/json");
+            //Task task = unitOfWork.TaskRepository.Find(taskID);
+            //Project project = unitOfWork.ProjectRepository.Find(task.ProjectID);
+            //ViewBag.CurrentProject = project;
+            //List<Task> taskList = new List<Task>();
+            //taskList = unitOfWork.TaskRepository.GetTasksByProjectID(task.ProjectID);
 
-            return PartialView("_Kanban", taskList);
+            //return PartialView("_Kanban", taskList);
         }
 
 

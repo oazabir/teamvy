@@ -12,7 +12,7 @@
     </h1>
     <span>Add Status below....</span>
 </div>
-     @using (Ajax.BeginForm("CreateStatus", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard", OnBegin = "Loading()",OnComplete="Unload()" }))
+     @using (Ajax.BeginForm("CreateStatus", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard", OnBegin = "Loading()", OnComplete = "Unload()", OnSuccess = "HidePopup('ModalpopupProject')" }, new { @id = "form" }))
  {
     @Html.ValidationSummary(true)
      
@@ -30,9 +30,20 @@
                     <button id="btn2" class="btn">+  </button>
                     <input type="hidden" id="hdnCurrentStatus" value="@ViewBag.CurrentStatus" />*@
                     @Html.TextBoxFor(model => model.Name)
-                    <button id="btn2" class="btn">+  </button>
+                    <button id="btn2" class="btn">+  </button><br />
+                    @Html.ValidationMessageFor(model => model.Name)
                 </td>
             </tr>
         </tbody>
     </table>
 }
+<script type="text/javascript">
+
+                jQuery(document).ready(function () {
+
+                    jQuery('#form').removeData('validator');
+                    jQuery('#form').removeData('unobtrusiveValidation');
+                    jQuery("#form").each(function () { jQuery.data(jQuery(this)[0], 'validator', false); }); //enable to display the error messages
+                    jQuery.validator.unobtrusive.parse("#form");
+                });
+            </script>

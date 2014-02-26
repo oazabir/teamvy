@@ -12,7 +12,7 @@
     </h1>
     <span>Edit Status below....</span>
 </div>
-     @using (Ajax.BeginForm("EditStatus", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard" ,OnBegin = "Loading()",OnComplete="Unload()" }))
+     @using (Ajax.BeginForm("EditStatus", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard", OnBegin = "Loading()", OnComplete = "Unload()", OnSuccess = "HidePopup('ModalpopupEditStatus')" }, new { @id = "form" }))
  {
     @Html.ValidationSummary(true)
      
@@ -38,15 +38,11 @@
     </table>
 }
 
-@*<script>
+<script>
     jQuery(document).ready(function () {
-        jQuery("#btn2").click(function () {
-            if (jQuery("#hdnStatus").val() != "") {
-                var value = jQuery("#hdnStatus").val();
-                value = value.replace(jQuery("#hdnCurrentStatus").val(), jQuery("#itemText").val());
-                // can then use it as
-                jQuery("#hdnStatus").val(value);
-            }
-        });
+        jQuery('#form').removeData('validator');
+        jQuery('#form').removeData('unobtrusiveValidation');
+        jQuery("#form").each(function () { jQuery.data(jQuery(this)[0], 'validator', false); }); //enable to display the error messages
+        jQuery.validator.unobtrusive.parse("#form");
     });
-</script>*@
+</script>

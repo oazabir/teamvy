@@ -1,10 +1,7 @@
 ﻿<script type="text/javascript">
     jQuery(document).ready(function () {
-        jQuery("#Modalpopup").modal('hide');
-        jQuery("#ModalpopupProject").modal('hide');
-        jQuery("#ModalpopupTask").modal('hide');
-        jQuery("#ModalpopupEditStatus").modal('hide');
-        jQuery("#ModalpopupCreateSprint").modal('hide');
+        //jQuery("#ModalpopupEditStatus").modal('hide');
+        //jQuery("#ModalpopupCreateSprint").modal('hide');
         jQuery("#ModalpopupShowActivity").modal('hide');
         jQuery('.dragbox')
         .each(function () {
@@ -145,9 +142,9 @@
                         long CurrentPorjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID;
                         <fieldset class='column' id='@status.ProjectStatusID'>
                             <legend class="widgettitle ctitle">@status.Name
-                                @Ajax.ActionLink(" ", "RemoveStatusFormKanban", "Tasks", new { status = status.ProjectStatusID, projectID = CurrentPorjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard", OnBegin = "return confirm('Are you suer???\\nAll tasks under this column will go to UnAssigned!!!')" }, new { @class = "icon-remove", @style = "float:right;" })
+                                @Ajax.ActionLink(" ", "RemoveStatusFormKanban", "Tasks", new { status = status.ProjectStatusID, projectID = CurrentPorjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard", OnBegin = "return confirm('Are you suer???\\nAll tasks under this column will go to UnAssigned!!!')" }, new { @class = "icon-remove", @style = "float:right;display:none;",@title="Delete" })
 
-                                <a onclick="return ShowStatusEditForm(@status.ProjectStatusID,@CurrentPorjectID)" class="icon-edit" style="float:left"></a>
+                                <a onclick="return ShowStatusEditForm(@status.ProjectStatusID,@CurrentPorjectID)" class="icon-edit" style="float:left;cursor:pointer" title="Edit"></a>
                             </legend>
                             @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectStatusID == status.ProjectStatusID && t.SprintID == sprint.SprintID))
                             {
