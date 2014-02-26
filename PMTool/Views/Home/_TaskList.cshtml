@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<PMTool.Models.Task>
-<table class="table table-bordered dataTable" id="dyntable">
+@*<table class="table table-bordered" id="dyntable">*@
     <thead>
         <tr>
             <th>Task Title
@@ -12,9 +12,9 @@
             <th>Status</th>
             <th>Sub Tasks
             </th>
-            <th>Add Sub Task</th>
+           @* <th>Add Sub Task</th>*@
 
-            <th>Assign To</th>
+         @*   <th>Assign To</th>*@
             <th>Created by</th>
 
             <th></th>
@@ -74,17 +74,17 @@
                     }
 
                 </td>
-                <td>
+            @*    <td>
                     @Html.ActionLink("Add SubTask", "CreateSubTask", new { ProjectID = item.ProjectID, TaskID = item.TaskID }, new { @title = "Add SubTask" })
-                </td>
-                <td>
+                </td>*@
+             @*   <td>
                     @foreach (User user in item.Users)
                     {
    
                         <span>@user.FirstName,</span>
-                    }
+                    }*@
                     @*@Html.DisplayTextFor(_ => Model.CreatedByUser.FirstName).ToString()*@
-                </td>
+                @*</td>*@
                 <td>
 
                     @Html.DisplayTextFor(_ => item.CreatedByUser.FirstName).ToString()
@@ -92,15 +92,15 @@
 
 
                 <td align="center">
-                    @Html.ActionLink(" ", "Edit", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
+                    @Html.ActionLink(" ", "Edit","Tasks", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
                     |
-                    @Html.ActionLink(" ", "Details", new { id = item.TaskID }, new { @class = "icon-list-alt", @title = "Details" })
+                    @Html.ActionLink(" ", "Details", "Tasks", new { id = item.TaskID }, new { @class = "icon-list-alt", @title = "Details" })
                     |
-                    @Html.ActionLink(" ", "Delete", new { id = item.TaskID }, new { @class = "icon-trash", @title = "Delete" })
+                    @Html.ActionLink(" ", "Delete", "Tasks", new { id = item.TaskID }, new { @class = "icon-trash", @title = "Delete" })
                 </td>
             </tr>
         }
     </tbody>
-</table>
+@*</table>*@
 
 
