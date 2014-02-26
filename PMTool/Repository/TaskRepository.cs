@@ -48,12 +48,12 @@ namespace PMTool.Repository
                 query = query.Include(includeProperty);
 
             }
-            foreach (Task task in query)
-            {
-                task.ChildTask = context.Tasks.Where(t => t.ParentTaskId == task.TaskID).ToList();
-                task.CreatedByUser = context.Users.Where(t => t.UserId == task.CreatedBy).FirstOrDefault();
-                task.ProjectStatus = context.ProjectStatuses.Where(t => t.ProjectStatusID == task.ProjectStatusID).FirstOrDefault();
-            }
+            //foreach (Task task in query)
+            //{
+            //    //task.ChildTask = context.Tasks.Where(t => t.ParentTaskId == task.TaskID).ToList();
+            //    //task.CreatedByUser = context.Users.Where(t => t.UserId == task.CreatedBy).FirstOrDefault();
+            //    //task.ProjectStatus = context.ProjectStatuses.Where(t => t.ProjectStatusID == task.ProjectStatusID).FirstOrDefault();
+            //}
             return query;
         }
         
