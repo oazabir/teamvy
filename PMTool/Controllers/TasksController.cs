@@ -990,14 +990,18 @@ namespace PMTool.Controllers
         }
 
         [HttpPost]
-        public virtual PartialViewResult ActivityAdd(long taskID)
+        public virtual ContentResult ActivityAdd(long taskID)
         {
+                string content="";
             if (ModelState.IsValid)
             {
 
                 //var r = new List<ViewDataUploadFilesResult>();
                 string comment = "";
                 User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+                string Name = "";
+                string Length = "";
+                string Type = "";
                 foreach (string file in Request.Files)
                 {
                     HttpPostedFileBase hpf = Request.Files[file] as HttpPostedFileBase;
@@ -1021,16 +1025,22 @@ namespace PMTool.Controllers
                     unitOfWork.Save();
                     hpf.SaveAs(Server.MapPath( log.FileUrl));
 
+
+                        Name = hpf.FileName;
+                        Length = hpf.ContentLength.ToString();
+                        Type = hpf.ContentType;
+                        content = "{\"name\":\"" + Name + "\",\"type\":\"" + Type + "\",\"size\":\"" + string.Format("{0} bytes", Length) + "\"}";
                 }
 
             }
-            Task task = unitOfWork.TaskRepository.Find(taskID);
-            Project project = unitOfWork.ProjectRepository.Find(task.ProjectID);
-            ViewBag.CurrentProject = project;
-            List<Task> taskList = new List<Task>();
-            taskList = unitOfWork.TaskRepository.GetTasksByProjectID(task.ProjectID);
+            return Content(content, "application/json");
+            //Task task = unitOfWork.TaskRepository.Find(taskID);
+            //Project project = unitOfWork.ProjectRepository.Find(task.ProjectID);
+            //ViewBag.CurrentProject = project;
+            //List<Task> taskList = new List<Task>();
+            //taskList = unitOfWork.TaskRepository.GetTasksByProjectID(task.ProjectID);
 
-            return PartialView("_Kanban", taskList);
+            //return PartialView("_Kanban", taskList);
         }
 
 
