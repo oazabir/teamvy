@@ -9,7 +9,7 @@
     Estimated Houre(s) :<b> @Model.TaskHour.ToString()</b><br />
     Actual Houre(s) :<b> @Model.ActualTaskHoure.ToString()</b><br />
     Priority :<b> @Model.Priority.Name</b><br />
-    @if (Model.Labels.Count > 0)
+    @if (Model.Labels.Count > 0)<a href="~/Views/Priorities/">~/Views/Priorities/</a>
     {
         foreach (PMTool.Models.Label label in Model.Labels)
         {
