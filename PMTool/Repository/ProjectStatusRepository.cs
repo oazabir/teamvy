@@ -103,6 +103,11 @@ namespace PMTool.Repository
             return context.ProjectStatuses.Where(p => p.Name == status && p.ProjectID == projectID).FirstOrDefault();
         }
 
+
+        public List<ProjectStatus> FindbyProjectID(long projectID)
+        {
+            return context.ProjectStatuses.Where(p => p.ProjectID == projectID).ToList();
+        }
     }
 
     public interface IProjectStatusRepository : IDisposable
@@ -115,6 +120,7 @@ namespace PMTool.Repository
         void DeleteByProjectIDAndColID(long status, long projectID);
         ProjectStatus FindbyProjectIDAndProjectStatusID(long projectID, long status);
         ProjectStatus FindbyProjectIDAndProjectStatusName(long projectID, string status);
+        List<ProjectStatus> FindbyProjectID(long projectID);
         void Save();
     }
 }

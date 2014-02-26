@@ -18,7 +18,7 @@ namespace PMTool.Controllers
         private UnitOfWork unitOfWork = new UnitOfWork();
         //
         // GET: /Tasks/
-
+         
         public ViewResult Index()
         {
             return View(unitOfWork.TaskRepository.AllIncluding(task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList());
@@ -43,14 +43,108 @@ namespace PMTool.Controllers
                 taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID,user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
 
 
-            List<SelectListItem> statusList = new List<SelectListItem>();
-            ViewBag.TaskStatus = unitOfWork.ProjectRepository.FindIncludingProjectStatus(projectID).ProjectStatuses;
+            //List<SelectListItem> statusList = new List<SelectListItem>();
+            //statusList = unitOfWork.ProjectRepository.FindIncludingProjectStatus(projectID).ProjectStatuses.ToList();
+            ViewBag.TaskStatus = GetAllStatus(projectID);
                 
                 //task.Project.ProjectStatuses;
             
             ViewBag.CurrentProject = project;
             return View(taskList);
         }
+
+
+        public PartialViewResult _TaskList(long projectID, long? statusID)
+        {
+            List<Task> taskList;
+            Project project;
+            if (statusID != null && statusID != 0)
+                GetTaskList(projectID, out taskList, out project, statusID);
+            else
+                GetTaskList(projectID, out taskList, out project);
+           
+
+            //List<SelectListItem> statusList = new List<SelectListItem>();
+            //statusList = unitOfWork.ProjectRepository.FindIncludingProjectStatus(projectID).ProjectStatuses.ToList();
+            ViewBag.TaskStatus = GetAllStatus(projectID);
+
+            //task.Project.ProjectStatuses;
+
+            ViewBag.CurrentProject = project;
+            //return PartialViewResult(taskList);
+            //return View(taskList);
+            return PartialView(taskList);
+        }
+
+        private void GetTaskList(long projectID, out List<Task> taskList, out Project project, long? statusId)
+        {
+            taskList = new List<Task>();
+            User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            project = unitOfWork.ProjectRepository.Find(projectID);
+            //If this project is created by the current user. Then he can see all task.
+            if (project.CreatedBy == user.UserId)
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.ProjectStatusID == statusId).ToList();
+
+            //If this project is owned by the current user. Then he can see all task.
+            else if (project.ProjectOwners.Contains(user))
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.ProjectStatusID == statusId).ToList();
+
+            else
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.ProjectStatusID == statusId).ToList();
+
+        }
+
+
+        private void GetTaskList(long projectID, out List<Task> taskList, out Project project)
+        {
+            taskList = new List<Task>();
+            User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            project = unitOfWork.ProjectRepository.Find(projectID);
+            //If this project is created by the current user. Then he can see all task.
+            if (project.CreatedBy == user.UserId)
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+
+            //If this project is owned by the current user. Then he can see all task.
+            else if (project.ProjectOwners.Contains(user))
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+
+            else
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+
+        }
+
+
+        /**
+        //GET: /Tasks/ProjectTasks?ProjectID=5
+        [HttpPost]
+        public ViewResult ProjectTasks(long projectID, long statusId)
+        {
+            List<Task> taskList = new List<Task>();
+            User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            Project project = unitOfWork.ProjectRepository.Find(projectID);
+            //If this project is created by the current user. Then he can see all task.
+            if (project.CreatedBy == user.UserId)
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p=>p.ProjectStatus.ProjectStatusID == statusId).ToList();
+
+            //If this project is owned by the current user. Then he can see all task.
+            else if (project.ProjectOwners.Contains(user))
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+
+            else
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+
+
+            //List<SelectListItem> statusList = new List<SelectListItem>();
+            //statusList = unitOfWork.ProjectRepository.FindIncludingProjectStatus(projectID).ProjectStatuses.ToList();
+            ViewBag.TaskStatus = GetAllStatus(projectID);
+                
+                //task.Project.ProjectStatuses;
+            
+            ViewBag.CurrentProject = project;
+            return View(taskList);
+        }
+        **/
+    
 
         //
         // GET: /Tasks/SubTaskList?taskID=5
@@ -584,6 +678,21 @@ namespace PMTool.Controllers
             return allLabels;
         }
 
+
+        private List<SelectListItem> GetAllStatus(long ProjectID)
+        {
+            List<SelectListItem> allStatus = new List<SelectListItem>();
+            List<ProjectStatus> statusList = unitOfWork.ProjectRepository.FindIncludingProjectStatus(ProjectID).ProjectStatuses;
+            foreach (ProjectStatus status in statusList)
+            {
+
+                SelectListItem item = new SelectListItem { Value = status.ProjectStatusID.ToString(), Text = status.Name };
+                allStatus.Add(item);
+            }
+
+            return allStatus;
+        }
+
         private List<SelectListItem> GetAllUser(long ProjectID)
         {
             List<SelectListItem> allUsers = new List<SelectListItem>();
@@ -859,7 +968,7 @@ namespace PMTool.Controllers
                 projectOld.allStatus = project.allStatus;
                 unitOfWork.ProjectRepository.InsertOrUpdate(projectOld);
                 unitOfWork.Save();
-
+                
                 ViewBag.CurrentProject = projectOld;
                 List<string> statusList = new List<string>();
                 if (!string.IsNullOrEmpty(project.allStatus))
@@ -964,10 +1073,58 @@ namespace PMTool.Controllers
             return PartialView("_Kanban", taskList);
         }
 
-        public PartialViewResult _KanbanTaskDetail(long taskID)
+
+        public PartialViewResult _Search(long projectID)
         {
-            Task task = unitOfWork.TaskRepository.Find(taskID);
-            return PartialView("_KanbanTaskDetail", task);
+            Search search = new Search();
+            search.statusList = unitOfWork.ProjectStatusRepository.FindbyProjectID(projectID);
+            search.priorityList = unitOfWork.PriorityRepository.All.ToList();
+            ViewBag.CurrentProjectId = projectID;
+            return PartialView("_Search", search);
+        }
+
+        [HttpPost]
+        public ActionResult _Search(Search search)
+        {
+           List<Task> taskList = new List<Task>();
+           long statusId = Convert.ToInt64( search.SelectedStatusID);
+
+           long projectID = (long)search.SelectedProjectID;
+           //return RedirectToAction("ProjectTasks", new {@projectID = 1, @statusId = statusId});
+           taskList = GetTasks(projectID, statusId);
+          
+           Project project = unitOfWork.ProjectRepository.Find(projectID);
+           //ViewBag.TaskStatus = GetAllStatus(projectID);
+           ViewBag.CurrentProject = project;
+
+           //return View("ProjectTasks", taskList);
+            //return RedirectToAction("_TaskList",new{@projectID = 1});
+
+           return RedirectToAction("_TaskList", new { @ProjectID = 1, @statusId = statusId });
+            
+        }
+
+        public List<Task> GetTasks(long projectID, long statusId)
+        {
+
+            List<Task> taskList = new List<Task>();
+            User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            Project project = unitOfWork.ProjectRepository.Find(projectID);
+            //If this project is created by the current user. Then he can see all task.
+            if (project.CreatedBy == user.UserId)
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.ProjectStatusID == statusId).ToList();
+
+            //If this project is owned by the current user. Then he can see all task.
+            else if (project.ProjectOwners.Contains(user))
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.ProjectStatusID == statusId).ToList();
+
+            else
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.ProjectStatusID == statusId).ToList();
+
+
+          
+
+            return taskList;
         }
 
         protected override void Dispose(bool disposing)
