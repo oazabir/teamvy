@@ -21,6 +21,7 @@ namespace PMTool.Controllers
             User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
             List<Task> userTaskList = new List<Task>();
             List<Task> overdueTaskList = new List<Task>();
+            List<Task> dueTaskList = new List<Task>();
             List<Task> todaysTaskList = new List<Task>();
             List<Task> dueTomorrowTaskList = new List<Task>();
             List<Task> futureTaskList = new List<Task>();
@@ -29,12 +30,14 @@ namespace PMTool.Controllers
 
             //overdueTaskList = userTaskList.Where(p => (p.EndDate < DateTime.Today) && ((p.ProjectStatus.ProjectStatusID == null ? " " : p.ProjectStatus.Name) != "Close")).ToList();
             overdueTaskList = userTaskList.Where(p => (p.EndDate < DateTime.Today) && (p.ProjectStatus.Name != "Close")).ToList();
+            dueTaskList = userTaskList.Where(p => (p.StartDate < DateTime.Today && p.EndDate >= DateTime.Today) && (p.ProjectStatus.Name != "Close")).ToList();
             todaysTaskList = userTaskList.Where(p => p.StartDate == DateTime.Today && p.ProjectStatus.Name != "Close").ToList();
             dueTomorrowTaskList = userTaskList.Where(p => p.EndDate == DateTime.Today.AddDays(1) && p.ProjectStatus.Name != "Close").ToList();
 
             futureTaskList = userTaskList.Where(p => p.StartDate > DateTime.Today && p.ProjectStatus.Name != "Close").ToList();
 
             ViewBag.OverdueTask = overdueTaskList;
+            ViewBag.DueTask = dueTaskList;
             ViewBag.TodaysTask = todaysTaskList;
             ViewBag.DueTomorrowTask = dueTomorrowTaskList;
             ViewBag.FutureTask = futureTaskList;

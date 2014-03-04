@@ -19,35 +19,44 @@
                     @Html.Partial("_TaskList", (List<PMTool.Models.Task>)ViewBag.OverdueTask)
                 }
             </table>
-        </div>
-        <div>
-            <h5><u>Today's Task</u></h5>
-            <table class="table table-bordered dyntable" id="dyntable1">
-                @{
-                    @Html.Partial("_TaskList", (List<PMTool.Models.Task>)ViewBag.TodaysTask)
-                }
-            </table>
-        </div>
-        <div>
-            <h5><u>Due Tomorrow Task</u></h5>
-            <table class="table table-bordered dyntable" id="dyntable2">
-                @{
-                    @Html.Partial("_TaskList", (List<PMTool.Models.Task>)ViewBag.DueTomorrowTask)
-                }
-            </table>
-        </div>
 
-        <div>
-            <h5><u>Future Task</u></h5>
-            <table class="table table-bordered dyntable" id="dyntable3">
-                @{
-                    @Html.Partial("_TaskList", (List<PMTool.Models.Task>)ViewBag.FutureTask)
-                }
-            </table>
-        </div>
+            <div>
+                <h5><u>Due Tasks</u></h5>
+                <table class="table table-bordered dyntable" id="dyntable5">
+                    @{
+                        @Html.Partial("_TaskList", (List<PMTool.Models.Task>)ViewBag.DueTask)
+                    }
+                </table>
+            </div>
+
+            <div>
+                <h5><u>Today's Task</u></h5>
+                <table class="table table-bordered dyntable" id="dyntable1">
+                    @{
+                        @Html.Partial("_TaskList", (List<PMTool.Models.Task>)ViewBag.TodaysTask)
+                    }
+                </table>
+            </div>
+            <div>
+                <h5><u>Due Tomorrow Task</u></h5>
+                <table class="table table-bordered dyntable" id="dyntable2">
+                    @{
+                        @Html.Partial("_TaskList", (List<PMTool.Models.Task>)ViewBag.DueTomorrowTask)
+                    }
+                </table>
+            </div>
+
+            <div>
+                <h5><u>Future Task</u></h5>
+                <table class="table table-bordered dyntable" id="dyntable3">
+                    @{
+                        @Html.Partial("_TaskList", (List<PMTool.Models.Task>)ViewBag.FutureTask)
+                    }
+                </table>
+            </div>
 
 
-        @*  <table class="table table-bordered" id="dyntable">
+            @*  <table class="table table-bordered" id="dyntable">
                 <thead>
                     <tr>
 
@@ -100,13 +109,13 @@
                     }
                 </tbody>
             </table>*@
-        @*   </div>*@
-        <!--alert-->
+            @*   </div>*@
+            <!--alert-->
 
-        @*       <div class="row-fluid">
+            @*       <div class="row-fluid">
             <div class="span8">
                 <ul class="widgeticons row-fluid">*@
-        @*       <li class="one_fifth"><a href="#"><img src="../../Content/themes/site/img/gemicon/edit.png" alt="" /><span>New Project</span></a></li>
+            @*       <li class="one_fifth"><a href="#"><img src="../../Content/themes/site/img/gemicon/edit.png" alt="" /><span>New Project</span></a></li>
                             <li class="one_fifth"><a href="#"><img src="../../Content/themes/site/img/gemicon/image.png" alt="" /><span>Add Task</span></a></li>
                             <li class="one_fifth"><a href="#"><img src="../../Content/themes/site/img/gemicon/reports.png" alt="" /><span>Edit Profile</span></a></li>
                             <li class="one_fifth"><a href="#">
@@ -115,15 +124,15 @@
                             </li>
                              <li class="one_fifth last"><a href=""><img src="img/gemicon/mail.png" alt="" /><span>Check Mail</span></a></li>*@
 
-        @*    </ul>
+            @*    </ul>
 
                 <br />*@
 
 
 
-    </div>
-    <!--span8-->
-    @* <div class="span4">
+        </div>
+        <!--span8-->
+        @* <div class="span4">
                 <h4 class="widgettitle nomargin">Calendar</h4>
                 <div class="widgetcontent bordered" id="datepicker">
                 </div>
@@ -133,10 +142,10 @@
 
                 <!--widgetcontent-->
             </div>*@
-    <!--span4-->
+        <!--span4-->
+    </div>
+    <!--row-fluid-->
 </div>
-<!--row-fluid-->
-</div>
-    <!--contentinner-->
+<!--contentinner-->
 </div>
 <!--maincontent-->
