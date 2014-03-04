@@ -1,7 +1,11 @@
 @model PMTool.Models.Task
 
-@* This partial view defines form fields that will appear when creating and editing entities *@
-
+@* This partial view defines form fields that will appear when creating and editing entities *@<script type="text/javascript">
+    tinyMCE.init({
+        mode: "textareas", elements: "elm1",
+        theme: "simple"
+    });
+</script>
 <tr>
     <td>
         @Html.LabelFor(model => model.Title)
@@ -18,8 +22,10 @@
         @Html.LabelFor(model => model.Description)
     </td>
     <td>
-        @Html.EditorFor(model => model.Description)
+        @Html.TextAreaFor(model => model.Description,  new { @class = "tinymce" })
         @Html.ValidationMessageFor(model => model.Description)
+
+         
     </td>
 </tr>
 

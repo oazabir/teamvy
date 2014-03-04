@@ -9,7 +9,7 @@
 jQuery().ready(function() {
 		jQuery('textarea.tinymce').tinymce({
 			// Location of TinyMCE script
-		    script_url: document.location.host+'/Content/themes/base/js/tinymce/tiny_mce.js',
+		    script_url: document.location.host+'/Content/themes/site/js/tinymce/tiny_mce.js',
             
 			// General options
 			theme : "advanced",
