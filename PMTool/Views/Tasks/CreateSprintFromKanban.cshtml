@@ -15,9 +15,9 @@
 }
 
 <div class="pagetitle">
-    <h1>Task Edit
+    <h1>Add Sprint
     </h1>
-    <span>Edit Task below....</span>
+    <span>Create new sprint below....</span>
 </div>
 @using (Ajax.BeginForm("CreateSprintFromKanban", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard", OnBegin = "Loading()", OnComplete = "Unload()", OnSuccess = "HidePopup('ModalpopupCreateSprint')" }, new { @id = "form" }))
 {

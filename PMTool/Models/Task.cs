@@ -42,8 +42,8 @@ namespace PMTool.Models
         [Display(Name = "Estimated Task Hour")]
         public decimal TaskHour { get; set; }
 
-        [Required]
-        public int PriorityID { get; set; }
+        //[Required]
+        public int? PriorityID { get; set; }
 
         public virtual Priority Priority { get; set; }
 

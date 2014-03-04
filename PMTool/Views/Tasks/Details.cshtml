@@ -32,8 +32,10 @@
             <td class="width30">
                 Description
             </td>
-            <td>
-                @Html.DisplayTextFor(_ => Model.Description).ToString()
+            <td style="padding-left:20px;">
+               @* @Html.DisplayTextFor(_ => Model.Description).ToString()*@
+               @Html.Raw(@Model.Description)
+                 
             </td>
         </tr>
         <tr>

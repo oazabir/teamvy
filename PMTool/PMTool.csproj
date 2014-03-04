@@ -269,6 +269,14 @@
     <Compile Include="Migrations\201402201258039_logmodified.Designer.cs">
       <DependentUpon>201402201258039_logmodified.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201403041150038_updatetaskmodel.cs" />
+    <Compile Include="Migrations\201403041150038_updatetaskmodel.Designer.cs">
+      <DependentUpon>201403041150038_updatetaskmodel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201403041156484_updatetaskmodel2.cs" />
+    <Compile Include="Migrations\201403041156484_updatetaskmodel2.Designer.cs">
+      <DependentUpon>201403041156484_updatetaskmodel2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\TaskActivityLog.cs" />
@@ -1227,6 +1235,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201402201258039_logmodified.resx">
       <DependentUpon>201402201258039_logmodified.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403041150038_updatetaskmodel.resx">
+      <DependentUpon>201403041150038_updatetaskmodel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403041156484_updatetaskmodel2.resx">
+      <DependentUpon>201403041156484_updatetaskmodel2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

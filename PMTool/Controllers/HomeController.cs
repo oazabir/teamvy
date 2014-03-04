@@ -20,6 +20,7 @@ namespace PMTool.Controllers
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
             User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
             List<Task> userTaskList = new List<Task>();
+            List<Task> dueTaskList = new List<Task>();
             List<Task> overdueTaskList = new List<Task>();
             List<Task> todaysTaskList = new List<Task>();
             List<Task> dueTomorrowTaskList = new List<Task>();
@@ -28,13 +29,15 @@ namespace PMTool.Controllers
             userTaskList = unitOfWork.TaskRepository.GetTasksByUser(user).ToList();
 
             //overdueTaskList = userTaskList.Where(p => (p.EndDate < DateTime.Today) && ((p.ProjectStatus.ProjectStatusID == null ? " " : p.ProjectStatus.Name) != "Close")).ToList();
-            overdueTaskList = userTaskList.Where(p => (p.EndDate < DateTime.Today) && (p.ProjectStatusID==null|| p.ProjectStatus.Name != "Close")).ToList();
-            todaysTaskList = userTaskList.Where(p => p.StartDate == DateTime.Today && (p.ProjectStatusID == null || p.ProjectStatus.Name != "Close")).ToList();
-            dueTomorrowTaskList = userTaskList.Where(p => p.EndDate == DateTime.Today.AddDays(1) && (p.ProjectStatusID == null || p.ProjectStatus.Name != "Close")).ToList();
+            overdueTaskList = userTaskList.Where(p => (p.EndDate < DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Close")).ToList();
+            dueTaskList = userTaskList.Where(p => (p.StartDate < DateTime.Today && p.EndDate >= DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Close")).ToList();
+            todaysTaskList = userTaskList.Where(p => p.StartDate == DateTime.Today && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Close")).ToList();
+            dueTomorrowTaskList = userTaskList.Where(p => p.EndDate == DateTime.Today.AddDays(1) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Close")).ToList();
 
             futureTaskList = userTaskList.Where(p => p.StartDate > DateTime.Today && (p.ProjectStatusID == null || p.ProjectStatus.Name != "Close")).ToList();
 
             ViewBag.OverdueTask = overdueTaskList;
+            ViewBag.DueTask = dueTaskList;
             ViewBag.TodaysTask = todaysTaskList;
             ViewBag.DueTomorrowTask = dueTomorrowTaskList;
             ViewBag.FutureTask = futureTaskList;
