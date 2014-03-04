@@ -31,6 +31,7 @@ namespace PMTool.Controllers
             List<Task> taskList = new List<Task>();
             User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
             Project project = unitOfWork.ProjectRepository.Find(projectID);
+            
             //If this project is created by the current user. Then he can see all task.
             if (project.CreatedBy== user.UserId) 
                 taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
