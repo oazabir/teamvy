@@ -152,6 +152,7 @@ font-weight: bold;
 	border-bottom:1px solid #eee !important;
 	font-family:Verdana !important;
 	cursor:move !important;
+    line-height: 15px !important;
 }
 .dragbox-content{
 	background:#fff !important;
@@ -218,8 +219,9 @@ overflow:scroll !important;
     padding: 5px !important;
     min-height: 555px !important;
     float:left !important;
-    overflow-x:scroll; overflow-y:hidden;height:600px;
-     width: 100%;
+    overflow: auto;
+    height:600px;
+    width: 100%;
 }
 
 .projectBacklog
@@ -296,4 +298,9 @@ overflow:scroll !important;
   background-image: linear-gradient(to bottom, #d9534f 0%, #c9302c 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd9534f', endColorstr='#ffc9302c', GradientType=0);
+}
+.pill-content > .active
+{
+    overflow: auto !important;
+    height:100% !important;
 }
