@@ -251,6 +251,11 @@
         var adata = '#' + data;
         jQuery(adata).modal('hide');
     }
+    jQuery(document).ready(function () {
+        //jQuery(document).ajaxStart(function () {
+        //    jQuery("#ModalLoading").modal('show');
+        //});
+    });
 </script>
 <div id='ModalLoading' class="modal hide fade" tabindex="-1" style="width:50px!important;height:50px!important;overflow:hidden!important;" role="dialog"  aria-hidden="true">
     <img src="~/Content/themes/site/img/loaders/loader19.gif" /><br />Loading....
