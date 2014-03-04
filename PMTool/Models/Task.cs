@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace PMTool.Models
 {
+
     public class Task
     {
         [Required, Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -23,8 +24,10 @@ namespace PMTool.Models
         [Display(Name = "Title")]
         public string Title { get; set; }
 
+        [AllowHtml]
         [Required]
         [Display(Name = "Task Description")]
+        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
         [Required]
