@@ -78,8 +78,8 @@
        Text = (option == null ? "None" : option.Name),
        Value = option.PriorityID.ToString(),
        Selected = (Model != null) && (option.PriorityID == Model.PriorityID)
-   }), "Choose...")
-        @Html.ValidationMessageFor(model => model.PriorityID)
+   }), "None")
+@*        @Html.ValidationMessageFor(model => model.PriorityID)*@
     </td>
 </tr>
 
