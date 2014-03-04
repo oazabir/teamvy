@@ -21,7 +21,9 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @if (Model!=null)
+        {
+        foreach (var item in Model)
         {
             <tr>
 
@@ -99,6 +101,7 @@
                     @Html.ActionLink(" ", "Delete", "Tasks", new { id = item.TaskID }, new { @class = "icon-trash", @title = "Delete" })
                 </td>
             </tr>
+        }
         }
     </tbody>
 @*</table>*@
