@@ -78,10 +78,17 @@
         jQuery.ajax({
             url: url,
             cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
             success: function (data) {
                 jQuery('#popupcontainerShowActivity').html(data);
+                jQuery("#ModalLoading").modal('hide');
                 jQuery("#ModalpopupShowActivity").modal('show');
-            }
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+                }
         });
         return false;
     }
@@ -92,9 +99,16 @@
         jQuery.ajax({
             url: url,
             cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
             success: function (data) {
                 jQuery('#popupcontainer').html(data);
+                jQuery("#ModalLoading").modal('hide');
                 jQuery("#Modalpopup").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
             }
         });
         return false;
@@ -106,9 +120,16 @@
         jQuery.ajax({
             url: url,
             cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
             success: function (data) {
                 jQuery('#popupcontainerProject').html(data);
+                jQuery("#ModalLoading").modal('hide');
                 jQuery("#ModalpopupProject").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
             }
         });
         return false;
@@ -120,9 +141,16 @@
         jQuery.ajax({
             url: url,
             cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
             success: function (data) {
                 jQuery('#popupcontainerTask').html(data);
+                jQuery("#ModalLoading").modal('hide');
                 jQuery("#ModalpopupTask").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
             }
         });
         return false;
@@ -133,9 +161,16 @@
         jQuery.ajax({
             url: url,
             cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
             success: function (data) {
                 jQuery('#popupcontainerCreateSprint').html(data);
+                jQuery("#ModalLoading").modal('hide');
                 jQuery("#ModalpopupCreateSprint").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
             }
         });
         return false;
@@ -148,9 +183,16 @@
             url: url,
             data: { status: ststus, projectID: projectID },
             cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
             success: function (data) {
                 jQuery('#popupcontainerEditStatus').html(data);
+                jQuery("#ModalLoading").modal('hide');
                 jQuery("#ModalpopupEditStatus").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
             }
         });
         return false;
