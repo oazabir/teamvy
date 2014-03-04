@@ -27,6 +27,7 @@ namespace PMTool.Controllers
 
             userTaskList = unitOfWork.TaskRepository.GetTasksByUser(user).ToList();
 
+            //overdueTaskList = userTaskList.Where(p => (p.EndDate < DateTime.Today) && ((p.ProjectStatus.ProjectStatusID == null ? " " : p.ProjectStatus.Name) != "Close")).ToList();
             overdueTaskList = userTaskList.Where(p => (p.EndDate < DateTime.Today) && (p.ProjectStatus.Name != "Close")).ToList();
             todaysTaskList = userTaskList.Where(p => p.StartDate == DateTime.Today && p.ProjectStatus.Name != "Close").ToList();
             dueTomorrowTaskList = userTaskList.Where(p => p.EndDate == DateTime.Today.AddDays(1) && p.ProjectStatus.Name != "Close").ToList();
