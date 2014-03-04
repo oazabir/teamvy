@@ -94,7 +94,7 @@ namespace PMTool.Repository
             {
                 task.ChildTask = context.Tasks.Where(t => t.ParentTaskId == task.TaskID).ToList();
                 task.CreatedByUser = context.Users.Where(t => t.UserId == task.CreatedBy).FirstOrDefault();
-                task.ProjectStatus = context.ProjectStatuses.Where(t => t.ProjectStatusID == task.ProjectStatusID).FirstOrDefault();
+                task.ProjectStatus = context.ProjectStatuses.Where(t => t.ProjectStatusID==null||t.ProjectStatusID == task.ProjectStatusID).FirstOrDefault();
             }
             return query;
         }
