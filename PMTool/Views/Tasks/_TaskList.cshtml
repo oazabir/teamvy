@@ -16,6 +16,7 @@
 
             <th>Assign To</th>
             <th>Created by</th>
+            <th>Sprint</th>
 
             <th></th>
         </tr>
@@ -89,7 +90,12 @@
 
                     @Html.DisplayTextFor(_ => item.CreatedByUser.FirstName).ToString()
                 </td>
-
+                <td>
+                    @if (item.SprintID != null)
+                    {
+                       <span>@item.Sprint.Name</span> 
+                    }
+                </td>
 
                 <td align="center">
                     @Html.ActionLink(" ", "Edit", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
@@ -98,6 +104,7 @@
                     |
                     @Html.ActionLink(" ", "Delete", new { id = item.TaskID }, new { @class = "icon-trash", @title = "Delete" })
                 </td>
+
             </tr>
         }
     </tbody>
