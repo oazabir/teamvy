@@ -37,11 +37,13 @@
                     @Html.DisplayTextFor(_ => item.Description).ToString()
                 </td>*@
                 <td>
-                    @item.StartDate.ToString("dd/MM/yyyy")
+                    @if(item.StartDate!=null)
+                    {<span>@item.StartDate.Value.ToString("dd/MM/yyyy")</span>}
                 </td>
 
                 <td>
-                    @item.EndDate.ToString("dd/MM/yyyy")
+                     @if(item.EndDate!=null)
+                    {<span>@item.EndDate.Value.ToString("dd/MM/yyyy")</span>}
                 </td>
 
                 <td>
