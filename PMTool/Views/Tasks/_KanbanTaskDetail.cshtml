@@ -28,27 +28,29 @@
 <div class="dragbox" id="@Model.TaskID">
 <h2>@Model.Title</h2>
 <div class="dragbox-content" style="display: none;">
-    <a href="#"  data-toggle="tooltip" rel="tooltip" data-placement="bottom"
-data-original-title="@Html.Raw(Model.Description)">
     @{
-    if (@Model.Description.Length>150)
+        var description =Html.Raw(HttpUtility.HtmlDecode(Model.Description)) ;
+    <a href="#"  data-toggle="tooltip" rel="tooltip" data-placement="bottom"
+data-original-title="@description">
+    @if (@Model.Description.Length>150)
     {
        
-     <span>@Html.Raw(Model.Description.Substring(0,150)) ...</span><br />
+     <span>description ...</span><br />
         <a href="#" title="Edit" id="showdata" onclick="return ShowEditForm(@Model.TaskID)"><span class="icon-edit" for="showSprint"></span>Edit </a>
     
     <a  href="#" title="Attachments"  onclick="return ShowActivity(@Model.TaskID)"><span class="iconsweets-paperclip" for="showSprint"></span>Attachments</a>
     }
-    else
+    @if (@Model.Description.Length <= 150)
     {
      <span>@Html.Raw(Model.Description) </span><br />
     <a href="#" title="Edit" id="showdata" onclick="return ShowEditForm(@Model.TaskID)"><span class="icon-edit" for="showSprint"></span>Edit </a>
     
     <a  href="#" title="Attachments"  onclick="return ShowActivity(@Model.TaskID)"><span class="iconsweets-paperclip" for="showSprint"></span>Attachments</a>
     }
-    }
+    
 
     </a>
+        }
 </div>
 </div>
 <script type="text/javascript">
