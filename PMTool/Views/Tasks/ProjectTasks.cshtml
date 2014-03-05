@@ -26,7 +26,7 @@
     @*<select id="Status" name="Status">
     @Html.DropDownListFor(model => model.ProjectStatusID, ((IEnumerable<PMTool.Models.ProjectStatus>)ViewBag.TaskStatus).Select(option => new SelectListItem
    {
-       Text = (option == null ? "None" : option.Name),
+       Text = (option == null ? "None" : option.Name), 
        Value = option.ProjectStatusID.ToString(),
        Selected = (Model != null) && (option.ProjectStatusID == Model.ProjectStatusID)
    }), "Choose...")
