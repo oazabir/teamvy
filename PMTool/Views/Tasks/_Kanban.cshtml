@@ -76,7 +76,7 @@
         <legend class="widgettitle ctitle">Project Backlog</legend>
         @{
             
-            foreach (PMTool.Models.Task item in Model.Where(t => t.ProjectStatusID == null && t.SprintID == null))
+            foreach (PMTool.Models.Task item in Model.Where(t =>  t.SprintID == null))
             {
                 { Html.RenderAction("_KanbanTaskDetail", "Tasks", new { taskID = item.TaskID }); }
             }
