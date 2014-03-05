@@ -134,6 +134,7 @@ font-weight: bold;
    /* background-image: url("../img/mainbg2.png") !important;*/
    background: linear-gradient(to bottom, #EDEDED 0%, #DEDEDE 100%) repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
    display:inline-block !important;
+   white-space: normal !important;
 }
 .column .dragbox{
 	margin:5px 2px  20px !important;
@@ -226,6 +227,7 @@ overflow:scroll !important;
     border: 13px solid #bed5cd;
     min-width: 900px !important;
     margin:0 auto;
+    overflow-y: scroll;
     /*overflow-x: scroll;
     overflow: auto;
     overflow-y: hidden;
@@ -245,7 +247,7 @@ overflow:scroll !important;
 {
     width: 679px !important;
      overflow-x: scroll !important;
-   overflow-y: hidden !important;
+   overflow-y: scroll !important;
     white-space: nowrap !important;
     height: 480px !important;
     max-width:5000px !important;

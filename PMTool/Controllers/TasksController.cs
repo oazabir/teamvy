@@ -181,8 +181,8 @@ namespace PMTool.Controllers
             ViewBag.PossibleLabels = allLabels;
             Task task = new Task();
             task.ProjectID = ProjectID;
-            task.StartDate = DateTime.Now;
-            task.EndDate = DateTime.Now;
+            //task.StartDate = DateTime.Now;
+            //task.EndDate = DateTime.Now;
 
             GetAllStatus(task);
 

@@ -30,13 +30,13 @@ namespace PMTool.Models
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
-        [Required]
+        
         [Display(Name = "Start Date")]
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
-        [Required]
+        
         [Display(Name = "End Date")]
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         [Required]
         [Display(Name = "Estimated Task Hour")]

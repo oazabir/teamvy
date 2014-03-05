@@ -29,19 +29,19 @@
 <h2>@Model.Title</h2>
 <div class="dragbox-content" style="display: none;">
     <a href="#"  data-toggle="tooltip" rel="tooltip" data-placement="bottom"
-data-original-title="@Model.Description">
+data-original-title="@Html.Raw( Model.Description)">
     @{
     if (@Model.Description.Length>150)
     {
        
-     <span>@Model.Description.Substring(0,150) ...</span><br />
+     <span>@Html.Raw(Model.Description.Substring(0,150)) ...</span><br />
         <a href="#" title="Edit" id="showdata" onclick="return ShowEditForm(@Model.TaskID)"><span class="icon-edit" for="showSprint"></span>Edit </a>
     
     <a  href="#" title="Attachments"  onclick="return ShowActivity(@Model.TaskID)"><span class="iconsweets-paperclip" for="showSprint"></span>Attachments</a>
     }
     else
     {
-     <span>@Model.Description </span><br />
+     <span>@Html.Raw(Model.Description) </span><br />
     <a href="#" title="Edit" id="showdata" onclick="return ShowEditForm(@Model.TaskID)"><span class="icon-edit" for="showSprint"></span>Edit </a>
     
     <a  href="#" title="Attachments"  onclick="return ShowActivity(@Model.TaskID)"><span class="iconsweets-paperclip" for="showSprint"></span>Attachments</a>
