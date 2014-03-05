@@ -26,7 +26,7 @@
     @*<select id="Status" name="Status">
     @Html.DropDownListFor(model => model.ProjectStatusID, ((IEnumerable<PMTool.Models.ProjectStatus>)ViewBag.TaskStatus).Select(option => new SelectListItem
    {
-       Text = (option == null ? "None" : option.Name),
+       Text = (option == null ? "None" : option.Name), 
        Value = option.ProjectStatusID.ToString(),
        Selected = (Model != null) && (option.ProjectStatusID == Model.ProjectStatusID)
    }), "Choose...")
@@ -44,111 +44,11 @@
 }
 
 <div id="divTaskList" >
+          <table class="table table-bordered dyntable" id="dyntable5">
 
+    @{@Html.Partial("_TaskList", Model)}
+        </table>
 
-    @{
-        @Html.Partial("_TaskList", Model)
-    }
-
-
-@*    <table class="table table-bordered" id="dyntable">
-        <thead>
-            <tr>
-                <th>Task Title
-                </th>
-                <th>Project Name
-                </th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Status</th>
-                <th>Sub Tasks
-                </th>
-                <th>Add Sub Task</th>
-
-                <th>Assign To</th>
-                <th>Created by</th>
-
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-
-                    <td>
-                        @Html.DisplayTextFor(_ => item.Title).ToString()
-                    </td>
-                    <td>
-                        @item.Project.Name
-                    </td>
-                    <td>
-                        @item.StartDate.ToString("dd/MM/yyyy")
-                    </td>
-
-                    <td>
-                        @item.EndDate.ToString("dd/MM/yyyy")
-                    </td>
-
-                    <td>
-                        @if (item.ProjectStatusID != null)
-                        {
-                            @item.ProjectStatus.Name
-                        }
-                    </td>
-
-                    <td>
-                        @if (item.ChildTask.Count > 0)
-                        {
-                            <div class="btn-group">
-                                <button class="btn btn-small">Sub Tasks (@item.ChildTask.Count)</button>
-                                <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-                                <ul class="dropdown-menu">
-                                    @foreach (PMTool.Models.Task task in item.ChildTask)
-                                    {
-                                        <li>@Html.ActionLink(task.Title, "Edit", new { id = task.TaskID }, new { @target = "_blank" })</li>
-                                
-                                    }
-                                    <li class="divider"></li>
-                                    <li>@Html.ActionLink("All Sub Tasks", "SubTaskList", new { ProjectID = item.ProjectID, TaskID = item.TaskID }, new { @target = "_blank" })</li>
-
-
-                                </ul>
-                            </div>
-                        }
-                        @if (item.ChildTask.Count == 0)
-                        {
-                            @Html.Raw("No Sub Task")
-                        }
-
-                    </td>
-                    <td>
-                        @Html.ActionLink("Add SubTask", "CreateSubTask", new { ProjectID = item.ProjectID, TaskID = item.TaskID }, new { @title = "Add SubTask" })
-                    </td>
-                    <td>
-                        @foreach (User user in item.Users)
-                        {
-   
-                            <span>@user.FirstName,</span>
-                        }
-                    </td>
-                    <td>
-
-                        @Html.DisplayTextFor(_ => item.CreatedByUser.FirstName).ToString()
-                    </td>
-
-
-                    <td align="center">
-                        @Html.ActionLink(" ", "Edit", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
-                        |
-                    @Html.ActionLink(" ", "Details", new { id = item.TaskID }, new { @class = "icon-list-alt", @title = "Details" })
-                        |
-                    @Html.ActionLink(" ", "Delete", new { id = item.TaskID }, new { @class = "icon-trash", @title = "Delete" })
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>*@
 
 
 </div>

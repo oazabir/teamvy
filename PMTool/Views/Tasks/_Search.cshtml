@@ -1,7 +1,7 @@
 ﻿@model PMTool.Models.Search
 
 @*<h4 class="widgettitle">Search: @Html.DropDownList("TaskStatus", "Choose...")</h4>*@
-@using (Ajax.BeginForm("_Search", "Tasks", new AjaxOptions { UpdateTargetId = "divTaskList", OnBegin = "Loading()", OnComplete = "Unload()" }))
+@using (Ajax.BeginForm("_Search", "Tasks", new AjaxOptions { UpdateTargetId = "dyntable5", OnBegin = "Loading()", OnComplete = "Unload()" }))
 {
     <input type="hidden" name ="SelectedProjectID" value ="@ViewBag.CurrentProjectId" />
     <div>

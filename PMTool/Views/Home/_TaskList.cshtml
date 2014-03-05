@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<PMTool.Models.Task>
-<table class="table table-bordered" id="dyntable1">
     <thead>
         <tr>
             <th>Task Title
@@ -106,27 +105,5 @@
         }
         }
     </tbody>
-</table>
 
- <script type="text/javascript">
-        jQuery.noConflict();
-        jQuery.noConflict();
-        jQuery(document).ready(function () {
-            jQuery('#dyntable1').dataTable({
-                "sPaginationType": "full_numbers",
-                "aaSortingFixed": [[0, 'asc']],
-                "fnDrawCallback": function (oSettings) {
-
-                }
-            });
-
-            //jQuery('#dyntable1').dataTable({
-            //    "sPaginationType": "full_numbers",
-            //    "aaSortingFixed": [[0, 'asc']],
-            //    "fnDrawCallback": function (oSettings) {
-
-            //    }
-            //});
-
-        });
-    </script>
+ 
