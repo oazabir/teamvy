@@ -133,6 +133,7 @@ font-weight: bold;
     text-align: center;
    /* background-image: url("../img/mainbg2.png") !important;*/
    background: linear-gradient(to bottom, #EDEDED 0%, #DEDEDE 100%) repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
+   display:inline-block !important;
 }
 .column .dragbox{
 	margin:5px 2px  20px !important;
@@ -219,11 +220,38 @@ overflow:scroll !important;
     padding: 5px !important;
     min-height: 555px !important;
     float:left !important;
-    overflow: auto;
+    
     height:600px;
-    width: 100%;
+    width: auto;
+    border: 13px solid #bed5cd;
+    min-width: 900px !important;
+    margin:0 auto;
+    /*overflow-x: scroll;
+    overflow: auto;
+    overflow-y: hidden;
+    white-space: nowrap;*/
+}
+.columnHolder
+{
+    height:550px;
+    width: auto;
+    margin-bottom: 20px;
+    display:inline-block;
+    background-color:red;
+    border:1px solid white;
 }
 
+.tab-content > .active, .pill-content > .active 
+{
+    width: 679px !important;
+     overflow-x: scroll !important;
+   overflow-y: hidden !important;
+    white-space: nowrap !important;
+    height: 480px !important;
+    max-width:5000px !important;
+    display:inline-block !important;
+    margin:0 auto;
+}
 .projectBacklog
 {
     width:20% !important;
@@ -298,9 +326,4 @@ overflow:scroll !important;
   background-image: linear-gradient(to bottom, #d9534f 0%, #c9302c 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd9534f', endColorstr='#ffc9302c', GradientType=0);
-}
-.pill-content > .active
-{
-    overflow: auto !important;
-    height:100% !important;
 }

@@ -6,7 +6,11 @@
  *	Built for Katniss Premium Responsive Admin Template
  *  http://themeforest.net/category/site-templates/admin-templates
  */
-jQuery().ready(function() {
+jQuery().ready(function () {
+        tinyMCE.init({
+            mode: "textareas", elements: "elm1",
+            theme: "simple"
+        });
 		jQuery('textarea.tinymce').tinymce({
 			// Location of TinyMCE script
 		    script_url: document.location.host+'/Content/themes/site/js/tinymce/tiny_mce.js',
