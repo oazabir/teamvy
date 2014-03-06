@@ -40,11 +40,18 @@
                      }), "Choose...")
 
                 </td>
-                <td></td>
+                <td>Sprint</td>
                 <td>
-                   
+                    @Html.DropDownListFor(model => model.SelectedSprintID, (Model.SprintList).Select(option => new SelectListItem
+                     {
+                         Text = (option == null ? "None" : option.Name),
+                         Value = option.SprintID.ToString(),
+                         Selected = (Model != null) && (option.SprintID == Model.SelectedSprintID)
+                     }), "Choose...")
 
                 </td>
+                   
+
 
             </tr>
             <tr>
@@ -56,13 +63,7 @@
 
                     <input type="submit" value="Search" class="btn btn-primary" />
                 </td>
-           @*   <td></td>
-                <td></td>*@
-                @*  <td></td>
-                <td></td>
-
-                <td></td>
-                <td></td>*@
+          
 
             </tr>
         </table>
