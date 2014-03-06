@@ -218,13 +218,15 @@ namespace PMTool.Repository
             {
                 query = query.Include(includeProperty);
             }
-            return query.ToList();
+            return query.ToList(); 
         }
 
         public Project FindincludingSprint(long ProjectID)
         {
             Project project = context.Projects.Where(p => p.ProjectID == ProjectID).Include("Sprints").FirstOrDefault();
-            project.Sprints = project.Sprints.OrderByDescending(p => p.SprintID).ToList();
+           
+            //For showing sprint in descending order in kanban board. update by mahedee @ 06-03-14
+            project.Sprints = project.Sprints.OrderByDescending(p => p.SprintID).ToList(); 
             return project;
         }
 
