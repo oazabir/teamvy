@@ -25,7 +25,7 @@ namespace PMTool.Repository
         private LabelRepository _labelRepository;
 
         public LabelRepository LabelRepository
-        {
+        { 
             get
             {
 
