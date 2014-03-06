@@ -152,14 +152,14 @@ font-weight: bold;
     background: none repeat scroll 0 0 #999999;
 	color:#000 !important;
 	border-bottom:1px solid #eee !important;
-	font-family:Verdana !important;
+	font-family:Arial !important;
 	cursor:move !important;
     line-height: 15px !important;
 }
 .dragbox-content{
 	background:#fff !important;
 	min-height:100px; margin:5px !important;
-	font-family:'Lucida Grande', Verdana; font-size:0.8em; line-height:1.5em !important;
+	font-family:Arial, Verdana; font-size:0.8em; line-height:1.5em !important;
 }
 .column  .placeholder{
 	background: #f0f0f0 !important;
@@ -173,7 +173,7 @@ font-weight: bold;
 	background:#f0f0f0 !important;
 	color:#000 !important;
 	border-bottom:1px solid #eee !important;
-	font-family:Verdana !important;
+	font-family:Arial !important;
 	cursor:move !important;
 }
 .dragbox h2 .configure{
@@ -228,6 +228,7 @@ overflow:scroll !important;
     min-width: 900px !important;
     margin:0 auto;
     overflow-y: scroll;
+    font-family:Arial;
     /*overflow-x: scroll;
     overflow: auto;
     overflow-y: hidden;
@@ -328,4 +329,8 @@ overflow:scroll !important;
   background-image: linear-gradient(to bottom, #d9534f 0%, #c9302c 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd9534f', endColorstr='#ffc9302c', GradientType=0);
+}
+.table th, .table td
+{
+      min-width: 60px !important;
 }
