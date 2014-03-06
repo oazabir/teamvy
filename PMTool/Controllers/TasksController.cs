@@ -970,6 +970,8 @@ namespace PMTool.Controllers
             if (ModelState.IsValid)
             {
                 unitOfWork.SprintRepository.InsertOrUpdate(sprint);
+                //Ahange by Mahedee @06-03-14. Because is active check box is removed from UI
+                sprint.IsActive = true; 
                 unitOfWork.Save();
             }
 

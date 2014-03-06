@@ -152,7 +152,9 @@
         jQuery("#btn2").click(function () {
             var id = jQuery("#items").children().length;
             id = id + 1;
-            if (jQuery("#itemText").val() != "") {
+
+            //There is only one Closed status by default. Updated by Mahedee, date 06-03-14
+            if (jQuery("#itemText").val() != "" && jQuery("#itemText").val() != "Closed") {
                 jQuery("#items").append("<span class='tag' " + " id=" + "'" + id + "'" + ">" + jQuery("#itemText").val() + "&nbsp;&nbsp;<a    onclick='removeit(" + id + ",\"" + jQuery("#itemText").val() + "\")' title='Removing tag'>x</a></span>");
 
                 //jQuery("#allStatus").val(jQuery("#allStatus").val() + jQuery("#itemText").val() + ",");
