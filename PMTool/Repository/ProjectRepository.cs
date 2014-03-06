@@ -76,7 +76,10 @@ namespace PMTool.Repository
 
         public Project Find(long id)
         {
-            return context.Projects.Include("Users").Where(p=>p.ProjectID==id).FirstOrDefault();
+             
+              Project project = context.Projects.Include("Users").Where(p=>p.ProjectID==id).FirstOrDefault();
+              project.Sprints = project.Sprints.OrderByDescending(p => p.SprintID).ToList(); //To show sprint descending order added by Mahedee @06-03-14
+              return project;
         }
 
 
@@ -221,8 +224,10 @@ namespace PMTool.Repository
         public Project FindincludingSprint(long ProjectID)
         {
             Project project = context.Projects.Where(p => p.ProjectID == ProjectID).Include("Sprints").FirstOrDefault();
+            project.Sprints = project.Sprints.OrderByDescending(p => p.SprintID).ToList();
             return project;
         }
+
 
         internal Project FindAllDependancyOfProject(long ProjectID)
         {
