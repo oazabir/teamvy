@@ -249,7 +249,7 @@ namespace PMTool.Repository
                                         && (search.SelectedStatusID == null || t.ProjectStatusID == search.SelectedStatusID)
                                         && (search.SelectedPriorityID == null || t.PriorityID == search.SelectedPriorityID)
                                         && (search.SelectedSprintID == null || t.SprintID == search.SelectedSprintID)
-                                        && (search.SelectedUserID == null || t.Users.Any(u => u.UserId == search.SelectedUserID) || t.Project.ProjectOwners.Any(u => u.UserId == search.SelectedUserID))
+                                        && (search.SelectedUserID == null || t.Users.Any(u => u.UserId == search.SelectedUserID))
                                         ).ToList();
             //taskList = taskList.Where(t => t.Users.Any(u => u.UserId == search.SelectedUserID)).ToList();
             return taskList;
