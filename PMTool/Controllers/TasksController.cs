@@ -827,6 +827,14 @@ namespace PMTool.Controllers
         public ActionResult Kanban(string taskid, string statusid, string sprintid)
         {
             string ststus = "";
+            try
+            {
+                long a = Convert.ToInt64(sprintid);
+            }
+            catch
+            {
+                sprintid = "";
+            }
             if (taskid != null && statusid != null)
             {
                 try
