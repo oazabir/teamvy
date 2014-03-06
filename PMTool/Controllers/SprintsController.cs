@@ -17,7 +17,7 @@ namespace PMTool.Controllers
         {
             Sprint sprint = new Sprint();
             sprint.StartDate = DateTime.Now;
-            sprint.EndDate = DateTime.Now;
+            sprint.EndDate = DateTime.Now;     
             sprint.ProjectID = id;
             sprint.Project = unitOfWork.ProjectRepository.Find(sprint.ProjectID);
 

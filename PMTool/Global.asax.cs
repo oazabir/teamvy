@@ -36,16 +36,16 @@ namespace PMTool
             MembershipUser user = WebSecurity.FindUsersByEmail("demo@gmail.com", 0, 10).FirstOrDefault();
             if (user == null)
             {
-                WebSecurity.Register("demo@gmail.com", "bs@123", "demo@gmail.com", true, "Demo", "Demo");
+                WebSecurity.Register("demo@gmail.com", "bs@123", "demo@gmail.com", true, "Demo", "User");
                 Roles.CreateRole("Admin");
                 Roles.AddUserToRole("demo@gmail.com", "Admin");
             }
-            WebSecurity.Register("najib@gmail.com", "bs@123", "najib@gmail.com", true, "najib", "hasan");
+            WebSecurity.Register("najib@bs-23.com", "bs@123", "najib@bs-23.com", true, "Najib", "Hasan");
             //Roles.CreateRole("Admin");
-            Roles.AddUserToRole("najib@gmail.com", "Admin");
+            Roles.AddUserToRole("najib@bs-23.com", "Admin");
             WebSecurity.Register("mahedee.hasan@bs-23.com", "bs@123", "mahedee.hasan@bs-23.com", true, "Mahedee", "Hasan");
             //Roles.CreateRole("Admin");
-            Roles.AddUserToRole("mahedee.hasan@gmail.com", "Admin");
+            Roles.AddUserToRole("mahedee.hasan@bs-23.com", "Admin");
         }
     }
 }
