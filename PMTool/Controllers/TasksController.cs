@@ -55,6 +55,28 @@ namespace PMTool.Controllers
         }
 
 
+        //public PartialViewResult _TaskList(long projectID, long? statusID)
+        //{
+        //    List<Task> taskList;
+        //    Project project;
+        //    if (statusID != null && statusID != 0)
+        //        GetTaskList(projectID, out taskList, out project, statusID);
+        //    else
+        //        GetTaskList(projectID, out taskList, out project);
+           
+
+        //    //List<SelectListItem> statusList = new List<SelectListItem>();
+        //    //statusList = unitOfWork.ProjectRepository.FindIncludingProjectStatus(projectID).ProjectStatuses.ToList();
+        //    ViewBag.TaskStatus = GetAllStatus(projectID);
+
+        //    //task.Project.ProjectStatuses;
+
+        //    ViewBag.CurrentProject = project;
+        //    //return PartialViewResult(taskList);
+        //    //return View(taskList);
+        //    return PartialView(taskList);
+        //}
+
         public PartialViewResult _TaskList(long projectID, long? statusID)
         {
             List<Task> taskList;
@@ -63,7 +85,7 @@ namespace PMTool.Controllers
                 GetTaskList(projectID, out taskList, out project, statusID);
             else
                 GetTaskList(projectID, out taskList, out project);
-           
+
 
             //List<SelectListItem> statusList = new List<SelectListItem>();
             //statusList = unitOfWork.ProjectRepository.FindIncludingProjectStatus(projectID).ProjectStatuses.ToList();
@@ -1053,6 +1075,23 @@ namespace PMTool.Controllers
             search.statusList = unitOfWork.ProjectStatusRepository.FindbyProjectID(projectID);
             search.priorityList = unitOfWork.PriorityRepository.All.ToList();
             ViewBag.CurrentProjectId = projectID;
+            Project project = unitOfWork.ProjectRepository.Find(projectID);
+            if (project.Users != null)
+            {
+                foreach (User user in project.Users)
+                {
+                    search.UserList.Add(user);
+                }
+            }
+            if (project.ProjectOwners != null)
+            {
+                foreach (User user in project.ProjectOwners)
+                {
+                    if (!search.UserList.Exists(u=>u.UserId==user.UserId))
+                    search.UserList.Add(user);
+                }
+            }
+
             return PartialView("_Search", search);
         }
 
@@ -1063,18 +1102,19 @@ namespace PMTool.Controllers
            long statusId = Convert.ToInt64( search.SelectedStatusID);
 
            long projectID = (long)search.SelectedProjectID;
-           //return RedirectToAction("ProjectTasks", new {@projectID = 1, @statusId = statusId});
-           taskList = GetTasks(projectID, statusId);
+           //taskList = GetTasks(projectID, statusId);
           
-           Project project = unitOfWork.ProjectRepository.Find(projectID);
-           //ViewBag.TaskStatus = GetAllStatus(projectID);
-           ViewBag.CurrentProject = project;
-
-           //return View("ProjectTasks", taskList);
-            //return RedirectToAction("_TaskList",new{@projectID = 1});
-
-           return RedirectToAction("_TaskList", new { @ProjectID = 1, @statusId = statusId });
+           //Project project = unitOfWork.ProjectRepository.Find(projectID);
+           //ViewBag.CurrentProject = project;
+           taskList = GetTasks(search);
+           ViewBag.Tasks = taskList;
+           return PartialView("_TaskList", taskList);//RedirectToAction("_TaskList", new { @ProjectID = projectID, @statusId = statusId });
             
+        }
+
+        private List<Task> GetTasks(Search search)
+        {
+            return unitOfWork.TaskRepository.GetBySearchCriteria(search);
         }
 
         public List<Task> GetTasks(long projectID, long statusId)

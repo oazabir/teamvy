@@ -17,7 +17,7 @@
                      }), "Choose...")
 
                 </td>
-      @*          <td>Priority</td>
+                <td>Priority</td>
                 <td>
                     @Html.DropDownListFor(model => model.SelectedPriorityID, (Model.priorityList).Select(option => new SelectListItem
                      {
@@ -26,11 +26,31 @@
                          Selected = (Model != null) && (option.PriorityID == Model.SelectedPriorityID)
                      }), "Choose...")
 
-                </td>*@
+                </td>
+
+            </tr>
+             <tr>
+                <td>Assigned User</td>
+                <td>
+                    @Html.DropDownListFor(model => model.SelectedUserID, (Model.UserList).Select(option => new SelectListItem
+                     {
+                         Text = (option == null ? "None" : option.FirstName+" "+option.LastName),
+                         Value = option.UserId.ToString(),
+                         Selected = (Model != null) && (option.UserId == Model.SelectedUserID)
+                     }), "Choose...")
+
+                </td>
+                <td></td>
+                <td>
+                   
+
+                </td>
 
             </tr>
             <tr>
-
+                
+                <td></td>
+                <td></td>
                 <td></td>
                 <td>
 

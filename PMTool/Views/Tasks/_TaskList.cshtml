@@ -77,7 +77,10 @@
 
                 </td>
                 <td>
-                    @Html.ActionLink("Add SubTask", "CreateSubTask", new { ProjectID = item.ProjectID, TaskID = item.TaskID }, new { @title = "Add SubTask" })
+                    @if (item.Users.Any(u => u.Username == User.Identity.Name) || item.Project.ProjectOwners.Any(u => u.Username == User.Identity.Name))
+                    {
+                        @Html.ActionLink("Add SubTask", "CreateSubTask", new { ProjectID = item.ProjectID, TaskID = item.TaskID }, new { @title = "Add SubTask" })
+                    }
                 </td>
                 <td>
                     @foreach (User user in item.Users)
@@ -99,11 +102,14 @@
                 </td>
 
                 <td align="center">
-                    @Html.ActionLink(" ", "Edit", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
-                    |
-                    @Html.ActionLink(" ", "Details", new { id = item.TaskID }, new { @class = "icon-list-alt", @title = "Details" })
-                    |
-                    @Html.ActionLink(" ", "Delete", new { id = item.TaskID }, new { @class = "icon-trash", @title = "Delete" })
+                    @if (item.Users.Any(u => u.Username == User.Identity.Name) || item.Project.ProjectOwners.Any(u => u.Username == User.Identity.Name))
+                    {
+                        @Html.ActionLink(" ", "Edit", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
+                        <span>|</span>
+                        @Html.ActionLink(" ", "Details", new { id = item.TaskID }, new { @class = "icon-list-alt", @title = "Details" })
+                         <span>|</span>
+                        @Html.ActionLink(" ", "Delete", new { id = item.TaskID }, new { @class = "icon-trash", @title = "Delete" })
+                    }
                 </td>
 
             </tr>

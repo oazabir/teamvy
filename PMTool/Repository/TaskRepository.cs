@@ -241,6 +241,18 @@ namespace PMTool.Repository
         {
             return context.Tasks.Where(t => t.ProjectID == projectID).ToList();
         }
+
+        public List<Task> GetBySearchCriteria(Search search)
+        {
+            List<Task> taskList = new List<Task>();
+            taskList = context.Tasks.Where(t => t.ProjectID == search.SelectedProjectID
+                                        && (search.SelectedStatusID == null || t.ProjectStatusID == search.SelectedStatusID)
+                                        && (search.SelectedPriorityID == null || t.PriorityID == search.SelectedPriorityID)
+                                        && (search.SelectedUserID == null || t.Users.Any(u => u.UserId == search.SelectedUserID) || t.Project.ProjectOwners.Any(u => u.UserId == search.SelectedUserID))
+                                        ).ToList();
+            //taskList = taskList.Where(t => t.Users.Any(u => u.UserId == search.SelectedUserID)).ToList();
+            return taskList;
+        }
     }
 
     public interface ITaskRepository : IDisposable
@@ -254,5 +266,6 @@ namespace PMTool.Repository
         void Save();
         List<Task> GetTasksBySprintID(long sprintID);
         List<Task> GetTasksByProjectID(long projectID);
+        List<Task> GetBySearchCriteria(Search search);
     }
 }
