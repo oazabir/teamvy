@@ -21,7 +21,7 @@
         @Html.ValidationMessageFor(model => model.Description)
     </td>
 </tr>
-<tr>
+@*<tr>
     <td>
         @Html.LabelFor(model => model.IsActive)
     </td>
@@ -29,9 +29,9 @@
         @Html.EditorFor(model => model.IsActive)
         @Html.ValidationMessageFor(model => model.IsActive)
     </td>
-</tr>
+</tr>*@
 
-<tr>
+@*<tr>
     <td>
         @Html.LabelFor(model => model.IsLocked)
     </td>
@@ -39,7 +39,7 @@
         @Html.EditorFor(model => model.IsLocked)
         @Html.ValidationMessageFor(model => model.IsLocked)
     </td>
-</tr>
+</tr>*@
 <script type="text/javascript">
 
     jQuery(document).ready(function () {
@@ -128,9 +128,18 @@
                 {
                     foreach (PMTool.Models.ProjectStatus col in Model.ProjectStatuses)
                     {
-                        <span id="@col.ProjectStatusID" class="tag">@col.Name
+                        if(col.Name == "Closed")
+                        {
+                            <span id="@col.ProjectStatusID" class="tag">@col.Name
+                              @*<a title="Removing Status" onclick="removeitbyID('@col.ProjectStatusID','@col.Name')" >x</a>*@
+                              </span>  
+                        }
+                        else
+                        {
+                              <span id="@col.ProjectStatusID" class="tag">@col.Name
                               <a title="Removing Status" onclick="removeitbyID('@col.ProjectStatusID','@col.Name')" >x</a>
-                        </span>
+                              </span>
+                        }
                     }
                 }
                 }

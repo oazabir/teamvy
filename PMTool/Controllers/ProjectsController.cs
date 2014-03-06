@@ -72,7 +72,16 @@ namespace PMTool.Controllers
             List<SelectListItem> allUsers = GetAllUser();
             ViewBag.PossibleUsers = allUsers;
             Project project = new Project();
-            project.allStatus = "";
+
+            /*To add Close status by default. Added by: Mahedee @06-03-14*/
+            if (project.ProjectStatuses == null)
+            {
+                List<ProjectStatus> lstStatus = new List<ProjectStatus>();
+                lstStatus.Add(new ProjectStatus { Name = "Closed", ProjectStatusID = 1});
+                project.ProjectStatuses = lstStatus;
+                project.allStatus = "Closed";
+            }
+
             return View(project);
         }
 
@@ -103,6 +112,7 @@ namespace PMTool.Controllers
             project.ActionDate = DateTime.Now;
             project.CreatedBy = (Guid)Membership.GetUser().ProviderUserKey;
             project.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
+            project.IsActive = true;
 
             if (ModelState.IsValid)
             {
@@ -231,6 +241,7 @@ namespace PMTool.Controllers
             project.ModificationDate = DateTime.Now;
             project.ActionDate = DateTime.Now;
             project.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
+            project.IsActive = true;
             List<User> userList = new List<User>();
             if (ModelState.IsValid)
             {
