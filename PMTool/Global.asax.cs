@@ -40,12 +40,12 @@ namespace PMTool
                 Roles.CreateRole("Admin");
                 Roles.AddUserToRole("demo@gmail.com", "Admin");
             }
-            WebSecurity.Register("najib@gmail.com", "bs@123", "najib@gmail.com", true, "najib", "hasan");
+            WebSecurity.Register("najib@bs-23.com", "bs@123", "najib@bs-23.com", true, "najib", "hasan");
             //Roles.CreateRole("Admin");
-            Roles.AddUserToRole("najib@gmail.com", "Admin");
+            Roles.AddUserToRole("najib@bs-23.com", "Admin");
             WebSecurity.Register("mahedee.hasan@bs-23.com", "bs@123", "mahedee.hasan@bs-23.com", true, "Mahedee", "Hasan");
             //Roles.CreateRole("Admin");
-            Roles.AddUserToRole("mahedee.hasan@gmail.com", "Admin");
+            Roles.AddUserToRole("mahedee.hasan@bs-23.com", "Admin");
         }
     }
 }
