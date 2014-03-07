@@ -224,7 +224,6 @@ namespace PMTool.Controllers
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
             ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
             ViewBag.PossibleSprints = unitOfWork.SprintRepository.AllByProjectID(ProjectID);
-
             List<SelectListItem> allLabels = GetAllLabel();
             ViewBag.PossibleLabels = allLabels;
             Task task = new Task();

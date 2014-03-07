@@ -28,7 +28,7 @@
 <div class="dragbox" id="@Model.TaskID">
 <h2>@Model.Title</h2>
 <div class="dragbox-content" style="display: none;">
-    @{
+    @*@{
         var description =Html.Raw(HttpUtility.HtmlDecode(Model.Description)) ;
     <a href="#"  data-toggle="tooltip" rel="tooltip" data-placement="bottom"
 data-original-title="@description">
@@ -50,11 +50,49 @@ data-original-title="@description">
     
 
     </a>
+        }*@
+    @{
+        if (@Model.StartDate!=null)
+        {
+        <span>Start Date: @Model.StartDate.Value.ToShortDateString()</span><br />
         }
+        else
+        {
+        <span>Start Date: Undefined</span><br />
+        }
+        if (@Model.EndDate != null)
+        {
+        <span>End Date: @Model.EndDate.Value.ToShortDateString()</span><br />
+        }
+        else
+        {
+        <span>End Date: Undefined</span><br />
+        }
+        string users="";
+        if (Model.Users != null && Model.Users.Count>0)
+        {
+            users = "Assign User (s): ";
+        }
+        int i=0;
+        foreach (User user in Model.Users)
+        {
+            users = users + user.FirstName + " " + user.LastName;
+            i++;
+            if (Model.Users.Count<i)
+            {
+                users = users + ", ";
+            }
+        }
+    
+    <span>@users</span><br />
+    }
+    <a href="#" title="Edit" id="showdata" onclick="return ShowEditForm(@Model.TaskID)"><span class="icon-edit" for="showSprint"></span>Edit </a>
+    
+    <a  href="#" title="Attachments"  onclick="return ShowActivity(@Model.TaskID)"><span class="iconsweets-paperclip" for="showSprint"></span>Attachments</a>
 </div>
 </div>
-<script type="text/javascript">
+@*<script type="text/javascript">
     jQuery(document).ready(function () {
         jQuery('[rel="tooltip"]').tooltip();
     });
-</script>
+</script>*@

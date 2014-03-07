@@ -108,10 +108,12 @@
 <script type="text/javascript">
     jQuery(".datepicker").datepicker({
         onSelect: function () {
+            dateFormat: "mm/dd/yy"
             var sdate = jQuery("#StartDate").val().replace('-', '/');
             var edate = jQuery("#EndDate").val().replace('-', '/');
-            if (new Date(sdate) < new Date(edate)) {
-                alert('Start Date Mustbe grater than End Date');
+            
+            if (new Date(sdate) > new Date(edate)) {
+                alert('End Date Mustbe grater than Start Date');
                 var edate = jQuery("#EndDate").val('');
             }
         }
@@ -233,5 +235,46 @@
                         Selected = (Model != null) && (option.SprintID == Model.SprintID)
                     }), "Choose...")
                     @Html.ValidationMessageFor(model => model.SprintID)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.EstimatedPreviewDate)
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(model => model.EstimatedPreviewDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" })
+                    @Html.ValidationMessageFor(model => model.EstimatedPreviewDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.ActualPreviewDate)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.ActualPreviewDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" })
+                    @Html.ValidationMessageFor(model => model.ActualPreviewDate)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.ActualLiveDate)
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(model => model.ActualLiveDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" })
+                    @Html.ValidationMessageFor(model => model.ActualLiveDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.ForecastLiveDate)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.ForecastLiveDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" })
+                    @Html.ValidationMessageFor(model => model.ForecastLiveDate)
                 </td>
             </tr>

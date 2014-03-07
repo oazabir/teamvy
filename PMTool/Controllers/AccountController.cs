@@ -525,8 +525,9 @@ namespace PMTool.Controllers
 
             MembershipUser user = Membership.GetUser(userName); //User Name = User Email
             string confirmationGuid = user.ProviderUserKey.ToString();
-            string verifyUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/account/verify?ID=" + confirmationGuid;
+            //string verifyUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/account/verify?ID=" + confirmationGuid;
 
+            string verifyUrl = Request.Url.GetLeftPart(UriPartial.Authority) + Url.Content("~") + "/account/verify?ID=" + confirmationGuid; 
             client.UseDefaultCredentials = false;
             if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["EmailFrom"]) && !String.IsNullOrEmpty(ConfigurationManager.AppSettings["EmailFromPass"]))
             {
