@@ -1079,11 +1079,12 @@ namespace PMTool.Controllers
 
         public PartialViewResult _Search(long projectID)
         {
+            ViewBag.CurrentProjectId = projectID;
+            Project project = unitOfWork.ProjectRepository.Find(projectID);
             Search search = new Search();
             search.statusList = unitOfWork.ProjectStatusRepository.FindbyProjectID(projectID);
             search.priorityList = unitOfWork.PriorityRepository.All.ToList();
-            ViewBag.CurrentProjectId = projectID;
-            Project project = unitOfWork.ProjectRepository.Find(projectID);
+            search.SprintList = project.Sprints.ToList();
             if (project.Users != null)
             {
                 foreach (User user in project.Users)
