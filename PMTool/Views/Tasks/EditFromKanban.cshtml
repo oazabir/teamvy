@@ -30,6 +30,11 @@
     @Html.HiddenFor(model => model.ProjectID)
     @Html.HiddenFor(model => model.ParentTaskId)
     @Html.HiddenFor(model => model.ProjectStatusID)
+
+    @Html.HiddenFor(model => model.ActualPreviewDate)
+    @Html.HiddenFor(model => model.EstimatedPreviewDate)
+    @Html.HiddenFor(model => model.ForecastLiveDate)
+    @Html.HiddenFor(model => model.ActualLiveDate)
    
     <table class="table table-bordered table-invoice">
         <tbody>
@@ -106,11 +111,11 @@
                 </td>
                 <td>
                     @Html.DropDownListFor(model => model.PriorityID, ((IEnumerable<PMTool.Models.Priority>)ViewBag.PossiblePriorities).Select(option => new SelectListItem
-   {
-       Text = (option == null ? "None" : option.Name),
-       Value = option.PriorityID.ToString(),
-       Selected = (Model != null) && (option.PriorityID == Model.PriorityID)
-   }), "Choose...")
+               {
+                   Text = (option == null ? "None" : option.Name),
+                   Value = option.PriorityID.ToString(),
+                   Selected = (Model != null) && (option.PriorityID == Model.PriorityID)
+               }), "Choose...")
                     @Html.ValidationMessageFor(model => model.PriorityID)
                 </td>
             </tr>
@@ -211,12 +216,52 @@
                 </td>
                 <td>
                     @Html.DropDownListFor(model => model.SprintID, ((IEnumerable<PMTool.Models.Sprint>)ViewBag.PossibleSprints).Select(option => new SelectListItem
-                    {
-                        Text = (option == null ? "None" : option.Name),
-                        Value = option.SprintID.ToString(),
-                        Selected = (Model != null) && (option.SprintID == Model.SprintID)
-                    }), "Choose...")
+               {
+                   Text = (option == null ? "None" : option.Name),
+                   Value = option.SprintID.ToString(),
+                   Selected = (Model != null) && (option.SprintID == Model.SprintID)
+               }), "Choose...")
                     @Html.ValidationMessageFor(model => model.SprintID)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.EstimatedPreviewDate)
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(model => model.EstimatedPreviewDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" })
+                    @Html.ValidationMessageFor(model => model.EstimatedPreviewDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.ActualPreviewDate)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.ActualPreviewDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" })
+                    @Html.ValidationMessageFor(model => model.ActualPreviewDate)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.ActualLiveDate)
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(model => model.ActualLiveDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" })
+                    @Html.ValidationMessageFor(model => model.ActualLiveDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.ForecastLiveDate)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.ForecastLiveDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" })
+                    @Html.ValidationMessageFor(model => model.ForecastLiveDate)
                 </td>
             </tr>
             <tr>

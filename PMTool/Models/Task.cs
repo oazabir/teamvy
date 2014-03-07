@@ -5,6 +5,7 @@ using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
+using System.ComponentModel;
 
 namespace PMTool.Models
 {
@@ -122,5 +123,25 @@ namespace PMTool.Models
 
         [ForeignKey("SprintID")]
         public virtual Sprint Sprint { get; set; }
+
+        [Required]
+        [Display(Name = "Estimated Preview Date")]
+        [DefaultValue(typeof(DateTime), "2000-01-01")]
+        public DateTime EstimatedPreviewDate { get; set; }
+
+        [Required]
+        [Display(Name = "Actual Preview Date")]
+        [DefaultValue(typeof(DateTime), "2000-01-01")]
+        public DateTime ActualPreviewDate { get; set; }
+
+        [Required]
+        [Display(Name = "Forecast Live Date")]
+        [DefaultValue(typeof(DateTime), "2000-01-01")]
+        public DateTime ForecastLiveDate { get; set; }
+
+        [Required]
+        [Display(Name = "Actual Live Date")]
+        [DefaultValue(typeof(DateTime), "2000-01-01")]
+        public DateTime ActualLiveDate { get; set; }
     }
 }

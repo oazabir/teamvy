@@ -281,6 +281,10 @@
     <Compile Include="Migrations\201403050934027_taskDateChange.Designer.cs">
       <DependentUpon>201403050934027_taskDateChange.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201403071040351_taskTablecloumnadded.cs" />
+    <Compile Include="Migrations\201403071040351_taskTablecloumnadded.Designer.cs">
+      <DependentUpon>201403071040351_taskTablecloumnadded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\TaskActivityLog.cs" />
@@ -1248,6 +1252,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201403050934027_taskDateChange.resx">
       <DependentUpon>201403050934027_taskDateChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403071040351_taskTablecloumnadded.resx">
+      <DependentUpon>201403071040351_taskTablecloumnadded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

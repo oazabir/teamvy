@@ -5,7 +5,7 @@
 }
 
 
-@if (TempData["Message"]!=null)
+@if (TempData["Message"] != null)
 {
 <div class="alert alert-info">
     <button class="close" data-dismiss="alert" type="button">×</button>
@@ -30,6 +30,11 @@
     @Html.HiddenFor(model => model.CreateDate)
     @Html.HiddenFor(model => model.ProjectID)
     @Html.HiddenFor(model => model.ParentTaskId)
+
+    @Html.HiddenFor(model => model.ActualPreviewDate)
+    @Html.HiddenFor(model => model.EstimatedPreviewDate)
+    @Html.HiddenFor(model => model.ForecastLiveDate)
+    @Html.HiddenFor(model => model.ActualLiveDate)
    
     <table class="table table-bordered table-invoice">
         <tbody>
@@ -53,7 +58,7 @@
     </table>
 }
 <div>
-    @Html.ActionLink("Back to List", "ProjectTasks", "Tasks", new { @ProjectID=Model.ProjectID}, new { @class = "btn" })
+    @Html.ActionLink("Back to List", "ProjectTasks", "Tasks", new { @ProjectID = Model.ProjectID }, new { @class = "btn" })
 </div>
 <script type="text/javascript">
 
