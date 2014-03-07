@@ -577,6 +577,7 @@ namespace PMTool.Controllers
             var client = new SmtpClient();
         
             //string verifyUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/account/verify?ID=" + confirmationGuid;
+           
             string verifyUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/Account/Register";
             client.UseDefaultCredentials = false;
 

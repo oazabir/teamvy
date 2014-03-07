@@ -1642,3 +1642,21 @@ body.loginbody { background: #f7f7f7 url(../img/gray_jean.png); }
  }
  
 /*--------Newly Added----------*/
+
+
+/*---Newly added..........*/
+.sprint-delete-button {
+    /*color: #666666;
+    font-family: 'HelveticaNeue',Arial,sans-serif;
+    font-size: 12px;
+    line-height: 1 !important; 
+    margin: 0;
+    outline: medium none;*/
+    border: none !important;
+}
+
+.sprint-edit-icon {
+    background-position: -96px -72px;
+    border: none !important;
+}
+
