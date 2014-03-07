@@ -55,6 +55,32 @@ namespace PMTool.Controllers
         }
 
 
+
+        public PartialViewResult DeleteSprint(long projectID, long sprintId)
+        {
+
+            string status = "";
+            try
+            {
+                unitOfWork.SprintRepository.Delete(sprintId);
+                unitOfWork.Save();
+                status = "success";
+            }
+            catch
+            {
+                status = "Error : One or more task is already attached in this sprint...";
+            }
+            //return Content(status);
+            //return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
+
+            ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectID);
+            List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, t => t.Project).Include(t => t.Priority).Include(t => t.ChildTask).Include(t => t.Users).Include(t => t.Followers).Include(t => t.Labels).ToList();
+            return PartialView("_Kanban", taskList);
+
+            //Kanban(long ProjectID)
+
+        }
+
         //public PartialViewResult _TaskList(long projectID, long? statusID)
         //{
         //    List<Task> taskList;

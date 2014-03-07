@@ -22,7 +22,26 @@ namespace PMTool.Controllers
             sprint.Project = unitOfWork.ProjectRepository.Find(sprint.ProjectID);
 
             return PartialView(sprint); 
-        } 
+        }
+
+        [HttpPost]
+        public ActionResult Delete(long sprintId)
+        {
+            
+            string status = "";
+            try
+            {
+                unitOfWork.SprintRepository.Delete(sprintId);
+                unitOfWork.Save();
+                status = "success";
+            }
+            catch
+            {
+                status = "Error : One or more task is already attached in this sprint...";
+            }
+            return Content(status);
+
+        }
 
         [HttpPost]
         public PartialViewResult CreateSprintFromKanban(Sprint sprint)

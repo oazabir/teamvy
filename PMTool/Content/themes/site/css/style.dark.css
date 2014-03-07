@@ -334,3 +334,19 @@ overflow:scroll !important;
 {
       min-width: 60px !important;
 }
+
+
+
+
+
+
+
+
+.tabs-below > .nav-tabs > li > div > a {
+    border-radius: 0 0 2px 2px;
+    color: #666666;
+}
+.tabs-below > .nav-tabs > li > div > a:hover {
+    background: none repeat scroll 0 0 #EEEEEE;
+    border-color: #BBBBBB;
+}
