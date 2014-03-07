@@ -330,7 +330,7 @@ overflow:scroll !important;
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd9534f', endColorstr='#ffc9302c', GradientType=0);
 }
-.table th, .table td
+.table table-bordered dyntable dataTable th, .table table-bordered dyntable dataTable td
 {
       min-width: 60px !important;
 }

@@ -43,7 +43,10 @@
                 Start Date
             </td>
             <td>
-                @Model.StartDate.ToString("dd/MM/yyyy")
+                @if (Model.StartDate!=null)
+                {
+                    @Model.StartDate.Value.ToString("dd/MM/yyyy")
+                }
                @* @Html.DisplayTextFor(_ => Model.StartDate).ToString()*@
             </td>
         </tr>
@@ -53,7 +56,10 @@
                 End Date
             </td>
             <td>
-                @Model.EndDate.ToString("dd/MM/yyyy")
+                @if (Model.EndDate != null)
+                {
+                    @Model.EndDate.Value.ToString("dd/MM/yyyy")
+                }
                 @*@Html.DisplayTextFor(_ => Model.EndDate).ToString()*@
             </td>
         </tr>
