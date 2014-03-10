@@ -223,6 +223,46 @@
                     @Html.ValidationMessageFor(model => model.SprintID)
                 </td>
             </tr>
+              <tr>
+                <td>
+                    @Html.LabelFor(model => model.EstimatedPreviewDate)
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(model => model.EstimatedPreviewDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" })
+                    @Html.ValidationMessageFor(model => model.EstimatedPreviewDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.ActualPreviewDate)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.ActualPreviewDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" })
+                    @Html.ValidationMessageFor(model => model.ActualPreviewDate)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.ActualLiveDate)
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(model => model.ActualLiveDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" })
+                    @Html.ValidationMessageFor(model => model.ActualLiveDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.ForecastLiveDate)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.ForecastLiveDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" })
+                    @Html.ValidationMessageFor(model => model.ForecastLiveDate)
+                </td>
+            </tr>
             <tr>
                 <td class="width30"></td>
                 <td>

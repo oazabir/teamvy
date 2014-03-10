@@ -289,6 +289,14 @@
     <Compile Include="Migrations\201403100855420_activitylogchange.Designer.cs">
       <DependentUpon>201403100855420_activitylogchange.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201403100954438_taskdateformatecange.cs" />
+    <Compile Include="Migrations\201403100954438_taskdateformatecange.Designer.cs">
+      <DependentUpon>201403100954438_taskdateformatecange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201403101017021_assd.cs" />
+    <Compile Include="Migrations\201403101017021_assd.Designer.cs">
+      <DependentUpon>201403101017021_assd.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\TaskActivityLog.cs" />
@@ -1263,6 +1271,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201403100855420_activitylogchange.resx">
       <DependentUpon>201403100855420_activitylogchange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403100954438_taskdateformatecange.resx">
+      <DependentUpon>201403100954438_taskdateformatecange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403101017021_assd.resx">
+      <DependentUpon>201403101017021_assd.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
