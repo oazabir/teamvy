@@ -148,9 +148,10 @@ namespace PMTool.Repository
             return objTask;
         }
 
-        public bool InsertOrUpdate(Task task)
+        public TaskPropertyChange InsertOrUpdate(Task task)
         {
-           bool isStatusChanged = false;
+            TaskPropertyChange change = new TaskPropertyChange();
+           //bool isStatusChanged = false;
             if (task.TaskID == default(long))
             {
                 // New entity
@@ -165,9 +166,16 @@ namespace PMTool.Repository
 
                 if (task.Status != existingTask.Status)
                 {
-                    isStatusChanged = true;
+                    change.IsSatausChanged = true;
                 }
-
+                if (task.StartDate != existingTask.StartDate)
+                {
+                    change.IsStartDateChanged = true;
+                }
+                if (task.EndDate != existingTask.EndDate)
+                {
+                    change.IsEndtDateChanged = true;
+                }
                 UpdateAssignedUsers(task, existingTask);
 
                 UpdateFollowers(task, existingTask);
@@ -176,7 +184,7 @@ namespace PMTool.Repository
                 context.Entry(existingTask).CurrentValues.SetValues(task);
 
             }
-            return isStatusChanged;
+            return change;
         }
 
         private void UpdateLabels(Task task, Task existingTask)
@@ -262,7 +270,7 @@ namespace PMTool.Repository
         IQueryable<Task> AllIncluding(params Expression<Func<Task, object>>[] includeProperties);
         IQueryable<Task> ByProjectAndStatusIncluding(long projectID, long status, params Expression<Func<Task, object>>[] includeProperties);
         Task Find(long id);
-        bool InsertOrUpdate(Task task);
+        TaskPropertyChange InsertOrUpdate(Task task);
         void Delete(long id);
         void Save();
         List<Task> GetTasksBySprintID(long sprintID);
