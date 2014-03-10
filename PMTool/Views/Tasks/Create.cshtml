@@ -25,6 +25,9 @@
                 </td>
                 <td>
                     <input type="submit" value="Create" class="btn btn-primary" />
+
+                    @Html.ActionLink("Back to list", "ProjectTasks", new { ProjectID=Model.ProjectID}, new { @title = "AddBack to list", @class = "btn btn-inverse" })
+
                 </td>
             </tr>
         </tbody>

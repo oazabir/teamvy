@@ -228,7 +228,7 @@ jQuery(document).ready(function(){
 	// date picker
 	if (jQuery('.datepicker').length > 0) {
 	    jQuery(".datepicker").datepicker({
-	        dateFormat: "dd/mm/yy",
+	        dateFormat: "dd/MM/yy",
 	        showStatus: true,
 	        showWeeks: true,
 	        currentText: 'Now',
@@ -255,7 +255,7 @@ jQuery(document).ready(function(){
 
 	if (('#datepicker').length > 0) {
 	    jQuery("#datepicker").datepicker({
-	        dateFormat: "dd/mm/yy",
+	        dateFormat: "dd/MM/yy",
 	        showStatus: true,
 	        showWeeks: true,
 	        currentText: 'Now',
@@ -266,6 +266,22 @@ jQuery(document).ready(function(){
 	    });
 
 	}
+
+	jQuery.validator.addMethod('date',
+        function (value, element) {
+            if (this.optional(element)) {
+                return true;
+            }
+            var ok = true;
+            try {
+                jQuery.datepicker.parseDate('dd/mm/yy', value);
+            }
+            catch (err) {
+                ok = false;
+            }
+            return ok;
+        });
+	jQuery(".datepicker").datepicker({ dateFormat: 'dd/mm/yy', changeYear: true });
 
 
 	// growl notification
