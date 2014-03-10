@@ -118,6 +118,9 @@
             bool flag = true;
             string Cssclass = "active";
             string CssclassPanActive = "tab-pane active";
+            string cssclassforEditIcon = "icon-edit sprint-edit-icon";
+            string cssclassforDeleteIcon = "icon-trash sprint-delete-button";
+                
         <div class="tabbable tabs-below">
             <ul class="nav nav-tabs" id="hideUl">
 
@@ -128,19 +131,19 @@
                     string gsprintId = "sprintId" + sprint.SprintID;
                     
                     <li class="@Cssclass">
-                        @*<div>*@
-                            @*<button id="sprintEdit" class="icon-edit sprint-edit-icon"></button>*@
-                            <a data-toggle="tab" href="#@gsprintId">@sprint.Name
-                                @*<button id="sprintDelete" class="icon-trash sprint-delete-button"  onclick="return DeleteSprint(@sprint.ProjectID, @sprint.SprintID)"></button>*@
+                   
+                            <a data-toggle="tab" href="#@gsprintId">
+                                @*<button id="sprintEdit" class="@cssclassforEditIcon"></button>*@
+                                @sprint.Name
+                              @*  <button id="sprintDelete" class="@cssclassforDeleteIcon"  onclick="return DeleteSprint(@sprint.ProjectID, @sprint.SprintID)"></button>*@
 
                             </a>
-                            @*<button class="icon-trash sprint-delete-button">
-                                @Ajax.ActionLink("sdfsdf ", "DeleteSprint", "Tasks", new { projectID = @sprint.ProjectID, sprintId = @sprint.SprintID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard", OnBegin = "return confirm('Do you really want to delete???')" }, new { @class = "icon-trash sprint-delete-button", @style = "float:right;display:none;", @title = "Delete" })
-                            </button>*@
-                        @*</div>*@
+     
                     </li>
                     
                     Cssclass = "";
+                    //cssclassforEditIcon = "hideIcon";
+                    //cssclassforDeleteIcon = "hideIcon";
 
                 }
             </ul>

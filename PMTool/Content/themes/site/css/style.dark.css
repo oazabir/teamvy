@@ -350,3 +350,8 @@ overflow:scroll !important;
     background: none repeat scroll 0 0 #EEEEEE;
     border-color: #BBBBBB;
 }
+
+.hideIcon {
+    display:none;
+   
+}
