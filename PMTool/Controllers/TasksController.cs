@@ -646,7 +646,7 @@ namespace PMTool.Controllers
             return PartialView(task);   
         }
 
-        [HttpPost]
+        [HttpPost]  
         public PartialViewResult CreateFromKanban(Task task)
         {
 
