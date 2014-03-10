@@ -31,7 +31,13 @@
 
                 var columnId = jQuery(this).attr('id');
                 var taskId = ui.item[0].id;
-                var sprintId = this.parentNode.parentNode.id.replace('sprintId', '');
+                var sprintId = "";
+                if (this.parentNode.id.search("sprintId") != -1) {
+                    sprintId = this.parentNode.id.replace('sprintId', '');
+                }
+                else {
+                    sprintId = this.parentNode.parentNode.id.replace('sprintId', '');
+                }
                 if (taskId != null && columnId != null)
                     UpdateRecord(taskId, columnId, sprintId);
                 /*Pass sortorder variable to server using ajax to save state*/
