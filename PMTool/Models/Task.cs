@@ -124,24 +124,20 @@ namespace PMTool.Models
         [ForeignKey("SprintID")]
         public virtual Sprint Sprint { get; set; }
 
-        [Required]
         [Display(Name = "Estimated Preview Date")]
         [DefaultValue(typeof(DateTime), "2000-01-01")]
-        public DateTime EstimatedPreviewDate { get; set; }
+        public DateTime? EstimatedPreviewDate { get; set; }
 
-        [Required]
         [Display(Name = "Actual Preview Date")]
         [DefaultValue(typeof(DateTime), "2000-01-01")]
-        public DateTime ActualPreviewDate { get; set; }
+        public DateTime? ActualPreviewDate { get; set; }
 
-        [Required]
         [Display(Name = "Forecast Live Date")]
         [DefaultValue(typeof(DateTime), "2000-01-01")]
-        public DateTime ForecastLiveDate { get; set; }
+        public DateTime? ForecastLiveDate { get; set; }
 
-        [Required]
         [Display(Name = "Actual Live Date")]
         [DefaultValue(typeof(DateTime), "2000-01-01")]
-        public DateTime ActualLiveDate { get; set; }
+        public DateTime? ActualLiveDate { get; set; }
     }
 }

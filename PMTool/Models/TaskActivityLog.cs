@@ -33,5 +33,7 @@ namespace PMTool.Models
         [NotMapped]
         public HttpPostedFileBase AtachFile { get; set; }
 
+        public virtual Task Task { get; set; }
+
     }
 }

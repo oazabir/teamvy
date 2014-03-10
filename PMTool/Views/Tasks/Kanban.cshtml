@@ -70,7 +70,31 @@
     <div id='popupcontainerShowActivity'>
     </div>
 </div>
+<div id='ModalpopupShowLog' data-url='@Url.Action("ShowLog", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerShowLog'>
+    </div>
+</div>
 <script type="text/javascript">
+    function ShowLog(id) {
+        var url = jQuery('#ModalpopupShowLog').data('url') + "?taskID=" + id;
+
+        jQuery.ajax({
+            url: url,
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                jQuery('#popupcontainerShowLog').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#ModalpopupShowLog").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        return false;
+    }
 
     function ShowActivity(id) {
         var url = jQuery('#ModalpopupShowActivity').data('url') + "?taskID=" + id;

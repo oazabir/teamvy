@@ -866,7 +866,9 @@ namespace PMTool.Controllers
         [HttpPost]
         public ActionResult Kanban(string taskid, string statusid, string sprintid)
         {
+            Task task = new Task();
             string ststus = "";
+            string logComment="";
             try
             {
                 long a = Convert.ToInt64(sprintid);
@@ -879,7 +881,7 @@ namespace PMTool.Controllers
             {
                 try
                 {
-                    Task task = unitOfWork.TaskRepository.Find(Convert.ToInt64(taskid));
+                     task = unitOfWork.TaskRepository.Find(Convert.ToInt64(taskid));
                     string status = "";
                     string sprint = "";
                     if (!string.IsNullOrEmpty(statusid.Trim()))
@@ -925,11 +927,36 @@ namespace PMTool.Controllers
                     }
                     unitOfWork.TaskRepository.InsertOrUpdate(task);
                     unitOfWork.Save();
-                    ststus = "Task- " + task.Title + " is moved to " + status + sprint+" successfully!!!";
+                    ststus = "Task- " + task.Title + " is moved to " + status + sprint;
+                    logComment = status;
+                    logComment = logComment+ "on " +DateTime.Now.ToShortDateString();
+                    status = status + " successfully!!!";
                 }
                 catch 
                 {
                     ststus = "Something Wrong!!!";
+                }
+                try
+                {
+                    TaskActivityLog log = unitOfWork.TaskActivityLogRepository.FindByTaskID(task.TaskID);
+                    if (log == null)
+                    {
+                        TaskActivityLog logNew = new TaskActivityLog();
+                        logNew.TaskID = task.TaskID;
+                        logNew.Comment = logComment;
+                        logNew.CreateDate = DateTime.Now;
+                        logNew.ModificationDate = DateTime.Now;
+                        unitOfWork.TaskActivityLogRepository.InsertOrUpdate(logNew);
+                        unitOfWork.Save();
+                    }
+                    else
+                    {
+                        log.Comment = log.Comment + " ; " + logComment;
+                        unitOfWork.Save();
+                    }
+                }
+                catch
+                {
                 }
                 return Content(ststus);
             }
@@ -1058,7 +1085,14 @@ namespace PMTool.Controllers
             TaskActivityLog log = new TaskActivityLog();
             log.TaskID = taskID;
             ViewBag.CurrentTask = unitOfWork.TaskRepository.Find(taskID);
-            ViewBag.PossibleActivities = unitOfWork.TaskActivityLogRepository.AllByTaskID(taskID);
+            ViewBag.PossibleActivities = unitOfWork.TaskActivityLogRepository.AllAttachmentByTaskID(taskID);
+            return PartialView(log);
+        }
+
+        public PartialViewResult ShowLog(long taskID)
+        {
+            TaskActivityLog log = new TaskActivityLog();
+            log = unitOfWork.TaskActivityLogRepository.AllActivityByTaskID(taskID);
             return PartialView(log);
         }
 
