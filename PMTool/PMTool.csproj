@@ -285,6 +285,10 @@
     <Compile Include="Migrations\201403071040351_taskTablecloumnadded.Designer.cs">
       <DependentUpon>201403071040351_taskTablecloumnadded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201403100855420_activitylogchange.cs" />
+    <Compile Include="Migrations\201403100855420_activitylogchange.Designer.cs">
+      <DependentUpon>201403100855420_activitylogchange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\TaskActivityLog.cs" />
@@ -1141,6 +1145,7 @@
     <Content Include="Views\Tasks\_TaskList.cshtml" />
     <Content Include="Views\Account\EditProfile.cshtml" />
     <Content Include="Views\Home\_TaskList.cshtml" />
+    <Content Include="Views\Tasks\ShowLog.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -1255,6 +1260,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201403071040351_taskTablecloumnadded.resx">
       <DependentUpon>201403071040351_taskTablecloumnadded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403100855420_activitylogchange.resx">
+      <DependentUpon>201403100855420_activitylogchange.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

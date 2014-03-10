@@ -72,9 +72,19 @@ namespace PMTool.Repository
             context.Dispose();
         }
 
-        public List<TaskActivityLog> AllByTaskID(long taskID)
+        public List<TaskActivityLog> AllAttachmentByTaskID(long taskID)
         {
-            return context.TaskActivityLogs.Where(a => a.TaskID == taskID).OrderByDescending(a=>a.ModificationDate).ToList();
+            return context.TaskActivityLogs.Where(a => a.TaskID == taskID && a.Comment==string.Empty).OrderByDescending(a=>a.ModificationDate).ToList();
+        }
+
+        public TaskActivityLog FindByTaskID(long taskID)
+        {
+            return context.TaskActivityLogs.Where(a => a.TaskID == taskID && a.Comment!=string.Empty).FirstOrDefault();
+        }
+
+        public TaskActivityLog AllActivityByTaskID(long taskID)
+        {
+            return context.TaskActivityLogs.Where(a => a.TaskID == taskID && a.Comment != string.Empty).OrderByDescending(a => a.ModificationDate).FirstOrDefault();
         }
     }
 
@@ -84,6 +94,8 @@ namespace PMTool.Repository
         IQueryable<TaskActivityLog> AllIncluding(params Expression<Func<TaskActivityLog, object>>[] includeProperties);
         TaskActivityLog Find(long id);
         void InsertOrUpdate(TaskActivityLog taskactivitylog);
+        List<TaskActivityLog> AllAttachmentByTaskID(long taskID);
+        TaskActivityLog AllActivityByTaskID(long taskID);
         void Delete(long id);
         void Save();
     }

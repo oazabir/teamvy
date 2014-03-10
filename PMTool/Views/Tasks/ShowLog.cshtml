@@ -1,0 +1,44 @@
+﻿@model PMTool.Models.TaskActivityLog
+
+@if(Model!=null)
+{
+<table class="table table-bordered table-invoice">
+
+         <thead>
+        <tr>
+            <th>Activity Log of <span>@Model.Task.Title</span>
+            </th>
+        </tr>
+    </thead> 
+    <tbody> 
+    @{
+        if(Model!=null)
+        {
+            List<string> comments = Model.Comment.Split(';').ToList().OrderBy(i => i).ToList();
+            foreach (string item in comments)
+            {
+                <tr>
+                    <td>
+                       @item
+                    </td>
+                </tr>
+            }   
+        }
+        }
+    </tbody>
+</table>
+}
+@if (Model == null)
+{
+     
+<table class="table table-bordered table-invoice">
+
+         <thead>
+        <tr>
+            <th>No log found !!!!!!!!!!
+            </th>
+        </tr>
+    </thead>
+      
+    </table>
+}
