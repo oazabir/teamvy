@@ -74,6 +74,12 @@
     <div id='popupcontainerShowLog'>
     </div>
 </div>
+
+<div id='ModalpopupEditSprint' data-url='@Url.Action("EditSprint", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerEditSprint'>
+    </div>
+</div>
+
 <script type="text/javascript">
     function ShowLog(id) {
         var url = jQuery('#ModalpopupShowLog').data('url') + "?taskID=" + id;
@@ -221,4 +227,29 @@
         });
         return false;
     }
+
+
+    function ShowSprintEditForm(sprintId) {
+        var url = jQuery('#ModalpopupEditSprint').data('url');
+
+
+        jQuery.ajax({
+            url: url,
+            data: { sprintId: sprintId},
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                jQuery('#popupcontainerEditSprint').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#ModalpopupEditSprint").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        return false;
+    }
+
 </script>

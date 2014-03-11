@@ -1,0 +1,76 @@
+﻿@model PMTool.Models.Sprint
+
+@{
+    ViewBag.Title = "Edit | Sprint";
+}
+
+
+
+
+<div class="pagetitle">
+    <h1>Sprint Edit
+    </h1>
+    <span>Edit Sprint below....</span>
+</div>
+@using (Ajax.BeginForm("EditSprint", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard", OnBegin = "Loading()", OnComplete = "Unload()", OnSuccess = "HidePopup('ModalpopupEditSprint')" }, new { @id = "form" }))
+{
+    @Html.ValidationSummary(true)
+     
+
+    @Html.HiddenFor(model => model.SprintID)
+    @Html.HiddenFor(model => model.ProjectID)
+    @Html.HiddenFor(model => model.IsActive)
+     
+
+
+    <table class="table table-bordered table-invoice">
+        <tbody>
+
+            <tr>
+                <td>Sprint
+                </td>
+                <td>
+                    @Html.EditorFor(Model => Model.Name)
+                </td>
+            </tr>
+            <tr>
+                <td>Description
+                </td>
+                <td>
+                    @Html.EditorFor(Model => Model.Description)
+                </td>
+            </tr>
+            <tr>
+                <td>Start Date
+                </td>
+                <td>
+                    @Html.EditorFor(Model => Model.StartDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td>End Date
+                </td>
+                <td>
+                    @Html.EditorFor(Model => Model.EndDate)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="width30"></td>
+                <td>
+                    <input type="submit" id="btnSave" value="Save" class="btn btn-primary" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@*<script>
+    jQuery(document).ready(function () {
+        jQuery('#form').removeData('validator');
+        jQuery('#form').removeData('unobtrusiveValidation');
+        jQuery("#form").each(function () { jQuery.data(jQuery(this)[0], 'validator', false); }); //enable to display the error messages
+        jQuery.validator.unobtrusive.parse("#form");
+    });
+</script>*@
