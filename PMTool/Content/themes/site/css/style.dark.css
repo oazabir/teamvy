@@ -364,3 +364,7 @@ overflow:scroll !important;
 li > a > button {
     display:none !important;
 }
+.colorpicker
+{
+    z-index: 2147483647 !important;
+}
