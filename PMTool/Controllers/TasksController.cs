@@ -31,32 +31,44 @@ namespace PMTool.Controllers
             List<Task> taskList = new List<Task>();
             User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
             Project project = unitOfWork.ProjectRepository.Find(projectID);
-            
-            //If this project is created by the current user. Then he can see all task.
+
+            //If this project is created by the current user. Then he can see all task. Added by Mahedee @02-02-14
             if (project.CreatedBy== user.UserId) 
                 taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
 
-            //If this project is owned by the current user. Then he can see all task.
+            //If this project is owned by the current user. Then he can see all task. Added by Mahedee @02-02-14
             else if (project.ProjectOwners.Contains(user))
                 taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
 
             else
                 taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID,user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
 
-
-            //List<SelectListItem> statusList = new List<SelectListItem>();
-            //statusList = unitOfWork.ProjectRepository.FindIncludingProjectStatus(projectID).ProjectStatuses.ToList();
-            ViewBag.TaskStatus = GetAllStatus(projectID);
-                
-                //task.Project.ProjectStatuses;
-            
+            ViewBag.TaskStatus = GetAllStatus(projectID);           
             ViewBag.CurrentProject = project;
             return View(taskList);
         }
 
 
+        //Added for editing sprint from kanban board by Mahedee @ 11-03-14
+        public PartialViewResult EditSprint(long sprintId)
+        {
+            Sprint sprint = unitOfWork.SprintRepository.Find(sprintId);
+            return PartialView(sprint);
+        }
 
-        //public PartialViewResult DeleteSprint(long projectID, long sprintId)
+        //Added for editing sprint from kanban board by Mahedee @ 11-03-14
+        [HttpPost]
+        public PartialViewResult EditSprint(Sprint sprint)
+        {
+            unitOfWork.SprintRepository.InsertOrUpdate(sprint);
+            unitOfWork.Save();
+            List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(sprint.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(sprint.ProjectID);
+            return PartialView("_Kanban", taskList);
+        }
+
+
+        //Added for deleting sprint from kanban board by Mahedee @ 10-03-14
         public PartialViewResult DeleteSprint(long projectID, long sprintId)
         {
 
@@ -84,39 +96,10 @@ namespace PMTool.Controllers
 
             ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectID);
             List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, t => t.Project).Include(t => t.Priority).Include(t => t.ChildTask).Include(t => t.Users).Include(t => t.Followers).Include(t => t.Labels).ToList();
-            //return PartialView("_Kanban", taskList);
-
-            //return View(taskList);
-
-            //Kanban(long ProjectID)
-
-            //return RedirectToAction("Kanban", "Tasks", new { @ProjectID = projectID});
-
             return PartialView("_Kanban",  taskList);
 
         }
 
-        //public PartialViewResult _TaskList(long projectID, long? statusID)
-        //{
-        //    List<Task> taskList;
-        //    Project project;
-        //    if (statusID != null && statusID != 0)
-        //        GetTaskList(projectID, out taskList, out project, statusID);
-        //    else
-        //        GetTaskList(projectID, out taskList, out project);
-           
-
-        //    //List<SelectListItem> statusList = new List<SelectListItem>();
-        //    //statusList = unitOfWork.ProjectRepository.FindIncludingProjectStatus(projectID).ProjectStatuses.ToList();
-        //    ViewBag.TaskStatus = GetAllStatus(projectID);
-
-        //    //task.Project.ProjectStatuses;
-
-        //    ViewBag.CurrentProject = project;
-        //    //return PartialViewResult(taskList);
-        //    //return View(taskList);
-        //    return PartialView(taskList);
-        //}
 
         public PartialViewResult _TaskList(long projectID, long? statusID)
         {
@@ -1258,6 +1241,7 @@ namespace PMTool.Controllers
         }
 
 
+ 
         public ActionResult CreateSprintFromKanban(long id)
         {
             Sprint sprint = new Sprint();

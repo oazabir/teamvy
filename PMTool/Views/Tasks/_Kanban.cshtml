@@ -155,7 +155,7 @@
                     <li class="@Cssclass">
                    
                             <a data-toggle="tab" href="#@gsprintId">
-                                <button id="sprintEdit" class="@cssclassforEditIcon"></button>
+                                <button id="sprintEdit" class="@cssclassforEditIcon" onclick="return ShowSprintEditForm(@sprint.SprintID);"></button>
                                 @sprint.Name
                                 <button id="sprintDelete" class="@cssclassforDeleteIcon"  onclick="return DeleteSprint(@sprint.ProjectID, @sprint.SprintID);"></button>
                                
