@@ -189,7 +189,7 @@
                             }
                         </fieldset>
 
-                        @foreach (PMTool.Models.ProjectStatus status in columnList.Where(c => c.Name != "Closed"))
+                        @foreach (PMTool.Models.ProjectStatus status in columnList.Where(c => c.Name != "Closed").OrderBy(c => c.SlNo).ThenBy(c => c.ProjectStatusID).ToList())
                         {
                             long CurrentPorjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID;
                             <div class="columnHolder">

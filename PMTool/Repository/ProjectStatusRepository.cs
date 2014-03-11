@@ -108,6 +108,11 @@ namespace PMTool.Repository
         {
             return context.ProjectStatuses.Where(p => p.ProjectID == projectID).ToList();
         }
+
+        public List<ProjectStatus> FindbyProjectIDWithoutUnmovable(long projectID)
+        {
+           return context.ProjectStatuses.Where(p => p.ProjectID == projectID && p.Name!="Closed").ToList();
+        }
     }
 
     public interface IProjectStatusRepository : IDisposable
@@ -121,6 +126,7 @@ namespace PMTool.Repository
         ProjectStatus FindbyProjectIDAndProjectStatusID(long projectID, long status);
         ProjectStatus FindbyProjectIDAndProjectStatusName(long projectID, string status);
         List<ProjectStatus> FindbyProjectID(long projectID);
+        List<ProjectStatus> FindbyProjectIDWithoutUnmovable(long projectID);
         void Save();
     }
 }

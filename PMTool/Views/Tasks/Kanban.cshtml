@@ -24,15 +24,19 @@
             {
                 PMTool.Models.Project projetc = (PMTool.Models.Project)ViewBag.CurrentProject;
             <li>
-                <a  href="#" id="showdata" onclick="return ShowProjectForm(@projetc.ProjectID)"><span class="icon-plus" for="showdata"></span>Add Status</a>
+                <a  href="#" id="showdata" onclick="return ShowProjectForm(@projetc.ProjectID)"><span class="icon-plus" ></span>Add Status</a>
             </li>
             <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
             <li>
-                <a  href="#"  id="showTask" onclick="return ShowTaskForm(@projetc.ProjectID)"><span class="icon-plus" for="showTask"></span>Add Task</a>
+                <a  href="#"  id="showTask" onclick="return ShowTaskForm(@projetc.ProjectID)"><span class="icon-plus" ></span>Add Task</a>
             </li>
             <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
             <li>
-                <a  href="#"  id="showSprint" onclick="return ShowSprintForm(@projetc.ProjectID)"><span class="icon-plus" for="showSprint"></span>Add Sprint</a>
+                <a  href="#"  onclick="return ShowSprintForm(@projetc.ProjectID)"><span class="icon-plus" ></span>Add Sprint</a>
+            </li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <a  href="#"   onclick="return ShowSwapForm(@projetc.ProjectID)"><span class="icon-plus" ></span>Rearrange Status</a>
             </li>
     }
         }
@@ -80,7 +84,33 @@
     </div>
 </div>
 
+<div id='ModalpopupSwapForm' data-url='@Url.Action("StatusSwapForm", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerSwapForm'>
+    </div>
+</div>
+
 <script type="text/javascript">
+    function ShowSwapForm(id) {
+        //jQuery("#hideUl").css("display", "block");
+        var url = jQuery('#ModalpopupSwapForm').data('url') + "/" + id;
+        jQuery.ajax({
+            url: url,
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                jQuery('#popupcontainerSwapForm').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#ModalpopupSwapForm").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        return false;
+    }
+
     function ShowLog(id) {
         var url = jQuery('#ModalpopupShowLog').data('url') + "?taskID=" + id;
 
@@ -185,6 +215,8 @@
         });
         return false;
     }
+    
+    
     function ShowSprintForm(id) {
         //jQuery("#hideUl").css("display", "block");
         var url = jQuery('#ModalpopupCreateSprint').data('url') + "/" + id;

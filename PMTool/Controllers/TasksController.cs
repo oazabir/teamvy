@@ -1422,9 +1422,40 @@ namespace PMTool.Controllers
             return PartialView(task);
 
         }
+        public PartialViewResult StatusSwapForm(long id)
+        {
 
-        
+            List<ProjectStatus> statusList = unitOfWork.ProjectStatusRepository.FindbyProjectIDWithoutUnmovable(id);
+            ViewBag.CurrentProjectID = id;
+            return PartialView(statusList);
 
+        }
+
+        [HttpPost]
+        public PartialViewResult StatusSwapForm(ProjectStatus[] Statuses)
+        {
+            long projectID = Convert.ToInt64(Request.Form["CurrentProjectID"].ToString());
+            List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectID);
+            return PartialView("_Kanban", taskList);
+        }
+        [HttpPost]
+        public ContentResult SwapStaus(string sortorder)
+        {
+            List<string> orders = sortorder.Split(',').ToList();
+            int i = 1;
+            foreach (string order in orders)
+            {
+                if (order != "")
+                {
+                  ProjectStatus status=  unitOfWork.ProjectStatusRepository.Find(Convert.ToInt64(order));
+                  status.SlNo = i;
+                  i++;
+                }
+            }
+            unitOfWork.Save();
+            return Content("");
+        }
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

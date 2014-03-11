@@ -309,6 +309,10 @@
     <Compile Include="Migrations\201403110650168_adddefaultvalue.Designer.cs">
       <DependentUpon>201403110650168_adddefaultvalue.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201403110950470_SlnoAdded.cs" />
+    <Compile Include="Migrations\201403110950470_SlnoAdded.Designer.cs">
+      <DependentUpon>201403110950470_SlnoAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\TaskActivityLog.cs" />
@@ -1168,6 +1172,7 @@
     <Content Include="Views\Home\_TaskList.cshtml" />
     <Content Include="Views\Tasks\ShowLog.cshtml" />
     <Content Include="Views\Tasks\EditSprint.cshtml" />
+    <Content Include="Views\Tasks\StatusSwapForm.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -1300,6 +1305,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201403110650168_adddefaultvalue.resx">
       <DependentUpon>201403110650168_adddefaultvalue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403110950470_SlnoAdded.resx">
+      <DependentUpon>201403110950470_SlnoAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

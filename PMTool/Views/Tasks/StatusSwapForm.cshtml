@@ -1,0 +1,58 @@
+﻿@model List<PMTool.Models.ProjectStatus>
+@using (Ajax.BeginForm("StatusSwapForm", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard", OnBegin = "Loading()", OnComplete = "Unload()", OnSuccess = "HidePopup('ModalpopupSwapForm')" }, new { @id = "form" }))
+{
+<ul id="sortable" class="sortlist">
+    @{
+        int i=0;
+        foreach (PMTool.Models.ProjectStatus status in Model)
+        {
+        
+        <li style="align-items:center" id="@status.ProjectStatusID"><div class="label" name="Statuses" >@status.Name
+
+            <input type="hidden" value="@status.ProjectID" name="Statuses[@i].ProjectID"/>
+            <input type="hidden" value="@status.Name" name="Statuses[@i].Name"/>
+            <input type="hidden" value="@status.ProjectStatusID" name="Statuses[@i].ProjectStatusID"/>
+                                               </div></li>
+            i++;
+        }
+    }
+</ul>
+    <input type="hidden" name="CurrentProjectID" value="@ViewBag.CurrentProjectID" />
+     <input type="submit"  value="Submit"/>
+}
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery("#sortable").sortable({
+            connectWith: '.sortlist',
+            cursor: 'move',
+            handle: 'div',
+            forcePlaceholderSize: true,
+            opacity: 0.4,
+            stop: function (event, ui) {
+                jQuery(ui.item).find('h2').click();
+                var sortorder = '';
+                jQuery('.sortlist').each(function () {
+                //    var itemorder = jQuery(this).sortable('toArray');
+                //    //var columnId = $(this).attr('id');
+                    sortorder += jQuery(this).sortable('toArray');
+                    UpdateSwapRecord(sortorder);
+                });
+                //alert('SortOrder: ' + sortorder);
+                /*Pass sortorder variable to server using ajax to save state*/
+            }
+        });
+    });
+    function UpdateSwapRecord(sortorder) {
+        jQuery.ajax({
+            url: '@Url.Action("SwapStaus", "Tasks")',
+            data: { sortorder: sortorder },
+            type: 'POST',
+            success: function (data) {
+                
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+    }
+</script>
