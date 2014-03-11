@@ -340,7 +340,7 @@ namespace PMTool.Controllers
             {
                 foreach (User user in task.Users)
                 {
-
+                     
                     Notification notification = new Notification();
                     if (isTaskInsert)
                     {
