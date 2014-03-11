@@ -93,13 +93,13 @@
     jQuery(".datepicker").datepicker({
         dateFormat: "dd/mm/yy",
         onSelect: function () {
-            var sdate = jQuery("#StartDate").val().replace('-', '/');
-            var edate = jQuery("#EndDate").val().replace('-', '/');
+            //var sdate = jQuery("#StartDate").val().replace('-', '/');
+            //var edate = jQuery("#EndDate").val().replace('-', '/');
             
-            if (new Date(sdate) > new Date(edate)) {
-                alert('End Date Mustbe grater than Start Date');
-                var edate = jQuery("#EndDate").val('');
-            }
+            //if (new Date(sdate) > new Date(edate)) {
+            //    alert('End Date Mustbe grater than Start Date');
+            //    var edate = jQuery("#EndDate").val('');
+            //}
         }
     });
 </script>

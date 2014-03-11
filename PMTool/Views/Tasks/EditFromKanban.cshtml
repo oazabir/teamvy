@@ -309,13 +309,27 @@
     jQuery(".datepicker").datepicker({
         dateFormat: "dd/mm/yy",
         onSelect: function () {
-            var sdate = jQuery("#StartDate").val().replace('-', '/');
+            @*var sdate = jQuery("#StartDate").val().replace('-', '/');
             var edate = jQuery("#EndDate").val().replace('-', '/');
-
+            var sprintDate;
             if (new Date(sdate) > new Date(edate)) {
                 alert('End Date Mustbe grater than Start Date');
                 var edate = jQuery("#EndDate").val('');
             }
+            
+            if(@Model.SprintID !=null)
+            {
+                sprintDate=@Model.Sprint.EndDate.ToShortDateString().Replace('-', '/');
+                alert(Date(sprintDate));
+                if (new Date(sdate) > new Date(sprintDate)) {
+                    alert('Task Start Date Mustbe less than Sprint End Date');
+                    var edate = jQuery("#StartDate").val('');
+                }
+                if (new Date(edate) > new Date(sprintDate)) {
+                    alert('Task End Date Mustbe less than Sprint End Date');
+                    var edate = jQuery("#EndDate").val('');
+                }
+            }*@
         }
     });
 </script>
