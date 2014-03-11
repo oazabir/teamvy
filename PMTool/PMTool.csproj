@@ -301,6 +301,14 @@
     <Compile Include="Migrations\201403101058389_taskdescriptionpropertychange.Designer.cs">
       <DependentUpon>201403101058389_taskdescriptionpropertychange.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201403110649106_projectstatuscolumnchange.cs" />
+    <Compile Include="Migrations\201403110649106_projectstatuscolumnchange.Designer.cs">
+      <DependentUpon>201403110649106_projectstatuscolumnchange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201403110650168_adddefaultvalue.cs" />
+    <Compile Include="Migrations\201403110650168_adddefaultvalue.Designer.cs">
+      <DependentUpon>201403110650168_adddefaultvalue.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\TaskActivityLog.cs" />
@@ -1286,6 +1294,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201403101058389_taskdescriptionpropertychange.resx">
       <DependentUpon>201403101058389_taskdescriptionpropertychange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403110649106_projectstatuscolumnchange.resx">
+      <DependentUpon>201403110649106_projectstatuscolumnchange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403110650168_adddefaultvalue.resx">
+      <DependentUpon>201403110650168_adddefaultvalue.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

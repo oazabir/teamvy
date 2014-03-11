@@ -19,7 +19,7 @@
     </h1>
     <span>Edit Task below....</span>
 </div>
- @using (Ajax.BeginForm("EditFromKanban", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard", OnBegin = "Loading()", OnComplete = "Unload()", OnSuccess = "HidePopup('Modalpopup')" }, new { @id = "form" }))
+ @using (Ajax.BeginForm("EditFromKanban", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard", OnBegin = "return LoadingWithValidation()", OnComplete = "Unload()", OnSuccess = "HidePopup('Modalpopup')" }, new { @id = "form" }))
  {
     @Html.ValidationSummary(true)
      
@@ -304,51 +304,43 @@
 </script>*@
 
 
+
 <script type="text/javascript">
-
-    jQuery(document).ready(function () {
-        var DEFAULT_Z_INDEX = 10;
-        // date picker
-        if (jQuery('.datepicker').length > 0) {
-            jQuery(".datepicker").datepicker({
-                dateFormat: "dd/MM/yy",
-                showStatus: true,
-                showWeeks: true,
-                currentText: 'Now',
-                autoSize: true,
-                gotoCurrent: true,
-                showAnim: 'blind',
-                highlightWeek: true
-            })
-                .on('show', function () {
-                    dateFormat: "dd/MM/yy"
-
-                    // Make sure that z-index is above any open modal.
-                    var jQueryinput = jQuery(this);
-                    var modalZIndex = jQueryinput.closest('.modal').css('z-index');
-                    var zIndex = DEFAULT_Z_INDEX;
-                    if (modalZIndex) {
-                        zIndex = parseInt(modalZIndex) + 1;
-                    }
-
-                    jQuery('.datepicker').css("z-index", zIndex);;
-
-                });
-
-        }
-
-        if (('#datepicker').length > 0) {
-            jQuery("#datepicker").datepicker({
-                dateFormat: "dd/MM/yy",
-                showStatus: true,
-                showWeeks: true,
-                currentText: 'Now',
-                autoSize: true,
-                gotoCurrent: true,
-                showAnim: 'blind',
-                highlightWeek: true
-            });
-
+    jQuery(".datepicker").datepicker({
+        dateFormat: "dd/mm/yy",
+        onSelect: function () {
         }
     });
+
+    function LoadingWithValidation() {
+        var isvalid=true;
+        jQuery("#ModalLoading").modal('show');
+        var sdate = jQuery("#StartDate").val().replace('-', '/');
+        var edate = jQuery("#EndDate").val().replace('-', '/');
+        var sprintDate;
+        if (new Date(sdate) > new Date(edate)) {
+            alert('End Date Mustbe grater than Start Date');
+            var edate = jQuery("#EndDate").val('');
+            isvalid=false;
+        }
+            
+        if(@Model.SprintID !=null)
+            {
+                sprintDate=@Model.Sprint.EndDate.ToShortDateString().Replace('-', '/');
+                
+                if (new Date(sdate) > new Date(sprintDate)) {
+                    alert('Task Start Date Mustbe less than Sprint End Date');
+                    var edate = jQuery("#StartDate").val('');
+                    isvalid=false;
+                }
+                if (new Date(edate) > new Date(sprintDate)) {
+                    alert('Task End Date Mustbe less than Sprint End Date');
+                    var edate = jQuery("#EndDate").val('');
+                    isvalid=false;
+                }
+        }
+        
+        jQuery("#ModalLoading").modal('hide');
+        return isvalid;
+    }
 </script>

@@ -1184,6 +1184,7 @@ namespace PMTool.Controllers
 
             ProjectStatus projectCol = new ProjectStatus();
             projectCol.ProjectID = id;
+            projectCol.color = "#3B6998";
             return PartialView(projectCol);
         }
 

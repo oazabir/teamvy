@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 
 namespace PMTool.Models
 {
@@ -24,6 +25,7 @@ namespace PMTool.Models
 
         public virtual Project Project { get; set; }
 
-
+        [DefaultValue("#3B6998")]
+        public string color { get; set; }
     }
 }
