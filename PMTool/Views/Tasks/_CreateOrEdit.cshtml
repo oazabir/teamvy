@@ -88,27 +88,11 @@
         
     });
 </script>
-<script type="text/javascript">
-    jQuery(document).ready(function () {
-        jQuery("#txtFromDate").datepicker({
-            numberOfMonths: 2,
-            onSelect: function (selected) {
-                jQuery("#StartDate").datepicker("option", "minDate", selected)
-            }
-        });
-        jQuery("#txtToDate").datepicker({
-            numberOfMonths: 2,
-            onSelect: function (selected) {
-                jQuery("#EndDate").datepicker("option", "maxDate", selected)
-            }
-        });
-    });
 
-</script>
 <script type="text/javascript">
     jQuery(".datepicker").datepicker({
+        dateFormat: "dd/mm/yy",
         onSelect: function () {
-            dateFormat: "dd/MM/yy"
             var sdate = jQuery("#StartDate").val().replace('-', '/');
             var edate = jQuery("#EndDate").val().replace('-', '/');
             

@@ -304,51 +304,18 @@
 </script>*@
 
 
+
 <script type="text/javascript">
+    jQuery(".datepicker").datepicker({
+        dateFormat: "dd/mm/yy",
+        onSelect: function () {
+            var sdate = jQuery("#StartDate").val().replace('-', '/');
+            var edate = jQuery("#EndDate").val().replace('-', '/');
 
-    jQuery(document).ready(function () {
-        var DEFAULT_Z_INDEX = 10;
-        // date picker
-        if (jQuery('.datepicker').length > 0) {
-            jQuery(".datepicker").datepicker({
-                dateFormat: "dd/MM/yy",
-                showStatus: true,
-                showWeeks: true,
-                currentText: 'Now',
-                autoSize: true,
-                gotoCurrent: true,
-                showAnim: 'blind',
-                highlightWeek: true
-            })
-                .on('show', function () {
-                    dateFormat: "dd/MM/yy"
-
-                    // Make sure that z-index is above any open modal.
-                    var jQueryinput = jQuery(this);
-                    var modalZIndex = jQueryinput.closest('.modal').css('z-index');
-                    var zIndex = DEFAULT_Z_INDEX;
-                    if (modalZIndex) {
-                        zIndex = parseInt(modalZIndex) + 1;
-                    }
-
-                    jQuery('.datepicker').css("z-index", zIndex);;
-
-                });
-
-        }
-
-        if (('#datepicker').length > 0) {
-            jQuery("#datepicker").datepicker({
-                dateFormat: "dd/MM/yy",
-                showStatus: true,
-                showWeeks: true,
-                currentText: 'Now',
-                autoSize: true,
-                gotoCurrent: true,
-                showAnim: 'blind',
-                highlightWeek: true
-            });
-
+            if (new Date(sdate) > new Date(edate)) {
+                alert('End Date Mustbe grater than Start Date');
+                var edate = jQuery("#EndDate").val('');
+            }
         }
     });
 </script>

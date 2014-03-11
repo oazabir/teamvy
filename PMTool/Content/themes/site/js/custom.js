@@ -228,7 +228,7 @@ jQuery(document).ready(function(){
 	// date picker
 	if (jQuery('.datepicker').length > 0) {
 	    jQuery(".datepicker").datepicker({
-	        dateFormat: "dd/MM/yy",
+	        dateFormat: "dd/mm/yy",
 	        showStatus: true,
 	        showWeeks: true,
 	        currentText: 'Now',
@@ -255,7 +255,7 @@ jQuery(document).ready(function(){
 
 	if (('#datepicker').length > 0) {
 	    jQuery("#datepicker").datepicker({
-	        dateFormat: "dd/MM/yy",
+	        dateFormat: "dd/mm/yy",
 	        showStatus: true,
 	        showWeeks: true,
 	        currentText: 'Now',
