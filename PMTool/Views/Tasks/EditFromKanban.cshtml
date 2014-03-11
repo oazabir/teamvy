@@ -19,7 +19,7 @@
     </h1>
     <span>Edit Task below....</span>
 </div>
- @using (Ajax.BeginForm("EditFromKanban", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard", OnBegin = "Loading()", OnComplete = "Unload()", OnSuccess = "HidePopup('Modalpopup')" }, new { @id = "form" }))
+ @using (Ajax.BeginForm("EditFromKanban", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard", OnBegin = "return LoadingWithValidation()", OnComplete = "Unload()", OnSuccess = "HidePopup('Modalpopup')" }, new { @id = "form" }))
  {
     @Html.ValidationSummary(true)
      
@@ -309,27 +309,38 @@
     jQuery(".datepicker").datepicker({
         dateFormat: "dd/mm/yy",
         onSelect: function () {
-            @*var sdate = jQuery("#StartDate").val().replace('-', '/');
-            var edate = jQuery("#EndDate").val().replace('-', '/');
-            var sprintDate;
-            if (new Date(sdate) > new Date(edate)) {
-                alert('End Date Mustbe grater than Start Date');
-                var edate = jQuery("#EndDate").val('');
-            }
+        }
+    });
+
+    function LoadingWithValidation() {
+        var isvalid=true;
+        jQuery("#ModalLoading").modal('show');
+        var sdate = jQuery("#StartDate").val().replace('-', '/');
+        var edate = jQuery("#EndDate").val().replace('-', '/');
+        var sprintDate;
+        if (new Date(sdate) > new Date(edate)) {
+            alert('End Date Mustbe grater than Start Date');
+            var edate = jQuery("#EndDate").val('');
+            isvalid=false;
+        }
             
-            if(@Model.SprintID !=null)
+        if(@Model.SprintID !=null)
             {
                 sprintDate=@Model.Sprint.EndDate.ToShortDateString().Replace('-', '/');
-                alert(Date(sprintDate));
+                
                 if (new Date(sdate) > new Date(sprintDate)) {
                     alert('Task Start Date Mustbe less than Sprint End Date');
                     var edate = jQuery("#StartDate").val('');
+                    isvalid=false;
                 }
                 if (new Date(edate) > new Date(sprintDate)) {
                     alert('Task End Date Mustbe less than Sprint End Date');
                     var edate = jQuery("#EndDate").val('');
+                    isvalid=false;
                 }
-            }*@
         }
-    });
+        
+        jQuery("#ModalLoading").modal('hide');
+        return isvalid;
+    }
 </script>
