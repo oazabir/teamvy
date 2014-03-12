@@ -23,6 +23,7 @@ namespace PMTool.Models
 
         [Required]
         [Display(Name = "Title")]
+        [MaxLength(75)]
         public string Title { get; set; }
 
         [AllowHtml]

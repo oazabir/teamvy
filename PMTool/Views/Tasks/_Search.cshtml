@@ -4,7 +4,7 @@
 @using (Ajax.BeginForm("_Search", "Tasks", new AjaxOptions { UpdateTargetId = "dyntable5", OnBegin = "Loading()", OnComplete = "Unload()" }))
 {
     <input type="hidden" name ="SelectedProjectID" value ="@ViewBag.CurrentProjectId" />
-    <div>
+    <div class="slidingDiv" style="display: block;">
         <table class="table table-bordered table-invoice">
             <tr>
                 <td>Status</td>

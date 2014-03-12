@@ -1,0 +1,146 @@
+﻿@model PMTool.Models.Task
+
+@{
+    ViewBag.Title = "Tasks | Details";
+}
+
+<div class="pagetitle">
+    <h1>
+        Task Details
+    </h1>
+    <span>Task details below....</span>
+</div>
+<table class="table table-bordered table-invoice">
+    <tbody>
+        <tr>
+            <td class="width30">
+                Project
+            </td>
+            <td>
+                @(Model.Project == null ? "None" : Model.Project.Name)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Sprint
+            </td>
+            <td>
+                @if (Model.SprintID != null)
+                {
+                    @Model.Sprint.Name
+                }
+          @*         @if (model.SprintID != null)
+                    {
+                       <span>@item.Sprint.Name</span> 
+                    }*@
+            </td>
+        </tr>
+        <tr>
+            <td class="width30">
+               Task Title
+            </td>
+            <td>
+@*                @Html.DisplayTextFor(_ => Model.Title).ToString()*@
+                <strong>@Model.Title</strong>
+            </td>
+        </tr>
+        <tr> 
+            <td class="width30">
+                Description
+            </td>
+            <td style="padding-left:15px;">
+               @* @Html.DisplayTextFor(_ => Model.Description).ToString()*@
+               @Html.Raw(@Model.Description)
+                 
+            </td>
+        </tr>
+        <tr>
+            <td class="width30">
+                Start Date
+            </td>
+            <td>
+                @if (Model.StartDate!=null)
+                {
+                    @Model.StartDate.Value.ToString("dd/MM/yyyy")
+                }
+               @* @Html.DisplayTextFor(_ => Model.StartDate).ToString()*@
+            </td>
+        </tr>
+
+        <tr>
+            <td class="width30">
+                End Date
+            </td>
+            <td>
+                @if (Model.EndDate != null)
+                {
+                    @Model.EndDate.Value.ToString("dd/MM/yyyy")
+                }
+                @*@Html.DisplayTextFor(_ => Model.EndDate).ToString()*@
+            </td>
+        </tr>
+                <tr>
+            <td class="width30">
+                Approx. Task Hour
+            </td>
+            <td> 
+                @Model.TaskHour
+                @*@Html.DisplayTextFor(_ => Model.EndDate).ToString()*@
+            </td>
+        </tr>
+
+           <tr>
+            <td class="width30">
+                Actual Task Hour
+            </td>
+            <td> 
+                @Model.ActualTaskHoure
+                @*@Html.DisplayTextFor(_ => Model.EndDate).ToString()*@
+            </td>
+        </tr>
+
+          <tr>
+            <td class="width30">
+                Task Status
+            </td>
+            <td>
+               @Html.DisplayTextFor(_ => Model.ProjectStatus.Name).ToString()
+            </td>
+        </tr>
+
+                 <tr>
+            <td class="width30">
+                Assign To
+            </td>
+            <td>
+                @foreach (User user in Model.Users)
+                {
+   
+                    <span>@user.FirstName,</span>
+                }
+                @*@Html.DisplayTextFor(_ => Model.CreatedByUser.FirstName).ToString()*@
+            </td>
+        </tr>
+
+         <tr>
+            <td class="width30">
+                Created By
+            </td>
+            <td>
+                @Html.DisplayTextFor(_ => Model.CreatedByUser.FirstName).ToString()
+            </td>
+        </tr>
+
+@*        <tr>
+            <td class="width30">
+                Sprint
+            </td>
+            <td>
+                @if (Model.SprintID != null)
+                    {
+                       <span>@Model.Sprint.Name</span> 
+                    }
+            </td>
+        </tr>*@
+    </tbody>
+</table>

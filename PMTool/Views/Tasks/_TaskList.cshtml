@@ -3,8 +3,8 @@
         <tr>
             <th>Task Title
             </th>
-            <th>Project Name
-            </th>
+        @*    <th>Project Name
+            </th>*@
             @*            <th>Description</th>*@
             <th>Start Date</th>
             <th>End Date</th>
@@ -14,8 +14,8 @@
             <th>Add Sub Task</th>
 
             <th>Assign To</th>
-            <th>Created by</th>
-            <th>Sprint</th>
+@*            <th>Created by</th>
+            <th>Sprint</th>*@
 
             <th></th>
         </tr>
@@ -26,11 +26,14 @@
             <tr>
 
                 <td>
-                    @Html.DisplayTextFor(_ => item.Title).ToString()
+                    <strong>
+                    @*@Html.DisplayTextFor(_ => item.Title).ToString()*@
+                        <a href="#" onclick="return ShowTaskDetails(@item.TaskID); ">@item.Title</a>
+                        </strong>
                 </td>
-                <td>
+            @*    <td>
                     @item.Project.Name
-                </td>
+                </td>*@
                 @*       <td>
                     @Html.DisplayTextFor(_ => item.Description).ToString()
                 </td>*@
@@ -90,7 +93,7 @@
                     }
                     @*@Html.DisplayTextFor(_ => Model.CreatedByUser.FirstName).ToString()*@
                 </td>
-                <td>
+          @*      <td>
 
                     @Html.DisplayTextFor(_ => item.CreatedByUser.FirstName).ToString()
                 </td>
@@ -99,15 +102,16 @@
                     {
                        <span>@item.Sprint.Name</span> 
                     }
-                </td>
+                </td>*@
 
                 <td align="center">
                     @if (item.Users.Any(u => u.Username == User.Identity.Name) || item.Project.ProjectOwners.Any(u => u.Username == User.Identity.Name))
                     {
                         @Html.ActionLink(" ", "Edit", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
                         <span>|</span>
+                        @*
                         @Html.ActionLink(" ", "Details", new { id = item.TaskID }, new { @class = "icon-list-alt", @title = "Details" })
-                         <span>|</span>
+                         <span>|</span>*@
                         @Html.ActionLink(" ", "Delete", new { id = item.TaskID }, new { @class = "icon-trash", @title = "Delete" })
                     }
                 </td>
