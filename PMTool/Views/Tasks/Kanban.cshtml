@@ -38,6 +38,10 @@
             <li>
                 <a  href="#"   onclick="return ShowSwapForm(@projetc.ProjectID)"><span class="icon-plus" ></span>Rearrange Status</a>
             </li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <a  href="#"   onclick="return ShowRulesForm(@projetc.ProjectID)"><span class="icon-plus" ></span>Setup Drag-Drop Rules</a>
+            </li>
     }
         }
     </ul>
@@ -89,7 +93,32 @@
     </div>
 </div>
 
+<div id='ModalpopupRulesForm' data-url='@Url.Action("RulesForm", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerRulesForm'>
+    </div>
+</div>
+
 <script type="text/javascript">
+    function ShowRulesForm(id) {
+        //jQuery("#hideUl").css("display", "block");
+        var url = jQuery('#ModalpopupRulesForm').data('url') + "/" + id;
+        jQuery.ajax({
+            url: url,
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                jQuery('#popupcontainerRulesForm').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#ModalpopupRulesForm").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        return false;
+    }
     function ShowSwapForm(id) {
         //jQuery("#hideUl").css("display", "block");
         var url = jQuery('#ModalpopupSwapForm').data('url') + "/" + id;

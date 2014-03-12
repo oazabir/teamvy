@@ -111,7 +111,7 @@ namespace PMTool.Repository
 
         public List<ProjectStatus> FindbyProjectIDWithoutUnmovable(long projectID)
         {
-           return context.ProjectStatuses.Where(p => p.ProjectID == projectID && p.Name!="Closed").ToList();
+           return context.ProjectStatuses.Where(p => p.ProjectID == projectID && p.Name!="Closed").OrderBy(c=>c.SlNo).ThenBy(c=>c.ProjectStatusID).ToList();
         }
     }
 

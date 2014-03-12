@@ -157,6 +157,21 @@ namespace PMTool.Repository
             }
         }
 
+        private ProjectStatusRuleRepository _projectStatusRuleRepository;
+
+        public ProjectStatusRuleRepository ProjectStatusRuleRepository
+        {
+            get
+            {
+
+                if (this._projectStatusRuleRepository == null)
+                {
+                    this._projectStatusRuleRepository = new ProjectStatusRuleRepository(context);
+                }
+                return _projectStatusRuleRepository;
+            }
+        }
+
         public void Save()
         {
             context.SaveChanges();

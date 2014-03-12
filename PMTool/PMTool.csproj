@@ -313,8 +313,26 @@
     <Compile Include="Migrations\201403110950470_SlnoAdded.Designer.cs">
       <DependentUpon>201403110950470_SlnoAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201403120912558_ProjectStatusRuleAdded.cs" />
+    <Compile Include="Migrations\201403120912558_ProjectStatusRuleAdded.Designer.cs">
+      <DependentUpon>201403120912558_ProjectStatusRuleAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201403121024420_ruleChange.cs" />
+    <Compile Include="Migrations\201403121024420_ruleChange.Designer.cs">
+      <DependentUpon>201403121024420_ruleChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201403121038484_ruleChange2.cs" />
+    <Compile Include="Migrations\201403121038484_ruleChange2.Designer.cs">
+      <DependentUpon>201403121038484_ruleChange2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201403121044557_ruleChange3.cs" />
+    <Compile Include="Migrations\201403121044557_ruleChange3.Designer.cs">
+      <DependentUpon>201403121044557_ruleChange3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\ProjectStatusRule.cs" />
+    <Compile Include="Repository\ProjectStatusRuleRepository.cs" />
     <Compile Include="Models\TaskActivityLog.cs" />
     <Compile Include="Models\Sprint.cs" />
     <Compile Include="Models\ProjectStatus.cs" />
@@ -1173,6 +1191,7 @@
     <Content Include="Views\Tasks\ShowLog.cshtml" />
     <Content Include="Views\Tasks\EditSprint.cshtml" />
     <Content Include="Views\Tasks\StatusSwapForm.cshtml" />
+    <Content Include="Views\Tasks\RulesForm.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -1308,6 +1327,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201403110950470_SlnoAdded.resx">
       <DependentUpon>201403110950470_SlnoAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403120912558_ProjectStatusRuleAdded.resx">
+      <DependentUpon>201403120912558_ProjectStatusRuleAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403121024420_ruleChange.resx">
+      <DependentUpon>201403121024420_ruleChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403121038484_ruleChange2.resx">
+      <DependentUpon>201403121038484_ruleChange2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403121044557_ruleChange3.resx">
+      <DependentUpon>201403121044557_ruleChange3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

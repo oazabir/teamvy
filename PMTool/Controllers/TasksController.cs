@@ -1154,6 +1154,8 @@ namespace PMTool.Controllers
             return Content(ststus);
         }
 
+        
+
         [HttpPost]
         public PartialViewResult RemoveStatusFormKanban(long status, long projectID)
         {
@@ -1456,6 +1458,41 @@ namespace PMTool.Controllers
             unitOfWork.Save();
             return Content("");
         }
+
+        public PartialViewResult RulesForm(long id)
+        {
+            ProjectStatusRule rule = new ProjectStatusRule();
+            rule.ProjectID = id;
+            ViewBag.CurrentProjectStatuses = unitOfWork.ProjectStatusRepository.FindbyProjectID(id);
+            ViewBag.Rules = unitOfWork.ProjectStatusRuleRepository.FindbyProjectID(id);
+            return PartialView(rule);
+        }
+
+        [HttpPost]
+        public PartialViewResult RulesForm(ProjectStatusRule rule)
+        {
+            unitOfWork.ProjectStatusRuleRepository.InsertOrUpdate(rule);
+            unitOfWork.Save();
+            ViewBag.CurrentProjectStatuses = unitOfWork.ProjectStatusRepository.FindbyProjectID(rule.ProjectID);
+            ViewBag.Rules = unitOfWork.ProjectStatusRuleRepository.FindbyProjectID(rule.ProjectID);
+            return PartialView(rule);
+        }
+
+
+        public PartialViewResult DeleteRule(long id)
+        {
+            ProjectStatusRule deletedrule = unitOfWork.ProjectStatusRuleRepository.Find(id);
+
+           unitOfWork.ProjectStatusRuleRepository.Delete(id);
+            unitOfWork.Save();
+            ViewBag.CurrentProjectStatuses = unitOfWork.ProjectStatusRepository.FindbyProjectID(deletedrule.ProjectID);
+            ViewBag.Rules = unitOfWork.ProjectStatusRuleRepository.FindbyProjectID(deletedrule.ProjectID);
+
+            ProjectStatusRule rule = new ProjectStatusRule();
+            rule.ProjectID = deletedrule.ProjectID;
+            return PartialView(rule);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
