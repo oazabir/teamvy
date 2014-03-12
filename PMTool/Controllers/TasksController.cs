@@ -1164,6 +1164,8 @@ namespace PMTool.Controllers
             return Content(ststus);
         }
 
+        
+
         [HttpPost]
         public PartialViewResult RemoveStatusFormKanban(long status, long projectID)
         {
@@ -1432,8 +1434,74 @@ namespace PMTool.Controllers
             return PartialView(task);
 
         }
+        public PartialViewResult StatusSwapForm(long id)
+        {
 
-        
+            List<ProjectStatus> statusList = unitOfWork.ProjectStatusRepository.FindbyProjectIDWithoutUnmovable(id);
+            ViewBag.CurrentProjectID = id;
+            return PartialView(statusList);
+
+        }
+
+        [HttpPost]
+        public PartialViewResult StatusSwapForm(ProjectStatus[] Statuses)
+        {
+            long projectID = Convert.ToInt64(Request.Form["CurrentProjectID"].ToString());
+            List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectID);
+            return PartialView("_Kanban", taskList);
+        }
+        [HttpPost]
+        public ContentResult SwapStaus(string sortorder)
+        {
+            List<string> orders = sortorder.Split(',').ToList();
+            int i = 1;
+            foreach (string order in orders)
+            {
+                if (order != "")
+                {
+                  ProjectStatus status=  unitOfWork.ProjectStatusRepository.Find(Convert.ToInt64(order));
+                  status.SlNo = i;
+                  i++;
+                }
+            }
+            unitOfWork.Save();
+            return Content("");
+        }
+
+        public PartialViewResult RulesForm(long id)
+        {
+            ProjectStatusRule rule = new ProjectStatusRule();
+            rule.ProjectID = id;
+            ViewBag.CurrentProjectStatuses = unitOfWork.ProjectStatusRepository.FindbyProjectID(id);
+            ViewBag.Rules = unitOfWork.ProjectStatusRuleRepository.FindbyProjectID(id);
+            return PartialView(rule);
+        }
+
+        [HttpPost]
+        public PartialViewResult RulesForm(ProjectStatusRule rule)
+        {
+            unitOfWork.ProjectStatusRuleRepository.InsertOrUpdate(rule);
+            unitOfWork.Save();
+            ViewBag.CurrentProjectStatuses = unitOfWork.ProjectStatusRepository.FindbyProjectID(rule.ProjectID);
+            ViewBag.Rules = unitOfWork.ProjectStatusRuleRepository.FindbyProjectID(rule.ProjectID);
+            return PartialView(rule);
+        }
+
+
+        public PartialViewResult DeleteRule(long id)
+        {
+            ProjectStatusRule deletedrule = unitOfWork.ProjectStatusRuleRepository.Find(id);
+
+           unitOfWork.ProjectStatusRuleRepository.Delete(id);
+            unitOfWork.Save();
+            ViewBag.CurrentProjectStatuses = unitOfWork.ProjectStatusRepository.FindbyProjectID(deletedrule.ProjectID);
+            ViewBag.Rules = unitOfWork.ProjectStatusRuleRepository.FindbyProjectID(deletedrule.ProjectID);
+
+            ProjectStatusRule rule = new ProjectStatusRule();
+            rule.ProjectID = deletedrule.ProjectID;
+            return PartialView(rule);
+        }
 
         protected override void Dispose(bool disposing)
         {

@@ -183,8 +183,20 @@ namespace PMTool.Repository
                 UpdateLabels(task, existingTask);
                 context.Entry(existingTask).CurrentValues.SetValues(task);
 
+                ImplementDragDropRules(task);
+
             }
             return change;
+        }
+
+        private Task ImplementDragDropRules(Task task)
+        {
+            List<ProjectStatusRule> rules = context.ProjectStatusRules.Where(r => r.ProjectID == task.ProjectID).ToList();
+            foreach (ProjectStatusRule rule in rules)
+            {
+                context.Entry(task).Property(rule.DateMaper.ToString().Replace("_","")).CurrentValue = DateTime.Now;
+            }
+            return task;
         }
 
         private void UpdateLabels(Task task, Task existingTask)

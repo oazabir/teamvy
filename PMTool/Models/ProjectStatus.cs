@@ -27,5 +27,9 @@ namespace PMTool.Models
 
         [DefaultValue("#3B6998")]
         public string color { get; set; }
+
+
+        [DefaultValue(0)]
+        public int SlNo { get; set; }
     }
 }
