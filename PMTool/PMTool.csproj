@@ -311,6 +311,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\ProjectStatusRule.cs" />
     <Compile Include="Models\TaskActivityLog.cs" />
     <Compile Include="Models\Sprint.cs" />
     <Compile Include="Models\ProjectStatus.cs" />
@@ -318,6 +319,7 @@
     <Compile Include="Models\EnumCollection.cs" />
     <Compile Include="Models\Label.cs" />
     <Compile Include="Models\TaskPropertyChange.cs" />
+    <Compile Include="Repository\ProjectStatusRuleRepository.cs" />
     <Compile Include="Repository\TaskActivityLogRepository.cs" />
     <Compile Include="Repository\SprintRepository.cs" />
     <Compile Include="Repository\ProjectStatusRepository.cs" />
