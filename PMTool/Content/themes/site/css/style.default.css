@@ -1660,3 +1660,18 @@ body.loginbody { background: #f7f7f7 url(../img/gray_jean.png); }
     border: none !important;
 }
 
+
+.pageheadertitle {
+    font-size:18px !important;
+    color:#CDCDCD !important;
+}
+
+.show_hide_div {
+    display:none;
+    cursor:pointer;
+    /*min-height: 20px;*/
+}
+
+.taskdetailspopup {
+    min-height: 800px;
+}

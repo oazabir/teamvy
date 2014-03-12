@@ -41,7 +41,7 @@
 
             jQuery('.dyntable').dataTable({
                 "sPaginationType": "full_numbers",
-                "aaSortingFixed": [[0, 'asc']],
+                "aaSortingFixed": [[3, 'desc']],  //Update by Mahedee because in task list sorting order should be end date and priority
                 "fnDrawCallback": function (oSettings) {
 
                 }
@@ -157,7 +157,13 @@
 
             </div>
             <!--headerpanel-->
-            <div class="breadcrumbwidget">
+            <div class="pageheadertitle breadcrumbwidget">
+                <span style="vertical-align:middle;display:block;">
+                @if (ViewBag.PageTitle != null)
+                {
+                    @ViewBag.PageTitle
+                }
+                    </span>
             </div>
             <!--breadcrumbwidget-->
             <!--pagetitle-->

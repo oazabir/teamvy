@@ -9,11 +9,16 @@
 }
 
 
+<div id='ModalpopupTaskDetails' data-url='@Url.Action("TaskDetails", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerTaskDetails'>
+    </div>
+</div>
 
-<div class="pagetitle">
+
+@*<div class="pagetitle">
     <h1>Task List</h1>
     <span>@(((PMTool.Models.Project)ViewBag.CurrentProject).Name)  Tasks....</span>
-</div>
+</div>*@
 
 
 <p>
@@ -33,10 +38,14 @@
      </select>*@
 
     @*@Html.DropDownList("TaskStatus", "Choose...")*@
-
-
+    <a href="#" class="show_hide_div btn btn-info btn-rounded" id="plus"> + Search Panel</a>
+    @*<span>Search Panel</span>
+    <button id ="plus" class="show_hide_div" value="+"></button>*@
+    
 
 </p>
+
+
 
 @{
     PMTool.Models.Project project = (PMTool.Models.Project)ViewBag.CurrentProject;
@@ -99,5 +108,52 @@
 
         // Uncomment this line to see an input with no interface for adding new tags.
         //			jQuery('input.tags').tagsInput({interactive:false});
+
+        //alert("Yes..");
+        jQuery(".slidingDiv").hide();
+        jQuery(".show_hide_div").show();
+        jQuery("#plus").text("+ Search Panel");
+
+        jQuery('.show_hide_div').toggle(function () {
+            //alert("Working");
+            jQuery(".slidingDiv").slideDown(
+              function () {
+                  jQuery("#plus").text("- Search Panel")
+              }
+            );
+        }, function () {
+            jQuery(".slidingDiv").slideUp(
+            function () {
+                jQuery("#plus").text("+ Search Panel")
+            }
+            );
+        });
+
     });
+
+
+    function ShowTaskDetails(taskid) {
+        //alert("Working.." + taskid);
+        var url = jQuery('#ModalpopupTaskDetails').data('url');
+
+
+        jQuery.ajax({
+            url: url,
+            data: { id: taskid},
+            cache: false,
+            beforeSend: function () {
+               jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+              
+                jQuery('#popupcontainerTaskDetails').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#ModalpopupTaskDetails").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        return false;
+    }
 </script>
