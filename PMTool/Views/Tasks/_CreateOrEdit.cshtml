@@ -78,7 +78,8 @@
 @*        @Html.ValidationMessageFor(model => model.PriorityID)*@
     </td>
 </tr>
-
+<input type="hidden" value="@Model.Sprint.EndDate" id="hdnSprintEndDate" />
+<input type="hidden" value="@Model.Sprint.StartDate" id="hdnSprintStartDate" />
 <script type="text/javascript">
 
     jQuery(document).ready(function () {
@@ -92,17 +93,44 @@
 </script>
 
 <script type="text/javascript">
-    jQuery(".datepicker").datepicker({
-        dateFormat: "dd/mm/yy",
-        onSelect: function () {
-            var sdate = jQuery("#StartDate").val().replace('-', '/');
-            var edate = jQuery("#EndDate").val().replace('-', '/');
+    //jQuery(".datepicker").datepicker({
+    //    dateFormat: "dd/mm/yy",
+    //    onSelect: function () {
+    //        var sdate = jQuery("#StartDate").val().replace('-', '/');
+    //        var edate = jQuery("#EndDate").val().replace('-', '/');
             
-            if (new Date(sdate) > new Date(edate)) {
-                alert('End Date Mustbe grater than Start Date');
-                var edate = jQuery("#EndDate").val('');
-            }
+    //        if (new Date(sdate) > new Date(edate)) {
+    //            alert('End Date Mustbe grater than Start Date');
+    //            var edate = jQuery("#EndDate").val('');
+    //        }
+    //    }
+    //});
+
+    jQuery(document).ready(function () {
+        var date = jQuery('#hdnSprintEndDate').val();
+        var sdate = jQuery('#hdnSprintStartDate').val();
+        function getDateYymmdd(value) {
+            if (value == null)
+                return null;
+            return jQuery.datepicker.parseDate("dd-mm-yy", value);
         }
+        jQuery('.datepicker').datepicker('destroy');
+        jQuery('.datepicker').each(function () {
+            var minDdate = getDateYymmdd(jQuery(this).data("val-rangedate-min"));
+            var maxDate = getDateYymmdd(jQuery(this).data("val-rangedate-max"));
+            jQuery(this).datepicker({
+                dateFormat: "dd/mm/yy",
+                showStatus: true,
+                showWeeks: true,
+                currentText: 'Now',
+                autoSize: true,
+                gotoCurrent: true,
+                showAnim: 'blind',
+                highlightWeek: true,
+                minDate:new Date( sdate),
+                maxDate: new Date(date)
+            });
+        });
     });
 </script>
 <script type="text/javascript">
