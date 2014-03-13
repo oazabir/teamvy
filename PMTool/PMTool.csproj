@@ -333,6 +333,10 @@
     <Compile Include="Migrations\201403121223390_checkChange.Designer.cs">
       <DependentUpon>201403121223390_checkChange.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201403130941322_timelog.cs" />
+    <Compile Include="Migrations\201403130941322_timelog.Designer.cs">
+      <DependentUpon>201403130941322_timelog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\ProjectStatusRule.cs" />
@@ -343,6 +347,8 @@
     <Compile Include="Models\EnumCollection.cs" />
     <Compile Include="Models\Label.cs" />
     <Compile Include="Models\TaskPropertyChange.cs" />
+    <Compile Include="Models\TimeLog.cs" />
+    <Compile Include="Repository\TimeLogRepository.cs" />
     <Compile Include="Repository\ProjectStatusRuleRepository.cs" />
     <Compile Include="Repository\TaskActivityLogRepository.cs" />
     <Compile Include="Repository\SprintRepository.cs" />
@@ -1197,6 +1203,11 @@
     <Content Include="Views\Tasks\TaskDetails.cshtml" />
     <Content Include="Views\Tasks\RulesForm.cshtml" />
     <Content Include="Views\Tasks\StatusSwapForm.cshtml" />
+    <Content Include="Views\Tasks\MyAssignTask.cshtml" />
+    <Content Include="Views\Tasks\CreateTimeLog.cshtml" />
+    <Content Include="Views\Tasks\_CreateOrEditTimeLog.cshtml" />
+    <Content Include="Views\Tasks\TaskTimeLog.cshtml" />
+    <Content Include="Views\Tasks\_EffortList.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -1347,6 +1358,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201403121223390_checkChange.resx">
       <DependentUpon>201403121223390_checkChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403130941322_timelog.resx">
+      <DependentUpon>201403130941322_timelog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

@@ -93,5 +93,7 @@ namespace PMTool.Repository
 
         public DbSet<PMTool.Models.ProjectStatusRule> ProjectStatusRules { get; set; }
 
+        public DbSet<PMTool.Models.TimeLog> TimeLogs { get; set; }
+
     }
 }
