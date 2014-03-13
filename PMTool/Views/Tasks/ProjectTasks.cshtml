@@ -1,4 +1,5 @@
-﻿@model IEnumerable<PMTool.Models.Task>
+﻿@using MvcPaging
+@model IPagedList<PMTool.Models.Task>
 
 @{
     if (ViewBag.CurrentProject != null)
@@ -15,48 +16,134 @@
 </div>
 
 
-@*<div class="pagetitle">
-    <h1>Task List</h1>
-    <span>@(((PMTool.Models.Project)ViewBag.CurrentProject).Name)  Tasks....</span>
-</div>*@
-
 
 <p>
     @Html.ActionLink("Create New", "Create", new { @ProjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID }, new { @title = "Add Task", @class = "btn btn-primary" })
     ||
     @Html.ActionLink("View Kanban", "Kanban", new { @ProjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID }, new { @title = "View Kanban", @class = "btn btn-inverse" })
     || 
-  @*  Status*@
-
-    @*<select id="Status" name="Status">
-    @Html.DropDownListFor(model => model.ProjectStatusID, ((IEnumerable<PMTool.Models.ProjectStatus>)ViewBag.TaskStatus).Select(option => new SelectListItem
-   {
-       Text = (option == null ? "None" : option.Name), 
-       Value = option.ProjectStatusID.ToString(),
-       Selected = (Model != null) && (option.ProjectStatusID == Model.ProjectStatusID)
-   }), "Choose...")
-     </select>*@
-
-    @*@Html.DropDownList("TaskStatus", "Choose...")*@
     <a href="#" class="show_hide_div btn btn-info btn-rounded" id="plus"> + Search Panel</a>
-    @*<span>Search Panel</span>
-    <button id ="plus" class="show_hide_div" value="+"></button>*@
     
 
 </p>
+@*@using (Ajax.BeginForm("_Search", "Tasks", new AjaxOptions { UpdateTargetId = "grid-list", HttpMethod = "get", LoadingElementId = "loading", OnBegin = "beginPaging", OnSuccess = "successPaging", OnFailure = "failurePaging" }))
+{
+    *@
+
+@using (Html.BeginForm("ProjectTasks", "Tasks", FormMethod.Get))
+{
+<input type="hidden" name ="projectID" value ="@ViewBag.CurrentProjectId" />
+<div class="slidingDiv" style="display: block;">
+
+        <table class="table table-bordered table-invoice">
+            <tr>
+                <td>Status</td>
+                <td>
+                    
+                    <select name="SelectedStatusID">
+                         <option value="">Choose...</option>  
+                    @foreach (var item in ViewData["TaskStatus"] as List<SelectListItem>)
+                    {
+                        if (ViewData["SelectedStatusID"] == @item.Value)
+                        {<option value="@item.Value" selected="selected">@item.Text</option>  
+                        }
+                        else
+                        {
+                        <option value="@item.Value">@item.Text</option>  
+                    }
+                    }
+
+                        </select>
+                </td>
+                <td>Priority</td>
+                <td>
+                   @* @Html.DropDownListFor(model => model.SelectedPriorityID, (Model.priorityList).Select(option => new SelectListItem
+               {
+                   Text = (option == null ? "None" : option.Name),
+                   Value = option.PriorityID.ToString(),
+                   Selected = (Model != null) && (option.PriorityID == Model.SelectedPriorityID)
+               }), "Choose...")*@
+                     <select name="SelectedPriorityID">
+                         <option value="">Choose...</option>  
+                    @foreach (var item in ViewData["PossiblePriorities"] as List<SelectListItem>)
+                    {
+                        <option value="@item.Value">@item.Text</option>  
+                    }
+
+                        </select>
+                </td>
+
+            </tr>
+             <tr>
+                <td>Assigned User</td>
+                <td>
+                    @*@Html.DropDownListFor(model => model.SelectedUserID, (Model.UserList).Select(option => new SelectListItem
+               {
+                   Text = (option == null ? "None" : option.FirstName + " " + option.LastName),
+                   Value = option.UserId.ToString(),
+                   Selected = (Model != null) && (option.UserId == Model.SelectedUserID)
+               }), "Choose...")*@
+                    <select name="SelectedUserID">
+                         <option value="">Choose...</option>  
+                    @foreach (var item in ViewData["PossibleUsers"] as List<SelectListItem>)
+                    {
+                        <option value="@item.Value">@item.Text</option>  
+                    }
+
+                        </select>
+                </td>
+                <td>Sprint</td>
+                <td>
+                   @* @Html.DropDownListFor(model => model.SelectedSprintID, (Model.SprintList).Select(option => new SelectListItem
+               {
+                   Text = (option == null ? "None" : option.Name),
+                   Value = option.SprintID.ToString(),
+                   Selected = (Model != null) && (option.SprintID == Model.SelectedSprintID)
+               }), "Choose...")*@
+                    @*<select name="SelectedSprintID">
+                          <option value="">Choose....</option>
+                          @foreach (PMTool.Models.Sprint item in (List<PMTool.Models.Sprint>)ViewBag["PossibleSprints"])
+                          {
+                              <option value="@item.SprintID">@item.Name</option>
+                          }
+                      </select>*@
+                     <select name="SelectedSprintID">
+                         <option value="">Choose...</option>  
+                    @foreach (var item in ViewData["PossibleSprints"] as List<SelectListItem>)
+                    {
+                        <option value="@item.Value">@item.Text</option>  
+                    }
+
+                        </select>
+                </td>
+                   
 
 
+            </tr>
+            <tr>
+                
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
 
-@{
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </td>
+          
+
+            </tr>
+        </table>
+
+    </div>
+}
+@*@{
     PMTool.Models.Project project = (PMTool.Models.Project)ViewBag.CurrentProject;
     Html.RenderAction("_Search", "Tasks", new { projectID = project.ProjectID });
-}
+}*@
 
 <div id="divTaskList" >
-          <table class="table table-bordered dyntable" id="dyntable5">
 
     @{@Html.Partial("_TaskList", Model)}
-        </table>
 
 
 
@@ -91,25 +178,10 @@
         jQuery('#tags_3').tagsInput({
             width: 'auto',
 
-            //autocomplete_url:'test/fake_plaintext_endpoint.html' //jquery.autocomplete (not jquery ui)
             autocomplete_url: 'test/fake_json_endpoint.html' // jquery ui autocomplete requires a json endpoint
         });
 
 
-        //jQuery('#TaskStatus').change(function () {
-
-        //    alert('Working!!');
-
-        //});
-
-
-        // Uncomment this line to see the callback functions in action
-        //			jQuery('input.tags').tagsInput({onAddTag:onAddTag,onRemoveTag:onRemoveTag,onChange: onChangeTag});		
-
-        // Uncomment this line to see an input with no interface for adding new tags.
-        //			jQuery('input.tags').tagsInput({interactive:false});
-
-        //alert("Yes..");
         jQuery(".slidingDiv").hide();
         jQuery(".show_hide_div").show();
         jQuery("#plus").text("+ Search Panel");
@@ -133,7 +205,6 @@
 
 
     function ShowTaskDetails(taskid) {
-        //alert("Working.." + taskid);
         var url = jQuery('#ModalpopupTaskDetails').data('url');
 
 
@@ -156,4 +227,22 @@
         });
         return false;
     }
+</script>
+<script type="text/javascript">
+
+    function beginPaging(args) {
+        // Animate
+        $('#grid-list').fadeOut('normal');
+    }
+
+    function successPaging() {
+        // Animate
+        $('#grid-list').fadeIn('normal');
+        $('a').tooltip();
+    }
+
+    function failurePaging() {
+        alert("Could not retrieve list.");
+    }
+
 </script>
