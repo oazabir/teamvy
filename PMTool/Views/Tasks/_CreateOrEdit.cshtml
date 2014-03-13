@@ -114,23 +114,23 @@
                 return null;
             return jQuery.datepicker.parseDate("dd-mm-yy", value);
         }
-        jQuery('.datepicker').datepicker('destroy');
-        jQuery('.datepicker').each(function () {
-            var minDdate = getDateYymmdd(jQuery(this).data("val-rangedate-min"));
-            var maxDate = getDateYymmdd(jQuery(this).data("val-rangedate-max"));
-            jQuery(this).datepicker({
-                dateFormat: "dd/mm/yy",
-                showStatus: true,
-                showWeeks: true,
-                currentText: 'Now',
-                autoSize: true,
-                gotoCurrent: true,
-                showAnim: 'blind',
-                highlightWeek: true,
-                minDate:new Date( sdate),
-                maxDate: new Date(date)
-            });
-        });
+        //jQuery('.datepicker').datepicker('destroy');
+        //jQuery('.datepicker').each(function () {
+        //    var minDdate = getDateYymmdd(jQuery(this).data("val-rangedate-min"));
+        //    var maxDate = getDateYymmdd(jQuery(this).data("val-rangedate-max"));
+        //    jQuery(this).datepicker({
+        //        dateFormat: "dd/mm/yy",
+        //        showStatus: true,
+        //        showWeeks: true,
+        //        currentText: 'Now',
+        //        autoSize: true,
+        //        gotoCurrent: true,
+        //        showAnim: 'blind',
+        //        highlightWeek: true,
+        //        minDate:new Date( sdate),
+        //        maxDate: new Date(date)
+        //    });
+        //});
     });
 </script>
 <script type="text/javascript">
