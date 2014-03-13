@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using PMTool.Models;
 using PMTool.Repository;
+using MvcPaging;
 
 namespace PMTool.Controllers
 {
@@ -16,6 +17,7 @@ namespace PMTool.Controllers
     public class TasksController : BaseController 
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
+        private const int defaultPageSize = 3;
         //
         // GET: /Tasks/
          
@@ -28,9 +30,10 @@ namespace PMTool.Controllers
        
 
         //GET: /Tasks/ProjectTasks?ProjectID=5
-        public ViewResult ProjectTasks(long projectID)
-        { 
-            List<Task> taskList = new List<Task>();
+        public ViewResult ProjectTasks(long projectID, string SelectedStatusID, string SelectedPriorityID, string SelectedUserID, string SelectedSprintID, int? page)
+        {
+            int currentPageIndex = page.HasValue ? page.Value : 1;
+            IList<Task> taskList;
             User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
             Project project = unitOfWork.ProjectRepository.Find(projectID);
 
@@ -47,10 +50,36 @@ namespace PMTool.Controllers
             else
                 taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.Name.ToLower() != "closed").OrderBy(o1 => o1.EndDate).ThenBy(o2 => o2.Priority).ToList();
 
-            ViewBag.TaskStatus = GetAllStatus(projectID);           
+            ViewBag.TaskStatus = GetAllStatus(projectID);
+
+            ViewBag.PossiblePriorities = GetallPriority();
+            ViewBag.PossibleSprints = GetallSprints(projectID);
+            ViewBag.PossibleUsers = GetAllUser(projectID);
             ViewBag.CurrentProject = project;
             ViewBag.PageTitle = "Task List";
-            return View(taskList);
+            Search search = new Search();
+            ViewData["CurrentProjectID"] = project.ProjectID;
+            ViewData["SelectedStatusID"] = SelectedStatusID;
+            ViewData["SelectedPriorityID"]  = SelectedPriorityID;
+            ViewData["SelectedUserID"] =  SelectedUserID;
+            ViewData["SelectedSprintID"] =  SelectedSprintID;
+
+
+            search.SelectedProjectID = project.ProjectID;
+
+            if (!string.IsNullOrEmpty(SelectedStatusID))
+                search.SelectedStatusID = Convert.ToInt64(SelectedStatusID);
+            if (!string.IsNullOrEmpty(SelectedPriorityID))
+             search.SelectedPriorityID = Convert.ToInt64(SelectedPriorityID);
+
+             if (!string.IsNullOrEmpty( SelectedUserID))
+            search.SelectedUserID =new Guid( SelectedUserID);
+
+             if (!string.IsNullOrEmpty(SelectedSprintID))
+             search.SelectedSprintID = Convert.ToInt64(SelectedSprintID);
+
+            taskList = GetTasks(search);
+            return View(taskList.ToPagedList(currentPageIndex,defaultPageSize));
         }
 
 
@@ -171,9 +200,10 @@ namespace PMTool.Controllers
 
         #endregion sprint
 
-        public PartialViewResult _TaskList(long projectID, long? statusID)
+        public PartialViewResult _TaskList(long projectID, long? statusID, int? page, string SelectedStatusID, string SelectedPriorityID, string SelectedUserID, string SelectedSprintID)
         {
-            List<Task> taskList;
+            int currentPageIndex = page.HasValue ? page.Value : 1;
+            IList<Task> taskList;
             Project project;
             if (statusID != null && statusID != 0)
                 GetTaskList(projectID, out taskList, out project, statusID);
@@ -190,10 +220,11 @@ namespace PMTool.Controllers
             ViewBag.CurrentProject = project;
             //return PartialViewResult(taskList);
             //return View(taskList);
+          taskList=  taskList.ToPagedList(currentPageIndex,defaultPageSize);
             return PartialView(taskList);
         }
 
-        private void GetTaskList(long projectID, out List<Task> taskList, out Project project, long? statusId)
+        private void GetTaskList(long projectID, out IList<Task> taskList, out Project project, long? statusId)
         {
             taskList = new List<Task>();
             User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
@@ -212,7 +243,7 @@ namespace PMTool.Controllers
         }
 
 
-        private void GetTaskList(long projectID, out List<Task> taskList, out Project project)
+        private void GetTaskList(long projectID, out IList<Task> taskList, out Project project)
         {
             taskList = new List<Task>();
             User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
@@ -982,7 +1013,35 @@ namespace PMTool.Controllers
             }
             return allLabels;
         }
+        private List<SelectListItem> GetallSprints(long projectID)
+        {
 
+            List<SelectListItem> allStatus = new List<SelectListItem>();
+            List<Sprint> pList = unitOfWork.ProjectRepository.FindIncludingProjectStatus(projectID).Sprints;
+            foreach (Sprint status in pList)
+            {
+
+                SelectListItem item = new SelectListItem { Value = status.SprintID.ToString(), Text = status.Name };
+                allStatus.Add(item);
+            }
+
+            return allStatus;
+        }
+
+        private List<SelectListItem> GetallPriority()
+        {
+
+            List<SelectListItem> allStatus = new List<SelectListItem>();
+            List<Priority> pList = unitOfWork.PriorityRepository.All.ToList();
+            foreach (Priority status in pList)
+            {
+
+                SelectListItem item = new SelectListItem { Value = status.PriorityID.ToString(), Text = status.Name };
+                allStatus.Add(item);
+            }
+
+            return allStatus;
+        }
 
         private List<SelectListItem> GetAllStatus(long ProjectID)
         {
@@ -1434,7 +1493,8 @@ namespace PMTool.Controllers
            //ViewBag.CurrentProject = project;
            taskList = GetTasks(search);
            ViewBag.Tasks = taskList;
-           return PartialView("_TaskList", taskList);//RedirectToAction("_TaskList", new { @ProjectID = projectID, @statusId = statusId });
+            //return PartialView("_TaskList", taskList);
+          return RedirectToAction("_TaskList", new { @ProjectID = projectID, @statusId = statusId });
             
         }
 

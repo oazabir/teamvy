@@ -1,11 +1,11 @@
-﻿@model IEnumerable<PMTool.Models.Task>
+﻿@using MvcPaging
+@model IPagedList<PMTool.Models.Task>
+
+<table class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>Task Title
             </th>
-        @*    <th>Project Name
-            </th>*@
-            @*            <th>Description</th>*@
             <th>Start Date</th>
             <th>End Date</th>
             <th>Status</th>
@@ -14,8 +14,6 @@
             <th>Add Sub Task</th>
 
             <th>Assign To</th>
-@*            <th>Created by</th>
-            <th>Sprint</th>*@
 
             <th></th>
         </tr>
@@ -27,23 +25,16 @@
 
                 <td>
                     <strong>
-                    @*@Html.DisplayTextFor(_ => item.Title).ToString()*@
                         <a href="#" onclick="return ShowTaskDetails(@item.TaskID); ">@item.Title</a>
                         </strong>
                 </td>
-            @*    <td>
-                    @item.Project.Name
-                </td>*@
-                @*       <td>
-                    @Html.DisplayTextFor(_ => item.Description).ToString()
-                </td>*@
                 <td>
-                    @if(item.StartDate!=null)
+                    @if (item.StartDate != null)
                     {<span>@item.StartDate.Value.ToString("dd/MM/yyyy")</span>}
                 </td>
 
                 <td>
-                    @if(item.EndDate!=null)
+                    @if (item.EndDate != null)
                     {<span>@item.EndDate.Value.ToString("dd/MM/yyyy")</span>}
                 </td>
 
@@ -91,27 +82,12 @@
    
                         <span>@user.FirstName,</span>
                     }
-                    @*@Html.DisplayTextFor(_ => Model.CreatedByUser.FirstName).ToString()*@
-                </td>
-          @*      <td>
-
-                    @Html.DisplayTextFor(_ => item.CreatedByUser.FirstName).ToString()
-                </td>
-                <td>
-                    @if (item.SprintID != null)
-                    {
-                       <span>@item.Sprint.Name</span> 
-                    }
-                </td>*@
 
                 <td align="center">
                     @if (item.Users.Any(u => u.Username == User.Identity.Name) || item.Project.ProjectOwners.Any(u => u.Username == User.Identity.Name))
                     {
                         @Html.ActionLink(" ", "Edit", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
                         <span>|</span>
-                        @*
-                        @Html.ActionLink(" ", "Details", new { id = item.TaskID }, new { @class = "icon-list-alt", @title = "Details" })
-                         <span>|</span>*@
                         @Html.ActionLink(" ", "Delete", new { id = item.TaskID }, new { @class = "icon-trash", @title = "Delete" })
                     }
                 </td>
@@ -119,3 +95,50 @@
             </tr>
         }
     </tbody>
+    </table>
+
+
+
+
+<div class="pager1">
+   @* @Html.Raw(Ajax.Pager(
+            new Options
+            {
+                PageSize = Model.PageSize,
+                TotalItemCount = Model.TotalItemCount,
+                CurrentPage = Model.PageNumber,
+                ItemTexts = new ItemTexts() { Next = "Next", Previous = "Previous", Page = "P" },
+                ItemIcon = new ItemIcon() { First = "icon-backward", Previous = "icon-chevron-left", Next = "icon-chevron-right", Last = "icon-forward" },
+                TooltipTitles = new TooltipTitles() { Next = "Next page", Previous = "Previous page", Page = "Page {0}." },
+                Size = Size.normal,
+                Alignment = Alignment.centered,
+                IsShowControls = true,
+                IsShowFirstLast = true,
+                CssClass = ""
+            },
+            new AjaxOptions
+            {
+                UpdateTargetId = "divTaskList",
+                OnBegin = "beginPaging",
+                OnSuccess = "successPaging",
+                OnFailure = "failurePaging"
+            }, new { controller = "Task", action = "ProjectTasks",projectID=ViewData["CurrentProjectID"], SelectedStatusID = ViewData["SelectedStatusID"],SelectedPriorityID=ViewData["SelectedPriorityID"],SelectedUserID=ViewData["SelectedUserID"],SelectedSprintID=ViewData["SelectedSprintID"]   }))*@
+     @Html.Raw(Html.Pager(
+            new Options
+            {
+                PageSize = Model.PageSize,
+                TotalItemCount = Model.TotalItemCount,
+                CurrentPage = Model.PageNumber,
+                ItemTexts = new ItemTexts() { Next = "Next", Previous = "Previous" },
+                ItemIcon = new ItemIcon() { First = "icon-backward", Previous = "icon-chevron-left", Next = "icon-chevron-right", Last = "icon-forward" },
+                TooltipTitles = new TooltipTitles() { Next = "Next page {0}", Previous = "Previous page {0}", Page = "Go to page {0}" },
+                Size = Size.normal,
+                Alignment = Alignment.centered,
+                IsShowControls = true,
+                IsShowFirstLast = true,
+                IsShowPages = true
+            }, new { projectID=ViewData["CurrentProjectID"], SelectedStatusID = ViewData["SelectedStatusID"],SelectedPriorityID=ViewData["SelectedPriorityID"],SelectedUserID=ViewData["SelectedUserID"],SelectedSprintID=ViewData["SelectedSprintID"]}))
+    <div class="well">
+        Showing <span class="badge badge-success">@Model.ItemStart</span> to <span class="badge badge-success">@Model.ItemEnd</span>
+        of <span class="badge badge-info">@Model.TotalItemCount</span> entries</div>
+</div>

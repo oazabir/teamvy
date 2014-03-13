@@ -37,6 +37,13 @@ namespace PMTool.Models
 
         public List<DateMaper> DateMaperSelectList = Enum.GetValues(typeof(DateMaper)).Cast<DateMaper>().Cast<DateMaper>().ToList();
     }
+
+
+    /// <summary>
+    /// Enum Name must be the same name of the task proerty 
+    /// that you want to map with and also separeate the words
+    /// by a "_" which will replace by an empty space when showing in dropwown list.
+    /// </summary>
     public enum DateMaper
     {
         Estimated_Preview_Date=1,

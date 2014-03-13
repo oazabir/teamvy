@@ -194,6 +194,7 @@ namespace PMTool.Repository
             List<ProjectStatusRule> rules = context.ProjectStatusRules.Where(r => r.ProjectID == task.ProjectID).ToList();
             foreach (ProjectStatusRule rule in rules)
             {
+                if (task.ProjectStatusID == rule.ProjectStatusID)
                 context.Entry(task).Property(rule.DateMaper.ToString().Replace("_","")).CurrentValue = DateTime.Now;
             }
             return task;
