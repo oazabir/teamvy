@@ -172,6 +172,20 @@ namespace PMTool.Repository
             }
         }
 
+
+        private TimeLogRepository _timeLogRepository;
+        public TimeLogRepository TimeLogRepository
+        {
+            get
+            {
+                if (this._timeLogRepository == null)
+                {
+                    this._timeLogRepository = new TimeLogRepository(context);
+                }
+                return _timeLogRepository;
+            }
+        }
+
         public void Save()
         {
             context.SaveChanges();

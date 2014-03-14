@@ -1,0 +1,17 @@
+﻿@model IEnumerable<PMTool.Models.TimeLog>
+
+<p>
+    ||@Html.ActionLink("Add Effort", "CreateTimeLog",  new { @id = ViewBag.TaskId }, new { @title = "Add Task", @class = "btn btn-primary" })  @*Here id = task id*@
+    ||
+
+ </p>
+
+<div id="divTaskList" >
+          <table class="table table-bordered dyntable" id="dyntable5">
+
+         @{@Html.Partial("_EffortList", Model)}
+        </table>
+
+
+
+</div>

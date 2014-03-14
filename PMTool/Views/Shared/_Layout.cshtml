@@ -27,7 +27,7 @@
     <script src="@Url.Content("~/Content/themes/site/js/jquery.tagsinput.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Content/themes/site/prettify/prettify.js")" type="text/javascript"></script>
 
-    <script type="text/javascript"> 
+    <script type="text/javascript">
         jQuery.noConflict();
         jQuery.noConflict();
         jQuery(document).ready(function () {
@@ -49,7 +49,7 @@
 
         });
     </script>
-    
+
 </head>
 <body>
     @RenderSection("featured", required: false)
@@ -90,7 +90,7 @@
 
                     <li class="dropdown"><a href=""><span class="icon-briefcase"></span>Assigned Projects</a>
                         <ul style="display: block">
-                        @*<ul>*@
+                            @*<ul>*@
                             @if (ViewBag.AssignedProjects != null)
                             {
                                 foreach (PMTool.Models.Project item in (List<PMTool.Models.Project>)ViewBag.AssignedProjects)
@@ -100,18 +100,19 @@
                                 }
                             }
                         </ul>
-                        </li>
+                    </li>
                     <li class="dropdown"><a href="#"><span class="icon-th-list"></span>Own Projects</a>
                         <ul style="display: block">
-                        @*<ul>*@
+                            @*<ul>*@
                             <li>@Html.ActionLink("Create New Project", "Create", "Projects")</li>
                             <li>@Html.ActionLink("Projects Created by you", "Index", "Projects")</li>
                             <li>@Html.ActionLink("Projects Owned by you", "OwnProjects", "Projects")</li>
                         </ul>
                     </li>
-                <li>@Html.ActionLink("Labels", "Index", "Labels")</li>
-                <li>@Html.ActionLink("Priorities", "Index", "Priorities")</li>
-                <li>@Html.ActionLink("Invite People", "InvitePeople", "Account")</li>
+                    <li>@Html.ActionLink("Time Log", "MyAssignTask", "Tasks")</li>
+                    <li>@Html.ActionLink("Labels", "Index", "Labels")</li>
+                    <li>@Html.ActionLink("Priorities", "Index", "Priorities")</li>
+                    <li>@Html.ActionLink("Invite People", "InvitePeople", "Account")</li>
 
                 </ul>
             </div>
@@ -158,12 +159,12 @@
             </div>
             <!--headerpanel-->
             <div class="pageheadertitle breadcrumbwidget">
-                <span style="vertical-align:middle;display:block;">
-                @if (ViewBag.PageTitle != null)
-                {
-                    @ViewBag.PageTitle
-                }
-                    </span>
+                <span style="vertical-align: middle; display: block;">
+                    @if (ViewBag.PageTitle != null)
+                    {
+                        @ViewBag.PageTitle
+                    }
+                </span>
             </div>
             <!--breadcrumbwidget-->
             <!--pagetitle-->

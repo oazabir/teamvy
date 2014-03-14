@@ -26,7 +26,9 @@ namespace PMTool.Controllers
             return View(unitOfWork.TaskRepository.AllIncluding(task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList());
         }
 
-        
+
+       
+
         //GET: /Tasks/ProjectTasks?ProjectID=5
         public ViewResult ProjectTasks(long projectID, string SelectedStatusID, string SelectedPriorityID, string SelectedUserID, string SelectedSprintID, int? page)
         {
@@ -81,6 +83,70 @@ namespace PMTool.Controllers
         }
 
 
+        #region Time Log
+        //Action for your assigned task added by Mahedee @ 13-03-14
+        public ViewResult MyAssignTask()
+        {
+            User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            List<Task> myTaskList = unitOfWork.TaskRepository.GetTasksByUser(user).Where(task => task.ProjectStatus.Name.ToLower() != "closed").ToList();
+            return View(myTaskList);
+        }
+
+        //Action for get all time log on corresponding task added by Mahedee @ 13-03-14
+        public ViewResult TaskTimeLog(long id)
+        {
+            List<TimeLog> timeLog = new List<TimeLog>();
+            timeLog = unitOfWork.TimeLogRepository.All.Where(p => p.TaskID == id).ToList();
+            ViewBag.TaskId = id;
+            return View(timeLog);
+        }
+
+        //Here id = task id
+        public ActionResult CreateTimeLog(long id) 
+        {
+            TimeLog timelog = new TimeLog();
+            timelog.TaskID = id;
+
+            return View(timelog);
+        }
+
+
+        [HttpPost]
+        public ActionResult CreateTimeLog(TimeLog timeLog)
+        {
+            timeLog.CreatedBy = (Guid)Membership.GetUser().ProviderUserKey;
+            timeLog.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
+            timeLog.CreateDate = DateTime.Now;
+            timeLog.ModificationDate = DateTime.Now;
+            timeLog.ActionDate = DateTime.Now;
+
+            if (ModelState.IsValid)
+            {
+               unitOfWork.TimeLogRepository.InsertOrUpdate(timeLog);
+               unitOfWork.Save();
+               return RedirectToAction("TaskTimeLog", new { @id = timeLog.TaskID});
+            }
+
+
+            //List<SelectListItem> allUsers = GetAllUser(task.ProjectID);
+            //ViewBag.PossibleUsers = allUsers;
+            //ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
+            //ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
+            //ViewBag.PossibleSprints = unitOfWork.SprintRepository.AllByProjectID(task.ProjectID);
+
+            //List<SelectListItem> allLabels = GetAllLabel();
+            //ViewBag.PossibleLabels = allLabels;
+            //GetAllStatus(task);
+            //return View(timeLog); //
+            return RedirectToAction("TaskTimeLog", new { @id = timeLog.TaskID });
+        }
+
+        #endregion Time Log
+
+
+
+
+        #region Sprint
         //Added for editing sprint from kanban board by Mahedee @ 11-03-14
         public PartialViewResult EditSprint(long sprintId)
         {
@@ -132,6 +198,7 @@ namespace PMTool.Controllers
 
         }
 
+        #endregion sprint
 
         public PartialViewResult _TaskList(long projectID, long? statusID, int? page, string SelectedStatusID, string SelectedPriorityID, string SelectedUserID, string SelectedSprintID)
         {
@@ -195,37 +262,7 @@ namespace PMTool.Controllers
         }
 
 
-        /**
-        //GET: /Tasks/ProjectTasks?ProjectID=5
-        [HttpPost]
-        public ViewResult ProjectTasks(long projectID, long statusId)
-        {
-            List<Task> taskList = new List<Task>();
-            User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
-            Project project = unitOfWork.ProjectRepository.Find(projectID);
-            //If this project is created by the current user. Then he can see all task.
-            if (project.CreatedBy == user.UserId)
-                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p=>p.ProjectStatus.ProjectStatusID == statusId).ToList();
 
-            //If this project is owned by the current user. Then he can see all task.
-            else if (project.ProjectOwners.Contains(user))
-                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-
-            else
-                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-
-
-            //List<SelectListItem> statusList = new List<SelectListItem>();
-            //statusList = unitOfWork.ProjectRepository.FindIncludingProjectStatus(projectID).ProjectStatuses.ToList();
-            ViewBag.TaskStatus = GetAllStatus(projectID);
-                
-                //task.Project.ProjectStatuses;
-            
-            ViewBag.CurrentProject = project;
-            return View(taskList);
-        }
-        **/
-    
 
         //
         // GET: /Tasks/SubTaskList?taskID=5
@@ -251,6 +288,7 @@ namespace PMTool.Controllers
             Task task = unitOfWork.TaskRepository.Find(id);
             return PartialView(task);
         }
+
 
         //
         // GET: /Tasks/Create?ProjectID=5

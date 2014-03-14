@@ -1,0 +1,35 @@
+﻿@model PMTool.Models.TimeLog
+
+@{
+    ViewBag.Title = "Add | Time Log";
+}
+
+<div class="pagetitle">
+    <h1>
+       Add Time Log
+    </h1>
+    <span>Add Time Log below....</span>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <table class="table table-bordered table-invoice">
+        <tbody>
+            <tr>
+                <td>
+                    @Html.Partial("_CreateOrEditTimeLog", Model)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <input type="submit" value="Create" class="btn btn-primary" />
+
+@*                    @Html.ActionLink("Back to list", "ProjectTasks", new { ProjectID = Model.ProjectID }, new { @title = "AddBack to list", @class = "btn btn-inverse" })*@
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
