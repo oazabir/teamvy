@@ -15,7 +15,7 @@
              @if (Model.Count() > 0)
              {
                  @*<input type="submit" style="float:right;" id="btnReadAll" value="mark all as read" class="btn btn-primary" />*@ 
-                @Ajax.ActionLink("mark all as read", "_NotificationReadAll", "Home", new AjaxOptions { UpdateTargetId = "result" }, new { @class = "btn btn-primary" })
+                @Ajax.ActionLink("mark all as read", "_NotificationReadAll", "Home", new AjaxOptions { UpdateTargetId = "result" }, new { @class = "btn btn-info btn-rounded" })
              }
         </li>
              foreach (PMTool.Models.Notification notification in Model)
@@ -26,8 +26,12 @@
                  }
                  if (notification.TaskID != null)
                  {
-                                    
-            <li><a href="@Url.Action("Edit", "Tasks", new { id = notification.TaskID, notificationID = notification.NotificationID })"><span class='icon-envelope'></span><strong>@notification.Title</strong></a></li>
+                     string noti = notification.Title;
+                     if (notification.Title.Length > 100)
+                     {
+                         noti = noti.Substring(0, 100)+"...";
+                     }
+                    <li><a data-placement="bottom" data-rel="tooltip" data-original-title="@notification.Title" class="btn" rel="tooltip" href="@Url.Action("Edit", "Tasks", new { id = notification.TaskID, notificationID = notification.NotificationID })"><span class='icon-envelope'></span><strong>@noti</strong></a></li>
                  }
              }
         }
@@ -63,4 +67,10 @@
         });
     });
 
+</script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('[rel="tooltip"]').tooltip();
+    });
 </script>
