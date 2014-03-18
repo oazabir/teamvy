@@ -49,10 +49,21 @@
 
     //alert("Hello..");
 
-    //var id =@(((PMTool.Models.Task)ViewBag.CurrentTask).TaskID);
+  
     var id = @Model.SprintID;
     var url = '@Url.Action("SprintBurnDownData", "Sprints")' + "?sprintId=" + id;
    
+
+    $.getJSON(url, null
+        , function (data) {
+            var div = $('#ajaxDiv');
+            div.html("<br/> " + "Persons received from server: " + "<br/>");
+            
+            $.each(data, function (i, item) {
+            printPerson(div, item);
+        });
+    });
+
     
     //jQuery('#fileupload').fileupload({
     //    dataType: 'json',
