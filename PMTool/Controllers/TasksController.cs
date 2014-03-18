@@ -111,11 +111,13 @@ namespace PMTool.Controllers
         }
 
 
+        //Action to create time log on corresponding task added by Mahedee @ 18-03-14
         [HttpPost]
         public ActionResult CreateTimeLog(TimeLog timeLog)
         {
             timeLog.CreatedBy = (Guid)Membership.GetUser().ProviderUserKey;
             timeLog.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
+            timeLog.UserID = (Guid)Membership.GetUser().ProviderUserKey;
             timeLog.CreateDate = DateTime.Now;
             timeLog.ModificationDate = DateTime.Now;
             timeLog.ActionDate = DateTime.Now;

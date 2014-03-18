@@ -26,8 +26,8 @@
 
                     <th>Created by</th>*@
 
-                    <th>Total Effort Entry</th>
-                    <th>Effort Entry</th>
+                    <th style="text-align:center;">Total Effort(Hours)</th>
+                    <th style="text-align:center;">Effort Entry</th>
                 </tr>
             </thead>
             <tbody>
@@ -43,10 +43,10 @@
                         <td>
                             <strong>@item.Title</strong>
                         </td>
-                        <td>
+                        <td style="text-align:center;">
                             @item.ActualTaskHoure
                         </td>
-                        <td>
+                        <td style="text-align:center;">
                               @Html.ActionLink(" ", "TaskTimeLog","Tasks", new { id = item.TaskID }, new { @class = "icon-time", @title = "Log Entry" })
                         </td>
            

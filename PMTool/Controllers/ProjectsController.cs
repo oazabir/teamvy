@@ -311,7 +311,14 @@ namespace PMTool.Controllers
 
         }
 
-       
+
+        public ActionResult BurndownCharts()
+        {
+            List<Sprint> sprintList = unitOfWork.SprintRepository.AllByProjectID(1);
+            ViewBag.SprintList = sprintList;
+            return View();
+        }
+
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(long id)

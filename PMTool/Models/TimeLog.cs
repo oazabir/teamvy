@@ -12,6 +12,7 @@ namespace PMTool.Models
 
     public class TimeLog
     {
+
         [Required, Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long LogID { get; set; }
 
@@ -23,12 +24,14 @@ namespace PMTool.Models
         [Required]
         [Display(Name = "User Name")]
         public Guid UserID { get; set; }
+
+        [ForeignKey("UserID")]
         public virtual User User { get; set; }
 
         [Required]
         [Display(Name="Day")]
-        [DefaultValue(typeof(DateTime), "2000-01-01")]
-        public DateTime EntryDate { get; set; } //Entry Date
+        //[DefaultValue(typeof(DateTime), "2000-01-01")]
+        public DateTime? EntryDate { get; set; } //Entry Date
 
         [Required]
         [Display(Name = "Value")]
