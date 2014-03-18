@@ -52,20 +52,22 @@
     //var id =@(((PMTool.Models.Task)ViewBag.CurrentTask).TaskID);
     var id = @Model.SprintID;
     var url = '@Url.Action("SprintBurnDownData", "Sprints")' + "?sprintId=" + id;
-    jQuery('#fileupload').fileupload({
-        dataType: 'json',
-        url: url,
-        autoUpload: true,
-        done: function (e, data) {
-            jQuery("#ModalpopupShowActivity").modal('hide');
-            jQuery('.file_name').html(data.result.name);
-            jQuery('.file_type').html(data.result.type);
-            jQuery('.file_size').html(data.result.size);
-        }
-    }).on('fileuploadprogressall', function (e, data) {
-        var progress = parseInt(data.loaded / data.total * 100, 10);
-        jQuery('.progress .progress-bar').css('width', progress + '%');
-    });
+   
+    
+    //jQuery('#fileupload').fileupload({
+    //    dataType: 'json',
+    //    url: url,
+    //    autoUpload: true,
+    //    done: function (e, data) {
+    //        jQuery("#ModalpopupShowActivity").modal('hide');
+    //        jQuery('.file_name').html(data.result.name);
+    //        jQuery('.file_type').html(data.result.type);
+    //        jQuery('.file_size').html(data.result.size);
+    //    }
+    //}).on('fileuploadprogressall', function (e, data) {
+    //    var progress = parseInt(data.loaded / data.total * 100, 10);
+    //    jQuery('.progress .progress-bar').css('width', progress + '%');
+    //});
 
 
     //var flash = [[0, 2], [1, 6], [2, 3], [3, 8], [4, 5], [5, 13], [6, 8]];
