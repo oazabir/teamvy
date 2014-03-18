@@ -313,7 +313,7 @@ namespace PMTool.Controllers
             GetAllStatus(task);
 
             return View(task);
-        }
+        }  
 
         private void GetAllStatus(Task task)
         {
@@ -399,313 +399,440 @@ namespace PMTool.Controllers
 
         private void SaveNotification(Task task, bool isTaskInsert,bool isSubTask,TaskPropertyChange change)
         {
-            string phrase = "";
-            if (task.Users.Count >0)
-            {
-                foreach (User user in task.Users)
-                {
+            #region Old
+            //string phrase = "";
+            //if (task.Users.Count >0)
+            //{
+            //    foreach (User user in task.Users)
+            //    {
                      
-                    Notification notification = new Notification();
-                    if (isTaskInsert)
-                    {
-                        if (!isSubTask)
-                        {
-                            phrase = " Has assigned " + user.FirstName + " " + user.LastName + " on the Task --";
-                        }
-                        else
-                        {
-                            phrase = " Has assigned  " + user.FirstName + " " + user.LastName + "  on the Subtask --";
-                        }
+            //        Notification notification = new Notification();
+            //        if (isTaskInsert)
+            //        {
+            //            if (!isSubTask)
+            //            {
+            //                phrase = " Has assigned " + user.FirstName + " " + user.LastName + " on the Task --";
+            //            }
+            //            else
+            //            {
+            //                phrase = " Has assigned  " + user.FirstName + " " + user.LastName + "  on the Subtask --";
+            //            }
 
-                        User createdUser = unitOfWork.UserRepository.GetUserByUserID(task.CreatedBy);
-                        notification.Title = createdUser.FirstName + " " + createdUser.LastName + phrase +" "+ task.Title;
+            //            User createdUser = unitOfWork.UserRepository.GetUserByUserID(task.CreatedBy);
+            //            notification.Title = createdUser.FirstName + " " + createdUser.LastName + phrase +" "+ task.Title;
 
                        
-                    }
-                    else
+            //        }
+            //        else
+            //        {
+            //            User modifiedUser = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            //            phrase = phrase + modifiedUser.FirstName + " " + modifiedUser.LastName + " ";
+            //            if (!change.IsSatausChanged)
+            //            {
+            //                if (!isSubTask)
+            //                {
+            //                    phrase = phrase + " Has modify the Task --";
+            //                }
+            //                else
+            //                {
+            //                    phrase = phrase + " Has modify the Subtask --";
+            //                }
+            //            }
+            //            else
+            //            {
+            //                string status = "";
+            //                if (!isSubTask)
+            //                {
+            //                    if (task.ProjectStatusID != null)
+            //                    {
+            //                        ProjectStatus col = unitOfWork.ProjectStatusRepository.Find(Convert.ToInt64(task.ProjectStatusID));
+            //                        status = col.Name;
+            //                    }
+            //                    phrase = phrase + string.Format(" Has changed the task status to {0} --", status);
+            //                }
+            //                else
+            //                {
+            //                    phrase = phrase + string.Format(" Has changed the subtask status to {0} --", status);
+            //                }
+            //            }
+
+            //            if (!change.IsStartDateChanged)
+            //            {
+            //                string date = "";
+            //                if (task.StartDate != null)
+            //                {
+            //                    date = task.StartDate.Value.ToShortDateString();
+            //                }
+            //                else
+            //                {
+            //                    date = "not defined";
+            //                }
+            //                if (!isSubTask)
+            //                {
+
+            //                    phrase = phrase + string.Format(" Has changed the task Start Date to {0} --", date);
+            //                }
+            //                else
+            //                {
+            //                    phrase = phrase + string.Format(" Has changed the subtask Start Date to {0} --", date);
+            //                }
+            //            }
+
+            //            if (!change.IsEndtDateChanged)
+            //            {
+            //                string date = "";
+            //                if (task.EndDate != null)
+            //                {
+            //                    date = task.EndDate.Value.ToShortDateString();
+            //                }
+            //                else
+            //                {
+            //                    date = "not defined";
+            //                }
+            //                if (!isSubTask)
+            //                {
+
+            //                    phrase = phrase + string.Format(" Has changed the task End Date to {0} --", date);
+            //                }
+            //                else
+            //                {
+            //                    phrase = phrase + string.Format(" Has changed the subtask End Date to {0} --", date);
+            //                }
+            //            }
+
+            //            //User modifiedUser = unitOfWork.UserRepository.GetUserByUserID(task.ModifiedBy);
+            //            notification.Title = phrase + task.Title;
+            //        }
+            //        notification.UserID = user.UserId;
+            //        notification.Description = notification.Title;
+            //        notification.ProjectID = task.ProjectID;
+            //        notification.TaskID = task.TaskID;
+            //        unitOfWork.NotificationRepository.InsertOrUpdate(notification);
+
+            //        try
+            //        {
+            //            string logComment = phrase;
+            //            logComment = logComment + "on " + DateTime.Now.ToShortDateString();
+            //            TaskActivityLog log = unitOfWork.TaskActivityLogRepository.FindByTaskID(task.TaskID);
+            //            if (log == null)
+            //            {
+            //                TaskActivityLog logNew = new TaskActivityLog();
+            //                logNew.TaskID = task.TaskID;
+            //                logNew.Comment = phrase;
+            //                logNew.CreateDate = DateTime.Now;
+            //                logNew.ModificationDate = DateTime.Now;
+            //                unitOfWork.TaskActivityLogRepository.InsertOrUpdate(logNew);
+            //                unitOfWork.Save();
+            //            }
+            //            else
+            //            {
+            //                log.Comment = log.Comment + " ; " + logComment;
+            //                unitOfWork.Save();
+            //            }
+            //        }
+            //        catch
+            //        {
+            //        }
+
+            //        unitOfWork.Save();
+            //    }
+            //}
+            //if (task.Followers.Count>0)
+            //{
+            //    foreach (User user in task.Followers)
+            //    {
+            //        Notification notification = new Notification();
+            //        if (isTaskInsert)
+            //        {
+            //            if (!isSubTask)
+            //            {
+            //                phrase = " Has added  " + user.FirstName + " " + user.LastName + "  as a follower on the Task --";
+            //            }
+            //            else
+            //            {
+            //                phrase = " Has added  " + user.FirstName + " " + user.LastName + "  as a follower on the Subtask --";
+            //            }
+            //            User createdUser = unitOfWork.UserRepository.GetUserByUserID(task.CreatedBy);
+            //            notification.Title = createdUser.FirstName + " " + createdUser.LastName + " " + phrase + task.Title;
+            //        }
+            //        else
+            //        {
+            //            if (!isSubTask)
+            //            {
+            //                phrase = " Has modify the Task --";
+            //            }
+            //            else
+            //            {
+            //                phrase = " Has modify the Subtask --";
+            //            }
+            //            User modifiedUser = unitOfWork.UserRepository.GetUserByUserID(task.ModifiedBy);
+            //            notification.Title = modifiedUser.FirstName + " " + modifiedUser.LastName +" "+ phrase + task.Title;
+            //        }
+
+            //        if (!change.IsSatausChanged)
+            //        {
+            //            if (!isSubTask)
+            //            {
+            //                phrase = phrase + " Has modify the Task --";
+            //            }
+            //            else
+            //            {
+            //                phrase = phrase + " Has modify the Subtask --";
+            //            }
+            //        }
+            //        else
+            //        {
+            //            string status = "";
+            //            if (!isSubTask)
+            //            {
+            //                if (task.ProjectStatusID != null)
+            //                {
+            //                    ProjectStatus col = unitOfWork.ProjectStatusRepository.Find(Convert.ToInt64(task.ProjectStatusID));
+            //                    status = col.Name;
+            //                }
+            //                phrase = phrase + string.Format(" Has changed the task status to {0} --", status);
+            //            }
+            //            else
+            //            {
+            //                phrase = phrase + string.Format(" Has changed the subtask status to {0} --", status);
+            //            }
+            //        }
+
+            //        if (!change.IsStartDateChanged)
+            //        {
+            //            string date = "";
+            //            if (task.StartDate != null)
+            //            {
+            //                date = task.StartDate.Value.ToShortDateString();
+            //            }
+            //            else
+            //            {
+            //                date = "not defined";
+            //            }
+            //            if (!isSubTask)
+            //            {
+
+            //                phrase = phrase + string.Format(" Has changed the task Start Date to {0} --", date);
+            //            }
+            //            else
+            //            {
+            //                phrase = phrase + string.Format(" Has changed the subtask Start Date to {0} --", date);
+            //            }
+            //        }
+
+            //        if (!change.IsEndtDateChanged)
+            //        {
+            //            string date = "";
+            //            if (task.EndDate != null)
+            //            {
+            //                date = task.EndDate.Value.ToShortDateString();
+            //            }
+            //            else
+            //            {
+            //                date = "not defined";
+            //            }
+            //            if (!isSubTask)
+            //            {
+
+            //                phrase = phrase + string.Format(" Has changed the task End Date to {0} --", date);
+            //            }
+            //            else
+            //            {
+            //                phrase = phrase + string.Format(" Has changed the subtask End Date to {0} --", date);
+            //            }
+            //        }
+
+            //        notification.UserID = user.UserId;
+            //        notification.Description = notification.Title;
+            //        notification.ProjectID = task.ProjectID;
+            //        notification.TaskID = task.TaskID;
+            //        unitOfWork.NotificationRepository.InsertOrUpdate(notification);
+
+            //        try
+            //        {
+            //            string logComment = phrase;
+            //            logComment = logComment + "on " + DateTime.Now.ToShortDateString();
+            //            TaskActivityLog log = unitOfWork.TaskActivityLogRepository.FindByTaskID(task.TaskID);
+            //            if (log == null)
+            //            {
+            //                TaskActivityLog logNew = new TaskActivityLog();
+            //                logNew.TaskID = task.TaskID;
+            //                logNew.Comment = phrase;
+            //                logNew.CreateDate = DateTime.Now;
+            //                logNew.ModificationDate = DateTime.Now;
+            //                unitOfWork.TaskActivityLogRepository.InsertOrUpdate(logNew);
+            //                unitOfWork.Save();
+            //            }
+            //            else
+            //            {
+            //                log.Comment = log.Comment + " ; " + logComment;
+            //                unitOfWork.Save();
+            //            }
+            //        }
+            //        catch
+            //        {
+            //        }
+
+            //        unitOfWork.Save();
+            //    }
+            //}
+            //if (task.Users.Count == 0 && task.Followers.Count == 0)
+            //{
+            //    try
+            //    {
+            //        if (phrase != "")
+            //        {
+            //            User modifiedUser = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            //            string logComment = phrase;
+            //            logComment = logComment + "on " + DateTime.Now.ToShortDateString();
+            //            TaskActivityLog log = unitOfWork.TaskActivityLogRepository.FindByTaskID(task.TaskID);
+            //            if (log == null)
+            //            {
+            //                TaskActivityLog logNew = new TaskActivityLog();
+            //                logNew.TaskID = task.TaskID;
+            //                logNew.Comment = modifiedUser.FirstName + " " + modifiedUser.LastName + " Created the task " + task.Title + " on " + DateTime.Now.ToShortDateString();
+            //                logNew.CreateDate = DateTime.Now;
+            //                logNew.ModificationDate = DateTime.Now;
+            //                unitOfWork.TaskActivityLogRepository.InsertOrUpdate(logNew);
+            //                unitOfWork.Save();
+            //            }
+            //            else
+            //            {
+            //                log.Comment = log.Comment + " ; " + logComment;
+            //                unitOfWork.Save();
+            //            }
+            //        }
+            //    }
+            //    catch
+            //    {
+            //    }
+            //}
+            #endregion
+
+            # region if Insert
+            string status = "";
+
+            if (isTaskInsert)
+            {
+                User createdUser = unitOfWork.UserRepository.GetUserByUserID(task.CreatedBy);
+                status = createdUser.FirstName + " " + createdUser.LastName + " has created a task";
+                if (!isSubTask)
+                {
+                    if (task.Users.Count > 0)
                     {
-                        User modifiedUser = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
-                        phrase = phrase + modifiedUser.FirstName + " " + modifiedUser.LastName + " ";
-                        if (!change.IsSatausChanged)
+                        foreach (User user in task.Users)
                         {
-                            if (!isSubTask)
-                            {
-                                phrase = phrase + " Has modify the Task --";
-                            }
-                            else
-                            {
-                                phrase = phrase + " Has modify the Subtask --";
-                            }
+                            Notification notification = new Notification();
+                            notification.Title = status+ " for you";
+                            notification.UserID = user.UserId;
+                            notification.Description = notification.Title;
+                            notification.ProjectID = task.ProjectID;
+                            notification.TaskID = task.TaskID;
+                            unitOfWork.NotificationRepository.InsertOrUpdate(notification);
                         }
-                        else
-                        {
-                            string status = "";
-                            if (!isSubTask)
-                            {
-                                if (task.ProjectStatusID != null)
-                                {
-                                    ProjectStatus col = unitOfWork.ProjectStatusRepository.Find(Convert.ToInt64(task.ProjectStatusID));
-                                    status = col.Name;
-                                }
-                                phrase = phrase + string.Format(" Has changed the task status to {0} --", status);
-                            }
-                            else
-                            {
-                                phrase = phrase + string.Format(" Has changed the subtask status to {0} --", status);
-                            }
-                        }
-
-                        if (!change.IsStartDateChanged)
-                        {
-                            string date = "";
-                            if (task.StartDate != null)
-                            {
-                                date = task.StartDate.Value.ToShortDateString();
-                            }
-                            else
-                            {
-                                date = "not defined";
-                            }
-                            if (!isSubTask)
-                            {
-
-                                phrase = phrase + string.Format(" Has changed the task Start Date to {0} --", date);
-                            }
-                            else
-                            {
-                                phrase = phrase + string.Format(" Has changed the subtask Start Date to {0} --", date);
-                            }
-                        }
-
-                        if (!change.IsEndtDateChanged)
-                        {
-                            string date = "";
-                            if (task.EndDate != null)
-                            {
-                                date = task.EndDate.Value.ToShortDateString();
-                            }
-                            else
-                            {
-                                date = "not defined";
-                            }
-                            if (!isSubTask)
-                            {
-
-                                phrase = phrase + string.Format(" Has changed the task End Date to {0} --", date);
-                            }
-                            else
-                            {
-                                phrase = phrase + string.Format(" Has changed the subtask End Date to {0} --", date);
-                            }
-                        }
-
-                        //User modifiedUser = unitOfWork.UserRepository.GetUserByUserID(task.ModifiedBy);
-                        notification.Title = phrase + task.Title;
                     }
-                    notification.UserID = user.UserId;
-                    notification.Description = notification.Title;
-                    notification.ProjectID = task.ProjectID;
-                    notification.TaskID = task.TaskID;
-                    unitOfWork.NotificationRepository.InsertOrUpdate(notification);
-
-                    try
+                }
+                else
+                {
+                    if (task.ParentTaskId != null)
                     {
-                        string logComment = phrase;
-                        logComment = logComment + "on " + DateTime.Now.ToShortDateString();
-                        TaskActivityLog log = unitOfWork.TaskActivityLogRepository.FindByTaskID(task.TaskID);
-                        if (log == null)
+                        Task parentTask = unitOfWork.TaskRepository.Find(Convert.ToInt64(task.ParentTaskId));
+                        status = status + " has created a sub task under the task " + parentTask.Title;
+                        if (task.Users.Count > 0)
                         {
-                            TaskActivityLog logNew = new TaskActivityLog();
-                            logNew.TaskID = task.TaskID;
-                            logNew.Comment = phrase;
-                            logNew.CreateDate = DateTime.Now;
-                            logNew.ModificationDate = DateTime.Now;
-                            unitOfWork.TaskActivityLogRepository.InsertOrUpdate(logNew);
-                            unitOfWork.Save();
-                        }
-                        else
-                        {
-                            log.Comment = log.Comment + " ; " + logComment;
-                            unitOfWork.Save();
+                            foreach (User user in task.Users)
+                            {
+                                Notification notification = new Notification();
+                                notification.Title = status + " for you";
+                                notification.UserID = user.UserId;
+                                notification.Description = notification.Title;
+                                notification.ProjectID = task.ProjectID;
+                                notification.TaskID = task.TaskID;
+                                unitOfWork.NotificationRepository.InsertOrUpdate(notification);
+                            }
                         }
                     }
-                    catch
+                }
+            }
+            #endregion
+            # region if Insert
+            else
+            {
+                User modifieddUser = unitOfWork.UserRepository.GetUserByUserID(task.CreatedBy);
+                status = modifieddUser.FirstName + " " + modifieddUser.LastName + " changed";
+                status = GetModifiedStatus(status, change, task);
+                if (!isSubTask)
+                {
+                    if (task.Users.Count > 0)
                     {
+                        foreach (User user in task.Users)
+                        {
+                            Notification notification = new Notification();
+                            notification.Title = status;
+                            notification.UserID = user.UserId;
+                            notification.Description = notification.Title;
+                            notification.ProjectID = task.ProjectID;
+                            notification.TaskID = task.TaskID;
+                            unitOfWork.NotificationRepository.InsertOrUpdate(notification);
+                        }
                     }
+                }
+            }
 
+            try
+            {
+                string logComment = status;
+                logComment = logComment + "on " + DateTime.Now.ToShortDateString();
+                TaskActivityLog log = unitOfWork.TaskActivityLogRepository.FindByTaskID(task.TaskID);
+                if (log == null)
+                {
+                    TaskActivityLog logNew = new TaskActivityLog();
+                    logNew.TaskID = task.TaskID;
+                    logNew.Comment = status;
+                    logNew.CreateDate = DateTime.Now;
+                    logNew.ModificationDate = DateTime.Now;
+                    unitOfWork.TaskActivityLogRepository.InsertOrUpdate(logNew);
+                    unitOfWork.Save();
+                }
+                else
+                {
+                    log.Comment = log.Comment + " ; " + logComment;
                     unitOfWork.Save();
                 }
             }
-            if (task.Followers.Count>0)
+            catch
             {
-                foreach (User user in task.Followers)
-                {
-                    Notification notification = new Notification();
-                    if (isTaskInsert)
-                    {
-                        if (!isSubTask)
-                        {
-                            phrase = " Has added  " + user.FirstName + " " + user.LastName + "  as a follower on the Task --";
-                        }
-                        else
-                        {
-                            phrase = " Has added  " + user.FirstName + " " + user.LastName + "  as a follower on the Subtask --";
-                        }
-                        User createdUser = unitOfWork.UserRepository.GetUserByUserID(task.CreatedBy);
-                        notification.Title = createdUser.FirstName + " " + createdUser.LastName + " " + phrase + task.Title;
-                    }
-                    else
-                    {
-                        if (!isSubTask)
-                        {
-                            phrase = " Has modify the Task --";
-                        }
-                        else
-                        {
-                            phrase = " Has modify the Subtask --";
-                        }
-                        User modifiedUser = unitOfWork.UserRepository.GetUserByUserID(task.ModifiedBy);
-                        notification.Title = modifiedUser.FirstName + " " + modifiedUser.LastName +" "+ phrase + task.Title;
-                    }
-
-                    if (!change.IsSatausChanged)
-                    {
-                        if (!isSubTask)
-                        {
-                            phrase = phrase + " Has modify the Task --";
-                        }
-                        else
-                        {
-                            phrase = phrase + " Has modify the Subtask --";
-                        }
-                    }
-                    else
-                    {
-                        string status = "";
-                        if (!isSubTask)
-                        {
-                            if (task.ProjectStatusID != null)
-                            {
-                                ProjectStatus col = unitOfWork.ProjectStatusRepository.Find(Convert.ToInt64(task.ProjectStatusID));
-                                status = col.Name;
-                            }
-                            phrase = phrase + string.Format(" Has changed the task status to {0} --", status);
-                        }
-                        else
-                        {
-                            phrase = phrase + string.Format(" Has changed the subtask status to {0} --", status);
-                        }
-                    }
-
-                    if (!change.IsStartDateChanged)
-                    {
-                        string date = "";
-                        if (task.StartDate != null)
-                        {
-                            date = task.StartDate.Value.ToShortDateString();
-                        }
-                        else
-                        {
-                            date = "not defined";
-                        }
-                        if (!isSubTask)
-                        {
-
-                            phrase = phrase + string.Format(" Has changed the task Start Date to {0} --", date);
-                        }
-                        else
-                        {
-                            phrase = phrase + string.Format(" Has changed the subtask Start Date to {0} --", date);
-                        }
-                    }
-
-                    if (!change.IsEndtDateChanged)
-                    {
-                        string date = "";
-                        if (task.EndDate != null)
-                        {
-                            date = task.EndDate.Value.ToShortDateString();
-                        }
-                        else
-                        {
-                            date = "not defined";
-                        }
-                        if (!isSubTask)
-                        {
-
-                            phrase = phrase + string.Format(" Has changed the task End Date to {0} --", date);
-                        }
-                        else
-                        {
-                            phrase = phrase + string.Format(" Has changed the subtask End Date to {0} --", date);
-                        }
-                    }
-
-                    notification.UserID = user.UserId;
-                    notification.Description = notification.Title;
-                    notification.ProjectID = task.ProjectID;
-                    notification.TaskID = task.TaskID;
-                    unitOfWork.NotificationRepository.InsertOrUpdate(notification);
-
-                    try
-                    {
-                        string logComment = phrase;
-                        logComment = logComment + "on " + DateTime.Now.ToShortDateString();
-                        TaskActivityLog log = unitOfWork.TaskActivityLogRepository.FindByTaskID(task.TaskID);
-                        if (log == null)
-                        {
-                            TaskActivityLog logNew = new TaskActivityLog();
-                            logNew.TaskID = task.TaskID;
-                            logNew.Comment = phrase;
-                            logNew.CreateDate = DateTime.Now;
-                            logNew.ModificationDate = DateTime.Now;
-                            unitOfWork.TaskActivityLogRepository.InsertOrUpdate(logNew);
-                            unitOfWork.Save();
-                        }
-                        else
-                        {
-                            log.Comment = log.Comment + " ; " + logComment;
-                            unitOfWork.Save();
-                        }
-                    }
-                    catch
-                    {
-                    }
-
-                    unitOfWork.Save();
-                }
             }
-            if (task.Users.Count == 0 && task.Followers.Count == 0)
+
+            unitOfWork.Save();
+            #endregion
+        }
+
+        private string GetModifiedStatus(string status, TaskPropertyChange change, Task task)
+        {
+            string phrase1 = "";
+            string phrase2 = "";
+            if (change.IsStartDateChanged)
             {
-                try
-                {
-                    if (phrase != "")
-                    {
-                        User modifiedUser = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
-                        string logComment = phrase;
-                        logComment = logComment + "on " + DateTime.Now.ToShortDateString();
-                        TaskActivityLog log = unitOfWork.TaskActivityLogRepository.FindByTaskID(task.TaskID);
-                        if (log == null)
-                        {
-                            TaskActivityLog logNew = new TaskActivityLog();
-                            logNew.TaskID = task.TaskID;
-                            logNew.Comment = modifiedUser.FirstName + " " + modifiedUser.LastName + " Created the task " + task.Title + " on " + DateTime.Now.ToShortDateString();
-                            logNew.CreateDate = DateTime.Now;
-                            logNew.ModificationDate = DateTime.Now;
-                            unitOfWork.TaskActivityLogRepository.InsertOrUpdate(logNew);
-                            unitOfWork.Save();
-                        }
-                        else
-                        {
-                            log.Comment = log.Comment + " ; " + logComment;
-                            unitOfWork.Save();
-                        }
-                    }
-                }
-                catch
-                {
-                }
+                status = status + " Start Date from " ;
+                phrase1 = change.FromSatrtDate != null ? change.FromSatrtDate.Value.ToShortDateString() : " undefined ";
+                phrase2 = change.ToSatrtDate != null ? change.ToSatrtDate.Value.ToShortDateString() : " undefined ";
+              status = status +" "+ phrase1 + " to "+phrase2;
             }
+            if (change.IsEndtDateChanged)
+            {
+                status = status + " End Date from ";
+                phrase1 = change.FromEndDate != null ? change.FromEndDate.Value.ToShortDateString() : " undefined ";
+                phrase2 = change.ToEndDate != null ? change.ToEndDate.Value.ToShortDateString() : " undefined ";
+                status = status + " " + phrase1 + " to " + phrase2;
+            }
+
+            if (change.IsSatausChanged)
+            {
+                status = status + " Status from " + change.FromSataus + " to " + change.ToStatus;
+            }
+
+            return status;
         }
 
         //
@@ -926,7 +1053,7 @@ namespace PMTool.Controllers
 
             GetAllStatus(task);
 
-            MakeNotificationReadonly();
+           // MakeNotificationReadonly();
 
 
             return PartialView(task);   
@@ -952,11 +1079,11 @@ namespace PMTool.Controllers
                 unitOfWork.Save();
                 if (task.ParentTaskId != null)
                 {
-                    SaveNotification(task, false, true, Changed);
+                    SaveNotification(task, true, true, Changed);
                 }
                 else
                 {
-                    SaveNotification(task, false, false, Changed);
+                    SaveNotification(task, true, false, Changed);
                 }
             }
 

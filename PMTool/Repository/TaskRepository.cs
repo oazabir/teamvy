@@ -166,17 +166,44 @@ namespace PMTool.Repository
                 var existingTask = context.Tasks.Include("Users")
                    .Where(t => t.TaskID == task.TaskID).FirstOrDefault<Task>();
 
-                if (task.Status != existingTask.Status)
+                if (task.ProjectStatusID != existingTask.ProjectStatusID)
                 {
                     change.IsSatausChanged = true;
+                    if (existingTask.ProjectStatusID == null)
+                    {
+                        change.FromSataus = "undefined";
+                    }
+                    else
+                    {
+                        ProjectStatus stat = context.ProjectStatuses.Where(s => s.ProjectStatusID == existingTask.ProjectStatusID).FirstOrDefault();
+                        change.FromSataus = stat.Name;
+                    }
+                    if (task.ProjectStatusID == null)
+                    {
+                        change.ToStatus = "undefined";
+                    }
+                    else
+                    {
+                        ProjectStatus stat = context.ProjectStatuses.Where(s => s.ProjectStatusID == task.ProjectStatusID).FirstOrDefault();
+                        change.FromSataus = stat.Name;
+                    }
                 }
                 if (task.StartDate != existingTask.StartDate)
                 {
                     change.IsStartDateChanged = true;
+                    
+                    change.FromSatrtDate = existingTask.StartDate;
+                    
+                    change.ToSatrtDate = task.StartDate;
+                    
                 }
                 if (task.EndDate != existingTask.EndDate)
                 {
                     change.IsEndtDateChanged = true;
+
+                    change.FromEndDate = existingTask.EndDate;
+
+                    change.ToEndDate = task.EndDate;
                 }
                 UpdateAssignedUsers(task, existingTask);
 
