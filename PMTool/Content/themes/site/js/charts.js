@@ -10,7 +10,9 @@
 jQuery(document).ready(function(){		
 		
 		
-		/*****SIMPLE CHART*****/
+    /*****SIMPLE CHART*****/
+
+    /*
 		var flash = [[0, 2], [1, 6], [2,3], [3, 8], [4, 5], [5, 13], [6, 8]];
 		var html5 = [[0, 5], [1, 4], [2,4], [3, 1], [4, 9], [5, 10], [6, 13]];
 			
@@ -66,6 +68,8 @@ jQuery(document).ready(function(){
 			}
 		});
 		
+
+        */
 		
 		/*****BAR GRAPH*****/
 		var d2 = [];

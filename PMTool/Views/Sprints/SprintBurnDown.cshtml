@@ -1,0 +1,142 @@
+﻿
+@model PMTool.Models.Sprint
+
+@{
+    ViewBag.Title = "SprintBurnDown";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row-fluid">
+    <div class="span6">
+        <h4 class="widgettitle">Sprint Burndown chart</h4>
+        <br />
+        <div id="chartplace" style="height: 300px;"></div>
+
+    </div>
+
+@*        <div class="span6">
+        <h4 class="widgettitle">Real Time Chart</h4>
+        <br />
+        <div id="realtime" style="height: 300px;"></div>
+        <br />*@
+@*        <small>You can update a chart periodically to get a real-time effect by using a timer to insert the new data in the plot and redraw it.</small>*@
+    </div>
+
+
+<script type="text/javascript">
+
+
+   // jQuery(document).ready(function () {
+
+       // alert("Working..");
+
+            @* var id =@(((PMTool.Models.Task)ViewBag.CurrentTask).TaskID);
+            var url='@Url.Action("ActivityAdd", "Tasks")'+ "?taskID=" + id;
+            jQuery('#fileupload').fileupload({
+                dataType: 'json',
+                url: url,
+                autoUpload: true,
+                done: function (e, data) {
+                    jQuery("#ModalpopupShowActivity").modal('hide');
+                    jQuery('.file_name').html(data.result.name);
+                    jQuery('.file_type').html(data.result.type);
+                    jQuery('.file_size').html(data.result.size);
+                }
+            }).on('fileuploadprogressall', function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                jQuery('.progress .progress-bar').css('width', progress + '%');
+            });*@
+       // });
+
+    //alert("Hello..");
+
+    //var id =@(((PMTool.Models.Task)ViewBag.CurrentTask).TaskID);
+    var id = @Model.SprintID;
+    var url = '@Url.Action("SprintBurnDownData", "Sprints")' + "?sprintId=" + id;
+   
+    
+    //jQuery('#fileupload').fileupload({
+    //    dataType: 'json',
+    //    url: url,
+    //    autoUpload: true,
+    //    done: function (e, data) {
+    //        jQuery("#ModalpopupShowActivity").modal('hide');
+    //        jQuery('.file_name').html(data.result.name);
+    //        jQuery('.file_type').html(data.result.type);
+    //        jQuery('.file_size').html(data.result.size);
+    //    }
+    //}).on('fileuploadprogressall', function (e, data) {
+    //    var progress = parseInt(data.loaded / data.total * 100, 10);
+    //    jQuery('.progress .progress-bar').css('width', progress + '%');
+    //});
+
+
+    //var flash = [[0, 2], [1, 6], [2, 3], [3, 8], [4, 5], [5, 13], [6, 8]];
+    var sprintbdown = [[0, 20], [1, 18], [2, 18], [3, 17], [4, 16], [5, 16], [6, 12], [7, 10], [8, 7], [9, 4],[10, 0]];
+
+    function showTooltip(x, y, contents) {
+        jQuery('<div id="tooltip" class="tooltipflot">' + contents + '</div>').css({
+            position: 'absolute',
+            display: 'none',
+            top: y + 5,
+            left: x + 5
+        }).appendTo("body").fadeIn(200);
+    }
+
+
+    var plot = jQuery.plot(jQuery("#chartplace"),
+           //[ { data: html5, label: "HTML5(x)", color: "#72f905" }], {
+            [{ data: sprintbdown, label: "", color: "#72f905" }], {
+               series: {
+                   lines: { show: true, fill: true, fillColor: { colors: [{ opacity: 0.05 }, { opacity: 0.15 }] } },
+                   points: { show: true }
+               },
+               legend: { position: 'nw' },
+               grid: { hoverable: true, clickable: true, borderColor: '#ccc', borderWidth: 1, labelMargin: 10 },
+               yaxis: { min: 0, max: 20 }  //yaxis max and min size
+           });
+
+    var previousPoint = null;
+    jQuery("#chartplace").bind("plothover", function (event, pos, item) {
+        jQuery("#x").text(pos.x.toFixed(2));
+        jQuery("#y").text(pos.y.toFixed(2));
+
+        if (item) {
+            if (previousPoint != item.dataIndex) {
+                previousPoint = item.dataIndex;
+
+                jQuery("#tooltip").remove();
+                var x = item.datapoint[0].toFixed(2),
+                y = item.datapoint[1].toFixed(2);
+
+                showTooltip(item.pageX, item.pageY,
+                                item.series.label + " of " + x + " = " + y);
+            }
+
+        } else {
+            jQuery("#tooltip").remove();
+            previousPoint = null;
+        }
+
+    });
+
+    jQuery("#chartplace").bind("plotclick", function (event, pos, item) {
+        if (item) {
+            jQuery("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ".");
+            plot.highlight(item.series, item.datapoint);
+        }
+    });
+
+
+
+
+  
+
+
+
+</script>
+
+
+
+
+
+

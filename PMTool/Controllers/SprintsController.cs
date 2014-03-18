@@ -86,5 +86,34 @@ namespace PMTool.Controllers
 
             return PartialView("_Kanban", taskList);
         }
+
+
+
+        public ActionResult SprintBurnDown(long sprintId)
+        {
+            Sprint sprint = unitOfWork.SprintRepository.Find(sprintId);
+            return View(sprint);
+        }
+
+        public JsonResult SprintBurnDownData(long sprintId)
+        {
+            var chart = new List<Chart>
+                              {
+                                  new Chart{XValue = 0, YValue = 20},
+                                                                                                        
+                                  new Chart{XValue = 1, YValue = 19},
+                                  new Chart{XValue = 2, YValue = 17},
+                                  new Chart{XValue = 3, YValue = 15},
+                                  new Chart{XValue = 4, YValue = 12},
+                                  new Chart{XValue = 5, YValue = 9},
+                                  new Chart{XValue = 6, YValue = 8},
+                                  new Chart{XValue = 7, YValue = 7},
+                                  new Chart{XValue = 8, YValue = 6},
+                                  new Chart{XValue = 9, YValue = 4},
+                                  new Chart{XValue = 10, YValue = 0}
+                              };
+
+            return Json(chart, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -87,6 +87,8 @@ namespace PMTool.Models
 
         public List<string> SelectedLabels { get; set; }
 
+        public virtual List<TimeLog> LoggedTime { get; set; }
+
 
         [Display(Name = "Status")]
         public string Status { get; set; }

@@ -12,7 +12,10 @@
     {
         <tr>
            @* <td>@item.User.FirstName + " " + @item.User.LastName</td>*@
-            <td>@item.EntryDate </td>
+            <td>
+                @if (item.EntryDate != null)
+                    {<span>@item.EntryDate.Value.ToString("dd/MM/yyyy")</span>}
+            </td>
 
             <td>@item.TaskHour
             </td>

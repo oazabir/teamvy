@@ -336,12 +336,19 @@
     <Compile Include="Migrations\201403121223390_checkChange.Designer.cs">
       <DependentUpon>201403121223390_checkChange.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201403130941322_timelog.cs" />
+    <Compile Include="Migrations\201403130941322_timelog.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Migrations\201403130941322_timelog.Designer.cs">
       <DependentUpon>201403130941322_timelog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201403180728216_timelogchange.cs" />
+    <Compile Include="Migrations\201403180728216_timelogchange.Designer.cs">
+      <DependentUpon>201403180728216_timelogchange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Chart.cs" />
     <Compile Include="Models\ProjectStatusRule.cs" />
     <Compile Include="Models\TaskActivityLog.cs" />
     <Compile Include="Models\Sprint.cs" />
@@ -1211,6 +1218,8 @@
     <Content Include="Views\Tasks\_CreateOrEditTimeLog.cshtml" />
     <Content Include="Views\Tasks\TaskTimeLog.cshtml" />
     <Content Include="Views\Tasks\_EffortList.cshtml" />
+    <Content Include="Views\Sprints\SprintBurnDown.cshtml" />
+    <Content Include="Views\Projects\BurndownCharts.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -1364,6 +1373,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201403130941322_timelog.resx">
       <DependentUpon>201403130941322_timelog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403180728216_timelogchange.resx">
+      <DependentUpon>201403180728216_timelogchange.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
