@@ -58,7 +58,7 @@ namespace PMTool.Controllers
             ViewBag.CurrentProject = project;
             ViewBag.PageTitle = "Task List";
             Search search = new Search();
-            ViewData["CurrentProjectID"] = project.ProjectID;
+            ViewData["CurrentProjectID"] = project.ProjectID; 
             ViewData["SelectedStatusID"] = SelectedStatusID;
             ViewData["SelectedPriorityID"]  = SelectedPriorityID;
             ViewData["SelectedUserID"] =  SelectedUserID;
