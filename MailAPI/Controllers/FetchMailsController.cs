@@ -54,7 +54,7 @@ namespace MailAPI.Controllers
             messageBody = "<b>Dear &nbsp;" + user.FirstName + "</b>,<br>" + "<b>You have the following tasks:</b><br>";
             foreach (Task task in taskList)     
             {    
-                if (task.EndDate < DateTime.Today) // overdue task
+                if (task.EndDate < DateTime.Today) // overdue task   
                 {
                     overdueTask += "<li>" + task.Title + "</li>";  
                 }
