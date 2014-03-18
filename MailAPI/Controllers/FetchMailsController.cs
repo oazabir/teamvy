@@ -47,16 +47,16 @@ namespace MailAPI.Controllers
             string overdueTask = string.Empty;
             string todaysTask = string.Empty;
             string dueTommorrowTask = string.Empty;
-            string futureTask = string.Empty;
+            string futureTask = string.Empty;   
             string messageBody = string.Empty;
             IQueryable<Task> taskList = unitofWork.TaskRepository.GetTasksByUser(user);
 
             messageBody = "<b>Dear &nbsp;" + user.FirstName + "</b>,<br>" + "<b>You have the following tasks:</b><br>";
-            foreach (Task task in taskList)
-            {
+            foreach (Task task in taskList)     
+            {    
                 if (task.EndDate < DateTime.Today) // overdue task
                 {
-                    overdueTask += "<li>" + task.Title + "</li>";
+                    overdueTask += "<li>" + task.Title + "</li>";  
                 }
                 else if (task.StartDate == DateTime.Today) // todays task
                 {
