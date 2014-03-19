@@ -97,23 +97,35 @@ namespace PMTool.Controllers
 
         public JsonResult SprintBurnDownData(long sprintId)
         {
-            var chart = new List<Chart>
-                              {
-                                  new Chart{XValue = 0, YValue = 20},
-                                                                                                        
-                                  new Chart{XValue = 1, YValue = 19},
-                                  new Chart{XValue = 2, YValue = 17},
-                                  new Chart{XValue = 3, YValue = 15},
-                                  new Chart{XValue = 4, YValue = 12},
-                                  new Chart{XValue = 5, YValue = 9},
-                                  new Chart{XValue = 6, YValue = 8},
-                                  new Chart{XValue = 7, YValue = 7},
-                                  new Chart{XValue = 8, YValue = 6},
-                                  new Chart{XValue = 9, YValue = 4},
-                                  new Chart{XValue = 10, YValue = 0}
-                              };
+            Decimal sprintEstHour = 0;
 
-            return Json(chart, JsonRequestBehavior.AllowGet);
+            Sprint sprint = unitOfWork.SprintRepository.Find(sprintId);
+            List<Task> sprintTasks = unitOfWork.TaskRepository.GetTasksBySprintID(sprintId);
+            var chartList = new List<Chart>();
+
+            sprintEstHour = sprintTasks.Sum(p => p.TaskHour);
+
+            List<TimeLog> expendedTime = unitOfWork.TimeLogRepository.GetTimeLogBySprint(sprintId);
+
+            //List<decimal> taskHour = sprintTasks.Sum(p => p.LoggedTime.Sum(q => q.TaskHour));
+            var SprintTimeLog = from s in expendedTime
+                            group s by new {s.EntryDate} into g
+                            select new { g.Key.EntryDate, TotalHour = g.Sum(s => s.TaskHour) };
+
+            int baseValue = 0;
+            decimal remainingHour = sprintEstHour;
+
+            for (DateTime dt = sprint.StartDate; dt <= sprint.EndDate && dt <= DateTime.Today; dt = dt.AddDays(1))
+            {
+                decimal entryHour = 0;
+                entryHour = SprintTimeLog.Where(p => p.EntryDate == dt).Sum(q=> q.TotalHour);
+                remainingHour = remainingHour - entryHour;
+                Chart chart = new Chart { XValue = baseValue, YValue = remainingHour };
+                chartList.Add(chart);
+                baseValue++;
+                
+            }
+            return Json(chartList, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -16,6 +16,12 @@ namespace PMTool.Models
         [Required, Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long LogID { get; set; }
 
+
+        [Required]
+        [Display(Name = "Task Title")]
+        public long? SprintID { get; set; }
+        public virtual Sprint Sprint { get; set; }
+
         [Required]
         [Display(Name = "Task Title")]
         public long? TaskID { get; set; }

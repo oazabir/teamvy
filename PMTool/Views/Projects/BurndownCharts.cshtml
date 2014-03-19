@@ -22,35 +22,40 @@
             <h5><u>List of Sprints</u></h5>
 
             <table class="table table-bordered" id="dyntable">
-    <thead>
-        <tr>
-            <th>Sprint Name
-            </th>
-            <th>Burndown Chart</th>
-   
-            @*            <th>Is Active
-            </th>
-            <th>Add Tasks
-            </th>
-            <th>Show Tasks
-            </th>
-            <th></th>*@
+                <thead>
+                    <tr>
+                        <th>Project Name</th>
+                        <th>Sprint Name
+                        </th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Burndown Chart</th>
 
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in (List<PMTool.Models.Sprint>)ViewBag.SprintList)
-        {
-            <tr>
-                <td>
-                    @item.Name
-                </td>
-                <td>
-                    @Html.ActionLink(" ","SprintBurnDown","Sprints", new {sprintId = item.SprintID}, new {@class = "icon-signal", @title = "Burndown Chart"})
-                </td>
-         
 
-@*                <td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in (List<PMTool.Models.Sprint>)ViewBag.SprintList)
+                    {
+                        <tr>
+                            <td>
+                                @item.Project.Name
+                            </td>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @item.StartDate
+                            </td>
+                            <td>
+                                @item.EndDate
+                            </td>
+                            <td>
+                                @Html.ActionLink(" ", "SprintBurnDown", "Sprints", new { sprintId = item.SprintID }, new { @class = "icon-signal", @title = "Burndown Chart" })
+                            </td>
+
+
+                            @*                <td>
                     @Html.DisplayTextFor(_ => item.IsActive).ToString()
                 </td>
                 <td>
@@ -68,12 +73,12 @@
                 </td>*@
 
 
-            </tr>
-        }
-    </tbody>
-</table>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
 
-            </div>
         </div>
     </div>
+</div>
