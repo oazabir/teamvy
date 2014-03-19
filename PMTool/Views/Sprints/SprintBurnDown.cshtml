@@ -9,7 +9,7 @@
     <div class="span6">
         <h4 class="widgettitle">Sprint Burndown chart</h4>
         <br />
-        <div id="chartplace" style="height: 300px;"></div>
+        <div id="chartplace" style="width:600px;height:300px;">SomeTExt</div>
 
     </div>
 
@@ -54,13 +54,13 @@
     var url = '@Url.Action("SprintBurnDownData", "Sprints")' + "?sprintId=" + id;
    
 
-    $.getJSON(url, null
+    jQuery.getJSON(url, null
         , function (data) {
-            var div = $('#ajaxDiv');
+            var div = jQuery('#ajaxDiv');
             div.html("<br/> " + "Persons received from server: " + "<br/>");
             
-            $.each(data, function (i, item) {
-            printPerson(div, item);
+            jQuery.each(data, function (i, item) {
+            //printPerson(div, item);
         });
     });
 
