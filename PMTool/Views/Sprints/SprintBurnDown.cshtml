@@ -25,7 +25,8 @@
 <script type="text/javascript">
     
     jQuery(document).ready(function(){		
-        var sprintbdown = new Array(new Array());
+        var highestYValue = 0;
+       
         var id = @Model.SprintID;
         var url = '@Url.Action("SprintBurnDownData", "Sprints")' + "?sprintId=" + id;
      
@@ -48,12 +49,20 @@
                         individual_result.push(item.XValue);
                         individual_result.push(item.YValue);
                         result.push(individual_result);
+                        if(item.YValue > highestYValue)
+                            highestYValue = item.YValue;
                     });
                 }
             });
 
+            //sprintbdown = result;
+            //alert(highestYValue);
             return result;
         }
+
+        //alert(GetSprintData()[0][1]);
+
+        //alert(result[0][1]);
 
         function showTooltip(x, y, contents) {
             jQuery('<div id="tooltip" class="tooltipflot">' + contents + '</div>').css({
@@ -68,6 +77,7 @@
         var plot = jQuery.plot(jQuery("#chartplace"),
              /*Call GetSprintDate() function to get plotting data as array by Mahedee on 19-03-2014 */
                //[ { data: html5, label: "HTML5(x)", color: "#72f905" }], {
+                
                 [{ data: GetSprintData(), label: "", color: "#72f905" }], {
                     series: {
                         lines: { show: true, fill: true, fillColor: { colors: [{ opacity: 0.05 }, { opacity: 0.15 }] } },
@@ -75,7 +85,7 @@
                     },
                     legend: { position: 'nw' },
                     grid: { hoverable: true, clickable: true, borderColor: '#ccc', borderWidth: 1, labelMargin: 10 },
-                    yaxis: { min: 0, max: 20 }  //yaxis max and min size
+                    yaxis: { min: 0, max: highestYValue }  //yaxis max and min size
                 });
 
         var previousPoint = null;

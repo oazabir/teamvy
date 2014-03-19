@@ -93,20 +93,23 @@ namespace PMTool.Controllers
         }
 
         //Action for get all time log on corresponding task added by Mahedee @ 13-03-14
-        public ViewResult TaskTimeLog(long id)
+        public ViewResult TaskTimeLog(long taskId, long sprintId)
         {
             List<TimeLog> timeLog = new List<TimeLog>();
-            timeLog = unitOfWork.TimeLogRepository.All.Where(p => p.TaskID == id).ToList();
-            ViewBag.TaskId = id;
+            timeLog = unitOfWork.TimeLogRepository.All.Where(p => p.TaskID == taskId).ToList();
+            ViewBag.TaskId = taskId;
+            ViewBag.SprintId = sprintId;
             return View(timeLog);
         }
 
         //Here id = task id
-        public ActionResult CreateTimeLog(long id) 
+        public ActionResult CreateTimeLog(long taskId, long sprintId) 
         {
+            //Task task = unitOfWork.TaskRepository.get
             TimeLog timelog = new TimeLog();
-            timelog.TaskID = id;
-
+            timelog.TaskID = taskId;
+            timelog.SprintID = sprintId;
+            
             return View(timelog);
         }
 
@@ -126,7 +129,7 @@ namespace PMTool.Controllers
             {
                unitOfWork.TimeLogRepository.InsertOrUpdate(timeLog);
                unitOfWork.Save();
-               return RedirectToAction("TaskTimeLog", new { @id = timeLog.TaskID});
+               return RedirectToAction("TaskTimeLog", new { @taskId = timeLog.TaskID, @sprintId = timeLog.SprintID });
             }
 
 

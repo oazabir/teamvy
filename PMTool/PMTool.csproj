@@ -346,6 +346,10 @@
     <Compile Include="Migrations\201403180728216_timelogchange.Designer.cs">
       <DependentUpon>201403180728216_timelogchange.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201403191044334_updateTimeLog.cs" />
+    <Compile Include="Migrations\201403191044334_updateTimeLog.Designer.cs">
+      <DependentUpon>201403191044334_updateTimeLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Chart.cs" />
@@ -1376,6 +1380,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201403180728216_timelogchange.resx">
       <DependentUpon>201403180728216_timelogchange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403191044334_updateTimeLog.resx">
+      <DependentUpon>201403191044334_updateTimeLog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

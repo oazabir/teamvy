@@ -40,6 +40,12 @@ namespace PMTool.Repository
             return query;
         }
 
+        public List<TimeLog> GetTimeLogBySprint(long sprintID)
+        {
+            List<TimeLog> timeLogList = context.TimeLogs.Where(t => t.SprintID == sprintID).ToList();
+            return timeLogList;
+        }
+
         public TimeLog Find(long id)
         {
             return context.TimeLogs.Find(id);
