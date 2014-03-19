@@ -17,7 +17,7 @@ namespace PMTool.Controllers
     public class TasksController : BaseController 
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
-        private const int defaultPageSize = 3;
+        private const int defaultPageSize = 10;
         //
         // GET: /Tasks/
          
