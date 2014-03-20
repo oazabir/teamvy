@@ -26,9 +26,7 @@
     
 
 </p>
-@*@using (Ajax.BeginForm("_Search", "Tasks", new AjaxOptions { UpdateTargetId = "grid-list", HttpMethod = "get", LoadingElementId = "loading", OnBegin = "beginPaging", OnSuccess = "successPaging", OnFailure = "failurePaging" }))
-{
-    *@
+
 
 @using (Html.BeginForm("ProjectTasks", "Tasks", FormMethod.Get))
 {
@@ -57,12 +55,7 @@
                 </td>
                 <td>Priority</td>
                 <td>
-                   @* @Html.DropDownListFor(model => model.SelectedPriorityID, (Model.priorityList).Select(option => new SelectListItem
-               {
-                   Text = (option == null ? "None" : option.Name),
-                   Value = option.PriorityID.ToString(),
-                   Selected = (Model != null) && (option.PriorityID == Model.SelectedPriorityID)
-               }), "Choose...")*@
+           
                      <select name="SelectedPriorityID">
                          <option value="">Choose...</option>  
                     @foreach (var item in ViewData["PossiblePriorities"] as List<SelectListItem>)
@@ -77,12 +70,7 @@
              <tr>
                 <td>Assigned User</td>
                 <td>
-                    @*@Html.DropDownListFor(model => model.SelectedUserID, (Model.UserList).Select(option => new SelectListItem
-               {
-                   Text = (option == null ? "None" : option.FirstName + " " + option.LastName),
-                   Value = option.UserId.ToString(),
-                   Selected = (Model != null) && (option.UserId == Model.SelectedUserID)
-               }), "Choose...")*@
+             
                     <select name="SelectedUserID">
                          <option value="">Choose...</option>  
                     @foreach (var item in ViewData["PossibleUsers"] as List<SelectListItem>)
@@ -94,19 +82,7 @@
                 </td>
                 <td>Sprint</td>
                 <td>
-                   @* @Html.DropDownListFor(model => model.SelectedSprintID, (Model.SprintList).Select(option => new SelectListItem
-               {
-                   Text = (option == null ? "None" : option.Name),
-                   Value = option.SprintID.ToString(),
-                   Selected = (Model != null) && (option.SprintID == Model.SelectedSprintID)
-               }), "Choose...")*@
-                    @*<select name="SelectedSprintID">
-                          <option value="">Choose....</option>
-                          @foreach (PMTool.Models.Sprint item in (List<PMTool.Models.Sprint>)ViewBag["PossibleSprints"])
-                          {
-                              <option value="@item.SprintID">@item.Name</option>
-                          }
-                      </select>*@
+           
                      <select name="SelectedSprintID">
                          <option value="">Choose...</option>  
                     @foreach (var item in ViewData["PossibleSprints"] as List<SelectListItem>)
@@ -136,10 +112,7 @@
 
     </div>
 }
-@*@{
-    PMTool.Models.Project project = (PMTool.Models.Project)ViewBag.CurrentProject;
-    Html.RenderAction("_Search", "Tasks", new { projectID = project.ProjectID });
-}*@
+
 
 <div id="divTaskList" >
 

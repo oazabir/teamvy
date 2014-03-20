@@ -205,6 +205,11 @@ namespace PMTool.Controllers
             }
         }
 
+        /// <summary>
+        /// Add Project Owner
+        /// Mahedee @13-02-14
+        /// </summary>
+        /// <param name="project"></param>
         private void AddProjectOwner(Project project)
         {
             project.ProjectOwners = new List<User>();
@@ -311,6 +316,11 @@ namespace PMTool.Controllers
         }
 
 
+        /// <summary>
+        /// List of Sprint against project for burndown chart
+        /// Mahedee @17-03-14
+        /// </summary>
+        /// <returns></returns>
         public ActionResult BurndownCharts()
         {
             List<Sprint> sprintList = unitOfWork.SprintRepository.AllByProjectID(1);

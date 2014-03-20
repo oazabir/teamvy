@@ -63,33 +63,23 @@
                 </td>
                 <td>
 
-                    @Html.TextBoxFor(model => model.StartDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" , @style="z-index:2000;"})
+                    @Html.TextBoxFor(model => model.StartDate, "{0:dd/MM/yyyy}", new { @class = "datepicker", @style = "z-index:2000;" })
                     @Html.ValidationMessageFor(model => model.StartDate)
                 </td>
             </tr>
-            
+
 
             <tr>
                 <td>
                     @Html.LabelFor(model => model.EndDate)
                 </td>
                 <td>
-                    @Html.TextBoxFor(model => model.EndDate, "{0:dd/MM/yyyy}", new { @class = "datepicker" , @style="z-index:2000;"})
+                    @Html.TextBoxFor(model => model.EndDate, "{0:dd/MM/yyyy}", new { @class = "datepicker", @style = "z-index:2000;" })
                     @Html.ValidationMessageFor(model => model.EndDate)
                 </td>
             </tr>
-            
-@*            <tr>
-                <td>
-                    @Html.LabelFor(model => model.IsActive)
-                </td>
-                <td>
 
-                    @Html.CheckBoxFor(model => model.IsActive)
-                    @Html.ValidationMessageFor(model => model.IsActive)
-                </td>
-            </tr>*@
-           
+
             <tr>
                 <td class="width30"></td>
                 <td>
@@ -109,28 +99,28 @@
         jQuery("#form").each(function () { jQuery.data(jQuery(this)[0], 'validator', false); }); //enable to display the error messages
         jQuery.validator.unobtrusive.parse("#form");
 
-            jQuery(".datepicker").datepicker({
-                dateFormat: "dd/mm/yy",
-                showStatus: true,
-                showWeeks: true,
-                currentText: 'Now',
-                autoSize: true,
-                gotoCurrent: true,
-                showAnim: 'blind',
-                highlightWeek: true
-            })
-                .on('show', function () {
+        jQuery(".datepicker").datepicker({
+            dateFormat: "dd/mm/yy",
+            showStatus: true,
+            showWeeks: true,
+            currentText: 'Now',
+            autoSize: true,
+            gotoCurrent: true,
+            showAnim: 'blind',
+            highlightWeek: true
+        })
+            .on('show', function () {
 
-                    // Make sure that z-index is above any open modal.
-                    var jQueryinput = jQuery(this);
-                    var modalZIndex = jQueryinput.closest('.modal').css('z-index');
-                    var zIndex = DEFAULT_Z_INDEX;
-                    if (modalZIndex) {
-                        zIndex = parseInt(modalZIndex) + 1;
-                    }
+                // Make sure that z-index is above any open modal.
+                var jQueryinput = jQuery(this);
+                var modalZIndex = jQueryinput.closest('.modal').css('z-index');
+                var zIndex = DEFAULT_Z_INDEX;
+                if (modalZIndex) {
+                    zIndex = parseInt(modalZIndex) + 1;
+                }
 
-                    jQuery('.datepicker').css("z-index", zIndex);;
+                jQuery('.datepicker').css("z-index", zIndex);;
 
-                });
+            });
     });
 </script>

@@ -21,25 +21,7 @@
         @Html.ValidationMessageFor(model => model.Description)
     </td>
 </tr>
-@*<tr>
-    <td>
-        @Html.LabelFor(model => model.IsActive)
-    </td>
-    <td>
-        @Html.EditorFor(model => model.IsActive)
-        @Html.ValidationMessageFor(model => model.IsActive)
-    </td>
-</tr>*@
 
-@*<tr>
-    <td>
-        @Html.LabelFor(model => model.IsLocked)
-    </td>
-    <td>
-        @Html.EditorFor(model => model.IsLocked)
-        @Html.ValidationMessageFor(model => model.IsLocked)
-    </td>
-</tr>*@
 <script type="text/javascript">
 
     jQuery(document).ready(function () {
@@ -107,22 +89,7 @@
         <input type="text" id="itemText" value="" placeholder="Add Status" />
         <button id="btn2" class="btn">+  </button>
         <div id="items" class="tagsinput">
-            @*@{
-                    if (Model.allStatus != null)
-                    {
-                        List<string> statuses = Model.allStatus.Split(',').ToList();
-                        foreach (string status in statuses)
-                        {
-                            if (!string.IsNullOrEmpty(status.Trim()))
-                            {
-                                    <span id="@status" class="tag">@status
-                                        <a title="Removing Status" onclick="removeitbyID('@status')">x</a>
-                                    </span>
-                            }
-                        }
-                    }
-                }
-            *@
+   
             @{
                 if (Model.ProjectStatuses != null)
                 {

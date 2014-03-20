@@ -101,28 +101,8 @@
 
 
 <div class="pager1">
-   @* @Html.Raw(Ajax.Pager(
-            new Options
-            {
-                PageSize = Model.PageSize,
-                TotalItemCount = Model.TotalItemCount,
-                CurrentPage = Model.PageNumber,
-                ItemTexts = new ItemTexts() { Next = "Next", Previous = "Previous", Page = "P" },
-                ItemIcon = new ItemIcon() { First = "icon-backward", Previous = "icon-chevron-left", Next = "icon-chevron-right", Last = "icon-forward" },
-                TooltipTitles = new TooltipTitles() { Next = "Next page", Previous = "Previous page", Page = "Page {0}." },
-                Size = Size.normal,
-                Alignment = Alignment.centered,
-                IsShowControls = true,
-                IsShowFirstLast = true,
-                CssClass = ""
-            },
-            new AjaxOptions
-            {
-                UpdateTargetId = "divTaskList",
-                OnBegin = "beginPaging",
-                OnSuccess = "successPaging",
-                OnFailure = "failurePaging"
-            }, new { controller = "Task", action = "ProjectTasks",projectID=ViewData["CurrentProjectID"], SelectedStatusID = ViewData["SelectedStatusID"],SelectedPriorityID=ViewData["SelectedPriorityID"],SelectedUserID=ViewData["SelectedUserID"],SelectedSprintID=ViewData["SelectedSprintID"]   }))*@
+ 
+    
      @Html.Raw(Html.Pager(
             new Options
             {

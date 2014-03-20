@@ -26,8 +26,6 @@
         <tr>
             <th>Project Name
             </th>
-           @* <th>Is Locked</th>*@
-
             <th>Is Active
             </th>
             <th>Add Tasks
@@ -44,10 +42,7 @@
                 <td>
                     @item.Name
                 </td>
-              @*  <td>
-                   @Html.DisplayTextFor(_ =>item.IsLocked).ToString()
-                </td>*@
-
+             
                 <td>
                     @Html.DisplayTextFor(_ => item.IsActive).ToString()
                 </td>
