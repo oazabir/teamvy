@@ -7,6 +7,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PMTool.Models
 {
+    /// <summary>
+    /// Project Model
+    /// </summary>
     public class Project
     {
         [Required, Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

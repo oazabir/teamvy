@@ -10,6 +10,10 @@ using PMTool.Models;
 
 namespace PMTool.Repository
 { 
+    /// <summary>
+    /// Repository for TimeLog
+    /// Created by Mahedee @18-03-14
+    /// </summary>
     public class TimeLogRepository : ITimeLogRepository
     {
         PMToolContext context = new PMToolContext();

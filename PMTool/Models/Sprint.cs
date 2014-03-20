@@ -7,6 +7,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PMTool.Models
 {
+    /// <summary>
+    /// Sprint Model
+    /// </summary>
     public class Sprint
     {
         [Required, Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

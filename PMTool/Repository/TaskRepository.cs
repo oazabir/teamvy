@@ -48,12 +48,6 @@ namespace PMTool.Repository
                 query = query.Include(includeProperty);
 
             }
-            //foreach (Task task in query)
-            //{
-            //    //task.ChildTask = context.Tasks.Where(t => t.ParentTaskId == task.TaskID).ToList();
-            //    //task.CreatedByUser = context.Users.Where(t => t.UserId == task.CreatedBy).FirstOrDefault();
-            //    //task.ProjectStatus = context.ProjectStatuses.Where(t => t.ProjectStatusID == task.ProjectStatusID).FirstOrDefault();
-            //}
             return query;
         }
         
@@ -65,8 +59,8 @@ namespace PMTool.Repository
                 task.ChildTask = context.Tasks.Where(t => t.ParentTaskId == task.TaskID).ToList();
                 task.CreatedByUser = context.Users.Where(t => t.UserId == task.CreatedBy).FirstOrDefault();
                 task.ProjectStatus = context.ProjectStatuses.Where(t => t.ProjectStatusID == task.ProjectStatusID).FirstOrDefault();
-                task.LoggedTime = context.TimeLogs.Where(t => t.TaskID == task.TaskID).ToList();
-                task.ActualTaskHoure = task.LoggedTime.Sum(x => x.TaskHour);
+                task.LoggedTime = context.TimeLogs.Where(t => t.TaskID == task.TaskID).ToList(); //List of time log against task Added by Mahedee @18-03-14
+                task.ActualTaskHoure = task.LoggedTime.Sum(x => x.TaskHour); //Sum of entry hour as actual hour. Added by Mahedee @18-03-14
             }
             return taskList;
         }
@@ -97,8 +91,8 @@ namespace PMTool.Repository
                 task.ChildTask = context.Tasks.Where(t => t.ParentTaskId == task.TaskID).ToList();
                 task.CreatedByUser = context.Users.Where(t => t.UserId == task.CreatedBy).FirstOrDefault();
                 task.ProjectStatus = context.ProjectStatuses.Where(t => t.ProjectStatusID==null||t.ProjectStatusID == task.ProjectStatusID).FirstOrDefault();
-                task.LoggedTime = context.TimeLogs.Where(t => t.TaskID == task.TaskID).ToList();
-                task.ActualTaskHoure = task.LoggedTime.Sum(x => x.TaskHour);
+                task.LoggedTime = context.TimeLogs.Where(t => t.TaskID == task.TaskID).ToList(); //List of time log against task Added by Mahedee @18-03-14
+                task.ActualTaskHoure = task.LoggedTime.Sum(x => x.TaskHour); //Sum of entry hour as actual hour. Added by Mahedee @18-03-14
             }
             return query;
         }
@@ -142,13 +136,6 @@ namespace PMTool.Repository
             objTask = context.Tasks.Where(t => t.TaskID == id).Include(task => task.Users).Include(task => task.Followers).Include(task => task.CreatedByUser).FirstOrDefault();
             objTask.CreatedByUser = context.Users.Where(t => t.UserId == objTask.CreatedBy).FirstOrDefault();
             objTask.ProjectStatus = context.ProjectStatuses.Where(t => t.ProjectStatusID == objTask.ProjectStatusID).FirstOrDefault();
-
-            //Task tasks = new Task();
-            //tasks = context.Tasks.Where(t => t.TaskID == id).Include(task => tasks.Users).Include(task => task.Followers).Include(task => task.CreatedByUser).FirstOrDefault();
-            //return tasks;
-            //return context.Tasks.Where(t => t.TaskID == id).Include(task => task.Users).Include(task => task.Followers).FirstOrDefault()
-            //    .CreatedByUser = context.Users.Where(t => t.UserId = ;
-
             return objTask;
         }
 
@@ -303,7 +290,6 @@ namespace PMTool.Repository
                                         && (search.SelectedSprintID == null || t.SprintID == search.SelectedSprintID)
                                         && (search.SelectedUserID == null || t.Users.Any(u => u.UserId == search.SelectedUserID))
                                         ).ToList();
-            //taskList = taskList.Where(t => t.Users.Any(u => u.UserId == search.SelectedUserID)).ToList();
             return taskList;
         }
     }
