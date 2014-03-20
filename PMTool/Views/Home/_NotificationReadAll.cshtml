@@ -38,29 +38,3 @@
     </ul>
 </div>
 
-
-@*<script type="text/javascript">
-    	
-
-    jQuery('#btnReadAll').click(function () {
-        jQuery.ajax({
-            type: 'POST',
-            url: '@Url.Action("_Notification", "Home")',
-            contentType: 'application/json; charset=utf-8',
-            data: {
-                notifications: jQuery(this).serialize()
-                },
-            success: function (returnPayload) {
-                //console && console.log("request succeeded");
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-               // console && console.log("request failed");
-            },
-            dataType: "xml",
-            contentType: "application/json",
-            processData: true,
-            async: false
-        });
-    });
-
-</script>*@
