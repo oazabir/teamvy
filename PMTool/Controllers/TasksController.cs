@@ -66,6 +66,7 @@ namespace PMTool.Controllers
                 search.SelectedSprintID = Convert.ToInt64(SelectedSprintID);
 
             taskList = GetTasks(search);
+            ViewBag.SearchObj = search;
             return View(taskList.ToPagedList(currentPageIndex, defaultPageSize));
         }
 

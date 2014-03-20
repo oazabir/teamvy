@@ -42,13 +42,16 @@
                          <option value="">Choose...</option>  
                     @foreach (var item in ViewData["TaskStatus"] as List<SelectListItem>)
                     {
-                        if (ViewData["SelectedStatusID"] == @item.Value)
-                        {<option value="@item.Value" selected="selected">@item.Text</option>  
+                        PMTool.Models.Search search = (PMTool.Models.Search)ViewBag.SearchObj;
+                       
+                        if (search.SelectedStatusID.ToString() == item.Value)
+                        {
+                            <option value="@item.Value" selected="selected">@item.Text</option>  
                         }
                         else
                         {
-                        <option value="@item.Value">@item.Text</option>  
-                    }
+                            <option value="@item.Value">@item.Text</option>  
+                        }
                     }
 
                         </select>
@@ -60,7 +63,16 @@
                          <option value="">Choose...</option>  
                     @foreach (var item in ViewData["PossiblePriorities"] as List<SelectListItem>)
                     {
-                        <option value="@item.Value">@item.Text</option>  
+                         PMTool.Models.Search search = (PMTool.Models.Search)ViewBag.SearchObj;
+                       
+                        if (search.SelectedPriorityID.ToString() == item.Value)
+                        {
+                            <option value="@item.Value" selected="selected">@item.Text</option>  
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Text</option>  
+                        }
                     }
 
                         </select>
@@ -75,7 +87,16 @@
                          <option value="">Choose...</option>  
                     @foreach (var item in ViewData["PossibleUsers"] as List<SelectListItem>)
                     {
-                        <option value="@item.Value">@item.Text</option>  
+                        PMTool.Models.Search search = (PMTool.Models.Search)ViewBag.SearchObj;
+                       
+                        if (search.SelectedUserID.ToString() == item.Value)
+                        {
+                            <option value="@item.Value" selected="selected">@item.Text</option>  
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Text</option>  
+                        }
                     }
 
                         </select>
@@ -87,7 +108,16 @@
                          <option value="">Choose...</option>  
                     @foreach (var item in ViewData["PossibleSprints"] as List<SelectListItem>)
                     {
-                        <option value="@item.Value">@item.Text</option>  
+                        PMTool.Models.Search search = (PMTool.Models.Search)ViewBag.SearchObj;
+                       
+                        if (search.SelectedSprintID.ToString() == item.Value)
+                        {
+                            <option value="@item.Value" selected="selected">@item.Text</option>  
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Text</option>  
+                        }
                     }
 
                         </select>
