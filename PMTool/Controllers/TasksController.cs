@@ -1368,23 +1368,18 @@ namespace PMTool.Controllers
         {
             List<Task> taskList = new List<Task>();
             Project projectOld = unitOfWork.ProjectRepository.Find(projectID);
-            try
-            {
+            
                 taskList = unitOfWork.TaskRepository.ByProjectAndStatusIncluding(projectID, status, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-                foreach (Task task in taskList)
+                if (!taskList.Any(e => e.ProjectStatusID == status))
                 {
-                    task.ProjectStatusID = null;
+                    ViewBag.isSattusDeleted = true; 
+                    unitOfWork.ProjectStatusRepository.DeleteByProjectIDAndColID(status, projectID);
+                    unitOfWork.Save();
                 }
-                unitOfWork.ProjectStatusRepository.DeleteByProjectIDAndColID(status, projectID);
-                unitOfWork.Save();
                 taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-            }
-            catch
-            {
-                //return View(projectOld);
-            }
+          
             ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectID);
-            return PartialView("_Kanban", taskList);//RedirectToAction("Kanban", "Tasks", new { @ProjectID = projectOld.ProjectID });
+            return PartialView("_Kanban", taskList);
 
         }
 
@@ -1404,10 +1399,10 @@ namespace PMTool.Controllers
             unitOfWork.ProjectStatusRepository.InsertOrUpdate(projectcol);
             unitOfWork.Save();
             Project project = new Project();
-            List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectcol.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            //List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectcol.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
             ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectcol.ProjectID);
             Project projectOld = unitOfWork.ProjectRepository.Find(projectcol.ProjectID);
-            //List<Task> taskList = new List<Task>();
+            List<Task> taskList = new List<Task>();
             try
             {
                 projectOld.allStatus = project.allStatus;
@@ -1430,6 +1425,7 @@ namespace PMTool.Controllers
             catch
             {
             }
+            taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectcol.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
             return PartialView("_Kanban", taskList);
         }
 
