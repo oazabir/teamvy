@@ -224,7 +224,6 @@
     <Compile Include="Context\DataContextInitializer.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\FetchMailsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LabelsController.cs" />
     <Compile Include="Controllers\PrioritiesController.cs" />
@@ -347,10 +346,13 @@
     <Compile Include="Migrations\201403180728216_timelogchange.Designer.cs">
       <DependentUpon>201403180728216_timelogchange.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201403191315353_migrateforrelase.cs" />
+    <Compile Include="Migrations\201403191315353_migrateforrelase.Designer.cs">
+      <DependentUpon>201403191315353_migrateforrelase.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Chart.cs" />
-    <Compile Include="Models\Mailer.cs" />
     <Compile Include="Models\ProjectStatusRule.cs" />
     <Compile Include="Models\TaskActivityLog.cs" />
     <Compile Include="Models\Sprint.cs" />
@@ -1378,6 +1380,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201403180728216_timelogchange.resx">
       <DependentUpon>201403180728216_timelogchange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403191315353_migrateforrelase.resx">
+      <DependentUpon>201403191315353_migrateforrelase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
