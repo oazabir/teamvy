@@ -267,7 +267,6 @@ namespace PMTool.Controllers
             }
             List<SelectListItem> allUsers = GetAllUser();
             ViewBag.PossibleUsers = allUsers;
-           // project.SelectedAssignedUsers = project.Users.Select(u => u.UserId.ToString()).ToList();
             return View(project);
 
         }

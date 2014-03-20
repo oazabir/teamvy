@@ -92,7 +92,8 @@ namespace PMTool.Controllers
                         {
                             try
                             {
-                                SendConfirmationEmail(model.UserName,model.FirstName,model.LastName,model.Password); //Send confirmation email 
+                                //Send confirmation email added by Mahedee @ 23-01-14
+                                SendConfirmationEmail(model.UserName,model.FirstName,model.LastName,model.Password);  
                             }
                             catch (Exception exp)
                             {
@@ -371,6 +372,12 @@ namespace PMTool.Controllers
         }
 
 
+        /// <summary>
+        /// Invite people to the project 
+        /// added by Mahedee @ 23-01-14
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         [Authorize]
         public ActionResult InvitePeople(string email)
         {
@@ -411,9 +418,6 @@ namespace PMTool.Controllers
         public ActionResult EditProfile(User user)
         {
             UnitOfWork unitofWork = new UnitOfWork();
-            //User userNew = unitofWork.UserRepository.GetUserByEmail(User.Identity.Name);
-            //userNew.FirstName = user.FirstName;
-            //userNew.LastName = user.LastName;
             unitofWork.UserRepository.Update(user);
             unitofWork.Save();
             return View();
@@ -518,6 +522,13 @@ namespace PMTool.Controllers
 
         #region Invitation & Verification
 
+        /// <summary>
+        /// Send confirmation email added by Mahedee @ 23-01-14
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="password"></param>
         public void SendConfirmationEmail(string userName,string firstName,string lastName,string password)
         {
             var message = new MailMessage();
@@ -568,7 +579,10 @@ namespace PMTool.Controllers
         }
 
 
-
+        /// <summary>
+        /// Send invitation Mail added by Mahedee @ 23-01-14
+        /// </summary>
+        /// <param name="userEmail"></param>
         public void SendInvitationEmail(string userEmail)
         {
             

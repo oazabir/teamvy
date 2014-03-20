@@ -28,7 +28,8 @@ namespace PMTool.Controllers
 
             userTaskList = unitOfWork.TaskRepository.GetTasksByUser(user).ToList();
 
-            //overdueTaskList = userTaskList.Where(p => (p.EndDate < DateTime.Today) && ((p.ProjectStatus.ProjectStatusID == null ? " " : p.ProjectStatus.Name) != "Close")).ToList();
+          
+            /*Task which is not closed will display to the dashboard. Updated by Mahedee @ 26-02-14*/
             overdueTaskList = userTaskList.Where(p => (p.EndDate < DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
             dueTaskList = userTaskList.Where(p => (p.StartDate < DateTime.Today && p.EndDate >= DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
             todaysTaskList = userTaskList.Where(p => p.StartDate == DateTime.Today && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
@@ -48,7 +49,6 @@ namespace PMTool.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your app description page.";
-
             return View();
         }
 
@@ -64,7 +64,6 @@ namespace PMTool.Controllers
             UnitOfWork unitOfWork = new UnitOfWork();
              User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
             List<Notification> notificationList = unitOfWork.NotificationRepository.UserUnreadNotification(user);
-            //ViewBag.Notifications = notificationList;
             return PartialView(notificationList);
         }
         
@@ -78,7 +77,6 @@ namespace PMTool.Controllers
             {
                 item.IsNoticed = true;
                 unitOfWork.NotificationRepository.InsertOrUpdate(item);
-                //unitOfWork.NotificationRepository.Delete(item.NotificationID);
             }
             unitOfWork.Save();
             return PartialView("_Notification", notificationListNew);
@@ -95,15 +93,8 @@ namespace PMTool.Controllers
                 GetTaskList(projectID, out taskList, out project);
 
 
-            //List<SelectListItem> statusList = new List<SelectListItem>();
-            //statusList = unitOfWork.ProjectRepository.FindIncludingProjectStatus(projectID).ProjectStatuses.ToList();
             ViewBag.TaskStatus = GetAllStatus(projectID);
-
-            //task.Project.ProjectStatuses;
-
             ViewBag.CurrentProject = project;
-            //return PartialViewResult(taskList);
-            //return View(taskList);
             return PartialView(taskList);
         }
 
@@ -112,6 +103,7 @@ namespace PMTool.Controllers
             taskList = new List<Task>();
             User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
             project = unitOfWork.ProjectRepository.Find(projectID);
+           
             //If this project is created by the current user. Then he can see all task.
             if (project.CreatedBy == user.UserId)
                 taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.ProjectStatusID == statusId).ToList();

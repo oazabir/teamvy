@@ -14,20 +14,20 @@ using MvcPaging;
 namespace PMTool.Controllers
 {
     [Authorize]
-    public class TasksController : BaseController 
+    public class TasksController : BaseController
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
         private const int defaultPageSize = 10;
         //
         // GET: /Tasks/
-         
+
         public ViewResult Index()
         {
             return View(unitOfWork.TaskRepository.AllIncluding(task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList());
         }
 
 
-       
+
 
         //GET: /Tasks/ProjectTasks?ProjectID=5
         public ViewResult ProjectTasks(long projectID, string SelectedStatusID, string SelectedPriorityID, string SelectedUserID, string SelectedSprintID, int? page)
@@ -39,7 +39,7 @@ namespace PMTool.Controllers
 
             //If this project is created by the current user. Then he can see all task. Added by Mahedee @02-02-14
             //Fetched tasks which are not closed, order by due date and then priority added by Mahedee @ 11-03-14
-            if (project.CreatedBy== user.UserId)
+            if (project.CreatedBy == user.UserId)
                 taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.Name.ToLower() != "closed").OrderBy(o1 => o1.EndDate).ThenBy(o2 => o2.Priority).ToList();
 
             //If this project is owned by the current user. Then he can see all task. Added by Mahedee @02-02-14
@@ -58,11 +58,11 @@ namespace PMTool.Controllers
             ViewBag.CurrentProject = project;
             ViewBag.PageTitle = "Task List";
             Search search = new Search();
-            ViewData["CurrentProjectID"] = project.ProjectID; 
+            ViewData["CurrentProjectID"] = project.ProjectID;
             ViewData["SelectedStatusID"] = SelectedStatusID;
-            ViewData["SelectedPriorityID"]  = SelectedPriorityID;
-            ViewData["SelectedUserID"] =  SelectedUserID;
-            ViewData["SelectedSprintID"] =  SelectedSprintID;
+            ViewData["SelectedPriorityID"] = SelectedPriorityID;
+            ViewData["SelectedUserID"] = SelectedUserID;
+            ViewData["SelectedSprintID"] = SelectedSprintID;
 
 
             search.SelectedProjectID = project.ProjectID;
@@ -70,16 +70,16 @@ namespace PMTool.Controllers
             if (!string.IsNullOrEmpty(SelectedStatusID))
                 search.SelectedStatusID = Convert.ToInt64(SelectedStatusID);
             if (!string.IsNullOrEmpty(SelectedPriorityID))
-             search.SelectedPriorityID = Convert.ToInt64(SelectedPriorityID);
+                search.SelectedPriorityID = Convert.ToInt64(SelectedPriorityID);
 
-             if (!string.IsNullOrEmpty( SelectedUserID))
-            search.SelectedUserID =new Guid( SelectedUserID);
+            if (!string.IsNullOrEmpty(SelectedUserID))
+                search.SelectedUserID = new Guid(SelectedUserID);
 
-             if (!string.IsNullOrEmpty(SelectedSprintID))
-             search.SelectedSprintID = Convert.ToInt64(SelectedSprintID);
+            if (!string.IsNullOrEmpty(SelectedSprintID))
+                search.SelectedSprintID = Convert.ToInt64(SelectedSprintID);
 
             taskList = GetTasks(search);
-            return View(taskList.ToPagedList(currentPageIndex,defaultPageSize));
+            return View(taskList.ToPagedList(currentPageIndex, defaultPageSize));
         }
 
 
@@ -102,14 +102,14 @@ namespace PMTool.Controllers
             return View(timeLog);
         }
 
-        //Here id = task id
-        public ActionResult CreateTimeLog(long taskId, long sprintId) 
+        //Action for create time log on corresponding task added by Mahedee @ 13-03-14
+        public ActionResult CreateTimeLog(long taskId, long sprintId)
         {
             //Task task = unitOfWork.TaskRepository.get
             TimeLog timelog = new TimeLog();
             timelog.TaskID = taskId;
             timelog.SprintID = sprintId;
-            
+
             return View(timelog);
         }
 
@@ -127,22 +127,10 @@ namespace PMTool.Controllers
 
             if (ModelState.IsValid)
             {
-               unitOfWork.TimeLogRepository.InsertOrUpdate(timeLog);
-               unitOfWork.Save();
-               return RedirectToAction("TaskTimeLog", new { @taskId = timeLog.TaskID, @sprintId = timeLog.SprintID });
+                unitOfWork.TimeLogRepository.InsertOrUpdate(timeLog);
+                unitOfWork.Save();
+                return RedirectToAction("TaskTimeLog", new { @taskId = timeLog.TaskID, @sprintId = timeLog.SprintID });
             }
-
-
-            //List<SelectListItem> allUsers = GetAllUser(task.ProjectID);
-            //ViewBag.PossibleUsers = allUsers;
-            //ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
-            //ViewBag.PossiblePriorities = unitOfWork.PriorityRepository.All;
-            //ViewBag.PossibleSprints = unitOfWork.SprintRepository.AllByProjectID(task.ProjectID);
-
-            //List<SelectListItem> allLabels = GetAllLabel();
-            //ViewBag.PossibleLabels = allLabels;
-            //GetAllStatus(task);
-            //return View(timeLog); //
             return RedirectToAction("TaskTimeLog", new { @id = timeLog.TaskID });
         }
 
@@ -199,7 +187,7 @@ namespace PMTool.Controllers
 
             ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectID);
             List<Task> taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, t => t.Project).Include(t => t.Priority).Include(t => t.ChildTask).Include(t => t.Users).Include(t => t.Followers).Include(t => t.Labels).ToList();
-            return PartialView("_Kanban",  taskList);
+            return PartialView("_Kanban", taskList);
 
         }
 
@@ -215,17 +203,9 @@ namespace PMTool.Controllers
             else
                 GetTaskList(projectID, out taskList, out project);
 
-
-            //List<SelectListItem> statusList = new List<SelectListItem>();
-            //statusList = unitOfWork.ProjectRepository.FindIncludingProjectStatus(projectID).ProjectStatuses.ToList();
             ViewBag.TaskStatus = GetAllStatus(projectID);
-
-            //task.Project.ProjectStatuses;
-
             ViewBag.CurrentProject = project;
-            //return PartialViewResult(taskList);
-            //return View(taskList);
-          taskList=  taskList.ToPagedList(currentPageIndex,defaultPageSize);
+            taskList = taskList.ToPagedList(currentPageIndex, defaultPageSize);
             return PartialView(taskList);
         }
 
@@ -271,9 +251,9 @@ namespace PMTool.Controllers
 
         //
         // GET: /Tasks/SubTaskList?taskID=5
-        public ViewResult SubTaskList(long projectID,long taskID)
+        public ViewResult SubTaskList(long projectID, long taskID)
         {
-            List<Task> taskList = unitOfWork.TaskRepository.AllSubTaskByProjectIncluding(projectID,taskID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            List<Task> taskList = unitOfWork.TaskRepository.AllSubTaskByProjectIncluding(projectID, taskID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
             ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectID);
             return View(taskList);
         }
@@ -316,7 +296,7 @@ namespace PMTool.Controllers
             GetAllStatus(task);
 
             return View(task);
-        }  
+        }
 
         private void GetAllStatus(Task task)
         {
@@ -346,7 +326,7 @@ namespace PMTool.Controllers
         //
         // GET: /Tasks/CreateSubTask?ProjectID=5&TaskID=1
 
-        public ActionResult CreateSubTask(long ProjectID,long TaskID)
+        public ActionResult CreateSubTask(long ProjectID, long TaskID)
         {
             List<SelectListItem> allUsers = GetAllUser(ProjectID);
             ViewBag.PossibleUsers = allUsers;
@@ -400,7 +380,7 @@ namespace PMTool.Controllers
             return View(task); //return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
         }
 
-        private void SaveNotification(Task task, bool isTaskInsert,bool isSubTask,TaskPropertyChange change)
+        private void SaveNotification(Task task, bool isTaskInsert, bool isSubTask, TaskPropertyChange change)
         {
             #region Old
             //string phrase = "";
@@ -408,7 +388,7 @@ namespace PMTool.Controllers
             //{
             //    foreach (User user in task.Users)
             //    {
-                     
+
             //        Notification notification = new Notification();
             //        if (isTaskInsert)
             //        {
@@ -424,7 +404,7 @@ namespace PMTool.Controllers
             //            User createdUser = unitOfWork.UserRepository.GetUserByUserID(task.CreatedBy);
             //            notification.Title = createdUser.FirstName + " " + createdUser.LastName + phrase +" "+ task.Title;
 
-                       
+
             //        }
             //        else
             //        {
@@ -726,7 +706,7 @@ namespace PMTool.Controllers
                         foreach (User user in task.Users)
                         {
                             Notification notification = new Notification();
-                            notification.Title = status+ " for you";
+                            notification.Title = status + " for you";
                             notification.UserID = user.UserId;
                             notification.Description = notification.Title;
                             notification.ProjectID = task.ProjectID;
@@ -817,10 +797,10 @@ namespace PMTool.Controllers
             string phrase2 = "";
             if (change.IsStartDateChanged)
             {
-                status = status + " Start Date from " ;
+                status = status + " Start Date from ";
                 phrase1 = change.FromSatrtDate != null ? change.FromSatrtDate.Value.ToShortDateString() : " undefined ";
                 phrase2 = change.ToSatrtDate != null ? change.ToSatrtDate.Value.ToShortDateString() : " undefined ";
-              status = status +" "+ phrase1 + " to "+phrase2;
+                status = status + " " + phrase1 + " to " + phrase2;
             }
             if (change.IsEndtDateChanged)
             {
@@ -930,8 +910,8 @@ namespace PMTool.Controllers
             task.SelectedFollowedUsers = task.Followers.Select(u => u.UserId.ToString()).ToList();
             task.SelectedLabels = task.Labels.Select(u => u.LabelID.ToString()).ToList();
             List<string> statusList = new List<string>();
-            if(task.Status != null)
-                statusList.Add( task.Status.ToString());
+            if (task.Status != null)
+                statusList.Add(task.Status.ToString());
             List<SelectListItem> allLabels = GetAllLabel();
             ViewBag.PossibleLabels = allLabels;
 
@@ -987,7 +967,7 @@ namespace PMTool.Controllers
                 AddLabel(task);
 
                 TaskPropertyChange change = unitOfWork.TaskRepository.InsertOrUpdate(task);
-                
+
                 unitOfWork.Save();
                 if (task.ParentTaskId != null)
                 {
@@ -1056,13 +1036,13 @@ namespace PMTool.Controllers
 
             GetAllStatus(task);
 
-           // MakeNotificationReadonly();
+            // MakeNotificationReadonly();
 
 
-            return PartialView(task);   
+            return PartialView(task);
         }
 
-        [HttpPost]  
+        [HttpPost]
         public PartialViewResult CreateFromKanban(Task task)
         {
 
@@ -1195,7 +1175,7 @@ namespace PMTool.Controllers
             List<User> userList = unitOfWork.ProjectRepository.Find(ProjectID).Users;
             foreach (User user in userList)
             {
-                SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName +" "+ user.LastName };
+                SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName + " " + user.LastName };
                 allUsers.Add(item);
             }
             return allUsers;
@@ -1256,7 +1236,7 @@ namespace PMTool.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(long id)
         {
-           Task task= unitOfWork.TaskRepository.Find(id);
+            Task task = unitOfWork.TaskRepository.Find(id);
             unitOfWork.TaskRepository.Delete(id);
             unitOfWork.Save();
             return RedirectToAction("ProjectTasks", new { @ProjectID = task.ProjectID });
@@ -1267,7 +1247,7 @@ namespace PMTool.Controllers
         public ActionResult Kanban(long ProjectID)
         {
             List<Task> tasklist = unitOfWork.TaskRepository.ByProjectIncluding(ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-            Project  project=unitOfWork.ProjectRepository.Find(ProjectID);
+            Project project = unitOfWork.ProjectRepository.Find(ProjectID);
             ViewBag.CurrentProject = project;
             List<string> statusList = new List<string>();
             if (!string.IsNullOrEmpty(project.allStatus))
@@ -1297,7 +1277,7 @@ namespace PMTool.Controllers
         {
             Task task = new Task();
             string ststus = "";
-            string logComment="";
+            string logComment = "";
             try
             {
                 long a = Convert.ToInt64(sprintid);
@@ -1310,7 +1290,7 @@ namespace PMTool.Controllers
             {
                 try
                 {
-                     task = unitOfWork.TaskRepository.Find(Convert.ToInt64(taskid));
+                    task = unitOfWork.TaskRepository.Find(Convert.ToInt64(taskid));
                     string status = "";
                     string sprint = "";
                     if (!string.IsNullOrEmpty(statusid.Trim()))
@@ -1357,12 +1337,12 @@ namespace PMTool.Controllers
                     unitOfWork.TaskRepository.InsertOrUpdate(task);
                     unitOfWork.Save();
                     ststus = "Task- " + task.Title + " is moved to " + status + sprint;
-                     User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
-                    logComment = ststus +"by user"+ user.FirstName+"  "+ user.LastName;
-                    logComment = logComment+ "on " +DateTime.Now.ToShortDateString();
+                    User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+                    logComment = ststus + "by user" + user.FirstName + "  " + user.LastName;
+                    logComment = logComment + "on " + DateTime.Now.ToShortDateString();
                     status = status + " successfully!!!";
                 }
-                catch 
+                catch
                 {
                     ststus = "Something Wrong!!!";
                 }
@@ -1393,7 +1373,7 @@ namespace PMTool.Controllers
             return Content(ststus);
         }
 
-        
+
 
         [HttpPost]
         public PartialViewResult RemoveStatusFormKanban(long status, long projectID)
@@ -1402,7 +1382,7 @@ namespace PMTool.Controllers
             Project projectOld = unitOfWork.ProjectRepository.Find(projectID);
             try
             {
-                taskList = unitOfWork.TaskRepository.ByProjectAndStatusIncluding(projectID,status ,task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+                taskList = unitOfWork.TaskRepository.ByProjectAndStatusIncluding(projectID, status, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
                 foreach (Task task in taskList)
                 {
                     task.ProjectStatusID = null;
@@ -1465,9 +1445,9 @@ namespace PMTool.Controllers
             return PartialView("_Kanban", taskList);
         }
 
-        public PartialViewResult EditStatus(long status,long projectID)
+        public PartialViewResult EditStatus(long status, long projectID)
         {
-            ProjectStatus projectCol = unitOfWork.ProjectStatusRepository.FindbyProjectIDAndProjectStatusID(projectID,status);
+            ProjectStatus projectCol = unitOfWork.ProjectStatusRepository.FindbyProjectIDAndProjectStatusID(projectID, status);
             return PartialView(projectCol);
         }
 
@@ -1482,7 +1462,7 @@ namespace PMTool.Controllers
         }
 
 
- 
+
         public ActionResult CreateSprintFromKanban(long id)
         {
             Sprint sprint = new Sprint();
@@ -1502,7 +1482,7 @@ namespace PMTool.Controllers
             {
                 unitOfWork.SprintRepository.InsertOrUpdate(sprint);
                 //Ahange by Mahedee @06-03-14. Because is active check box is removed from UI
-                sprint.IsActive = true; 
+                sprint.IsActive = true;
                 unitOfWork.Save();
             }
 
@@ -1533,11 +1513,9 @@ namespace PMTool.Controllers
         [HttpPost]
         public virtual ContentResult ActivityAdd(long taskID)
         {
-                string content="";
+            string content = "";
             if (ModelState.IsValid)
             {
-
-                //var r = new List<ViewDataUploadFilesResult>();
                 string comment = "";
                 User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
                 string Name = "";
@@ -1560,28 +1538,21 @@ namespace PMTool.Controllers
                     unitOfWork.TaskActivityLogRepository.InsertOrUpdate(log);
                     unitOfWork.Save();
 
-                    var path = Server.MapPath("~/UploadedDocument/") + "T-" + log.TaskID.ToString() + "L-" + log.TaskActivityLogID.ToString() +Path.GetExtension(hpf.FileName);
+                    var path = Server.MapPath("~/UploadedDocument/") + "T-" + log.TaskID.ToString() + "L-" + log.TaskActivityLogID.ToString() + Path.GetExtension(hpf.FileName);
                     log.FileUrl = "~/UploadedDocument/" + "T-" + log.TaskID.ToString() + "L-" + log.TaskActivityLogID.ToString() + Path.GetExtension(hpf.FileName);
                     unitOfWork.TaskActivityLogRepository.InsertOrUpdate(log);
                     unitOfWork.Save();
-                    hpf.SaveAs(Server.MapPath( log.FileUrl));
+                    hpf.SaveAs(Server.MapPath(log.FileUrl));
 
 
-                        Name = hpf.FileName;
-                        Length = hpf.ContentLength.ToString();
-                        Type = hpf.ContentType;
-                        content = "{\"name\":\"" + Name + "\",\"type\":\"" + Type + "\",\"size\":\"" + string.Format("{0} bytes", Length) + "\"}";
+                    Name = hpf.FileName;
+                    Length = hpf.ContentLength.ToString();
+                    Type = hpf.ContentType;
+                    content = "{\"name\":\"" + Name + "\",\"type\":\"" + Type + "\",\"size\":\"" + string.Format("{0} bytes", Length) + "\"}";
                 }
 
             }
             return Content(content, "application/json");
-            //Task task = unitOfWork.TaskRepository.Find(taskID);
-            //Project project = unitOfWork.ProjectRepository.Find(task.ProjectID);
-            //ViewBag.CurrentProject = project;
-            //List<Task> taskList = new List<Task>();
-            //taskList = unitOfWork.TaskRepository.GetTasksByProjectID(task.ProjectID);
-
-            //return PartialView("_Kanban", taskList);
         }
 
 
@@ -1604,8 +1575,8 @@ namespace PMTool.Controllers
             {
                 foreach (User user in project.ProjectOwners)
                 {
-                    if (!search.UserList.Exists(u=>u.UserId==user.UserId))
-                    search.UserList.Add(user);
+                    if (!search.UserList.Exists(u => u.UserId == user.UserId))
+                        search.UserList.Add(user);
                 }
             }
 
@@ -1615,19 +1586,14 @@ namespace PMTool.Controllers
         [HttpPost]
         public ActionResult _Search(Search search)
         {
-           List<Task> taskList = new List<Task>();
-           long statusId = Convert.ToInt64( search.SelectedStatusID);
+            List<Task> taskList = new List<Task>();
+            long statusId = Convert.ToInt64(search.SelectedStatusID);
 
-           long projectID = (long)search.SelectedProjectID;
-           //taskList = GetTasks(projectID, statusId);
-          
-           //Project project = unitOfWork.ProjectRepository.Find(projectID);
-           //ViewBag.CurrentProject = project;
-           taskList = GetTasks(search);
-           ViewBag.Tasks = taskList;
-            //return PartialView("_TaskList", taskList);
-          return RedirectToAction("_TaskList", new { @ProjectID = projectID, @statusId = statusId });
-            
+            long projectID = (long)search.SelectedProjectID;
+            taskList = GetTasks(search);
+            ViewBag.Tasks = taskList;
+            return RedirectToAction("_TaskList", new { @ProjectID = projectID, @statusId = statusId });
+
         }
 
         private List<Task> GetTasks(Search search)
@@ -1653,14 +1619,14 @@ namespace PMTool.Controllers
                 taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.ProjectStatusID == statusId).ToList();
 
 
-          
+
 
             return taskList;
         }
 
         public PartialViewResult _KanbanTaskDetail(long taskID)
         {
-            Task task= unitOfWork.TaskRepository.Find(taskID);
+            Task task = unitOfWork.TaskRepository.Find(taskID);
             return PartialView(task);
 
         }
@@ -1690,9 +1656,9 @@ namespace PMTool.Controllers
             {
                 if (order != "")
                 {
-                  ProjectStatus status=  unitOfWork.ProjectStatusRepository.Find(Convert.ToInt64(order));
-                  status.SlNo = i;
-                  i++;
+                    ProjectStatus status = unitOfWork.ProjectStatusRepository.Find(Convert.ToInt64(order));
+                    status.SlNo = i;
+                    i++;
                 }
             }
             unitOfWork.Save();
@@ -1723,7 +1689,7 @@ namespace PMTool.Controllers
         {
             ProjectStatusRule deletedrule = unitOfWork.ProjectStatusRuleRepository.Find(id);
 
-           unitOfWork.ProjectStatusRuleRepository.Delete(id);
+            unitOfWork.ProjectStatusRuleRepository.Delete(id);
             unitOfWork.Save();
             ViewBag.CurrentProjectStatuses = unitOfWork.ProjectStatusRepository.FindbyProjectID(deletedrule.ProjectID);
             ViewBag.Rules = unitOfWork.ProjectStatusRuleRepository.FindbyProjectID(deletedrule.ProjectID);

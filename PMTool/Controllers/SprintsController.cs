@@ -62,7 +62,12 @@ namespace PMTool.Controllers
         }
 
 
-
+        /// <summary>
+        /// Edit sprint from kanban
+        /// Added by mahedee
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult EditFromKanban(long id)
         {
             Sprint sprint = unitOfWork.SprintRepository.Find(id);
@@ -70,6 +75,13 @@ namespace PMTool.Controllers
             return PartialView(sprint);
         }
 
+
+        /// <summary>
+        /// Edit sprint from kanban
+        /// Added by mahedee for post data
+        /// </summary>
+        /// <param name="sprint"></param>
+        /// <returns></returns>
         [HttpPost]
         public PartialViewResult EditFromKanban(Sprint sprint)
         {
@@ -88,13 +100,23 @@ namespace PMTool.Controllers
         }
 
 
-
+        /// <summary>
+        /// Added by Mahedee @19-03-14
+        /// </summary>
+        /// <param name="sprintId"></param>
+        /// <returns></returns>
         public ActionResult SprintBurnDown(long sprintId)
         {
             Sprint sprint = unitOfWork.SprintRepository.Find(sprintId);
             return View(sprint);
         }
 
+        /// <summary>
+        /// Get sprint burndown data against sprint id
+        /// Added by Mahedee @19-03-14
+        /// </summary>
+        /// <param name="sprintId"></param>
+        /// <returns></returns>
         public JsonResult SprintBurnDownData(long sprintId)
         {
             Decimal sprintEstHour = 0;
@@ -107,7 +129,6 @@ namespace PMTool.Controllers
 
             List<TimeLog> expendedTime = unitOfWork.TimeLogRepository.GetTimeLogBySprint(sprintId);
 
-            //List<decimal> taskHour = sprintTasks.Sum(p => p.LoggedTime.Sum(q => q.TaskHour));
             var SprintTimeLog = from s in expendedTime
                             group s by new {s.EntryDate} into g
                             select new { g.Key.EntryDate, TotalHour = g.Sum(s => s.TaskHour) };
@@ -127,5 +148,7 @@ namespace PMTool.Controllers
             }
             return Json(chartList, JsonRequestBehavior.AllowGet);
         }
+
+
     }
 }
