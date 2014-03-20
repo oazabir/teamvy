@@ -1477,8 +1477,9 @@ namespace PMTool.Controllers
             Project project = unitOfWork.ProjectRepository.Find(sprint.ProjectID);
             ViewBag.CurrentProject = project;
             List<Task> taskList = new List<Task>();
-            taskList = unitOfWork.TaskRepository.GetTasksBySprintID(sprint.SprintID);
+            //taskList = unitOfWork.TaskRepository.GetTasksBySprintID(sprint.SprintID);
 
+             taskList = unitOfWork.TaskRepository.ByProjectIncluding(sprint.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
             return PartialView("_Kanban", taskList);
         }
 
