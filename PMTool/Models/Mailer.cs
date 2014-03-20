@@ -15,6 +15,13 @@ namespace PMTool.Models
             set { useMailID = value; }
         }
 
+        string mailSubject;
+        public string MailSubject
+        {
+            get { return mailSubject; }
+            set { mailSubject = value; }
+        }
+
         string htmlMailBody;
 
         public string HtmlMailBody

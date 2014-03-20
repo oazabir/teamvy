@@ -266,6 +266,24 @@ namespace PMTool.Repository
             context.Tasks.Remove(task);
         }
 
+        /// <summary>
+        /// All task for Mail
+        /// Added by Mahedee @ 13-02-14
+        /// </summary>
+        /// <param name="includeProperties"></param>
+        /// <returns></returns>
+        public IQueryable<Task> AllIncludingForMail(params Expression<Func<Task, object>>[] includeProperties)
+        {
+
+            IQueryable<Task> query = context.Tasks.Where(t => t.ProjectStatus.Name != "Close");
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+            return query;
+        }
+
+
         public void Save()
         {
             context.SaveChanges();
