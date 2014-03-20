@@ -37,19 +37,6 @@ namespace PMTool.Controllers
             User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
             Project project = unitOfWork.ProjectRepository.Find(projectID);
 
-            //If this project is created by the current user. Then he can see all task. Added by Mahedee @02-02-14
-            //Fetched tasks which are not closed, order by due date and then priority added by Mahedee @ 11-03-14
-            if (project.CreatedBy == user.UserId)
-                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.Name.ToLower() != "closed").OrderBy(o1 => o1.EndDate).ThenBy(o2 => o2.Priority).ToList();
-
-            //If this project is owned by the current user. Then he can see all task. Added by Mahedee @02-02-14
-            //Fetched tasks which are not closed, order by due date and then priority added by Mahedee @ 11-03-14
-            else if (project.ProjectOwners.Contains(user))
-                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.Name.ToLower() != "closed").OrderBy(o1 => o1.EndDate).ThenBy(o2 => o2.Priority).ToList();
-
-            else
-                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.Name.ToLower() != "closed").OrderBy(o1 => o1.EndDate).ThenBy(o2 => o2.Priority).ToList();
-
             ViewBag.TaskStatus = GetAllStatus(projectID);
 
             ViewBag.PossiblePriorities = GetallPriority();
