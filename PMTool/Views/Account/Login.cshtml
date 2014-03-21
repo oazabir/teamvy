@@ -30,7 +30,7 @@
                         <input type="submit" value="Log On" class="btn btn-default btn-block" />
                     </p>
 
-               
+               @Html.HiddenFor(m=>m.returnUrl);
                     @Html.ValidationSummary(true, "")
 
                
