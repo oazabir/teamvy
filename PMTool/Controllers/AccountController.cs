@@ -36,11 +36,11 @@ namespace PMTool.Controllers
         [HttpPost]
         [AllowAnonymous]
         // [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginModel model, string returnUrl)
+        public ActionResult Login(LoginModel model)
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: false))
             {
-                return RedirectToLocal(returnUrl);
+                return RedirectToLocal(model.returnUrl);
             }
 
             // If we got this far, something failed, redisplay form

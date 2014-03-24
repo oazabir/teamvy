@@ -12,7 +12,7 @@
                      {
                          Text = (option == null ? "None" : option.Name),
                          Value = option.ProjectStatusID.ToString(),
-                         Selected = (Model != null) && (option.ProjectStatusID == Model.SelectedStatusID)
+                         Selected = (ViewData["SelectedStatusID"]  != null) && (option.ProjectStatusID == (long)ViewData["SelectedStatusID"] )
                      }), "Choose...")
 
                 </td>
@@ -69,3 +69,11 @@
 
     </div>
 }
+
+@*<script type="text/javascript">
+    jQuery(document).ready(function () {
+        var 
+        jQuery("#gate option[value='Gateway 2']").attr('selected', 'selected');
+        // you need to specify id of combo to set right combo, if more than one combo
+    })
+</script>*@

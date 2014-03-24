@@ -195,8 +195,9 @@
                             <div class="columnHolder">
                                 <fieldset class='column' id='@status.ProjectStatusID'>
                                     <legend class="widgettitle ctitle" style="background-color:@status.color !important;!important;">@status.Name
-                                        @Ajax.ActionLink(" ", "RemoveStatusFormKanban", "Tasks", new { status = status.ProjectStatusID, projectID = CurrentPorjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard", OnBegin = "return confirm('Are you suer???\\nAll tasks under this column will go to UnAssigned!!!')" }, new { @class = "icon-remove", @style = "float:right;display:none;", @title = "Delete" })
 
+                                        @Ajax.ActionLink(" ", "RemoveStatusFormKanban", "Tasks", new { status = status.ProjectStatusID, projectID = CurrentPorjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard", OnBegin = "return confirm('Are you suer???')",OnFailure="jQuery.jGrowl('somethig is wrong', { life: 5000 });" }, new { @class = "icon-remove", @style = "float:right;", @title = "Delete" })
+                                        
                                         <a onclick="return ShowStatusEditForm(@status.ProjectStatusID,@CurrentPorjectID)" class="icon-edit" style="float:left;cursor:pointer" title="Edit"></a>
                                     </legend>
                                     @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectStatusID == status.ProjectStatusID && t.SprintID == sprint.SprintID))
@@ -217,7 +218,7 @@
 
                                         <a onclick="return ShowStatusEditForm(@closedStatus.ProjectStatusID,@closedStatus.ProjectID)" class="icon-edit" style="float:left;cursor:pointer" title="Edit"></a>
                                     </legend>
-                                    @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectStatusID == closedStatus.ProjectStatusID && t.SprintID == sprint.SprintID))
+                                    @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectStatusID == closedStatus.ProjectStatusID && t.SprintID == sprint.SprintID).OrderByDescending(u=>u.ModificationDate))
                                     {
                                         { Html.RenderAction("_KanbanTaskDetail", "Tasks", new { taskID = item.TaskID }); }
                                     }

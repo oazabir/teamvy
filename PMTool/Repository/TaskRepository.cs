@@ -303,7 +303,7 @@ namespace PMTool.Repository
         {
             List<Task> taskList = new List<Task>();
             taskList = context.Tasks.Where(t => t.ProjectID == search.SelectedProjectID
-                                        && (search.SelectedStatusID == null || t.ProjectStatusID == search.SelectedStatusID)
+                                        && ((search.SelectedStatusID == null && t.ProjectStatus.Name.ToLower() != "closed") || t.ProjectStatusID == search.SelectedStatusID)
                                         && (search.SelectedPriorityID == null || t.PriorityID == search.SelectedPriorityID)
                                         && (search.SelectedSprintID == null || t.SprintID == search.SelectedSprintID)
                                         && (search.SelectedUserID == null || t.Users.Any(u => u.UserId == search.SelectedUserID))
