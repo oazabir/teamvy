@@ -1659,6 +1659,8 @@ namespace PMTool.Controllers
             return PartialView(rule);
         }
 
+
+
         [HttpPost]
         public PartialViewResult RulesForm(ProjectStatusRule rule)
         {
@@ -1669,6 +1671,14 @@ namespace PMTool.Controllers
             return PartialView(rule);
         }
 
+
+
+        public PartialViewResult TaskDetailForm(long id)
+        {
+            Task task = unitOfWork.TaskRepository.Find(id);
+
+            return PartialView(task);
+        }
 
         public PartialViewResult DeleteRule(long id)
         {
