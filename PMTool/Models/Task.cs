@@ -118,7 +118,7 @@ namespace PMTool.Models
 
 
         [Display(Name = "Actual Task Hour")]
-        public decimal ActualTaskHoure { get; set; }
+        public decimal ActualTaskHour { get; set; }
 
 
         public long? SprintID { get; set; }
@@ -141,5 +141,8 @@ namespace PMTool.Models
         [Display(Name = "Actual Live Date")]
         [DefaultValue(typeof(DateTime), "2000-01-01")]
         public DateTime? ActualLiveDate { get; set; }
+
+        [Display(Name = "Task ID")]
+        public string TaskUID { get; set; }
     }
 }

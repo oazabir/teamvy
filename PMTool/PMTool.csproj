@@ -351,6 +351,14 @@
     <Compile Include="Migrations\201403191315353_migrateforrelase.Designer.cs">
       <DependentUpon>201403191315353_migrateforrelase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201403240711027_Task unique ID Added.cs" />
+    <Compile Include="Migrations\201403240711027_Task unique ID Added.Designer.cs">
+      <DependentUpon>201403240711027_Task unique ID Added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201403240920209_Task unique ID modified.cs" />
+    <Compile Include="Migrations\201403240920209_Task unique ID modified.Designer.cs">
+      <DependentUpon>201403240920209_Task unique ID modified.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Chart.cs" />
@@ -1386,6 +1394,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201403191315353_migrateforrelase.resx">
       <DependentUpon>201403191315353_migrateforrelase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403240711027_Task unique ID Added.resx">
+      <DependentUpon>201403240711027_Task unique ID Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403240920209_Task unique ID modified.resx">
+      <DependentUpon>201403240920209_Task unique ID modified.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

@@ -4,6 +4,8 @@
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
+            <th>Task ID
+            </th>
             <th>Task Title
             </th>
             <th>Start Date</th>
@@ -22,7 +24,12 @@
         @foreach (var item in Model)
         {
             <tr>
-
+                
+                <td>
+                    <strong>
+                       @item.TaskUID
+                        </strong>
+                </td>
                 <td>
                     <strong>
                         <a href="#" onclick="return ShowTaskDetails(@item.TaskID); ">@item.Title</a>

@@ -3,7 +3,16 @@
 
 
 <div class="dragbox" id="@Model.TaskID">
-<h2>@Model.Title</h2>
+<h2>
+    @if (!string.IsNullOrEmpty(Model.TaskUID))
+    {
+        
+    @Model.TaskUID
+    }
+    @Model.Title
+
+
+</h2>
 <div class="dragbox-content" style="display: none;">
 
     @{
