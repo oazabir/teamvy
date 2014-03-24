@@ -275,7 +275,7 @@ namespace PMTool.Repository
         public IQueryable<Task> AllIncludingForMail(params Expression<Func<Task, object>>[] includeProperties)
         {
 
-            IQueryable<Task> query = context.Tasks.Where(t => t.ProjectStatus.Name != "Close");
+            IQueryable<Task> query = context.Tasks.Where(t => t.ProjectStatus.Name.ToLower() != "closed");
             foreach (var includeProperty in includeProperties)
             {
                 query = query.Include(includeProperty);
