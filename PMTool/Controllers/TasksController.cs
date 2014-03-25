@@ -26,7 +26,15 @@ namespace PMTool.Controllers
             return View(unitOfWork.TaskRepository.AllIncluding(task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList());
         }
 
-
+        public ActionResult ChangeStatusView(long taskID, long? statusID)
+        {
+            Task task = unitOfWork.TaskRepository.Find(taskID);
+            task.ProjectStatusID = statusID;
+            unitOfWork.Save();
+            //return RedirectToAction("ProjectTasks", new { projectID =task.ProjectID});
+            List<Task> taskList=unitOfWork.TaskRepository.GetTasksByProjectID(task.ProjectID);
+            return PartialView("_TaskList", taskList.ToPagedList(1,defaultPageSize));
+        }
 
 
         //GET: /Tasks/ProjectTasks?ProjectID=5
@@ -260,6 +268,23 @@ namespace PMTool.Controllers
         {
             Task task = unitOfWork.TaskRepository.Find(id);
             return PartialView(task);
+        }
+
+        public PartialViewResult ShowEstimateView(long id)
+        {
+            Task task = unitOfWork.TaskRepository.Find(id);
+            return PartialView(task);
+        }
+
+        [HttpPost]
+        public ActionResult ShowEstimateView(Task task)
+        {
+            Task oldtask = unitOfWork.TaskRepository.Find(task.TaskID);
+            oldtask.TaskHour = task.TaskHour;
+            unitOfWork.TaskRepository.InsertOrUpdate(oldtask);
+            unitOfWork.Save();
+            List<Task> tasklist = unitOfWork.TaskRepository.GetTasksByProjectID(oldtask.ProjectID);
+            return PartialView("_TaskList", tasklist.ToPagedList(1,defaultPageSize));
         }
 
 

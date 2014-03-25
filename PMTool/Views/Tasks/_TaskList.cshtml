@@ -1,6 +1,6 @@
 ﻿@using MvcPaging
 @model IPagedList<PMTool.Models.Task>
-
+<div id="divTaskpagger">
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
@@ -16,7 +16,9 @@
             <th>Add Sub Task</th>
 
             <th>Assign To</th>
-
+            
+                 
+            <th>Estimate</th>
             <th></th>
         </tr>
     </thead>
@@ -28,6 +30,7 @@
                 <td>
                     <strong>
                        @item.TaskUID
+
                         </strong>
                 </td>
                 <td>
@@ -48,7 +51,23 @@
                 <td>
                     @if (item.ProjectStatusID != null)
                     {
-                        @item.ProjectStatus.Name
+                        @* @item.ProjectStatus.Name*@
+                        <div class="btn-group">
+                            <button data-toggle="dropdown" class="btn dropdown-toggle">@item.ProjectStatus.Name <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                @foreach (PMTool.Models.ProjectStatus status in item.Project.ProjectStatuses)
+                                {
+                                    <li>
+                                        @*<a href="@Url.Action("ChangeStatusView", new { @taskID=item.TaskID,@statusID=@status.ProjectStatusID})">@status.Name</a>*@
+
+                                         @Ajax.ActionLink(@status.Name, "ChangeStatusView", "Tasks", new { taskID = item.TaskID, statusID = @status.ProjectStatusID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divTaskpagger"}, new {@title = "Change Status" })
+                                    </li>
+                        }
+                            </ul>
+                        </div>
+                                          
+                                          
+                                              
                     }
                 </td>
                   
@@ -89,7 +108,17 @@
    
                         <span>@user.FirstName,</span>
                     }
-
+                    </td>
+                <td>
+                    @if (item.TaskHour > 0)
+                    {
+                        <a  href="#"  onclick="return ShowEstimateForm(@item.TaskID)"><span class="icon-plus" ></span>@item.TaskHour</a>
+                    }
+                    @if (item.TaskHour<= 0)
+                    {
+                        <a  href="#" onclick="return ShowEstimateForm(@item.TaskID)"><span class="icon-plus" ></span>Estimate</a>
+                    }
+                </td>
                 <td align="center">
                     @if (item.Users.Any(u => u.Username == User.Identity.Name) || item.Project.ProjectOwners.Any(u => u.Username == User.Identity.Name))
                     {
@@ -129,3 +158,11 @@
         Showing <span class="badge badge-success">@Model.ItemStart</span> to <span class="badge badge-success">@Model.ItemEnd</span>
         of <span class="badge badge-info">@Model.TotalItemCount</span> entries</div>
 </div>
+
+<div id='ModalpopupShowEstimateForm' data-url='@Url.Action("ShowEstimateView", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerShowEstimateForm'>
+    </div>
+</div>
+
+
+    </div>

@@ -1,0 +1,51 @@
+﻿@model PMTool.Models.Task
+@using (Ajax.BeginForm("ShowEstimateView", "Tasks", new AjaxOptions { UpdateTargetId = "divTaskList", OnBegin = "Loading()", OnComplete = "Unload()", OnSuccess = "HidePopup('ModalpopupShowEstimateForm')" }, new { @id = "form" }))
+{
+@Html.HiddenFor(m=>m.TaskID)
+  <table class="table table-bordered table-invoice">
+        <tbody>
+
+            <tr>
+                <td>Status
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(model => model.TaskHour)
+                    @Html.ValidationMessageFor(model => model.TaskHour)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+
+                    <button id="btn2" class="btn btn-primary">Save  </button>
+                </td>
+            </tr>
+            </tbody>
+      </table>
+}
+
+@*<script>
+    function HidePopup(data) {
+        jQuery("#ModalLoading").modal('hide');
+        var adata = '#' + data;
+        jQuery(adata).modal('hide');
+    }
+    jQuery(document).ready(function () {
+        //jQuery(document).ajaxStart(function () {
+        //    jQuery("#ModalLoading").modal('show');
+        //});
+    });
+</script>*@
+
+<script type="text/javascript">
+
+    jQuery(document).ready(function () {
+
+        jQuery('#form').removeData('validator');
+        jQuery('#form').removeData('unobtrusiveValidation');
+        jQuery("#form").each(function () { jQuery.data(jQuery(this)[0], 'validator', false); }); //enable to display the error messages
+        jQuery.validator.unobtrusive.parse("#form");
+       
+    });
+</script>
