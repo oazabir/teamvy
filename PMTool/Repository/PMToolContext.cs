@@ -95,5 +95,7 @@ namespace PMTool.Repository
 
         public DbSet<PMTool.Models.TimeLog> TimeLogs { get; set; }
 
+        public DbSet<PMTool.Models.TaskMessage> TaskMessages { get; set; }
+
     }
 }

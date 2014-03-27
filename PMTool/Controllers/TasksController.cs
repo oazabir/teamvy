@@ -1720,6 +1720,13 @@ namespace PMTool.Controllers
             return PartialView(rule);
         }
 
+
+
+        //public PartialViewResult AddMessage(long id)
+        //{
+
+        //}
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

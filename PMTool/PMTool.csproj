@@ -362,6 +362,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Chart.cs" />
+    <Compile Include="Models\TaskMessage.cs" />
     <Compile Include="Models\Mailer.cs" />
     <Compile Include="Models\ProjectStatusRule.cs" />
     <Compile Include="Models\TaskActivityLog.cs" />
@@ -370,6 +371,7 @@
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\EnumCollection.cs" />
     <Compile Include="Models\Label.cs" />
+    <Compile Include="Repository\TaskMessageRepository.cs" />
     <Compile Include="Models\TaskPropertyChange.cs" />
     <Compile Include="Models\TimeLog.cs" />
     <Compile Include="Repository\TimeLogRepository.cs" />
