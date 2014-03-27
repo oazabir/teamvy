@@ -1722,10 +1722,52 @@ namespace PMTool.Controllers
 
 
 
-        //public PartialViewResult AddMessage(long id)
-        //{
+        public PartialViewResult AddMessage(long id)
+        {
+            Task task = unitOfWork.TaskRepository.Find(id);
+            ViewBag.AllMessage = unitOfWork.TaskMessageRepository.FindAllByTask(id);
 
-        //}
+            ViewBag.PossibleUser = GetAllUser(task.ProjectID);
+            TaskMessage taskMessage = new TaskMessage();
+            taskMessage.TaskID = id;
+            taskMessage.FormUserID = (Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey;
+            taskMessage.CreateDate = DateTime.Now;
+            return PartialView(taskMessage);
+        }
+
+        [HttpPost]
+        public PartialViewResult AddMessage(TaskMessage taskMessage)
+        {
+            if (taskMessage.SelectedToUsers != null)
+            {
+                foreach (string userid in taskMessage.SelectedToUsers)
+                {
+                    TaskMessage newTaskMessage = new TaskMessage();
+                    newTaskMessage.TaskID = taskMessage.TaskID;
+                    newTaskMessage.FormUserID = taskMessage.FormUserID;
+                    newTaskMessage.CreateDate = taskMessage.CreateDate;
+                    newTaskMessage.Message = taskMessage.Message;
+                    newTaskMessage.ToUserID = new Guid(userid);
+                    unitOfWork.TaskMessageRepository.InsertOrUpdate(newTaskMessage);
+                }
+                unitOfWork.Save();
+            }
+            else
+            {
+                ModelState.AddModelError("CustomError", "Please select user");
+            }
+            Task task = unitOfWork.TaskRepository.Find(taskMessage.TaskID);
+            ViewBag.AllMessage = unitOfWork.TaskMessageRepository.FindAllByTask(taskMessage.TaskID);
+
+            ViewBag.PossibleUser = GetAllUser(task.ProjectID);
+            TaskMessage taskMessageNext = new TaskMessage();
+            taskMessageNext.TaskID = taskMessage.TaskID;
+            taskMessageNext.FormUserID = (Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey;
+            taskMessageNext.CreateDate = DateTime.Now;
+            taskMessageNext.SelectedToUsers = new List<string>();
+            taskMessageNext.Message = "";
+            return PartialView(taskMessageNext);
+        }
 
         protected override void Dispose(bool disposing)
         {

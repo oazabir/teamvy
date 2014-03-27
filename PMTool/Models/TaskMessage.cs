@@ -20,7 +20,7 @@ namespace PMTool.Models
 
         [Required]
         [Display(Name = "Task Title")]
-        public long? TaskID { get; set; }
+        public long TaskID { get; set; }
         public virtual Task Task { get; set; }
 
         [Required]
@@ -28,7 +28,7 @@ namespace PMTool.Models
         public Guid FormUserID { get; set; }
 
         [ForeignKey("FormUserID")]
-        public virtual User FormUser { get; set; }
+        public virtual User FromUser { get; set; }
 
         [Required]
         [Display(Name = "To User Name")]
@@ -43,5 +43,8 @@ namespace PMTool.Models
 
         [Required]
         public string Message { get; set; }
+
+
+        public List<string> SelectedToUsers { get; set; }
     }
 }

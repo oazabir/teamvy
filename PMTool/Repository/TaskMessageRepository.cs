@@ -69,6 +69,11 @@ namespace PMTool.Repository
         {
             context.Dispose();
         }
+
+        public List<TaskMessage> FindAllByTask(long taskID)
+        {
+            return context.TaskMessages.Where(t => t.TaskID == taskID).OrderByDescending(d=>d.CreateDate).ToList();
+        }
     }
 
     public interface ITaskMessageRepository : IDisposable
@@ -79,5 +84,6 @@ namespace PMTool.Repository
         void InsertOrUpdate(TaskMessage taskmessage);
         void Delete(long id);
         void Save();
+        List<TaskMessage> FindAllByTask(long taskID);
     }
 }
