@@ -237,6 +237,7 @@
         jQuery("#ModalLoading").modal('hide');
         var adata = '#' + data;
         jQuery(adata).modal('hide');
+        jQuery('.modal-backdrop').remove();
     }
     jQuery(document).ready(function () {
         //jQuery(document).ajaxStart(function () {

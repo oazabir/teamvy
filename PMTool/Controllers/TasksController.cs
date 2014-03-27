@@ -284,7 +284,8 @@ namespace PMTool.Controllers
             unitOfWork.TaskRepository.InsertOrUpdate(oldtask);
             unitOfWork.Save();
             List<Task> tasklist = unitOfWork.TaskRepository.GetTasksByProjectID(oldtask.ProjectID);
-            return PartialView("_TaskList", tasklist.ToPagedList(1,defaultPageSize));
+            return RedirectToAction("_TaskList", new { projectID = oldtask.ProjectID });
+            //return RedirectToAction("ProjectTasks", new { projectID = oldtask.ProjectID });
         }
 
 

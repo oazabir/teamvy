@@ -166,3 +166,30 @@
 
 
     </div>
+
+
+<script>
+    function Loading() {
+        jQuery("#ModalLoading").modal('show');
+    }
+</script>
+
+<script>
+    function Unload() {
+        jQuery("#ModalLoading").modal('hide');
+    }
+</script>
+<script>
+    function HidePopup(data) {
+        jQuery("#ModalLoading").modal('hide');
+        var adata = '#' + data;
+        jQuery(adata).modal('hide');
+        jQuery('.modal-backdrop').remove();
+       // jQuery(".modal-backdrop fade in").hide();
+    }
+    jQuery(document).ready(function () {
+        //jQuery(document).ajaxStart(function () {
+        //    jQuery("#ModalLoading").modal('show');
+        //});
+    });
+</script>

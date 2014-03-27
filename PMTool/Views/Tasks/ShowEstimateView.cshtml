@@ -1,5 +1,5 @@
 ﻿@model PMTool.Models.Task
-@using (Ajax.BeginForm("ShowEstimateView", "Tasks", new AjaxOptions { UpdateTargetId = "divTaskList", OnBegin = "Loading()", OnComplete = "Unload()", OnSuccess = "HidePopup('ModalpopupShowEstimateForm')" }, new { @id = "form" }))
+@using (Ajax.BeginForm("ShowEstimateView", "Tasks", new AjaxOptions { UpdateTargetId = "divTaskpagger", OnBegin = "Loading()", OnComplete = "Unload()", OnSuccess = "HidePopup('ModalpopupShowEstimateForm')" }, new { @id = "form" }))
 {
 @Html.HiddenFor(m=>m.TaskID)
   <table class="table table-bordered table-invoice">
