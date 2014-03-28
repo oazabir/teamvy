@@ -224,7 +224,7 @@ overflow:scroll !important;
     float:left !important;
     
     height:600px;
-    width: auto;
+    width: 100% !important;
     border: 13px solid #bed5cd;
     min-width: 900px !important;
     margin:0 auto;
@@ -247,7 +247,7 @@ overflow:scroll !important;
 
 .tab-content > .active, .pill-content > .active 
 {
-    width: 679px !important;
+    width: 95% !important;
      overflow-x: scroll !important;
    overflow-y: scroll !important;
     white-space: nowrap !important;

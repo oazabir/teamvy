@@ -71,7 +71,7 @@ namespace PMTool.Models
             set { fromSattus = value; }
         }
 
-        string toStatus;
+        string toStatus;    
 
         public string ToStatus
         {
