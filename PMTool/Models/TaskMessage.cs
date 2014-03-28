@@ -25,14 +25,14 @@ namespace PMTool.Models
 
         [Required]
         [Display(Name = "From User Name")]
-        public long FormUserID { get; set; }
+        public int FormUserID { get; set; }
 
         [ForeignKey("FormUserID")]
         public virtual UserProfile FromUser { get; set; }
 
         [Required]
         [Display(Name = "To User Name")]
-        public long ToUserID { get; set; }
+        public int ToUserID { get; set; }
 
         [ForeignKey("ToUserID")]
         public virtual UserProfile ToUser { get; set; }
