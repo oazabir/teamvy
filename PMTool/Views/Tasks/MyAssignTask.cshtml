@@ -14,7 +14,8 @@
                 <tr>
                     <th>Project Name
                     </th>
-
+                     <th>Task ID
+                    </th>
                     <th>Task Title
                     </th>
 
@@ -32,12 +33,15 @@
                         <td>
                             @item.Project.Name
                         </td>
-
+                        
+                        <td>
+                            <strong>@item.TaskUID</strong>
+                        </td>
                         <td>
                             <strong>@item.Title</strong>
                         </td>
                         <td style="text-align:center;">
-                            @item.ActualTaskHoure
+                            @item.ActualTaskHour
                         </td>
                         <td style="text-align:center;">
                               @Html.ActionLink(" ", "TaskTimeLog","Tasks", new { taskId = item.TaskID, sprintId = item.SprintID  }, new { @class = "icon-time", @title = "Log Entry" })

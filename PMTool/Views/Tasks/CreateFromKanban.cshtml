@@ -29,6 +29,7 @@
    
     <table class="table table-bordered table-invoice">
         <tbody>
+
             <tr>
                 <td class="width30">Project
                 </td>
@@ -36,6 +37,15 @@
                     @Html.DisplayTextFor(model => model.Project.Name)
                 </td>
             </tr>
+            <tr>
+    <td>
+        @Html.LabelFor(model => model.TaskUID)
+    </td>
+    <td>
+        @Html.EditorFor(model => model.TaskUID)
+        @Html.ValidationMessageFor(model => model.TaskUID)
+    </td>
+</tr>
             <tr>
                 <td>
                     @Html.LabelFor(model => model.Title)
@@ -79,11 +89,11 @@
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.ActualTaskHoure)
+                    @Html.LabelFor(model => model.ActualTaskHour)
                 </td>
                 <td>
-                    @Html.EditorFor(model => model.ActualTaskHoure)
-                    @Html.ValidationMessageFor(model => model.ActualTaskHoure)
+                    @Html.EditorFor(model => model.ActualTaskHour)
+                    @Html.ValidationMessageFor(model => model.ActualTaskHour)
                 </td>
             </tr>
             <tr>

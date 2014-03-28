@@ -1,6 +1,6 @@
 ﻿@using MvcPaging
 @model IPagedList<PMTool.Models.Task>
-
+<div id="divProjectTasks">
 @{
     if (ViewBag.CurrentProject != null)
     {
@@ -152,6 +152,7 @@
 
 </div>
 
+    </div>
 <script type="text/javascript">
 
     function onAddTag(tag) {
@@ -213,13 +214,13 @@
 
         jQuery.ajax({
             url: url,
-            data: { id: taskid},
+            data: { id: taskid },
             cache: false,
             beforeSend: function () {
-               jQuery("#ModalLoading").modal('show');
+                jQuery("#ModalLoading").modal('show');
             },
             success: function (data) {
-              
+
                 jQuery('#popupcontainerTaskDetails').html(data);
                 jQuery("#ModalLoading").modal('hide');
                 jQuery("#ModalpopupTaskDetails").modal('show');
@@ -248,4 +249,26 @@
         alert("Could not retrieve list.");
     }
 
+</script>
+    <script type="text/javascript">
+        function ShowEstimateForm(id) {
+            var url = jQuery('#ModalpopupShowEstimateForm').data('url') + "/" + id;
+
+            jQuery.ajax({
+                url: url,
+                cache: false,
+                beforeSend: function () {
+                    jQuery("#ModalLoading").modal('show');
+                },
+                success: function (data) {
+                    jQuery('#popupcontainerShowEstimateForm').html(data);
+                    jQuery("#ModalLoading").modal('hide');
+                    jQuery("#ModalpopupShowEstimateForm").modal('show');
+                },
+                error: function (error) {
+                    jQuery.jGrowl('somethig is wrong', { life: 5000 });
+                }
+            });
+            return false;
+        }
 </script>

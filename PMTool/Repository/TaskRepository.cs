@@ -60,7 +60,7 @@ namespace PMTool.Repository
                 task.CreatedByUser = context.Users.Where(t => t.UserId == task.CreatedBy).FirstOrDefault();
                 task.ProjectStatus = context.ProjectStatuses.Where(t => t.ProjectStatusID == task.ProjectStatusID).FirstOrDefault();
                 task.LoggedTime = context.TimeLogs.Where(t => t.TaskID == task.TaskID).ToList(); //List of time log against task Added by Mahedee @18-03-14
-                task.ActualTaskHoure = task.LoggedTime.Sum(x => x.TaskHour); //Sum of entry hour as actual hour. Added by Mahedee @18-03-14
+                task.ActualTaskHour = task.LoggedTime.Sum(x => x.TaskHour); //Sum of entry hour as actual hour. Added by Mahedee @18-03-14
             }
             return taskList;
         }
@@ -92,7 +92,7 @@ namespace PMTool.Repository
                 task.CreatedByUser = context.Users.Where(t => t.UserId == task.CreatedBy).FirstOrDefault();
                 task.ProjectStatus = context.ProjectStatuses.Where(t => t.ProjectStatusID==null||t.ProjectStatusID == task.ProjectStatusID).FirstOrDefault();
                 task.LoggedTime = context.TimeLogs.Where(t => t.TaskID == task.TaskID).ToList(); //List of time log against task Added by Mahedee @18-03-14
-                task.ActualTaskHoure = task.LoggedTime.Sum(x => x.TaskHour); //Sum of entry hour as actual hour. Added by Mahedee @18-03-14
+                task.ActualTaskHour = task.LoggedTime.Sum(x => x.TaskHour); //Sum of entry hour as actual hour. Added by Mahedee @18-03-14
             }
             return query;
         }
@@ -275,7 +275,7 @@ namespace PMTool.Repository
         public IQueryable<Task> AllIncludingForMail(params Expression<Func<Task, object>>[] includeProperties)
         {
 
-            IQueryable<Task> query = context.Tasks.Where(t => t.ProjectStatus.Name != "Close");
+            IQueryable<Task> query = context.Tasks.Where(t => t.ProjectStatus.Name.ToLower() != "closed");
             foreach (var includeProperty in includeProperties)
             {
                 query = query.Include(includeProperty);
@@ -310,6 +310,11 @@ namespace PMTool.Repository
                                         ).ToList();
             return taskList;
         }
+
+        public Task FindByTaskUID(string taskUID)
+        {
+            return context.Tasks.Where(t => t.TaskUID.ToLower() == taskUID.ToLower()).FirstOrDefault();
+        }
     }
 
     public interface ITaskRepository : IDisposable
@@ -324,5 +329,6 @@ namespace PMTool.Repository
         List<Task> GetTasksBySprintID(long sprintID);
         List<Task> GetTasksByProjectID(long projectID);
         List<Task> GetBySearchCriteria(Search search);
+        Task FindByTaskUID(string taskUID);
     }
 }

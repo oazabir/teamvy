@@ -21,6 +21,20 @@ namespace PMTool.Repository
         }
 
 
+        private TaskMessageRepository _taskMessageRepository;
+
+        public TaskMessageRepository TaskMessageRepository
+        {
+            get
+            {
+
+                if (this._taskMessageRepository == null)
+                {
+                    this._taskMessageRepository = new TaskMessageRepository(context);
+                }
+                return _taskMessageRepository;
+            }
+        }
 
         private LabelRepository _labelRepository;
 

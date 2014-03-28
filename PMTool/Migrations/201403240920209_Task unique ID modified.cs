@@ -3,16 +3,16 @@ namespace PMTool.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class taskActualhrAdded : DbMigration
+    public partial class TaskuniqueIDmodified : DbMigration
     {
         public override void Up()
         {
-            AddColumn("dbo.Tasks", "ActualTaskHour", c => c.Decimal(nullable: false, precision: 18, scale: 2));
+            AlterColumn("dbo.Tasks", "TaskUID", c => c.String());
         }
         
         public override void Down()
         {
-            DropColumn("dbo.Tasks", "ActualTaskHour");
+            AlterColumn("dbo.Tasks", "TaskUID", c => c.String(nullable: false));
         }
     }
 }

@@ -26,7 +26,15 @@ namespace PMTool.Controllers
             return View(unitOfWork.TaskRepository.AllIncluding(task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList());
         }
 
-
+        public ActionResult ChangeStatusView(long taskID, long? statusID)
+        {
+            Task task = unitOfWork.TaskRepository.Find(taskID);
+            task.ProjectStatusID = statusID;
+            unitOfWork.Save();
+            //return RedirectToAction("ProjectTasks", new { projectID =task.ProjectID});
+            List<Task> taskList=unitOfWork.TaskRepository.GetTasksByProjectID(task.ProjectID);
+            return PartialView("_TaskList", taskList.ToPagedList(1,defaultPageSize));
+        }
 
 
         //GET: /Tasks/ProjectTasks?ProjectID=5
@@ -260,6 +268,24 @@ namespace PMTool.Controllers
         {
             Task task = unitOfWork.TaskRepository.Find(id);
             return PartialView(task);
+        }
+
+        public PartialViewResult ShowEstimateView(long id)
+        {
+            Task task = unitOfWork.TaskRepository.Find(id);
+            return PartialView(task);
+        }
+
+        [HttpPost]
+        public ActionResult ShowEstimateView(Task task)
+        {
+            Task oldtask = unitOfWork.TaskRepository.Find(task.TaskID);
+            oldtask.TaskHour = task.TaskHour;
+            unitOfWork.TaskRepository.InsertOrUpdate(oldtask);
+            unitOfWork.Save();
+            List<Task> tasklist = unitOfWork.TaskRepository.GetTasksByProjectID(oldtask.ProjectID);
+            return RedirectToAction("_TaskList", new { projectID = oldtask.ProjectID });
+            //return RedirectToAction("ProjectTasks", new { projectID = oldtask.ProjectID });
         }
 
 
@@ -1361,7 +1387,7 @@ namespace PMTool.Controllers
             return Content(ststus);
         }
 
-
+     
 
         [HttpPost]
         public PartialViewResult RemoveStatusFormKanban(long status, long projectID)
@@ -1659,6 +1685,8 @@ namespace PMTool.Controllers
             return PartialView(rule);
         }
 
+
+
         [HttpPost]
         public PartialViewResult RulesForm(ProjectStatusRule rule)
         {
@@ -1669,6 +1697,14 @@ namespace PMTool.Controllers
             return PartialView(rule);
         }
 
+
+
+        public PartialViewResult TaskDetailForm(long id)
+        {
+            Task task = unitOfWork.TaskRepository.Find(id);
+
+            return PartialView(task);
+        }
 
         public PartialViewResult DeleteRule(long id)
         {
@@ -1682,6 +1718,55 @@ namespace PMTool.Controllers
             ProjectStatusRule rule = new ProjectStatusRule();
             rule.ProjectID = deletedrule.ProjectID;
             return PartialView(rule);
+        }
+
+
+
+        public PartialViewResult AddMessage(long id)
+        {
+            Task task = unitOfWork.TaskRepository.Find(id);
+            ViewBag.AllMessage = unitOfWork.TaskMessageRepository.FindAllByTask(id);
+
+            ViewBag.PossibleUser = GetAllUser(task.ProjectID);
+            TaskMessage taskMessage = new TaskMessage();
+            taskMessage.TaskID = id;
+            taskMessage.FormUserID = (Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey;
+            taskMessage.CreateDate = DateTime.Now;
+            return PartialView(taskMessage);
+        }
+
+        [HttpPost]
+        public PartialViewResult AddMessage(TaskMessage taskMessage)
+        {
+            if (taskMessage.SelectedToUsers != null)
+            {
+                foreach (string userid in taskMessage.SelectedToUsers)
+                {
+                    TaskMessage newTaskMessage = new TaskMessage();
+                    newTaskMessage.TaskID = taskMessage.TaskID;
+                    newTaskMessage.FormUserID = taskMessage.FormUserID;
+                    newTaskMessage.CreateDate = taskMessage.CreateDate;
+                    newTaskMessage.Message = taskMessage.Message;
+                    newTaskMessage.ToUserID = new Guid(userid);
+                    unitOfWork.TaskMessageRepository.InsertOrUpdate(newTaskMessage);
+                }
+                unitOfWork.Save();
+            }
+            else
+            {
+                ModelState.AddModelError("CustomError", "Please select user");
+            }
+            Task task = unitOfWork.TaskRepository.Find(taskMessage.TaskID);
+            ViewBag.AllMessage = unitOfWork.TaskMessageRepository.FindAllByTask(taskMessage.TaskID);
+
+            ViewBag.PossibleUser = GetAllUser(task.ProjectID);
+            TaskMessage taskMessageNext = new TaskMessage();
+            taskMessageNext.TaskID = taskMessage.TaskID;
+            taskMessageNext.FormUserID = (Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey;
+            taskMessageNext.CreateDate = DateTime.Now;
+            taskMessageNext.SelectedToUsers = new List<string>();
+            taskMessageNext.Message = "";
+            return PartialView(taskMessageNext);
         }
 
         protected override void Dispose(bool disposing)

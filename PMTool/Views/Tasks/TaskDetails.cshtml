@@ -29,10 +29,14 @@
                 {
                     @Model.Sprint.Name
                 }
-          @*         @if (model.SprintID != null)
-                    {
-                       <span>@item.Sprint.Name</span> 
-                    }*@
+            </td>
+        </tr>
+        <tr>
+            <td class="width30">
+               Task ID
+            </td>
+            <td>
+                <strong>@Model.TaskUID</strong>
             </td>
         </tr>
         <tr>
@@ -40,7 +44,6 @@
                Task Title
             </td>
             <td>
-@*                @Html.DisplayTextFor(_ => Model.Title).ToString()*@
                 <strong>@Model.Title</strong>
             </td>
         </tr>
@@ -49,7 +52,6 @@
                 Description
             </td>
             <td style="padding-left:15px;">
-               @* @Html.DisplayTextFor(_ => Model.Description).ToString()*@
                @Html.Raw(@Model.Description)
                  
             </td>
@@ -63,7 +65,6 @@
                 {
                     @Model.StartDate.Value.ToString("dd/MM/yyyy")
                 }
-               @* @Html.DisplayTextFor(_ => Model.StartDate).ToString()*@
             </td>
         </tr>
 
@@ -76,7 +77,6 @@
                 {
                     @Model.EndDate.Value.ToString("dd/MM/yyyy")
                 }
-                @*@Html.DisplayTextFor(_ => Model.EndDate).ToString()*@
             </td>
         </tr>
                 <tr>
@@ -85,7 +85,6 @@
             </td>
             <td> 
                 @Model.TaskHour
-                @*@Html.DisplayTextFor(_ => Model.EndDate).ToString()*@
             </td>
         </tr>
 
@@ -94,8 +93,7 @@
                 Actual Task Hour
             </td>
             <td> 
-                @Model.ActualTaskHoure
-                @*@Html.DisplayTextFor(_ => Model.EndDate).ToString()*@
+                @Model.ActualTaskHour
             </td>
         </tr>
 
@@ -118,7 +116,6 @@
    
                     <span>@user.FirstName,</span>
                 }
-                @*@Html.DisplayTextFor(_ => Model.CreatedByUser.FirstName).ToString()*@
             </td>
         </tr>
 

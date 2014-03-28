@@ -3,7 +3,16 @@
 
 
 <div class="dragbox" id="@Model.TaskID">
-<h2>@Model.Title</h2>
+<h2>
+    @if (!string.IsNullOrEmpty(Model.TaskUID))
+    {
+        
+    @Model.TaskUID
+    }
+    @Model.Title
+
+
+</h2>
 <div class="dragbox-content" style="display: none;">
 
     @{
@@ -46,5 +55,10 @@
     <a  href="#" title="Attachments"  onclick="return ShowActivity(@Model.TaskID)"><span class="iconsweets-paperclip" for="showSprint"></span>Attachments</a>
 
     <a  href="#" title="Log"  onclick="return ShowLog(@Model.TaskID)"><span class="icon-align-center" for="showSprint"></span>log</a>
+
+    <br />
+    <a  href="#" title="Task Detail"  onclick="return ShowDetail(@Model.TaskID)"><span class="icon-tasks" ></span>Task Detail</a>
+    <a  href="#" title="Message"  onclick="return AddMessage(@Model.TaskID)"><span class="icon-tasks" ></span>Message</a>
+        
 </div>
 </div>
