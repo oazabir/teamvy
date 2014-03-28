@@ -444,6 +444,95 @@ namespace PMTool.Controllers
         //    return View();
         //}
 
+         [AllowAnonymous]
+        public ActionResult PassRecovery()
+        {
+            User user = new User();
+            //RegisterModel registermodel = new RegisterModel();
+            return View(user);
+        }
+
+
+         [HttpPost]
+         [AllowAnonymous]
+         [ValidateAntiForgeryToken]
+         public ActionResult PassRecovery(User model)
+         {
+             //if (ModelState.IsValid)
+             //{
+                 // Attempt to register the user
+                 try
+                 {
+                     //string msg = WebSecurity.CreateAccount(model.UserName, model.UserName, model.Password, model.FirstName, model.LastName, false);
+
+                     if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["EnableEmailNotification"]))
+                     {
+                         if (Convert.ToBoolean(ConfigurationManager.AppSettings["EnableEmailNotification"])) //Check Enable Email Notification
+                         {
+                             try
+                             {
+                                 //MembershipUser usr = WebSecurity.GetUser(model.Username);
+                                 var token = WebSecurity.GeneratePasswordResetToken(model.Username);
+
+                                 //bool st = Membership.EnablePasswordRetrieval;
+
+                                 //MembershipUser usr = Membership.GetUser(model.Username, false);
+                                 
+
+
+                                 //string pas = usr.GetPassword();
+                                 //UnitOfWork unitofWork = new UnitOfWork();
+                                 //User user = unitofWork.UserRepository.GetUserByUserName(model.Username);
+                                 //string username = user.Username;
+                                 //string password = user.Password;
+
+                                 //Membership.
+
+                                 //RegisterModel registermodel =
+                                 //Send confirmation email added by Mahedee @ 23-01-14
+                                 //SendConfirmationEmail(model.UserName, model.FirstName, model.LastName, model.Password);
+
+
+                                 //string confirmationToken =  WebSecurity.GeneratePasswordResetToken(model.Username);
+                             }
+                             catch (Exception exp)
+                             {
+                                 //throw (exp);
+                             }
+                         }
+                     }
+
+                     //WebSecurity.Login(model.UserName, model.Password);
+                     return RedirectToAction("Index", "Home");
+                 }
+                 catch (MembershipCreateUserException e)
+                 {
+                     ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
+                 }
+             //}
+
+             // If we got this far, something failed, redisplay form
+             return View(model);
+         }
+
+         //[AllowAnonymous]
+         //public ActionResult ResetPassword(string un, string rt)
+         //{
+         //    WebSecurity.GeneratePasswordResetToken
+         //    //reset password
+         //    bool response = WebSecurity.ResetPassword(rt, newpassword);
+         //    if (response == true)
+         //    {
+         //        //get user emailid to send password
+         //        var emailid = (from i in db.UserProfiles
+         //                       where i.UserName == un
+         //                       select i.EmailId).FirstOrDefault();
+         //        //send email
+         //        string subject = "New Password";
+         //        string body = "<b>Please find the New Password</b><br/>" + newpassword; //edit it
+         //    }
+         //}
+
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)
         {

@@ -222,4 +222,23 @@ using PMTool.Repository;
         {
           
         }
+
+       //public static string GeneratePasswordResetToken(string userName)
+       //{
+       //    //return System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
+
+       //    MembershipUser user = Membership.GetUser(userName); //User Name = User Email
+       //    string confirmationGuid = user.ProviderUserKey.ToString();
+
+       //    return confirmationGuid;
+
+       //}
+
+        public static string GeneratePasswordResetToken(string userName, int tokenExpirationInMinutesFromNow = 1440)
+        {
+            return WebMatrix.WebData.WebSecurity.GeneratePasswordResetToken(userName, tokenExpirationInMinutesFromNow);
+        }
+
+
+
     }
