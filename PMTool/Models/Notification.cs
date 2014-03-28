@@ -33,8 +33,8 @@ namespace PMTool.Models
 
 
         [Required]
-        public Guid UserID { get; set; }
+        public int UserID { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual UserProfile User { get; set; }
     }
 }

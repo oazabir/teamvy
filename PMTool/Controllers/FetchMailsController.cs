@@ -25,9 +25,9 @@ namespace PMTool.Controllers
         {
             List<Mailer> mailerList = new List<Mailer>();
             List<Task> taskList = unitofWork.TaskRepository.AllIncludingForMail().ToList();
-            List<User> userList = unitofWork.UserRepository.All();
+            List<UserProfile> userList = unitofWork.UserRepository.All();
 
-            foreach (User user in userList)
+            foreach (UserProfile user in userList)
             {
                 // i++;
                 string overdueTask = string.Empty;
@@ -82,7 +82,7 @@ namespace PMTool.Controllers
                     }
 
                     Mailer mailer = new Mailer();
-                    mailer.UseMailID = user.Username;
+                    mailer.UseMailID = user.UserName;
                     mailer.MailSubject = "Daily email digest: Task list from PM Tool";
                     mailer.HtmlMailBody = messageBody;
                     //mailer.HtmlMailBody = GenerateMailBody(user);
@@ -93,7 +93,7 @@ namespace PMTool.Controllers
             return mailerList;
         }
 
-        private string GenerateMailBody(User user)
+        private string GenerateMailBody(UserProfile user)
         {
             string overdueTask = string.Empty;
             string todaysTask = string.Empty;

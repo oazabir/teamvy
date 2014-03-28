@@ -54,8 +54,8 @@ using PMTool.Repository;
             }
             using (PMToolContext Context = new PMToolContext())
             {
-                User User = null;
-                User = Context.Users.FirstOrDefault(Usr => Usr.Username == username);
+                UserProfile User = null;
+                User = Context.UserProfiles.FirstOrDefault(Usr => Usr.UserName == username);
                 if (User == null)
                 {
                     return false;
@@ -89,7 +89,7 @@ using PMTool.Repository;
                 Role = Context.Roles.FirstOrDefault(Rl => Rl.RoleName == roleName);
                 if (Role != null)
                 {
-                    return Role.Users.Select(Usr => Usr.Username).ToArray();
+                    return Role.Users.Select(Usr => Usr.UserName).ToArray();
                 }
                 else
                 {
@@ -106,8 +106,8 @@ using PMTool.Repository;
             }
             using (PMToolContext Context = new PMToolContext())
             {
-                User User = null;
-                User = Context.Users.FirstOrDefault(Usr => Usr.Username == username);
+                UserProfile User = null;
+                User = Context.UserProfiles.FirstOrDefault(Usr => Usr.UserName == username);
                 if (User != null)
                 {
                     return User.Roles.Select(Rl => Rl.RoleName).ToArray();
@@ -134,7 +134,7 @@ using PMTool.Repository;
             using (PMToolContext Context = new PMToolContext())
             {
 
-                return (from Rl in Context.Roles from Usr in Rl.Users where Rl.RoleName == roleName && Usr.Username.Contains(usernameToMatch) select Usr.Username).ToArray();
+                return (from Rl in Context.Roles from Usr in Rl.Users where Rl.RoleName == roleName && Usr.UserName.Contains(usernameToMatch) select Usr.Username).ToArray();
             }
         }
 
@@ -195,9 +195,9 @@ using PMTool.Repository;
         {
             using (PMToolContext Context = new PMToolContext())
             {
-                List<User> Users = Context.Users.Where(Usr => usernames.Contains(Usr.Username)).ToList();
+                List<UserProfile> Users = Context.UserProfiles.Where(Usr => usernames.Contains(Usr.Username)).ToList();
                 List<Role> Roles = Context.Roles.Where(Rl => roleNames.Contains(Rl.RoleName)).ToList();
-                foreach (User user in Users)
+                foreach (UserProfile user in Users)
                 {
                     foreach (Role role in Roles)
                     {
@@ -218,7 +218,7 @@ using PMTool.Repository;
                 foreach (String username in usernames)
                 {
                     String us = username;
-                    User user = Context.Users.FirstOrDefault(U => U.Username == us);
+                    UserProfile user = Context.UserProfiles.FirstOrDefault(U => U.UserName == us);
                     if (user != null)
                     {
                         foreach (String roleName in roleNames)

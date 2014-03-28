@@ -46,9 +46,9 @@ namespace PMTool.Models
        
 
 
-        public virtual List<User> Users { get; set; }
+        public virtual List<UserProfile> Users { get; set; }
 
-        public virtual List<User> ProjectOwners { get; set; }
+        public virtual List<UserProfile> ProjectOwners { get; set; }
         public List<string> SelectedProjectsOwners { get; set; }
 
 
@@ -61,17 +61,17 @@ namespace PMTool.Models
         public virtual List<ProjectStatus> ProjectStatuses { get; set; }
 
         [Required]
-        public Guid CreatedBy { get; set; }
+        public int CreatedBy { get; set; }
 
         [Required]
-        public Guid ModifiedBy { get; set; }
+        public int ModifiedBy { get; set; }
 
 
         [ForeignKey("ModifiedBy")]
-        public virtual User ModifiedByUser { get; set; }
+        public virtual UserProfile ModifiedByUser { get; set; }
 
         [ForeignKey("CreatedBy")]
-        public virtual User CreatedByUser { get; set; }
+        public virtual UserProfile CreatedByUser { get; set; }
 
         public virtual List<Sprint> Sprints { get; set; }
 

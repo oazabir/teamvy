@@ -24,9 +24,9 @@ namespace PMTool.Migrations
             new Priority { Name = "Low", Description = "Low" }
             );
             //context.Labels.AddOrUpdate(c => c.Name,
-            //new Label { Name = "Label1", Description = "Label1", ActionDate = DateTime.Now, CreateDate = DateTime.Now, ModificationDate = DateTime.Now, ModifieddBy = (Guid)Membership.GetUser("Demo").ProviderUserKey, CreatedBy = (Guid)Membership.GetUser("Demo").ProviderUserKey, IsActive = true },
-            //new Label { Name = "Label2", Description = "Label2", ActionDate = DateTime.Now, CreateDate = DateTime.Now, ModificationDate = DateTime.Now, ModifieddBy = (Guid)Membership.GetUser("Demo").ProviderUserKey, CreatedBy = (Guid)Membership.GetUser("Demo").ProviderUserKey, IsActive = true },
-            //new Label { Name = "Label3", Description = "Label3", ActionDate = DateTime.Now, CreateDate = DateTime.Now, ModificationDate = DateTime.Now, ModifieddBy = (Guid)Membership.GetUser("Demo").ProviderUserKey, CreatedBy = (Guid)Membership.GetUser("Demo").ProviderUserKey, IsActive = true }
+            //new Label { Name = "Label1", Description = "Label1", ActionDate = DateTime.Now, CreateDate = DateTime.Now, ModificationDate = DateTime.Now, ModifieddBy = (int)Membership.GetUser("Demo").ProviderUserKey, CreatedBy = (int)Membership.GetUser("Demo").ProviderUserKey, IsActive = true },
+            //new Label { Name = "Label2", Description = "Label2", ActionDate = DateTime.Now, CreateDate = DateTime.Now, ModificationDate = DateTime.Now, ModifieddBy = (int)Membership.GetUser("Demo").ProviderUserKey, CreatedBy = (int)Membership.GetUser("Demo").ProviderUserKey, IsActive = true },
+            //new Label { Name = "Label3", Description = "Label3", ActionDate = DateTime.Now, CreateDate = DateTime.Now, ModificationDate = DateTime.Now, ModifieddBy = (int)Membership.GetUser("Demo").ProviderUserKey, CreatedBy = (int)Membership.GetUser("Demo").ProviderUserKey, IsActive = true }
             //);
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using PMTool.Models;
 
 namespace PMTool.Repository
 { 
@@ -16,31 +17,31 @@ namespace PMTool.Repository
         }
 
 
-        public User GetUserByEmail(string email)
+         public UserProfile GetUserByEmail(string email)
         {
-            return context.Users.Where(Usr => Usr.Email == email).FirstOrDefault();
+            return context.UserProfiles.Where(Usr => Usr.Email == email).FirstOrDefault();
         }
 
-        public User GetUserByUserName(string userName)
+         public UserProfile GetUserByUserName(string userName)
         {
-            return context.Users.Where(Usr => Usr.Username == userName).FirstOrDefault();
+            return context.UserProfiles.Where(Usr => Usr.UserName == userName).FirstOrDefault();
         }
 
-        public User GetUserByUserID(Guid userID)
+        public UserProfile GetUserByUserID(long userID)
         {
-            return context.Users.Where(Usr => Usr.UserId == userID).FirstOrDefault();
+            return context.UserProfiles.Where(Usr => Usr.UserId == userID).FirstOrDefault();
         }
 
-        public List<User> All()
+        public List<UserProfile> All()
         {
-            return context.Users.ToList();
+            return context.UserProfiles.ToList();
         }
 
 
-        public void Insert(User user)
+        public void Insert(UserProfile user)
         {
-    
-            context.Users.Add(user);
+
+            context.UserProfiles.Add(user);
 
         }
 
@@ -54,7 +55,7 @@ namespace PMTool.Repository
             context.SaveChanges();
         }
 
-        public void Update(User user)
+        public void Update(UserProfile user)
         {
             context.Entry(user).State = System.Data.Entity.EntityState.Modified;
         }
@@ -68,13 +69,13 @@ namespace PMTool.Repository
     }
     public interface IUserRepository : IDisposable
     {
-        User GetUserByEmail(string email);
+        UserProfile GetUserByEmail(string email);
         void Delete(long id);
         void Save();
-        void Insert(User user);
-        List<User> All();
-        User GetUserByUserID(Guid userID);
-        void Update(User user);
+        void Insert(UserProfile user);
+        List<UserProfile> All();
+        UserProfile GetUserByUserID(long userID);
+        void Update(UserProfile user);
 
     }
 }

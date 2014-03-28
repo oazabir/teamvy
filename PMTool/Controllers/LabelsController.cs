@@ -50,8 +50,8 @@ namespace PMTool.Controllers
             label.ModificationDate = DateTime.Now;
             label.CreateDate = DateTime.Now;
             label.ActionDate = DateTime.Now;
-            label.CreatedBy =(Guid)Membership.GetUser().ProviderUserKey;
-            label.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
+            label.CreatedBy = (int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey;
+            label.ModifiedBy = (int)Membership.GetUser().ProviderUserKey;
             if (ModelState.IsValid)
             {
                 unitofWork.LabelRepository.InsertOrUpdate(label);
@@ -79,7 +79,7 @@ namespace PMTool.Controllers
         {
             label.ModificationDate = DateTime.Now;
             label.ActionDate = DateTime.Now;
-            label.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
+            label.ModifiedBy = (int)Membership.GetUser().ProviderUserKey;
             if (ModelState.IsValid)
             {
                 unitofWork.LabelRepository.InsertOrUpdate(label);

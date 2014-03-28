@@ -29,10 +29,10 @@ namespace PMTool.Models
 
         [Required]
         [Display(Name = "User Name")]
-        public Guid UserID { get; set; }
+        public int UserID { get; set; }
 
         [ForeignKey("UserID")]
-        public virtual User User { get; set; }
+        public virtual UserProfile User { get; set; }
 
         [Required]
         [Display(Name="Day")]
@@ -49,17 +49,17 @@ namespace PMTool.Models
 
 
         [Required]
-        public Guid CreatedBy { get; set; }
+        public int CreatedBy { get; set; }
 
         [Required]
-        public Guid ModifiedBy { get; set; }
+        public int ModifiedBy { get; set; }
 
 
         [ForeignKey("ModifiedBy")]
-        public virtual User ModifiedByUser { get; set; }
+        public virtual UserProfile ModifiedByUser { get; set; }
 
         [ForeignKey("CreatedBy")]
-        public virtual User CreatedByUser { get; set; }
+        public virtual UserProfile CreatedByUser { get; set; }
         
 
 

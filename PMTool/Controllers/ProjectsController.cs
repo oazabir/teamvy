@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using PMTool.Models;
 using PMTool.Repository;
 using System.Web.Security;
+using WebMatrix.WebData;
 
 namespace PMTool.Controllers
 {
@@ -21,14 +22,14 @@ namespace PMTool.Controllers
         public ViewResult Index()
         {
             TempData["Message"] = TempData["Message"];
-            return View(unitOfWork.ProjectRepository.AllbyUserIncluding((Guid)Membership.GetUser(User.Identity.Name).ProviderUserKey, project => project.Users).ToList());
+            return View(unitOfWork.ProjectRepository.AllbyUserIncluding((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey, project => project.Users).ToList());
         }
 
 
         public ViewResult OwnProjects()
         {
             TempData["Message"] = TempData["Message"];
-            return View(unitOfWork.ProjectRepository.AllbyOwnerIncluding((Guid)Membership.GetUser(User.Identity.Name).ProviderUserKey, project => project.Users).ToList());
+            return View(unitOfWork.ProjectRepository.AllbyOwnerIncluding((int)Membership.GetUser(User.Identity.Name).ProviderUserKey, project => project.Users).ToList());
         }
 
 
@@ -55,7 +56,7 @@ namespace PMTool.Controllers
                     notification.IsNoticed = true;
                     unitOfWork.NotificationRepository.InsertOrUpdate(notification);
                     unitOfWork.Save();
-                    User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+                    UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
                     LoadUnreadNotifications(user);
                 }
             }
@@ -92,8 +93,8 @@ namespace PMTool.Controllers
         private List<SelectListItem> GetAllUser()
         {
             List<SelectListItem> allUsers = new List<SelectListItem>();
-            List<User> userList = unitOfWork.UserRepository.All();
-            foreach (User user in userList)
+            List<UserProfile> userList = unitOfWork.UserRepository.All();
+            foreach (UserProfile user in userList)
             {
                 SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName +" "+ user.LastName };
                 allUsers.Add(item);
@@ -110,8 +111,8 @@ namespace PMTool.Controllers
             project.ModificationDate = DateTime.Now;
             project.CreateDate = DateTime.Now;
             project.ActionDate = DateTime.Now;
-            project.CreatedBy = (Guid)Membership.GetUser().ProviderUserKey;
-            project.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
+            project.CreatedBy = (int)Membership.GetUser().ProviderUserKey;
+            project.ModifiedBy = (int)Membership.GetUser().ProviderUserKey;
             project.IsActive = true;
 
             if (ModelState.IsValid)
@@ -167,19 +168,19 @@ namespace PMTool.Controllers
         {
             if (project.Users != null)
             {
-                foreach (User user in project.Users)
+                foreach (UserProfile user in project.Users)
                 {
                     
 
                     Notification notification = new Notification();
                     if (isProjectInsert)
                     {
-                        User createdUser = unitOfWork.UserRepository.GetUserByUserID(project.CreatedBy);
+                        UserProfile createdUser = unitOfWork.UserRepository.GetUserByUserID(project.CreatedBy);
                         notification.Title = createdUser.FirstName + " " + createdUser.LastName + " Has added you on the porject --" + project.Name;
                     }
                     else
                     {
-                        User modifiedUser = unitOfWork.UserRepository.GetUserByUserID(project.ModifiedBy);
+                        UserProfile modifiedUser = unitOfWork.UserRepository.GetUserByUserID(project.ModifiedBy);
                         notification.Title = modifiedUser.FirstName + " " + modifiedUser.LastName + " Has modify the porject --" + project.Name;
                     }
                     notification.UserID = user.UserId;
@@ -193,12 +194,12 @@ namespace PMTool.Controllers
 
         private void AddAssignUser(Project project)
         {
-            project.Users = new List<User>();
+            project.Users = new List<UserProfile>();
             if (project.SelectedAssignedUsers != null)
             {
                 foreach (string userID in project.SelectedAssignedUsers)
                 {
-                    User user = unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
+                    UserProfile user = unitOfWork.UserRepository.GetUserByUserID(Convert.ToInt64(userID));
                     project.Users.Add(user);
 
                 }
@@ -212,12 +213,12 @@ namespace PMTool.Controllers
         /// <param name="project"></param>
         private void AddProjectOwner(Project project)
         {
-            project.ProjectOwners = new List<User>();
+            project.ProjectOwners = new List<UserProfile>();
             if (project.SelectedProjectsOwners != null)
             {
                 foreach (string userID in project.SelectedProjectsOwners)
                 {
-                    User user = unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
+                    UserProfile user = unitOfWork.UserRepository.GetUserByUserID(Convert.ToInt64(userID));
                     project.ProjectOwners.Add(user);
                 }
             }
@@ -245,9 +246,9 @@ namespace PMTool.Controllers
         {
             project.ModificationDate = DateTime.Now;
             project.ActionDate = DateTime.Now;
-            project.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
+            project.ModifiedBy = (int)Membership.GetUser().ProviderUserKey;
             project.IsActive = true;
-            List<User> userList = new List<User>();
+            List<UserProfile> userList = new List<UserProfile>();
             if (ModelState.IsValid)
             {
                 AddAssignUser(project);
@@ -258,7 +259,7 @@ namespace PMTool.Controllers
                 unitOfWork.Save();
                 SaveNotification(project, false);
                 string msg = "";
-                foreach (User user in userList)
+                foreach (UserProfile user in userList)
                 {
                     msg = msg + user.FirstName + " " + user.LastName + ", ";
                 }

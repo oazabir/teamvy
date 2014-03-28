@@ -14,5 +14,5 @@ using System.ComponentModel.DataAnnotations;
 
         public virtual string Description { get; set; }
 
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<UserProfile> Users { get; set; }
     }

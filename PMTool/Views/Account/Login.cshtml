@@ -31,6 +31,7 @@
                     </p>
 
                @Html.HiddenFor(m=>m.returnUrl);
+               @Html.HiddenFor(m=>m.IsConfirmed);
                     @Html.ValidationSummary(true, "")
 
                
@@ -40,7 +41,7 @@
                      @Html.ActionLink("Signup", "Register", "Account")
                         
                                  
-                     @Html.ActionLink("Forgot Password?", "PassRecovery", "Account",null,new { @style="float:right;" })
+                     @Html.ActionLink("Forgot Password?", "ResetPassword", "Account",null,new { @style="float:right;" })
                         
                     </p>
             </div>

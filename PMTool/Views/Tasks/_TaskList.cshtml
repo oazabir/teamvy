@@ -97,13 +97,13 @@
 
                 </td>
                 <td>
-                    @if (item.Users.Any(u => u.Username == User.Identity.Name) || item.Project.ProjectOwners.Any(u => u.Username == User.Identity.Name))
+                    @if (item.Users.Any(u => u.UserName == User.Identity.Name) || item.Project.ProjectOwners.Any(u => u.UserName == User.Identity.Name))
                     {
                         @Html.ActionLink("Add SubTask", "CreateSubTask", new { ProjectID = item.ProjectID, TaskID = item.TaskID }, new { @title = "Add SubTask" })
                     }
                 </td>
                 <td>
-                    @foreach (User user in item.Users)
+                    @foreach (UserProfile user in item.Users)
                     {
    
                         <span>@user.FirstName,</span>
@@ -120,7 +120,7 @@
                     }
                 </td>
                 <td align="center">
-                    @if (item.Users.Any(u => u.Username == User.Identity.Name) || item.Project.ProjectOwners.Any(u => u.Username == User.Identity.Name))
+                    @if (item.Users.Any(u => u.UserName == User.Identity.Name) || item.Project.ProjectOwners.Any(u => u.UserName == User.Identity.Name))
                     {
                         @Html.ActionLink(" ", "Edit", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
                         <span>|</span>

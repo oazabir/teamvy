@@ -71,7 +71,7 @@ namespace PMTool.Repository
             context.Dispose();
         }
 
-        public List<Notification> UserUnreadNotification(User user)
+        public List<Notification> UserUnreadNotification(UserProfile user)
         {
           return  context.Notifications.Where(n=>n.UserID==user.UserId && n.IsNoticed==false).ToList();
         }
@@ -91,6 +91,6 @@ namespace PMTool.Repository
         void InsertOrUpdate(Notification notification);
         void Delete(long id);
         void Save();
-        List<Notification> UserUnreadNotification(User user);
+        List<Notification> UserUnreadNotification(UserProfile user);
     }
 }
