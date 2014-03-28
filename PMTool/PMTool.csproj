@@ -231,125 +231,24 @@
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\SprintsController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
+    <Compile Include="Entities\Operations.cs" />
+    <Compile Include="Entities\OperationsToRoles.cs" />
+    <Compile Include="Entities\Resource.cs" />
     <Compile Include="Entities\Role.cs" />
-    <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\UserProfile.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Membership\CodeFirstMembershipProvider.cs" />
-    <Compile Include="Membership\CodeFirstRoleProvider.cs" />
     <Compile Include="Membership\Crypto.cs" />
     <Compile Include="Membership\WebSecurity.cs" />
-    <Compile Include="Migrations\201402171244341_host.cs" />
-    <Compile Include="Migrations\201402171244341_host.Designer.cs">
-      <DependentUpon>201402171244341_host.cs</DependentUpon>
+    <Compile Include="Migrations\201403280639490_INITAIL.cs" />
+    <Compile Include="Migrations\201403280639490_INITAIL.Designer.cs">
+      <DependentUpon>201403280639490_INITAIL.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201402181153056_taskActualhrAdded.cs" />
-    <Compile Include="Migrations\201402181153056_taskActualhrAdded.Designer.cs">
-      <DependentUpon>201402181153056_taskActualhrAdded.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201402181301321_sprintadded.cs" />
-    <Compile Include="Migrations\201402181301321_sprintadded.Designer.cs">
-      <DependentUpon>201402181301321_sprintadded.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201402181313019_sprintmodified.cs" />
-    <Compile Include="Migrations\201402181313019_sprintmodified.Designer.cs">
-      <DependentUpon>201402181313019_sprintmodified.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201402181314390_sprintmodified2.cs" />
-    <Compile Include="Migrations\201402181314390_sprintmodified2.Designer.cs">
-      <DependentUpon>201402181314390_sprintmodified2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201402191220258_pm.cs" />
-    <Compile Include="Migrations\201402191220258_pm.Designer.cs">
-      <DependentUpon>201402191220258_pm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201402200737161_taskactivitylogCreated.cs" />
-    <Compile Include="Migrations\201402200737161_taskactivitylogCreated.Designer.cs">
-      <DependentUpon>201402200737161_taskactivitylogCreated.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201402201258039_logmodified.cs" />
-    <Compile Include="Migrations\201402201258039_logmodified.Designer.cs">
-      <DependentUpon>201402201258039_logmodified.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403041150038_updatetaskmodel.cs" />
-    <Compile Include="Migrations\201403041150038_updatetaskmodel.Designer.cs">
-      <DependentUpon>201403041150038_updatetaskmodel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403041156484_updatetaskmodel2.cs" />
-    <Compile Include="Migrations\201403041156484_updatetaskmodel2.Designer.cs">
-      <DependentUpon>201403041156484_updatetaskmodel2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403050934027_taskDateChange.cs" />
-    <Compile Include="Migrations\201403050934027_taskDateChange.Designer.cs">
-      <DependentUpon>201403050934027_taskDateChange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403071040351_taskTablecloumnadded.cs" />
-    <Compile Include="Migrations\201403071040351_taskTablecloumnadded.Designer.cs">
-      <DependentUpon>201403071040351_taskTablecloumnadded.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403100855420_activitylogchange.cs" />
-    <Compile Include="Migrations\201403100855420_activitylogchange.Designer.cs">
-      <DependentUpon>201403100855420_activitylogchange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403100954438_taskdateformatecange.cs" />
-    <Compile Include="Migrations\201403100954438_taskdateformatecange.Designer.cs">
-      <DependentUpon>201403100954438_taskdateformatecange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403101017021_assd.cs" />
-    <Compile Include="Migrations\201403101017021_assd.Designer.cs">
-      <DependentUpon>201403101017021_assd.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403101058389_taskdescriptionpropertychange.cs" />
-    <Compile Include="Migrations\201403101058389_taskdescriptionpropertychange.Designer.cs">
-      <DependentUpon>201403101058389_taskdescriptionpropertychange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403110649106_projectstatuscolumnchange.cs" />
-    <Compile Include="Migrations\201403110649106_projectstatuscolumnchange.Designer.cs">
-      <DependentUpon>201403110649106_projectstatuscolumnchange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403110650168_adddefaultvalue.cs" />
-    <Compile Include="Migrations\201403110650168_adddefaultvalue.Designer.cs">
-      <DependentUpon>201403110650168_adddefaultvalue.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403110950470_SlnoAdded.cs" />
-    <Compile Include="Migrations\201403110950470_SlnoAdded.Designer.cs">
-      <DependentUpon>201403110950470_SlnoAdded.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403120912558_ProjectStatusRuleAdded.cs" />
-    <Compile Include="Migrations\201403120912558_ProjectStatusRuleAdded.Designer.cs">
-      <DependentUpon>201403120912558_ProjectStatusRuleAdded.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403121024420_ruleChange.cs" />
-    <Compile Include="Migrations\201403121024420_ruleChange.Designer.cs">
-      <DependentUpon>201403121024420_ruleChange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403121038484_ruleChange2.cs" />
-    <Compile Include="Migrations\201403121038484_ruleChange2.Designer.cs">
-      <DependentUpon>201403121038484_ruleChange2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403121044557_ruleChange3.cs" />
-    <Compile Include="Migrations\201403121044557_ruleChange3.Designer.cs">
-      <DependentUpon>201403121044557_ruleChange3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403121223390_checkChange.cs" />
-    <Compile Include="Migrations\201403121223390_checkChange.Designer.cs">
-      <DependentUpon>201403121223390_checkChange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403130941322_timelog.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Migrations\201403130941322_timelog.Designer.cs">
-      <DependentUpon>201403130941322_timelog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403180728216_timelogchange.cs" />
-    <Compile Include="Migrations\201403180728216_timelogchange.Designer.cs">
-      <DependentUpon>201403180728216_timelogchange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403191315353_migrateforrelase.cs" />
-    <Compile Include="Migrations\201403191315353_migrateforrelase.Designer.cs">
-      <DependentUpon>201403191315353_migrateforrelase.cs</DependentUpon>
+    <Compile Include="Migrations\201403280822525_taskuid.cs" />
+    <Compile Include="Migrations\201403280822525_taskuid.Designer.cs">
+      <DependentUpon>201403280822525_taskuid.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
@@ -362,8 +261,15 @@
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\EnumCollection.cs" />
     <Compile Include="Models\Label.cs" />
+    <Compile Include="Models\TaskMessage.cs" />
     <Compile Include="Models\TaskPropertyChange.cs" />
     <Compile Include="Models\TimeLog.cs" />
+    <Compile Include="Repository\GenericRepository.cs" />
+    <Compile Include="Repository\MembershipRepository.cs" />
+    <Compile Include="Repository\ModelConfiguration\OperationsToRolesConfiguration.cs" />
+    <Compile Include="Repository\ModelConfiguration\ResourceConfiguration.cs" />
+    <Compile Include="Repository\SecurityContext.cs" />
+    <Compile Include="Repository\TaskMessageRepository.cs" />
     <Compile Include="Repository\TimeLogRepository.cs" />
     <Compile Include="Repository\ProjectStatusRuleRepository.cs" />
     <Compile Include="Repository\TaskActivityLogRepository.cs" />
@@ -386,10 +292,10 @@
     <Compile Include="Repository\UnitOfWork .cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Repository\UserProfileRepository.cs" />
     <Compile Include="Repository\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\PMDB.sdf" />
     <Content Include="collapse.png" />
     <Content Include="Scripts\requiredIf.js" />
     <Content Include="UploadedDocument\accept.png" />
@@ -1226,6 +1132,18 @@
     <Content Include="Views\Tasks\_EffortList.cshtml" />
     <Content Include="Views\Sprints\SprintBurnDown.cshtml" />
     <Content Include="Views\Projects\BurndownCharts.cshtml" />
+    <Content Include="Views\Account\PassRecovery.cshtml" />
+    <Content Include="Views\Account\RegisterStepTwo.cshtml" />
+    <Content Include="Views\Account\ConfirmationFailure.cshtml" />
+    <Content Include="Views\Account\ConfirmationSuccess.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\ResetPwStepTwo.cshtml" />
+    <Content Include="Views\Account\PasswordResetSuccess.cshtml" />
+    <Content Include="Views\Account\PasswordResetFailure.cshtml" />
+    <Content Include="Views\Tasks\AddMessage.cshtml" />
+    <Content Include="Views\Tasks\ShowEstimateView.cshtml" />
+    <Content Include="Views\Tasks\TaskDetailForm.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -1305,89 +1223,16 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201402171244341_host.resx">
-      <DependentUpon>201402171244341_host.cs</DependentUpon>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201403280639490_INITAIL.resx">
+      <DependentUpon>201403280639490_INITAIL.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402181153056_taskActualhrAdded.resx">
-      <DependentUpon>201402181153056_taskActualhrAdded.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402181301321_sprintadded.resx">
-      <DependentUpon>201402181301321_sprintadded.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402181313019_sprintmodified.resx">
-      <DependentUpon>201402181313019_sprintmodified.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402181314390_sprintmodified2.resx">
-      <DependentUpon>201402181314390_sprintmodified2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402191220258_pm.resx">
-      <DependentUpon>201402191220258_pm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402200737161_taskactivitylogCreated.resx">
-      <DependentUpon>201402200737161_taskactivitylogCreated.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201402201258039_logmodified.resx">
-      <DependentUpon>201402201258039_logmodified.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403041150038_updatetaskmodel.resx">
-      <DependentUpon>201403041150038_updatetaskmodel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403041156484_updatetaskmodel2.resx">
-      <DependentUpon>201403041156484_updatetaskmodel2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403050934027_taskDateChange.resx">
-      <DependentUpon>201403050934027_taskDateChange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403071040351_taskTablecloumnadded.resx">
-      <DependentUpon>201403071040351_taskTablecloumnadded.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403100855420_activitylogchange.resx">
-      <DependentUpon>201403100855420_activitylogchange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403100954438_taskdateformatecange.resx">
-      <DependentUpon>201403100954438_taskdateformatecange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403101017021_assd.resx">
-      <DependentUpon>201403101017021_assd.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403101058389_taskdescriptionpropertychange.resx">
-      <DependentUpon>201403101058389_taskdescriptionpropertychange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403110649106_projectstatuscolumnchange.resx">
-      <DependentUpon>201403110649106_projectstatuscolumnchange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403110650168_adddefaultvalue.resx">
-      <DependentUpon>201403110650168_adddefaultvalue.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403110950470_SlnoAdded.resx">
-      <DependentUpon>201403110950470_SlnoAdded.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403120912558_ProjectStatusRuleAdded.resx">
-      <DependentUpon>201403120912558_ProjectStatusRuleAdded.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403121024420_ruleChange.resx">
-      <DependentUpon>201403121024420_ruleChange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403121038484_ruleChange2.resx">
-      <DependentUpon>201403121038484_ruleChange2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403121044557_ruleChange3.resx">
-      <DependentUpon>201403121044557_ruleChange3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403121223390_checkChange.resx">
-      <DependentUpon>201403121223390_checkChange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403130941322_timelog.resx">
-      <DependentUpon>201403130941322_timelog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403180728216_timelogchange.resx">
-      <DependentUpon>201403180728216_timelogchange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403191315353_migrateforrelase.resx">
-      <DependentUpon>201403191315353_migrateforrelase.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201403280822525_taskuid.resx">
+      <DependentUpon>201403280822525_taskuid.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

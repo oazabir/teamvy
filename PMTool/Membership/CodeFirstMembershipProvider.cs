@@ -93,7 +93,7 @@ using PMTool.Repository;
 
             using (UnitOfWork reopo = new UnitOfWork())
             {
-                User existingUser = reopo.UserRepository.GetUserByEmail(email);
+                UserProfile existingUser = reopo.UserRepository.GetUserByEmail(email);
              
                
                 if (existingUser!=null)
@@ -102,27 +102,18 @@ using PMTool.Repository;
                     return null;
                 }
 
-                User NewUser = new User
+                UserProfile NewUser = new UserProfile
                 {
-                    UserId = Guid.NewGuid(),
-                    Username = username,
-                    Password = HashedPassword,
-                    IsApproved = isApproved,
+                   // UserId = Guid.NewGuid(),
+                   
                     Email = email,
-                    CreateDate = DateTime.UtcNow,
-                    LastPasswordChangedDate = DateTime.UtcNow,
-                    PasswordFailuresSinceLastSuccess = 0,
-                    LastLoginDate = DateTime.UtcNow,
-                    LastActivityDate = DateTime.UtcNow,
-                    LastLockoutDate = DateTime.UtcNow,
-                    IsLockedOut = false,
-                    LastPasswordFailureDate = DateTime.UtcNow
+                    
                 };
 
                 reopo.UserRepository.Insert(NewUser);
                 reopo.Save();
                 status = MembershipCreateStatus.Success;
-                return new MembershipUser(Membership.Provider.Name, NewUser.Username, NewUser.UserId, NewUser.Email, null, null, NewUser.IsApproved, NewUser.IsLockedOut, NewUser.CreateDate.Value, NewUser.LastLoginDate.Value, NewUser.LastActivityDate.Value, NewUser.LastPasswordChangedDate.Value, NewUser.LastLockoutDate.Value);
+                return null;// new MembershipUser(Membership.Provider.Name, NewUser.UserName, NewUser.UserId, NewUser.Email, null, null, NewUser.IsApproved, NewUser.IsLockedOut, NewUser.CreateDate.Value, NewUser.LastLoginDate.Value, NewUser.LastActivityDate.Value, NewUser.LastPasswordChangedDate.Value, NewUser.LastLockoutDate.Value);
             }
         }
 
@@ -143,20 +134,20 @@ using PMTool.Repository;
             }
             using (PMToolContext Context = new PMToolContext())
             {
-                User User = null;
-                User = Context.Users.FirstOrDefault(Usr => Usr.Username == username);
+                UserProfile User = null;
+                User = Context.UserProfiles.FirstOrDefault(Usr => Usr.Username == username);
                 if (User == null)
                 {
                     return false;
                 }
-                if (!User.IsApproved)
-                {
-                    return false;
-                }
-                if (User.IsLockedOut)
-                {
-                    return false;
-                }
+                //if (!User.IsApproved)
+                //{
+                //    return false;
+                //}
+                //if (User.IsLockedOut)
+                //{
+                //    return false;
+                //}
                 String HashedPassword = User.Password;
                 Boolean VerificationSucceeded = (HashedPassword != null && Crypto.VerifyHashedPassword(HashedPassword, password));
                 if (VerificationSucceeded)
@@ -200,16 +191,16 @@ using PMTool.Repository;
             }
             using (PMToolContext Context = new PMToolContext())
             {
-                User User = null;
-                User = Context.Users.FirstOrDefault(Usr => Usr.Username == username);
+                UserProfile User = null;
+                User = Context.UserProfiles.FirstOrDefault(Usr => Usr.UserName == username);
                 if (User != null)
                 {
                     if (userIsOnline)
                     {
-                        User.LastActivityDate = DateTime.UtcNow;
+                        //User.LastActivityDate = DateTime.UtcNow;
                         Context.SaveChanges();
                     }
-                    return new MembershipUser(Membership.Provider.Name, User.Username, User.UserId, User.Email, null, null, User.IsApproved, User.IsLockedOut, User.CreateDate.Value, User.LastLoginDate.Value, User.LastActivityDate.Value, User.LastPasswordChangedDate.Value, User.LastLockoutDate.Value);
+                    return new MembershipUser(Membership.Provider.Name, User.UserName, User.UserId, User.Email, null, null, User.IsApproved, User.IsLockedOut, User.CreateDate.Value, User.LastLoginDate.Value, User.LastActivityDate.Value, User.LastPasswordChangedDate.Value, User.LastLockoutDate.Value);
                 }
                 else
                 {
@@ -228,8 +219,8 @@ using PMTool.Repository;
 
             using (PMToolContext Context = new PMToolContext())
             {
-                User User = null;
-                User = Context.Users.Find(providerUserKey);
+                UserProfile User = null;
+                User = Context.UserProfiles.Find(providerUserKey);
                 if (User != null)
                 {
                     if (userIsOnline)
@@ -237,7 +228,7 @@ using PMTool.Repository;
                         User.LastActivityDate = DateTime.UtcNow;
                         Context.SaveChanges();
                     }
-                    return new MembershipUser(Membership.Provider.Name, User.Username, User.UserId, User.Email, null, null, User.IsApproved, User.IsLockedOut, User.CreateDate.Value, User.LastLoginDate.Value, User.LastActivityDate.Value, User.LastPasswordChangedDate.Value, User.LastLockoutDate.Value);
+                    return new MembershipUser(Membership.Provider.Name, User.UserName, User.UserId, User.Email, null, null, User.IsApproved, User.IsLockedOut, User.CreateDate.Value, User.LastLoginDate.Value, User.LastActivityDate.Value, User.LastPasswordChangedDate.Value, User.LastLockoutDate.Value);
                 }
                 else
                 {
@@ -262,8 +253,8 @@ using PMTool.Repository;
             }
             using (PMToolContext Context = new PMToolContext())
             {
-                User User = null;
-                User = Context.Users.FirstOrDefault(Usr => Usr.Username == username);
+                UserProfile User = null;
+                User = Context.UserProfiles.FirstOrDefault(Usr => Usr.UserName == username);
                 if (User == null)
                 {
                     return false;
@@ -307,8 +298,8 @@ using PMTool.Repository;
         {
             using (PMToolContext Context = new PMToolContext())
             {
-                User User = null;
-                User = Context.Users.FirstOrDefault(Usr => Usr.Username == userName);
+                UserProfile User = null;
+                User = Context.UserProfiles.FirstOrDefault(Usr => Usr.Username == userName);
                 if (User != null)
                 {
                     User.IsLockedOut = false;
@@ -328,7 +319,7 @@ using PMTool.Repository;
             DateTime DateActive = DateTime.UtcNow.Subtract(TimeSpan.FromMinutes(Convert.ToDouble(Membership.UserIsOnlineTimeWindow)));
             using (PMToolContext Context = new PMToolContext())
             {
-                return Context.Users.Where(Usr => Usr.LastActivityDate > DateActive).Count();
+                return Context.UserProfiles.Where(Usr => Usr.LastActivityDate > DateActive).Count();
             }
         }
 
@@ -340,11 +331,11 @@ using PMTool.Repository;
             }
             using (PMToolContext Context = new PMToolContext())
             {
-                User User = null;
-                User = Context.Users.FirstOrDefault(Usr => Usr.Username == username);
+                UserProfile User = null;
+                User = Context.UserProfiles.FirstOrDefault(Usr => Usr.UserName == username);
                 if (User != null)
                 {
-                    Context.Users.Remove(User);
+                    Context.UserProfiles.Remove(User);
                     Context.SaveChanges();
                     return true;
                 }
@@ -359,11 +350,11 @@ using PMTool.Repository;
         {
             using (PMToolContext Context = new PMToolContext())
             {
-                User User = null;
-                User = Context.Users.FirstOrDefault(Usr => Usr.Email == email);
+                UserProfile User = null;
+                User = Context.UserProfiles.FirstOrDefault(Usr => Usr.Email == email);
                 if (User != null)
                 {
-                    return User.Username;
+                    return User.UserName;
                 }
                 else
                 {
@@ -377,11 +368,11 @@ using PMTool.Repository;
             MembershipUserCollection MembershipUsers = new MembershipUserCollection();
             using (PMToolContext Context = new PMToolContext())
             {
-                totalRecords = Context.Users.Where(Usr => Usr.Email == emailToMatch).Count();
-                IQueryable<User> Users = Context.Users.Where(Usr => Usr.Email == emailToMatch).OrderBy(Usrn => Usrn.Username).Skip(pageIndex * pageSize).Take(pageSize);
-                foreach (User user in Users)
+                totalRecords = Context.UserProfiles.Where(Usr => Usr.Email == emailToMatch).Count();
+                IQueryable<UserProfile> Users = Context.UserProfiles.Where(Usr => Usr.Email == emailToMatch).OrderBy(Usrn => Usrn.UserName).Skip(pageIndex * pageSize).Take(pageSize);
+                foreach (UserProfile user in Users)
                 {
-                    MembershipUsers.Add(new MembershipUser(Membership.Provider.Name, user.Username, user.UserId, user.Email, null, null, user.IsApproved, user.IsLockedOut, user.CreateDate.Value, user.LastLoginDate.Value, user.LastActivityDate.Value, user.LastPasswordChangedDate.Value, user.LastLockoutDate.Value));
+                    MembershipUsers.Add(new MembershipUser(Membership.Provider.Name, user.UserName, user.UserId, user.Email, null, null, user.IsApproved, user.IsLockedOut, user.CreateDate.Value, user.LastLoginDate.Value, user.LastActivityDate.Value, user.LastPasswordChangedDate.Value, user.LastLockoutDate.Value));
                 }
             }
             return MembershipUsers;
@@ -392,11 +383,11 @@ using PMTool.Repository;
             MembershipUserCollection MembershipUsers = new MembershipUserCollection();
             using (PMToolContext Context = new PMToolContext())
             {
-                totalRecords = Context.Users.Where(Usr => Usr.Username == usernameToMatch).Count();
-                IQueryable<User> Users = Context.Users.Where(Usr => Usr.Username == usernameToMatch).OrderBy(Usrn => Usrn.Username).Skip(pageIndex * pageSize).Take(pageSize);
-                foreach (User user in Users)
+                totalRecords = Context.UserProfiles.Where(Usr => Usr.UserName == usernameToMatch).Count();
+                IQueryable<UserProfile> Users = Context.UserProfiles.Where(Usr => Usr.UserName == usernameToMatch).OrderBy(Usrn => Usrn.UserName).Skip(pageIndex * pageSize).Take(pageSize);
+                foreach (UserProfile user in Users)
                 {
-                    MembershipUsers.Add(new MembershipUser(Membership.Provider.Name, user.Username, user.UserId, user.Email, null, null, user.IsApproved, user.IsLockedOut, user.CreateDate.Value, user.LastLoginDate.Value, user.LastActivityDate.Value, user.LastPasswordChangedDate.Value, user.LastLockoutDate.Value));
+                    MembershipUsers.Add(new MembershipUser(Membership.Provider.Name, user.UserName, user.UserId, user.Email, null, null, user.IsApproved, user.IsLockedOut, user.CreateDate.Value, user.LastLoginDate.Value, user.LastActivityDate.Value, user.LastPasswordChangedDate.Value, user.LastLockoutDate.Value));
                 }
             }
             return MembershipUsers;
@@ -407,11 +398,11 @@ using PMTool.Repository;
             MembershipUserCollection MembershipUsers = new MembershipUserCollection();
             using (PMToolContext Context = new PMToolContext())
             {
-                totalRecords = Context.Users.Count();
-                IQueryable<User> Users = Context.Users.OrderBy(Usrn => Usrn.Username).Skip(pageIndex * pageSize).Take(pageSize);
-                foreach (User user in Users)
+                totalRecords = Context.UserProfiles.Count();
+                IQueryable<UserProfile> Users = Context.UserProfiles.OrderBy(Usrn => Usrn.UserName).Skip(pageIndex * pageSize).Take(pageSize);
+                foreach (UserProfile user in Users)
                 {
-                    MembershipUsers.Add(new MembershipUser(Membership.Provider.Name, user.Username, user.UserId, user.Email, null, null, user.IsApproved, user.IsLockedOut, user.CreateDate.Value, user.LastLoginDate.Value, user.LastActivityDate.Value, user.LastPasswordChangedDate.Value, user.LastLockoutDate.Value));
+                    MembershipUsers.Add(new MembershipUser(Membership.Provider.Name, user.UserName, user.UserId, user.Email, null, null, user.IsApproved, user.IsLockedOut, user.CreateDate.Value, user.LastLoginDate.Value, user.LastActivityDate.Value, user.LastPasswordChangedDate.Value, user.LastLockoutDate.Value));
                 }
             }
             return MembershipUsers;
@@ -438,7 +429,7 @@ using PMTool.Repository;
 
             using (PMToolContext Context = new PMToolContext())
             {
-                if (Context.Users.Where(Usr => Usr.Username == userName).Any())
+                if (Context.UserProfiles.Where(Usr => Usr.UserName == userName).Any())
                 {
                     throw new MembershipCreateUserException(MembershipCreateStatus.DuplicateUserName);
                 }
@@ -448,26 +439,26 @@ using PMTool.Repository;
                 {
                     token = GenerateToken();
                 }
-            
-                User NewUser = new User
+
+                UserProfile NewUser = new UserProfile
                 {
-                    UserId = Guid.NewGuid(),
-                    Username = userName,
-                    Password = hashedPassword,        
-                    IsApproved = !requireConfirmationToken,
+                    //UserId = Guid.NewGuid(),
+                    UserName = userName,
+                    //Password = hashedPassword,        
+                    //IsApproved = !requireConfirmationToken,
                     Email = string.Empty,
-                    CreateDate = DateTime.UtcNow,
-                    LastPasswordChangedDate = DateTime.UtcNow,
-                    PasswordFailuresSinceLastSuccess = 0,
-                    LastLoginDate = DateTime.UtcNow,
-                    LastActivityDate = DateTime.UtcNow,
-                    LastLockoutDate = DateTime.UtcNow,
-                    IsLockedOut = false,
-                    LastPasswordFailureDate = DateTime.UtcNow,
-                    ConfirmationToken = token 
+                    //CreateDate = DateTime.UtcNow,
+                    //LastPasswordChangedDate = DateTime.UtcNow,
+                    //PasswordFailuresSinceLastSuccess = 0,
+                    //LastLoginDate = DateTime.UtcNow,
+                    //LastActivityDate = DateTime.UtcNow,
+                    //LastLockoutDate = DateTime.UtcNow,
+                    //IsLockedOut = false,
+                    //LastPasswordFailureDate = DateTime.UtcNow,
+                    //ConfirmationToken = token 
                 };
 
-                Context.Users.Add(NewUser);
+                Context.UserProfiles.Add(NewUser);
                 Context.SaveChanges();
                 return token;
             }

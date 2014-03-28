@@ -26,7 +26,7 @@ namespace PMTool.Filters
         {
             public SimpleMembershipInitializer()
             {
-             //   Database.SetInitializer<UsersContext>(null);
+                //   Database.SetInitializer<UsersContext>(null);
 
                 try
                 {

@@ -72,9 +72,9 @@ namespace PMTool.Models
         [Required]
         public DateTime ActionDate { get; set; }
 
-        public virtual List<User> Users { get; set; }
+        public virtual List<UserProfile> Users { get; set; }
 
-        public virtual List<User> Followers { get; set; }
+        public virtual List<UserProfile> Followers { get; set; }
 
         public virtual List<Label> Labels { get; set; }
 
@@ -104,21 +104,21 @@ namespace PMTool.Models
         public virtual ProjectStatus ProjectStatus { get; set; }
 
         [Required]
-        public Guid CreatedBy { get; set; }
+        public int CreatedBy { get; set; }
 
         [Required]
-        public Guid ModifiedBy { get; set; }
+        public int ModifiedBy { get; set; }
 
 
         [ForeignKey("ModifiedBy")]
-        public virtual User ModifiedByUser { get; set; }
+        public virtual UserProfile ModifiedByUser { get; set; }
 
         [ForeignKey("CreatedBy")]
-        public virtual User CreatedByUser { get; set; }
+        public virtual UserProfile CreatedByUser { get; set; }
 
 
         [Display(Name = "Actual Task Hour")]
-        public decimal ActualTaskHoure { get; set; }
+        public decimal ActualTaskHour { get; set; }
 
 
         public long? SprintID { get; set; }
@@ -141,5 +141,8 @@ namespace PMTool.Models
         [Display(Name = "Actual Live Date")]
         [DefaultValue(typeof(DateTime), "2000-01-01")]
         public DateTime? ActualLiveDate { get; set; }
+
+
+        public string TaskUID { get; set; }
     }
 }

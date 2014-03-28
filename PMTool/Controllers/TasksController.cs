@@ -26,7 +26,15 @@ namespace PMTool.Controllers
             return View(unitOfWork.TaskRepository.AllIncluding(task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList());
         }
 
-
+        public ActionResult ChangeStatusView(long taskID, long? statusID)
+        {
+            Task task = unitOfWork.TaskRepository.Find(taskID);
+            task.ProjectStatusID = statusID;
+            unitOfWork.Save();
+            //return RedirectToAction("ProjectTasks", new { projectID =task.ProjectID});
+            List<Task> taskList = unitOfWork.TaskRepository.GetTasksByProjectID(task.ProjectID);
+            return PartialView("_TaskList", taskList.ToPagedList(1, defaultPageSize));
+        }
 
 
         //GET: /Tasks/ProjectTasks?ProjectID=5
@@ -34,7 +42,7 @@ namespace PMTool.Controllers
         {
             int currentPageIndex = page.HasValue ? page.Value : 1;
             IList<Task> taskList;
-            User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
             Project project = unitOfWork.ProjectRepository.Find(projectID);
 
             ViewBag.TaskStatus = GetAllStatus(projectID);
@@ -60,7 +68,7 @@ namespace PMTool.Controllers
                 search.SelectedPriorityID = Convert.ToInt64(SelectedPriorityID);
 
             if (!string.IsNullOrEmpty(SelectedUserID))
-                search.SelectedUserID = new Guid(SelectedUserID);
+                search.SelectedUserID = Convert.ToInt64(SelectedUserID);
 
             if (!string.IsNullOrEmpty(SelectedSprintID))
                 search.SelectedSprintID = Convert.ToInt64(SelectedSprintID);
@@ -75,7 +83,7 @@ namespace PMTool.Controllers
         //Action for your assigned task added by Mahedee @ 13-03-14
         public ViewResult MyAssignTask()
         {
-            User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
             List<Task> myTaskList = unitOfWork.TaskRepository.GetTasksByUser(user).Where(task => task.ProjectStatus.Name.ToLower() != "closed").ToList();
             return View(myTaskList);
         }
@@ -106,9 +114,9 @@ namespace PMTool.Controllers
         [HttpPost]
         public ActionResult CreateTimeLog(TimeLog timeLog)
         {
-            timeLog.CreatedBy = (Guid)Membership.GetUser().ProviderUserKey;
-            timeLog.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
-            timeLog.UserID = (Guid)Membership.GetUser().ProviderUserKey;
+            timeLog.CreatedBy = (int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey;
+            timeLog.ModifiedBy = (int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey;
+            timeLog.UserID = (int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey;
             timeLog.CreateDate = DateTime.Now;
             timeLog.ModificationDate = DateTime.Now;
             timeLog.ActionDate = DateTime.Now;
@@ -200,7 +208,7 @@ namespace PMTool.Controllers
         private void GetTaskList(long projectID, out IList<Task> taskList, out Project project, long? statusId)
         {
             taskList = new List<Task>();
-            User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
             project = unitOfWork.ProjectRepository.Find(projectID);
             //If this project is created by the current user. Then he can see all task.
             if (project.CreatedBy == user.UserId)
@@ -219,7 +227,7 @@ namespace PMTool.Controllers
         private void GetTaskList(long projectID, out IList<Task> taskList, out Project project)
         {
             taskList = new List<Task>();
-            User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
             project = unitOfWork.ProjectRepository.Find(projectID);
             //If this project is created by the current user. Then he can see all task.
             if (project.CreatedBy == user.UserId)
@@ -260,6 +268,24 @@ namespace PMTool.Controllers
         {
             Task task = unitOfWork.TaskRepository.Find(id);
             return PartialView(task);
+        }
+
+        public PartialViewResult ShowEstimateView(long id)
+        {
+            Task task = unitOfWork.TaskRepository.Find(id);
+            return PartialView(task);
+        }
+
+        [HttpPost]
+        public ActionResult ShowEstimateView(Task task)
+        {
+            Task oldtask = unitOfWork.TaskRepository.Find(task.TaskID);
+            oldtask.TaskHour = task.TaskHour;
+            unitOfWork.TaskRepository.InsertOrUpdate(oldtask);
+            unitOfWork.Save();
+            List<Task> tasklist = unitOfWork.TaskRepository.GetTasksByProjectID(oldtask.ProjectID);
+            return RedirectToAction("_TaskList", new { projectID = oldtask.ProjectID });
+            //return RedirectToAction("ProjectTasks", new { projectID = oldtask.ProjectID });
         }
 
 
@@ -340,8 +366,8 @@ namespace PMTool.Controllers
         [HttpPost]
         public ActionResult Create(Task task)
         {
-            task.CreatedBy = (Guid)Membership.GetUser().ProviderUserKey;
-            task.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
+            task.CreatedBy = (int)Membership.GetUser().ProviderUserKey;
+            task.ModifiedBy = (int)Membership.GetUser().ProviderUserKey;
             task.CreateDate = DateTime.Now;
             task.ModificationDate = DateTime.Now;
             task.ActionDate = DateTime.Now;
@@ -396,7 +422,7 @@ namespace PMTool.Controllers
             //        }
             //        else
             //        {
-            //            User modifiedUser = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            //            User modifiedUser = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
             //            phrase = phrase + modifiedUser.FirstName + " " + modifiedUser.LastName + " ";
             //            if (!change.IsSatausChanged)
             //            {
@@ -653,7 +679,7 @@ namespace PMTool.Controllers
             //    {
             //        if (phrase != "")
             //        {
-            //            User modifiedUser = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            //            User modifiedUser = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
             //            string logComment = phrase;
             //            logComment = logComment + "on " + DateTime.Now.ToShortDateString();
             //            TaskActivityLog log = unitOfWork.TaskActivityLogRepository.FindByTaskID(task.TaskID);
@@ -685,13 +711,13 @@ namespace PMTool.Controllers
 
             if (isTaskInsert)
             {
-                User createdUser = unitOfWork.UserRepository.GetUserByUserID(task.CreatedBy);
+                UserProfile createdUser = unitOfWork.UserRepository.GetUserByUserID(task.CreatedBy);
                 status = createdUser.FirstName + " " + createdUser.LastName + " has created a task";
                 if (!isSubTask)
                 {
                     if (task.Users.Count > 0)
                     {
-                        foreach (User user in task.Users)
+                        foreach (UserProfile user in task.Users)
                         {
                             Notification notification = new Notification();
                             notification.Title = status + " for you";
@@ -711,7 +737,7 @@ namespace PMTool.Controllers
                         status = status + " has created a sub task under the task " + parentTask.Title;
                         if (task.Users.Count > 0)
                         {
-                            foreach (User user in task.Users)
+                            foreach (UserProfile user in task.Users)
                             {
                                 Notification notification = new Notification();
                                 notification.Title = status + " for you";
@@ -729,14 +755,14 @@ namespace PMTool.Controllers
             # region if Insert
             else
             {
-                User modifieddUser = unitOfWork.UserRepository.GetUserByUserID(task.CreatedBy);
+                UserProfile modifieddUser = unitOfWork.UserRepository.GetUserByUserID(task.CreatedBy);
                 status = modifieddUser.FirstName + " " + modifieddUser.LastName + " changed";
                 status = GetModifiedStatus(status, change, task);
                 if (!isSubTask)
                 {
                     if (task.Users.Count > 0)
                     {
-                        foreach (User user in task.Users)
+                        foreach (UserProfile user in task.Users)
                         {
                             Notification notification = new Notification();
                             notification.Title = status;
@@ -813,8 +839,8 @@ namespace PMTool.Controllers
         public ActionResult CreateSubTask(Task task)
         {
             task.TaskID = 0;
-            task.CreatedBy = (Guid)Membership.GetUser().ProviderUserKey;
-            task.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
+            task.CreatedBy = (int)Membership.GetUser().ProviderUserKey;
+            task.ModifiedBy = (int)Membership.GetUser().ProviderUserKey;
             task.CreateDate = DateTime.Now;
             task.ModificationDate = DateTime.Now;
             task.ActionDate = DateTime.Now;
@@ -855,12 +881,12 @@ namespace PMTool.Controllers
 
         private void AddFollower(Task task)
         {
-            task.Followers = new List<User>();
+            task.Followers = new List<UserProfile>();
             if (task.SelectedFollowedUsers != null)
             {
                 foreach (string userID in task.SelectedFollowedUsers)
                 {
-                    User user = unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
+                    UserProfile user = unitOfWork.UserRepository.GetUserByUserID(Convert.ToInt64(userID));
                     task.Followers.Add(user);
                 }
             }
@@ -868,12 +894,12 @@ namespace PMTool.Controllers
 
         private void AddAssignUser(Task task)
         {
-            task.Users = new List<User>();
+            task.Users = new List<UserProfile>();
             if (task.SelectedAssignedUsers != null)
             {
                 foreach (string userID in task.SelectedAssignedUsers)
                 {
-                    User user = unitOfWork.UserRepository.GetUserByUserID(new Guid(userID));
+                    UserProfile user = unitOfWork.UserRepository.GetUserByUserID(Convert.ToInt64(userID));
                     task.Users.Add(user);
 
                 }
@@ -945,7 +971,7 @@ namespace PMTool.Controllers
         [HttpPost]
         public PartialViewResult EditFromKanban(Task task)
         {
-            task.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
+            task.ModifiedBy = (int)Membership.GetUser().ProviderUserKey;
             task.ModificationDate = DateTime.Now;
             task.ActionDate = DateTime.Now;
             if (ModelState.IsValid)
@@ -1034,8 +1060,8 @@ namespace PMTool.Controllers
         public PartialViewResult CreateFromKanban(Task task)
         {
 
-            task.CreatedBy = (Guid)Membership.GetUser().ProviderUserKey;
-            task.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
+            task.CreatedBy = (int)Membership.GetUser().ProviderUserKey;
+            task.ModifiedBy = (int)Membership.GetUser().ProviderUserKey;
             task.CreateDate = DateTime.Now;
             task.ModificationDate = DateTime.Now;
             task.ActionDate = DateTime.Now;
@@ -1093,7 +1119,7 @@ namespace PMTool.Controllers
                     notification.IsNoticed = true;
                     unitOfWork.NotificationRepository.InsertOrUpdate(notification);
                     unitOfWork.Save();
-                    User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+                    UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
                     LoadUnreadNotifications(user);
                 }
             }
@@ -1160,8 +1186,8 @@ namespace PMTool.Controllers
         private List<SelectListItem> GetAllUser(long ProjectID)
         {
             List<SelectListItem> allUsers = new List<SelectListItem>();
-            List<User> userList = unitOfWork.ProjectRepository.Find(ProjectID).Users;
-            foreach (User user in userList)
+            List<UserProfile> userList = unitOfWork.ProjectRepository.Find(ProjectID).Users;
+            foreach (UserProfile user in userList)
             {
                 SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName + " " + user.LastName };
                 allUsers.Add(item);
@@ -1175,7 +1201,7 @@ namespace PMTool.Controllers
         [HttpPost]
         public ActionResult Edit(Task task)
         {
-            task.ModifiedBy = (Guid)Membership.GetUser().ProviderUserKey;
+            task.ModifiedBy = (int)Membership.GetUser().ProviderUserKey;
             task.ModificationDate = DateTime.Now;
             task.ActionDate = DateTime.Now;
             if (ModelState.IsValid)
@@ -1325,7 +1351,7 @@ namespace PMTool.Controllers
                     unitOfWork.TaskRepository.InsertOrUpdate(task);
                     unitOfWork.Save();
                     ststus = "Task- " + task.Title + " is moved to " + status + sprint;
-                    User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+                    UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
                     logComment = ststus + "by user" + user.FirstName + "  " + user.LastName;
                     logComment = logComment + "on " + DateTime.Now.ToShortDateString();
                     status = status + " successfully!!!";
@@ -1368,16 +1394,16 @@ namespace PMTool.Controllers
         {
             List<Task> taskList = new List<Task>();
             Project projectOld = unitOfWork.ProjectRepository.Find(projectID);
-            
-                taskList = unitOfWork.TaskRepository.ByProjectAndStatusIncluding(projectID, status, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-                if (!taskList.Any(e => e.ProjectStatusID == status))
-                {
-                    ViewBag.isSattusDeleted = true; 
-                    unitOfWork.ProjectStatusRepository.DeleteByProjectIDAndColID(status, projectID);
-                    unitOfWork.Save();
-                }
-                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
-          
+
+            taskList = unitOfWork.TaskRepository.ByProjectAndStatusIncluding(projectID, status, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            if (!taskList.Any(e => e.ProjectStatusID == status))
+            {
+                ViewBag.isSattusDeleted = true;
+                unitOfWork.ProjectStatusRepository.DeleteByProjectIDAndColID(status, projectID);
+                unitOfWork.Save();
+            }
+            taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+
             ViewBag.CurrentProject = unitOfWork.ProjectRepository.Find(projectID);
             return PartialView("_Kanban", taskList);
 
@@ -1475,7 +1501,7 @@ namespace PMTool.Controllers
             List<Task> taskList = new List<Task>();
             //taskList = unitOfWork.TaskRepository.GetTasksBySprintID(sprint.SprintID);
 
-             taskList = unitOfWork.TaskRepository.ByProjectIncluding(sprint.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+            taskList = unitOfWork.TaskRepository.ByProjectIncluding(sprint.ProjectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
             return PartialView("_Kanban", taskList);
         }
 
@@ -1502,7 +1528,7 @@ namespace PMTool.Controllers
             if (ModelState.IsValid)
             {
                 string comment = "";
-                User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+                UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
                 string Name = "";
                 string Length = "";
                 string Type = "";
@@ -1551,14 +1577,14 @@ namespace PMTool.Controllers
             search.SprintList = project.Sprints.ToList();
             if (project.Users != null)
             {
-                foreach (User user in project.Users)
+                foreach (UserProfile user in project.Users)
                 {
                     search.UserList.Add(user);
                 }
             }
             if (project.ProjectOwners != null)
             {
-                foreach (User user in project.ProjectOwners)
+                foreach (UserProfile user in project.ProjectOwners)
                 {
                     if (!search.UserList.Exists(u => u.UserId == user.UserId))
                         search.UserList.Add(user);
@@ -1590,7 +1616,7 @@ namespace PMTool.Controllers
         {
 
             List<Task> taskList = new List<Task>();
-            User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
             Project project = unitOfWork.ProjectRepository.Find(projectID);
             //If this project is created by the current user. Then he can see all task.
             if (project.CreatedBy == user.UserId)
@@ -1659,6 +1685,8 @@ namespace PMTool.Controllers
             return PartialView(rule);
         }
 
+
+
         [HttpPost]
         public PartialViewResult RulesForm(ProjectStatusRule rule)
         {
@@ -1669,6 +1697,14 @@ namespace PMTool.Controllers
             return PartialView(rule);
         }
 
+
+
+        public PartialViewResult TaskDetailForm(long id)
+        {
+            Task task = unitOfWork.TaskRepository.Find(id);
+
+            return PartialView(task);
+        }
 
         public PartialViewResult DeleteRule(long id)
         {
@@ -1682,6 +1718,55 @@ namespace PMTool.Controllers
             ProjectStatusRule rule = new ProjectStatusRule();
             rule.ProjectID = deletedrule.ProjectID;
             return PartialView(rule);
+        }
+
+
+
+        public PartialViewResult AddMessage(long id)
+        {
+            Task task = unitOfWork.TaskRepository.Find(id);
+            ViewBag.AllMessage = unitOfWork.TaskMessageRepository.FindAllByTask(id);
+
+            ViewBag.PossibleUser = GetAllUser(task.ProjectID);
+            TaskMessage taskMessage = new TaskMessage();
+            taskMessage.TaskID = id;
+            taskMessage.FormUserID = (int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey;
+            taskMessage.CreateDate = DateTime.Now;
+            return PartialView(taskMessage);
+        }
+
+        [HttpPost]
+        public PartialViewResult AddMessage(TaskMessage taskMessage)
+        {
+            if (taskMessage.SelectedToUsers != null)
+            {
+                foreach (string userid in taskMessage.SelectedToUsers)
+                {
+                    TaskMessage newTaskMessage = new TaskMessage();
+                    newTaskMessage.TaskID = taskMessage.TaskID;
+                    newTaskMessage.FormUserID = taskMessage.FormUserID;
+                    newTaskMessage.CreateDate = taskMessage.CreateDate;
+                    newTaskMessage.Message = taskMessage.Message;
+                    newTaskMessage.ToUserID = Convert.ToInt32(userid);
+                    unitOfWork.TaskMessageRepository.InsertOrUpdate(newTaskMessage);
+                }
+                unitOfWork.Save();
+            }
+            else
+            {
+                ModelState.AddModelError("CustomError", "Please select user");
+            }
+            Task task = unitOfWork.TaskRepository.Find(taskMessage.TaskID);
+            ViewBag.AllMessage = unitOfWork.TaskMessageRepository.FindAllByTask(taskMessage.TaskID);
+
+            ViewBag.PossibleUser = GetAllUser(task.ProjectID);
+            TaskMessage taskMessageNext = new TaskMessage();
+            taskMessageNext.TaskID = taskMessage.TaskID;
+            taskMessageNext.FormUserID = (int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey;
+            taskMessageNext.CreateDate = DateTime.Now;
+            taskMessageNext.SelectedToUsers = new List<string>();
+            taskMessageNext.Message = "";
+            return PartialView(taskMessageNext);
         }
 
         protected override void Dispose(bool disposing)

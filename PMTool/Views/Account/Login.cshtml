@@ -31,11 +31,19 @@
                     </p>
 
                @Html.HiddenFor(m=>m.returnUrl);
+               @Html.HiddenFor(m=>m.IsConfirmed);
                     @Html.ValidationSummary(true, "")
 
                
                 }
+                <p>
+                   
                      @Html.ActionLink("Signup", "Register", "Account")
+                        
+                                 
+                     @Html.ActionLink("Forgot Password?", "ResetPassword", "Account",null,new { @style="float:right;" })
+                        
+                    </p>
             </div>
             <!--loginwrapperinner-->
       

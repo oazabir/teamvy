@@ -8,6 +8,7 @@ using System.Web.Routing;
 using System.Web.Security;
 using PMTool.Models;
 using PMTool.Repository;
+using WebMatrix.WebData;
 
 namespace PMTool.Controllers
 {
@@ -18,11 +19,11 @@ namespace PMTool.Controllers
         
         public BaseController()
         {
-            if (!string.IsNullOrEmpty(WebSecurity.User.Identity.Name))
+            if (!string.IsNullOrEmpty(WebSecurity.CurrentUserName))
             {
                 try
                 {
-                    User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+                    UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
                     LoadAssignedProjects(user);
                     LoadUnreadNotifications(user);
                     ViewBag.UserName = user.FirstName + " " + user.LastName;
@@ -33,12 +34,12 @@ namespace PMTool.Controllers
             }
         }
 
-        public void LoadUnreadNotifications(User user)
+        public void LoadUnreadNotifications(UserProfile user)
         {
 
         }
 
-        public void LoadAssignedProjects(User user)
+        public void LoadAssignedProjects(UserProfile user)
         {
           List<Project> projectList= unitOfWork.ProjectRepository.GetAssignedProjectByUser(user);
           ViewBag.AssignedProjects = projectList;

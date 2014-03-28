@@ -21,6 +21,50 @@ namespace PMTool.Repository
         }
 
 
+        private UserProfileRepository _userProfileRepository;
+
+        public UserProfileRepository UserProfileRepository
+        {
+            get
+            {
+
+                if (this._userProfileRepository == null)
+                {
+                    //this._userProfileRepository = new UserProfileRepository(context);
+                }
+                return _userProfileRepository;
+            }
+        }
+
+        private MembershipRepository _membershipRepository;
+
+        public MembershipRepository MembershipRepository
+        {
+            get
+            {
+
+                if (this._membershipRepository == null)
+                {
+                    //this._userProfileRepository = new UserProfileRepository(context);
+                }
+                return _membershipRepository;
+            }
+        }
+
+        private TaskMessageRepository _taskMessageRepository;
+
+        public TaskMessageRepository TaskMessageRepository
+        {
+            get
+            {
+
+                if (this._taskMessageRepository == null)
+                {
+                    this._taskMessageRepository = new TaskMessageRepository(context);
+                }
+                return _taskMessageRepository;
+            }
+        }
 
         private LabelRepository _labelRepository;
 

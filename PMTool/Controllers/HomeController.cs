@@ -7,6 +7,7 @@ using System.Web.Security;
 using PMTool.Models;
 using PMTool.Repository;
 using System.Data.Entity;
+using WebMatrix.WebData;
 
 namespace PMTool.Controllers
 {
@@ -18,7 +19,10 @@ namespace PMTool.Controllers
         public ActionResult Index()
         {
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
-            User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            //Session.Abandon();
+            //Session.Clear();
+
+            UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
             List<Task> userTaskList = new List<Task>();
             List<Task> dueTaskList = new List<Task>();
             List<Task> overdueTaskList = new List<Task>();
@@ -27,7 +31,6 @@ namespace PMTool.Controllers
             List<Task> futureTaskList = new List<Task>();
 
             userTaskList = unitOfWork.TaskRepository.GetTasksByUser(user).ToList();
-
           
             /*Task which is not closed will display to the dashboard. Updated by Mahedee @ 26-02-14*/
             overdueTaskList = userTaskList.Where(p => (p.EndDate < DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
@@ -61,16 +64,17 @@ namespace PMTool.Controllers
 
         public PartialViewResult _Notification()
         {
-            UnitOfWork unitOfWork = new UnitOfWork();
-             User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
-            List<Notification> notificationList = unitOfWork.NotificationRepository.UserUnreadNotification(user);
+            //UnitOfWork unitOfWork = new UnitOfWork();
+            //User user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
+            //List<Notification> notificationList = unitOfWork.NotificationRepository.UserUnreadNotification(user);
+            List<Notification> notificationList = new List<Notification>();
             return PartialView(notificationList);
         }
         
         public PartialViewResult _NotificationReadAll(List<Notification> notifications)
         {
             UnitOfWork unitOfWork = new UnitOfWork();
-            User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
             List<Notification> notificationList = unitOfWork.NotificationRepository.UserUnreadNotification(user);
             List<Notification> notificationListNew = new List<Notification>();
             foreach (Notification item in notificationList)
@@ -101,7 +105,7 @@ namespace PMTool.Controllers
         private void GetTaskList(long projectID, out List<Task> taskList, out Project project, long? statusId)
         {
             taskList = new List<Task>();
-            User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
             project = unitOfWork.ProjectRepository.Find(projectID);
            
             //If this project is created by the current user. Then he can see all task.
@@ -121,7 +125,7 @@ namespace PMTool.Controllers
         private void GetTaskList(long projectID, out List<Task> taskList, out Project project)
         {
             taskList = new List<Task>();
-            User user = unitOfWork.UserRepository.GetUserByUserID((Guid)Membership.GetUser(WebSecurity.User.Identity.Name).ProviderUserKey);
+            UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
             project = unitOfWork.ProjectRepository.Find(projectID);
             //If this project is created by the current user. Then he can see all task.
             if (project.CreatedBy == user.UserId)

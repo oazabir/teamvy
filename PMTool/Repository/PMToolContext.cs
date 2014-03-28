@@ -5,6 +5,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text;
 using PMTool.Models;
+using PMTool.Entities;
 
 namespace PMTool.Repository
 {
@@ -13,7 +14,7 @@ namespace PMTool.Repository
 
         //public DbSet<PMTool.Models.Test> Tests { get; set; }
 
-        public DbSet<User> Users { get; set; }
+        //public DbSet<UserProfile> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
 
@@ -94,6 +95,8 @@ namespace PMTool.Repository
         public DbSet<PMTool.Models.ProjectStatusRule> ProjectStatusRules { get; set; }
 
         public DbSet<PMTool.Models.TimeLog> TimeLogs { get; set; }
+
+        public DbSet<PMTool.Models.TaskMessage> TaskMessages { get; set; }
 
     }
 }

@@ -1,9 +1,11 @@
 ﻿@using MvcPaging
 @model IPagedList<PMTool.Models.Task>
-
+<div id="divTaskpagger">
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
+            <th>Task ID
+            </th>
             <th>Task Title
             </th>
             <th>Start Date</th>
@@ -14,7 +16,9 @@
             <th>Add Sub Task</th>
 
             <th>Assign To</th>
-
+            
+                 
+            <th>Estimate</th>
             <th></th>
         </tr>
     </thead>
@@ -22,7 +26,13 @@
         @foreach (var item in Model)
         {
             <tr>
+                
+                <td>
+                    <strong>
+                       @item.TaskUID
 
+                        </strong>
+                </td>
                 <td>
                     <strong>
                         <a href="#" onclick="return ShowTaskDetails(@item.TaskID); ">@item.Title</a>
@@ -41,7 +51,23 @@
                 <td>
                     @if (item.ProjectStatusID != null)
                     {
-                        @item.ProjectStatus.Name
+                        @* @item.ProjectStatus.Name*@
+                        <div class="btn-group">
+                            <button data-toggle="dropdown" class="btn dropdown-toggle">@item.ProjectStatus.Name <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                @foreach (PMTool.Models.ProjectStatus status in item.Project.ProjectStatuses)
+                                {
+                                    <li>
+                                        @*<a href="@Url.Action("ChangeStatusView", new { @taskID=item.TaskID,@statusID=@status.ProjectStatusID})">@status.Name</a>*@
+
+                                         @Ajax.ActionLink(@status.Name, "ChangeStatusView", "Tasks", new { taskID = item.TaskID, statusID = @status.ProjectStatusID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divTaskpagger"}, new {@title = "Change Status" })
+                                    </li>
+                        }
+                            </ul>
+                        </div>
+                                          
+                                          
+                                              
                     }
                 </td>
                   
@@ -71,20 +97,30 @@
 
                 </td>
                 <td>
-                    @if (item.Users.Any(u => u.Username == User.Identity.Name) || item.Project.ProjectOwners.Any(u => u.Username == User.Identity.Name))
+                    @if (item.Users.Any(u => u.UserName == User.Identity.Name) || item.Project.ProjectOwners.Any(u => u.UserName == User.Identity.Name))
                     {
                         @Html.ActionLink("Add SubTask", "CreateSubTask", new { ProjectID = item.ProjectID, TaskID = item.TaskID }, new { @title = "Add SubTask" })
                     }
                 </td>
                 <td>
-                    @foreach (User user in item.Users)
+                    @foreach (UserProfile user in item.Users)
                     {
    
                         <span>@user.FirstName,</span>
                     }
-
+                    </td>
+                <td>
+                    @if (item.TaskHour > 0)
+                    {
+                        <a  href="#"  onclick="return ShowEstimateForm(@item.TaskID)"><span class="icon-plus" ></span>@item.TaskHour</a>
+                    }
+                    @if (item.TaskHour<= 0)
+                    {
+                        <a  href="#" onclick="return ShowEstimateForm(@item.TaskID)"><span class="icon-plus" ></span>Estimate</a>
+                    }
+                </td>
                 <td align="center">
-                    @if (item.Users.Any(u => u.Username == User.Identity.Name) || item.Project.ProjectOwners.Any(u => u.Username == User.Identity.Name))
+                    @if (item.Users.Any(u => u.UserName == User.Identity.Name) || item.Project.ProjectOwners.Any(u => u.UserName == User.Identity.Name))
                     {
                         @Html.ActionLink(" ", "Edit", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
                         <span>|</span>
@@ -122,3 +158,38 @@
         Showing <span class="badge badge-success">@Model.ItemStart</span> to <span class="badge badge-success">@Model.ItemEnd</span>
         of <span class="badge badge-info">@Model.TotalItemCount</span> entries</div>
 </div>
+
+<div id='ModalpopupShowEstimateForm' data-url='@Url.Action("ShowEstimateView", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerShowEstimateForm'>
+    </div>
+</div>
+
+
+    </div>
+
+
+<script>
+    function Loading() {
+        jQuery("#ModalLoading").modal('show');
+    }
+</script>
+
+<script>
+    function Unload() {
+        jQuery("#ModalLoading").modal('hide');
+    }
+</script>
+<script>
+    function HidePopup(data) {
+        jQuery("#ModalLoading").modal('hide');
+        var adata = '#' + data;
+        jQuery(adata).modal('hide');
+        jQuery('.modal-backdrop').remove();
+       // jQuery(".modal-backdrop fade in").hide();
+    }
+    jQuery(document).ready(function () {
+        //jQuery(document).ajaxStart(function () {
+        //    jQuery("#ModalLoading").modal('show');
+        //});
+    });
+</script>
