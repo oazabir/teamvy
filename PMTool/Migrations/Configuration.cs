@@ -17,7 +17,6 @@ namespace PMTool.Migrations
 
         protected override void Seed(PMTool.Repository.PMToolContext context)
         {
-           
             context.Priorities.AddOrUpdate(c => c.Name,
             new Priority { Name = "High", Description = "High" },
             new Priority { Name = "Medium", Description = "Medium" },
