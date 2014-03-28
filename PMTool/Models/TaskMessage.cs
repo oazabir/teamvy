@@ -25,17 +25,17 @@ namespace PMTool.Models
 
         [Required]
         [Display(Name = "From User Name")]
-        public Guid FormUserID { get; set; }
+        public long FormUserID { get; set; }
 
         [ForeignKey("FormUserID")]
-        public virtual User FromUser { get; set; }
+        public virtual UserProfile FromUser { get; set; }
 
         [Required]
         [Display(Name = "To User Name")]
-        public Guid ToUserID { get; set; }
+        public long ToUserID { get; set; }
 
         [ForeignKey("ToUserID")]
-        public virtual User ToUser { get; set; }
+        public virtual UserProfile ToUser { get; set; }
 
         [Required]
         public DateTime CreateDate { get; set; }
