@@ -5,7 +5,7 @@ namespace PMTool.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
     using System.Web.Security;
-    using PMTool.Models;
+    using PMTool.Models;   
 
     public sealed class Configuration : DbMigrationsConfiguration<PMTool.Repository.PMToolContext>
     {
