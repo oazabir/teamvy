@@ -33,9 +33,8 @@ namespace PMTool.Repository
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+           // base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
-
             modelBuilder.Entity<Project>().
                 HasMany(i => i.Users).
                 WithMany(c => c.Projects).
