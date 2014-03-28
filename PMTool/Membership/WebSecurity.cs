@@ -61,7 +61,7 @@ public static class WebSecurity
 
     public static void Register()
     {
-        SecurityContext context = new SecurityContext();
+        PMToolContext context = new PMToolContext();
         context.Database.Initialize(true);
         if (!WebMatrix.WebData.WebSecurity.Initialized)
             WebMatrix.WebData.WebSecurity.InitializeDatabaseConnection("PMToolContext",
