@@ -7,13 +7,13 @@ namespace PMTool.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.0.2-21211")]
-    public sealed partial class INITAIL : IMigrationMetadata
+    public sealed partial class initalmigration : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(INITAIL));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(initalmigration));
         
         string IMigrationMetadata.Id
         {
-            get { return "201403280639490_INITAIL"; }
+            get { return "201403281120151_initalmigration"; }
         }
         
         string IMigrationMetadata.Source

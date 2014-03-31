@@ -242,13 +242,9 @@
     </Compile>
     <Compile Include="Membership\Crypto.cs" />
     <Compile Include="Membership\WebSecurity.cs" />
-    <Compile Include="Migrations\201403280639490_INITAIL.cs" />
-    <Compile Include="Migrations\201403280639490_INITAIL.Designer.cs">
-      <DependentUpon>201403280639490_INITAIL.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403280822525_taskuid.cs" />
-    <Compile Include="Migrations\201403280822525_taskuid.Designer.cs">
-      <DependentUpon>201403280822525_taskuid.cs</DependentUpon>
+    <Compile Include="Migrations\201403281120151_initalmigration.cs" />
+    <Compile Include="Migrations\201403281120151_initalmigration.Designer.cs">
+      <DependentUpon>201403281120151_initalmigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
@@ -1226,11 +1222,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201403280639490_INITAIL.resx">
-      <DependentUpon>201403280639490_INITAIL.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403280822525_taskuid.resx">
-      <DependentUpon>201403280822525_taskuid.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201403281120151_initalmigration.resx">
+      <DependentUpon>201403281120151_initalmigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
