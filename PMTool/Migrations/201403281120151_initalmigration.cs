@@ -3,7 +3,7 @@ namespace PMTool.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class INITAIL : DbMigration
+    public partial class initalmigration : DbMigration
     {
         public override void Up()
         {
@@ -72,6 +72,7 @@ namespace PMTool.Migrations
                         ActualPreviewDate = c.DateTime(),
                         ForecastLiveDate = c.DateTime(),
                         ActualLiveDate = c.DateTime(),
+                        TaskUID = c.String(),
                     })
                 .PrimaryKey(t => t.TaskID)
                 .ForeignKey("dbo.Tasks", t => t.ParentTaskId)

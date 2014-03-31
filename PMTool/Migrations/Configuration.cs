@@ -11,7 +11,7 @@ namespace PMTool.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
             ContextKey = "PMTool.Repository.PMToolContext"; 
         }
 
