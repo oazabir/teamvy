@@ -370,3 +370,7 @@ li > a > button {
     z-index: 2147483647 !important;
 }
 
+.table th, .table td
+{
+    min-width: 65px !important;
+}

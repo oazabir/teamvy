@@ -33,7 +33,8 @@ namespace PMTool.Controllers
             unitOfWork.Save();
             //return RedirectToAction("ProjectTasks", new { projectID =task.ProjectID});
             List<Task> taskList = unitOfWork.TaskRepository.GetTasksByProjectID(task.ProjectID);
-            return PartialView("_TaskList", taskList.ToPagedList(1, defaultPageSize));
+            //return PartialView("_TaskList", taskList.ToPagedList(1, defaultPageSize));
+            return RedirectToAction("_TaskList", new { @projectID = task.ProjectID });
         }
 
 
