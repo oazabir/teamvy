@@ -2,16 +2,16 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="pagetitle">
+@*<div class="pagetitle">
     <h1>Dashboard</h1>
     <span>This is a sample description for dashboard page...</span>
-</div>
+</div>*@
 <!--pagetitle-->
 
 <div class="maincontent">
     <div class="contentinner content-dashboard">
         <div class="">
-            <h4 style="text-align: center !important;">Task Assigned to you</h4>
+            @*<h4 style="text-align: center !important;">Task Assigned to you</h4>
 
             <h5><u>Overdue Tasks</u></h5>
             <table class="table table-bordered" id="dyntable">
@@ -53,9 +53,77 @@
                         @Html.Partial("_TaskList", (List<PMTool.Models.Task>)ViewBag.FutureTask)
                     }
                 </table>
-            </div>
+            </div>*@
+            <table class="table table-bordered dyntable">
+                <thead>
+                    <tr>
+                        <th>Group By
+                        </th>
+                        <th>Task Title
+                        </th>
+                        <th>Project Name
+                        </th>
 
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Status</th>
+                        <th>Sub Tasks
+                        </th>
 
+                        <th>Created by</th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        List<PMTool.Models.Task> dueTaskList =  (List<PMTool.Models.Task>)ViewBag.DueTask;
+                        List<PMTool.Models.Task> overdueTaskList = (List<PMTool.Models.Task>)ViewBag.OverdueTask;
+                        List<PMTool.Models.Task> todaysTaskList = (List<PMTool.Models.Task>)ViewBag.TodaysTask;
+                        List<PMTool.Models.Task> dueTomorrowTaskList = (List<PMTool.Models.Task>)ViewBag.DueTomorrowTask;
+                        List<PMTool.Models.Task> futureTaskList = (List<PMTool.Models.Task>)ViewBag.FutureTask;
+                        
+                        if (overdueTaskList.Count>0)
+                        {
+                            overdueTaskList.ForEach(a=>a.GroupBy="Overdue Tasks");
+                            @Html.Partial("_TaskList",overdueTaskList)
+                        }
+                       
+                        
+                        
+                        if (dueTaskList.Count > 0)
+                        {
+                            dueTaskList.ForEach(a=>a.GroupBy = "Due Tasks");
+                            @Html.Partial("_TaskList",dueTaskList)
+                        }
+                        
+                        
+                        
+                        if (todaysTaskList.Count > 0)
+                        {
+                            todaysTaskList.ForEach(a=>a.GroupBy = "Today's Tasks");
+                            @Html.Partial("_TaskList",todaysTaskList)
+                        }
+                        
+                        
+                        
+                        if (dueTomorrowTaskList.Count > 0)
+                        {
+                            dueTomorrowTaskList.ForEach(a=>a.GroupBy = "Due Tomorrow Tasks");
+                            @Html.Partial("_TaskList",dueTomorrowTaskList)
+                        }
+                        
+                        
+                        
+                        if (futureTaskList.Count > 0)
+                        {
+                            futureTaskList.ForEach(a=>a.GroupBy = "Future Tasks");
+                            @Html.Partial("_TaskList",futureTaskList)
+                        }
+                        
+                     }
+                </tbody>
+            </table>
         </div>
         
     </div>

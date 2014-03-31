@@ -144,5 +144,8 @@ namespace PMTool.Models
 
 
         public string TaskUID { get; set; }
+
+        [NotMapped]
+        public string GroupBy { get; set; }
     }
 }
