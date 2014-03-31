@@ -1688,7 +1688,7 @@ namespace PMTool.Controllers
 
 
         [HttpPost]
-        public PartialViewResult RulesForm(ProjectStatusRule rule)
+        public ActionResult RulesForm(ProjectStatusRule rule)
         {
             unitOfWork.ProjectStatusRuleRepository.InsertOrUpdate(rule);
             unitOfWork.Save();
@@ -1706,7 +1706,7 @@ namespace PMTool.Controllers
             return PartialView(task);
         }
 
-        public PartialViewResult DeleteRule(long id)
+        public ActionResult DeleteRule(long id)
         {
             ProjectStatusRule deletedrule = unitOfWork.ProjectStatusRuleRepository.Find(id);
 
@@ -1717,7 +1717,7 @@ namespace PMTool.Controllers
 
             ProjectStatusRule rule = new ProjectStatusRule();
             rule.ProjectID = deletedrule.ProjectID;
-            return PartialView(rule);
+            return RedirectToAction("RulesForm", new { id = rule.ProjectID });
         }
 
 

@@ -654,6 +654,94 @@ namespace PMTool.Controllers
         }
         #endregion
 
+        /// <summary>
+        /// Invite people to the project 
+        /// added by Mahedee @ 23-01-14
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        [Authorize]
+        public ActionResult InvitePeople(string email)
+        {
+            //Just for test purpose
+            if (!String.IsNullOrEmpty(email))
+            {
+                try
+                {
+                    if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["EnableEmailNotification"]))
+                    {
+                        if (Convert.ToBoolean(ConfigurationManager.AppSettings["EnableEmailNotification"])) //Check Enable Email Notification
+                        {
+                            SendInvitationEmail(email);
+                        }
+                    }
+                }
+                catch (Exception exp)
+                {
+                    throw (exp);
+                }
+                ViewBag.Message = "Invitation sent!";
+            }
+            return View(ViewBag);
+        }
+
+        /// <summary>
+        /// Send invitation Mail added by Mahedee @ 23-01-14
+        /// </summary>
+        /// <param name="userEmail"></param>
+        public void SendInvitationEmail(string userEmail)
+        {
+
+            string confirmationGuid = Guid.NewGuid().ToString();
+            var message = new MailMessage();
+            var client = new SmtpClient();
+
+            //string verifyUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/account/verify?ID=" + confirmationGuid;
+
+            string verifyUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/Account/Register";
+            client.UseDefaultCredentials = false;
+
+            if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["EmailFrom"]) && !String.IsNullOrEmpty(ConfigurationManager.AppSettings["EmailFromPass"]))
+            {
+                message = new MailMessage(ConfigurationManager.AppSettings["EmailFrom"].ToString(), userEmail)
+                {
+                    Subject = "Invitation from PMTool"
+
+                };
+                string Body = "You are invited to PMTool. Please click on accept and signup.<br><br><a href='" + verifyUrl + "'>" + "<img src='cid:imageId' align=baseline border=0 />" + "</a>";
+                AlternateView htmlView = AlternateView.CreateAlternateViewFromString(Body, null, "text/html");
+                LinkedResource imagelink = new LinkedResource(Server.MapPath("~/UploadedDocument/accept.png"));
+                imagelink.ContentId = "imageId";
+                imagelink.TransferEncoding = System.Net.Mime.TransferEncoding.Base64;
+                htmlView.LinkedResources.Add(imagelink);
+                message.AlternateViews.Add(htmlView);
+                SmtpClient smtp = new SmtpClient();
+                smtp.DeliveryMethod = SmtpDeliveryMethod.PickupDirectoryFromIis;
+                message.IsBodyHtml = true;
+                client.Credentials = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["EmailFrom"].ToString(), ConfigurationManager.AppSettings["EmailFromPass"].ToString());
+            }
+
+
+
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            //client.Credentials = new System.Net.NetworkCredential("testbd2014@gmail.com", "testbd@123");
+
+            if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["EnableSsl"]))
+                client.EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["EnableSsl"]);
+            else
+                client.EnableSsl = false;
+            if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["SMTP"]))
+                client.Host = ConfigurationManager.AppSettings["SMTP"].ToString();
+
+            if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["SMTPPort"]))
+                client.Port = Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
+            else
+                client.Port = 25; //Default port for SMTP
+
+            //client.UseDefaultCredentials = false;
+            client.Send(message);
+        }
+
 
         /*
         //
