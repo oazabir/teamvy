@@ -44,6 +44,11 @@ namespace PMTool.Models
         [DefaultValue(0.0)]
         public decimal TaskHour { get; set; } //Task Hour value
 
+        //[Required]
+        [Display(Name = "Remaining Hour")]
+        [DefaultValue(0.0)]
+        public decimal? RemainingHour { get; set; } //Remaining Hour value
+
         [Display(Name = "Summary")]
         public string Description { get; set; }
 

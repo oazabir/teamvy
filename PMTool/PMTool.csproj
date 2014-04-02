@@ -246,6 +246,18 @@
     <Compile Include="Migrations\201403281120151_initalmigration.Designer.cs">
       <DependentUpon>201403281120151_initalmigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201404020128343_TimeLogModelCng.cs" />
+    <Compile Include="Migrations\201404020128343_TimeLogModelCng.Designer.cs">
+      <DependentUpon>201404020128343_TimeLogModelCng.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404020153013_TimeLogModelCng-1.cs" />
+    <Compile Include="Migrations\201404020153013_TimeLogModelCng-1.Designer.cs">
+      <DependentUpon>201404020153013_TimeLogModelCng-1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404020157442_TimeLogModelCng-2.cs" />
+    <Compile Include="Migrations\201404020157442_TimeLogModelCng-2.Designer.cs">
+      <DependentUpon>201404020157442_TimeLogModelCng-2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Chart.cs" />
@@ -1224,6 +1236,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201403281120151_initalmigration.resx">
       <DependentUpon>201403281120151_initalmigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404020128343_TimeLogModelCng.resx">
+      <DependentUpon>201404020128343_TimeLogModelCng.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404020153013_TimeLogModelCng-1.resx">
+      <DependentUpon>201404020153013_TimeLogModelCng-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404020157442_TimeLogModelCng-2.resx">
+      <DependentUpon>201404020157442_TimeLogModelCng-2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
