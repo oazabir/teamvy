@@ -32,12 +32,6 @@
                 {<span>@item.EndDate.Value.ToString("dd/MM/yyyy")</span>}
             </td>
 
-            @*            <td>
-                @if (item.ProjectStatusID != null)
-                {
-                    @item.ProjectStatus.Name
-                }
-            </td>*@
 
             <td>
                 @if (item.ProjectStatusID != null)
@@ -85,19 +79,7 @@
 
             </td>
 
-            <td align="center">
-
-               @* @Html.ActionLink(" ", "TaskTimeLog","Tasks", new { taskId = item.TaskID, sprintId = item.SprintID  }, new { @class = "icon-time", @title = "Log Entry" })*@
-
-              @*  @Html.DisplayTextFor(_ => item.CreatedByUser.FirstName).ToString()*@
-                @*    @if (item.TaskHour > 0)
-                    {
-                        <a  href="#"  onclick="return ShowEstimateForm(@item.TaskID)"><span class="icon-plus" ></span>@item.TaskHour</a>
-                    }
-                    @if (item.TaskHour<= 0)
-                    {
-                        <a  href="#" onclick="return ShowEstimateForm(@item.TaskID)"><span class="icon-plus" ></span>Estimate</a>
-                    }*@
+            <td>
 
                 <a  href="#" onclick="return ShowEffortEntryForm(@item.TaskID);" class="icon-time"></a>
             </td>
