@@ -1,6 +1,39 @@
-﻿@{
+﻿@model IEnumerable<PMTool.Models.Task>
+
+@{
     ViewBag.Title = "Home Page";
 }
+
+
+<script type="text/javascript">
+    function ShowEffortEntryForm(taskId) {
+        
+        var url = jQuery('#ModalpopupShowEffortEntryForm').data('url') + "/" + taskId;
+            alert(url);
+
+            jQuery.ajax({
+                url: url,
+                //async: false,
+                cache: false,
+                beforeSend: function () {
+                    jQuery("#ModalLoading").modal('show');
+                },
+                success: function (data) {
+                    //alert("Success..");
+                    jQuery('#popupcontainerShowEffortEntryForm').html(data);
+                    jQuery("#ModalLoading").modal('hide');
+                    jQuery("#ModalpopupShowEffortEntryForm").modal('show');
+                },
+                error: function (error) {
+                    jQuery.jGrowl('somethig is wrong', { life: 5000 });
+                }
+            });
+            //alert("Working..");
+            return false;
+        }
+
+
+</script>
 
 @*<div class="pagetitle">
     <h1>Dashboard</h1>
@@ -10,7 +43,9 @@
 
 <div class="maincontent">
     <div class="contentinner content-dashboard">
-        <div class="">
+        <div id="divTaskList" class="">
+             @{@Html.Partial("_TaskList", Model)}
+
             @*<h4 style="text-align: center !important;">Task Assigned to you</h4>
 
             <h5><u>Overdue Tasks</u></h5>
@@ -54,7 +89,7 @@
                     }
                 </table>
             </div>*@
-            <table class="table table-bordered dyntable">
+@*            <table class="table table-bordered dyntable">
                 <thead>
                     <tr>
                         <th>Group By
@@ -77,11 +112,24 @@
                 </thead>
                 <tbody>
                     @{
-                        List<PMTool.Models.Task> dueTaskList =  (List<PMTool.Models.Task>)ViewBag.DueTask;
-                        List<PMTool.Models.Task> overdueTaskList = (List<PMTool.Models.Task>)ViewBag.OverdueTask;
-                        List<PMTool.Models.Task> todaysTaskList = (List<PMTool.Models.Task>)ViewBag.TodaysTask;
-                        List<PMTool.Models.Task> dueTomorrowTaskList = (List<PMTool.Models.Task>)ViewBag.DueTomorrowTask;
-                        List<PMTool.Models.Task> futureTaskList = (List<PMTool.Models.Task>)ViewBag.FutureTask;
+                        
+                        //overdueTaskList = userTaskList.Where(p => (p.EndDate < DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
+                        //dueTaskList = userTaskList.Where(p => (p.StartDate < DateTime.Today && p.EndDate >= DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
+                        //todaysTaskList = userTaskList.Where(p => p.StartDate == DateTime.Today && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
+                        //dueTomorrowTaskList = userTaskList.Where(p => p.EndDate == DateTime.Today.AddDays(1) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
+
+
+                        List<PMTool.Models.Task> dueTaskList = Model.Where(p => (p.StartDate < DateTime.Today && p.EndDate >= DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
+                            //(List<PMTool.Models.Task>)ViewBag.DueTask;
+                        List<PMTool.Models.Task> overdueTaskList = Model.Where(p => (p.EndDate < DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList(); 
+                            //(List<PMTool.Models.Task>)ViewBag.OverdueTask;
+                        List<PMTool.Models.Task> todaysTaskList = Model.Where(p => p.StartDate == DateTime.Today && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
+                            //(List<PMTool.Models.Task>)ViewBag.TodaysTask;
+                        List<PMTool.Models.Task> dueTomorrowTaskList = Model.Where(p => p.EndDate == DateTime.Today.AddDays(1) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
+                            //(List<PMTool.Models.Task>)ViewBag.DueTomorrowTask;
+                        List<PMTool.Models.Task> futureTaskList = Model.Where(p => p.StartDate > DateTime.Today && (p.ProjectStatusID == null || p.ProjectStatus.Name != "Closed")).ToList();
+
+                            //(List<PMTool.Models.Task>)ViewBag.FutureTask;
                         
                         if (overdueTaskList.Count>0)
                         {
@@ -123,7 +171,7 @@
                         
                      }
                 </tbody>
-            </table>
+            </table>*@
         </div>
         
     </div>

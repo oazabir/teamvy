@@ -1,0 +1,56 @@
+﻿@model PMTool.Models.TimeLog
+<h3>Effort Entry Form</h3>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Entry Date
+            </th>
+            <th>Effort(Hours)
+            </th>
+            <th>Remaining Hours</th>
+            <th>Summary</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Html.TextBoxFor(m => m.EntryDate)
+                @Html.ValidationMessageFor(model => model.EntryDate)
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.TaskHour)
+                @Html.ValidationMessageFor(Model => Model.TaskHour)
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.RemainingHour)
+                @Html.ValidationMessageFor(Model => Model.RemainingHour)
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.Description)
+                @Html.ValidationMessageFor(Model => Model.Description)
+            </td>
+        </tr>
+        <tr>
+
+            <td>
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+<script type="text/javascript">
+
+    //jQuery(document).ready(function () {
+    //    jQuery('#form').removeData('validator');
+    //    jQuery('#form').removeData('unobtrusiveValidation');
+    //    jQuery("#form").each(function () { jQuery.data(jQuery(this)[0], 'validator', false); }); //enable to display the error messages
+    //    jQuery.validator.unobtrusive.parse("#form");
+
+
+    //});
+
+</script>

@@ -30,7 +30,7 @@ namespace PMTool.Controllers
             List<Task> dueTomorrowTaskList = new List<Task>();
             List<Task> futureTaskList = new List<Task>();
 
-            userTaskList = unitOfWork.TaskRepository.GetTasksByUser(user).ToList();
+            userTaskList = unitOfWork.TaskRepository.GetTasksByUser(user).Where(p=>p.ProjectStatus.Name.ToLower() != "closed").ToList();
           
             /*Task which is not closed will display to the dashboard. Updated by Mahedee @ 26-02-14*/
             overdueTaskList = userTaskList.Where(p => (p.EndDate < DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
@@ -46,7 +46,7 @@ namespace PMTool.Controllers
             ViewBag.DueTomorrowTask = dueTomorrowTaskList;
             ViewBag.FutureTask = futureTaskList;
 
-            return View();
+            return View(userTaskList);
         }
 
         public ActionResult About()
@@ -89,17 +89,43 @@ namespace PMTool.Controllers
 
         public PartialViewResult _TaskList(long projectID, long? statusID)
         {
-            List<Task> taskList;
-            Project project;
-            if (statusID != null && statusID != 0)
-                GetTaskList(projectID, out taskList, out project, statusID);
-            else
-                GetTaskList(projectID, out taskList, out project);
+            //List<Task> taskList;
+            //Project project;
+            //if (statusID != null && statusID != 0)
+            //    GetTaskList(projectID, out taskList, out project, statusID);
+            //else
+            //    GetTaskList(projectID, out taskList, out project);
 
 
-            ViewBag.TaskStatus = GetAllStatus(projectID);
-            ViewBag.CurrentProject = project;
-            return PartialView(taskList);
+            //ViewBag.TaskStatus = GetAllStatus(projectID);
+            //ViewBag.CurrentProject = project;
+            //return PartialView(taskList);
+
+            UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
+            List<Task> userTaskList = new List<Task>();
+            //List<Task> dueTaskList = new List<Task>();
+            //List<Task> overdueTaskList = new List<Task>();
+            //List<Task> todaysTaskList = new List<Task>();
+            //List<Task> dueTomorrowTaskList = new List<Task>();
+            //List<Task> futureTaskList = new List<Task>();
+
+            userTaskList = unitOfWork.TaskRepository.GetTasksByUser(user).Where(p => p.ProjectStatus.Name.ToLower() != "closed").ToList();
+
+            /*Task which is not closed will display to the dashboard. Updated by Mahedee @ 26-02-14*/
+            //overdueTaskList = userTaskList.Where(p => (p.EndDate < DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
+            //dueTaskList = userTaskList.Where(p => (p.StartDate < DateTime.Today && p.EndDate >= DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
+            //todaysTaskList = userTaskList.Where(p => p.StartDate == DateTime.Today && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
+            //dueTomorrowTaskList = userTaskList.Where(p => p.EndDate == DateTime.Today.AddDays(1) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
+
+            //futureTaskList = userTaskList.Where(p => p.StartDate > DateTime.Today && (p.ProjectStatusID == null || p.ProjectStatus.Name != "Closed")).ToList();
+
+            //ViewBag.OverdueTask = overdueTaskList;
+            //ViewBag.DueTask = dueTaskList;
+            //ViewBag.TodaysTask = todaysTaskList;
+            //ViewBag.DueTomorrowTask = dueTomorrowTaskList;
+            //ViewBag.FutureTask = futureTaskList;
+
+            return PartialView(userTaskList);
         }
 
         private void GetTaskList(long projectID, out List<Task> taskList, out Project project, long? statusId)
@@ -153,6 +179,45 @@ namespace PMTool.Controllers
 
             return allStatus;
         }
+
+        public ActionResult ChangeStatusView(long taskID, long? statusID)
+        {
+            Task task = unitOfWork.TaskRepository.Find(taskID);
+            task.ProjectStatusID = statusID;
+            unitOfWork.Save();
+            //return RedirectToAction("ProjectTasks", new { projectID =task.ProjectID});
+            List<Task> taskList = unitOfWork.TaskRepository.GetTasksByProjectID(task.ProjectID);
+            //return PartialView("_TaskList", taskList.ToPagedList(1, defaultPageSize));
+            return RedirectToAction("_TaskList", new { @projectID = task.ProjectID });
+            //return RedirectToAction("Index");
+        }
+
+        public PartialViewResult AddTimeLog(long id)
+        {
+            //Task task = unitOfWork.TaskRepository.Find(id);
+            //ViewBag.AllMessage = unitOfWork.TaskMessageRepository.FindAllByTask(id);
+
+            //ViewBag.PossibleUser = GetAllUser(task.ProjectID);
+            //TaskMessage taskMessage = new TaskMessage();
+            //taskMessage.TaskID = id;
+            //taskMessage.FormUserID = (int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey;
+            //taskMessage.CreateDate = DateTime.Now;
+            TimeLog timeLog = new TimeLog();
+            return PartialView(timeLog);
+        }
+
+        private List<SelectListItem> GetAllUser(long ProjectID)
+        {
+            List<SelectListItem> allUsers = new List<SelectListItem>();
+            List<UserProfile> userList = unitOfWork.ProjectRepository.Find(ProjectID).Users;
+            foreach (UserProfile user in userList)
+            {
+                SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName + " " + user.LastName };
+                allUsers.Add(item);
+            }
+            return allUsers;
+        }
+
 
 
     }
