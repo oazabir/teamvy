@@ -67,7 +67,10 @@ namespace PMTool.Controllers
             //UnitOfWork unitOfWork = new UnitOfWork();
             //User user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
             //List<Notification> notificationList = unitOfWork.NotificationRepository.UserUnreadNotification(user);
-            List<Notification> notificationList = new List<Notification>();
+            UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
+
+            //List<Notification> notificationList = new List<Notification>();
+            List<Notification> notificationList = unitOfWork.NotificationRepository.UserUnreadNotification(user);
             return PartialView(notificationList);
         }
 
