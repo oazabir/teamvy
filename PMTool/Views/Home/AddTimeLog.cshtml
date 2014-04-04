@@ -22,7 +22,7 @@
     @Html.HiddenFor(m=>m.SprintID)
     @Html.HiddenFor(m=>m.TaskID)
 
-<table style="margin-left:8px;">
+<table style="margin-left:4px;">
     <thead>
         <tr>
             <th>Entry Date
@@ -52,7 +52,7 @@
                 @Html.TextBoxFor(m => m.Description)
                 @Html.ValidationMessageFor(Model => Model.Description)
             </td>
-           <td style="padding-left:3px;">
+           <td style="padding-left:1px;">
                <input type="submit" value="Add" class="btn btn-primary" />
             </td>
         </tr>
