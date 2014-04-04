@@ -30,8 +30,8 @@ namespace PMTool.Controllers
             List<Task> dueTomorrowTaskList = new List<Task>();
             List<Task> futureTaskList = new List<Task>();
 
-            userTaskList = unitOfWork.TaskRepository.GetTasksByUser(user).Where(p=>p.ProjectStatus.Name.ToLower() != "closed").ToList();
-          
+            userTaskList = unitOfWork.TaskRepository.GetTasksByUser(user).Where(p => p.ProjectStatus.Name.ToLower() != "closed").ToList();
+
             /*Task which is not closed will display to the dashboard. Updated by Mahedee @ 26-02-14*/
             overdueTaskList = userTaskList.Where(p => (p.EndDate < DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
             dueTaskList = userTaskList.Where(p => (p.StartDate < DateTime.Today && p.EndDate >= DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
@@ -70,7 +70,7 @@ namespace PMTool.Controllers
             List<Notification> notificationList = new List<Notification>();
             return PartialView(notificationList);
         }
-        
+
         public PartialViewResult _NotificationReadAll(List<Notification> notifications)
         {
             UnitOfWork unitOfWork = new UnitOfWork();
@@ -111,20 +111,6 @@ namespace PMTool.Controllers
 
             userTaskList = unitOfWork.TaskRepository.GetTasksByUser(user).Where(p => p.ProjectStatus.Name.ToLower() != "closed").ToList();
 
-            /*Task which is not closed will display to the dashboard. Updated by Mahedee @ 26-02-14*/
-            //overdueTaskList = userTaskList.Where(p => (p.EndDate < DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
-            //dueTaskList = userTaskList.Where(p => (p.StartDate < DateTime.Today && p.EndDate >= DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
-            //todaysTaskList = userTaskList.Where(p => p.StartDate == DateTime.Today && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
-            //dueTomorrowTaskList = userTaskList.Where(p => p.EndDate == DateTime.Today.AddDays(1) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
-
-            //futureTaskList = userTaskList.Where(p => p.StartDate > DateTime.Today && (p.ProjectStatusID == null || p.ProjectStatus.Name != "Closed")).ToList();
-
-            //ViewBag.OverdueTask = overdueTaskList;
-            //ViewBag.DueTask = dueTaskList;
-            //ViewBag.TodaysTask = todaysTaskList;
-            //ViewBag.DueTomorrowTask = dueTomorrowTaskList;
-            //ViewBag.FutureTask = futureTaskList;
-
             return PartialView(userTaskList);
         }
 
@@ -133,7 +119,7 @@ namespace PMTool.Controllers
             taskList = new List<Task>();
             UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
             project = unitOfWork.ProjectRepository.Find(projectID);
-           
+
             //If this project is created by the current user. Then he can see all task.
             if (project.CreatedBy == user.UserId)
                 taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.ProjectStatusID == statusId).ToList();
@@ -193,31 +179,44 @@ namespace PMTool.Controllers
         }
 
         public PartialViewResult AddTimeLog(long id)
+        //public ViewResult AddTimeLog(long id)
         {
-            //Task task = unitOfWork.TaskRepository.Find(id);
-            //ViewBag.AllMessage = unitOfWork.TaskMessageRepository.FindAllByTask(id);
-
-            //ViewBag.PossibleUser = GetAllUser(task.ProjectID);
-            //TaskMessage taskMessage = new TaskMessage();
-            //taskMessage.TaskID = id;
-            //taskMessage.FormUserID = (int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey;
-            //taskMessage.CreateDate = DateTime.Now;
+            Task task = unitOfWork.TaskRepository.Find(id);
+            ViewBag.Task = task;
+            ViewBag.TaskTimeLog = unitOfWork.TimeLogRepository.GetTimeLogByTaskId(id);
             TimeLog timeLog = new TimeLog();
+            timeLog.SprintID = task.SprintID;
+            timeLog.TaskID = id;
+            //return View(timeLog);
             return PartialView(timeLog);
         }
 
-        private List<SelectListItem> GetAllUser(long ProjectID)
+        [HttpPost]
+        //public PartialViewResult AddMessage(TaskMessage taskMessage)
+        public ActionResult AddTimeLog(TimeLog timeLog)
         {
-            List<SelectListItem> allUsers = new List<SelectListItem>();
-            List<UserProfile> userList = unitOfWork.ProjectRepository.Find(ProjectID).Users;
-            foreach (UserProfile user in userList)
+            if (timeLog != null)
             {
-                SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName + " " + user.LastName };
-                allUsers.Add(item);
+                timeLog.UserID = (int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey;
+                timeLog.CreatedBy = (int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey;
+                timeLog.ModifiedBy = (int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey;
+                timeLog.CreateDate = DateTime.Now;
+                timeLog.ModificationDate = DateTime.Now;
+                timeLog.ActionDate = DateTime.Now;
+
+                unitOfWork.TimeLogRepository.InsertOrUpdate(timeLog);
+
+                unitOfWork.Save();
             }
-            return allUsers;
+            return RedirectToAction("_TaskEntryLog", new { @taskId = timeLog.TaskID });
         }
 
+        public PartialViewResult _TaskEntryLog(long taskId)
+        {
+            List<TimeLog> lstTimeLog = new List<TimeLog>();
+            lstTimeLog = unitOfWork.TimeLogRepository.GetTimeLogByTaskId(taskId);
+            return PartialView(lstTimeLog);
+        }
 
 
     }

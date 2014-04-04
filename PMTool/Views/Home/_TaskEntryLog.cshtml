@@ -1,0 +1,41 @@
+﻿@model IEnumerable<PMTool.Models.TimeLog>
+
+@if (Model != null)
+{
+    
+    <table class="table table-bordered dyntable" style="margin-left:8px !important;">
+    <thead>
+        <tr>
+            <th>Entry Date
+            </th>
+            <th>Effort(Hours)
+            </th>
+            <th>Remaining Hours</th>
+            <th style = "width:150px;">User</th>
+        </tr>
+    </thead>
+    <tbody>
+    
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td style = "width:100px;">
+                @if (item.EntryDate != null)
+                {<span style = "width:100px;">@item.EntryDate.Value.ToString("dd/MM/yyyy")</span>}
+            </td>
+            <td style = "width:70px;">
+                 @Html.DisplayTextFor(_ => item.TaskHour).ToString()
+            </td>
+            <td style = "width:100px;">
+               @Html.DisplayTextFor(_ => item.RemainingHour).ToString()
+            </td>
+            <td style = "width:150px !important;">
+                @Html.DisplayTextFor(_ => item.User.FirstName).ToString()
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+}
+    
+    

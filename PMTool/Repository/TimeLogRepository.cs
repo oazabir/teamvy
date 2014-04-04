@@ -50,6 +50,12 @@ namespace PMTool.Repository
             return timeLogList;
         }
 
+        public List<TimeLog> GetTimeLogByTaskId(long taskId)
+        {
+            List<TimeLog> timeLogList = context.TimeLogs.Where(t => t.TaskID == taskId).ToList();
+            return timeLogList;
+        }
+
         public TimeLog Find(long id)
         {
             return context.TimeLogs.Find(id);

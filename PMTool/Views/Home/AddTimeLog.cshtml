@@ -1,6 +1,28 @@
 ﻿@model PMTool.Models.TimeLog
-<h3>Effort Entry Form</h3>
-<table class="table table-bordered table-hover">
+
+@{
+    ViewBag.Title = "Tasks | Details";
+}
+
+<div class="pagetitle">
+    <h1>
+        Add Time Log
+    </h1>
+    <span>
+        @{
+            PMTool.Models.Task objTask = (PMTool.Models.Task)ViewBag.Task;
+        }
+        Task Title : @objTask.Title
+
+    </span>
+</div>
+@using (Ajax.BeginForm("AddTimeLog", "Home", new AjaxOptions { UpdateTargetId = "divTimeLog", OnBegin = "Loading()", OnComplete = "LoadComplete()" }, new { @id = "form" }))
+{
+   
+    @Html.HiddenFor(m=>m.SprintID)
+    @Html.HiddenFor(m=>m.TaskID)
+
+<table style="margin-left:8px;">
     <thead>
         <tr>
             <th>Entry Date
@@ -9,48 +31,68 @@
             </th>
             <th>Remaining Hours</th>
             <th>Summary</th>
+           <th></th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>
-                @Html.TextBoxFor(m => m.EntryDate)
+                @Html.TextBoxFor(m => m.EntryDate, "{0:dd/MM/yyyy}", new { @class = "datepicker", @style = "width:100px;" })
                 @Html.ValidationMessageFor(model => model.EntryDate)
             </td>
             <td>
-                @Html.TextBoxFor(m => m.TaskHour)
+                @Html.TextBoxFor(m => m.TaskHour, new {@style = "width:70px;" })
                 @Html.ValidationMessageFor(Model => Model.TaskHour)
             </td>
             <td>
-                @Html.TextBoxFor(m => m.RemainingHour)
+                @Html.TextBoxFor(m => m.RemainingHour, new {@style = "width:90px;" })
                 @Html.ValidationMessageFor(Model => Model.RemainingHour)
             </td>
             <td>
                 @Html.TextBoxFor(m => m.Description)
                 @Html.ValidationMessageFor(Model => Model.Description)
             </td>
-        </tr>
-        <tr>
-
-            <td>
-                <input type="submit" value="Save" class="btn btn-primary" />
+           <td style="padding-left:3px;">
+               <input type="submit" value="Add" class="btn btn-primary" />
             </td>
-            <td></td>
-            <td></td>
-            <td></td>
         </tr>
     </tbody>
 </table>
+}
+<div style="margin-top:50px !important;" id="divTimeLog">
+    @Html.Partial("_TaskEntryLog", (List<PMTool.Models.TimeLog>)ViewBag.TaskTimeLog)
+</div>
 
 <script type="text/javascript">
+    jQuery(".datepicker").datepicker({
+        dateFormat: "dd/mm/yy",
+        onSelect: function () {
+        }
+    });
+    
+</script>
+<script type="text/javascript">
+    jQuery(".datepicker").datepicker({
+        dateFormat: "dd/mm/yy",
+        onSelect: function () {
+            var sdate = jQuery("#StartDate").val().replace('-', '/');
+            var edate = jQuery("#EndDate").val().replace('-', '/');
 
-    //jQuery(document).ready(function () {
-    //    jQuery('#form').removeData('validator');
-    //    jQuery('#form').removeData('unobtrusiveValidation');
-    //    jQuery("#form").each(function () { jQuery.data(jQuery(this)[0], 'validator', false); }); //enable to display the error messages
-    //    jQuery.validator.unobtrusive.parse("#form");
+            if (new Date(sdate) > new Date(edate)) {
+                alert('End Date Mustbe grater than Start Date');
+                var edate = jQuery("#EndDate").val('');
+            }
+        }
+    });
+</script>
+<script type="text/javascript">
 
+    function LoadComplete() {
+        jQuery("#ModalLoading").modal('hide');
+        jQuery("#EntryDate").val("");
+        jQuery("#TaskHour").val("");
+        jQuery("#RemainingHour").val("");
+        jQuery("#Description").val("");
 
-    //});
-
+    }
 </script>

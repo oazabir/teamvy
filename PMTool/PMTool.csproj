@@ -1154,6 +1154,7 @@
     <Content Include="Views\Tasks\TaskDetailForm.cshtml" />
     <Content Include="Views\Home\_TaskListGroupBy.cshtml" />
     <Content Include="Views\Home\AddTimeLog.cshtml" />
+    <Content Include="Views\Home\_TaskEntryLog.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
