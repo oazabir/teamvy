@@ -10,12 +10,12 @@
 
 
     List<PMTool.Models.Task> todaysTaskList = Model.Where(p => p.StartDate == DateTime.Today && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
-    dueTaskList.ForEach(a => a.GroupBy = "Today's Tasks");
+    todaysTaskList.ForEach(a => a.GroupBy = "Today's Tasks");
 
     List<PMTool.Models.Task> dueTomorrowTaskList = Model.Where(p => p.EndDate == DateTime.Today.AddDays(1) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
     dueTomorrowTaskList.ForEach(a => a.GroupBy = "Due Tomorrows Tasks");
 
-    List<PMTool.Models.Task> futureTaskList = Model.Where(p => p.StartDate > DateTime.Today && (p.ProjectStatusID == null || p.ProjectStatus.Name != "Closed")).ToList();
+    List<PMTool.Models.Task> futureTaskList = Model.Where(p => p.StartDate > DateTime.Today && (p.ProjectStatusID != null || p.ProjectStatus.Name != "Closed")).ToList();
     futureTaskList.ForEach(a => a.GroupBy = "Future Task");
 
     <table class="table table-bordered dyntable">
