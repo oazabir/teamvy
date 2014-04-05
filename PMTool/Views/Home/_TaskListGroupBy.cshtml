@@ -18,10 +18,35 @@
             <td>
                 @Html.DisplayTextFor(_ => item.Title).ToString()
             </td>
+
             <td>
                 @item.Project.Name
             </td>
+                        <td>
+                @if (item.ChildTask.Count > 0)
+                {
+                    <div class="btn-group">
+                        <button class="btn btn-small">Sub Tasks (@item.ChildTask.Count)</button>
+                        <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            @foreach (PMTool.Models.Task task in item.ChildTask)
+                            {
+                                <li>@Html.ActionLink(task.Title + " -" + task.ProjectStatus.Name + (task.EndDate !=null ? "-" + task.EndDate.Value.ToString("dd/MM/yyyy"):""), "Details","Tasks", new { id = task.TaskID }, new { @target = "_blank" })</li>
+                                
+                            }
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("All Sub Tasks", "SubTaskList", new { ProjectID = item.ProjectID, TaskID = item.TaskID }, new { @target = "_blank" })</li>
 
+
+                        </ul>
+                    </div>
+                }
+                @if (item.ChildTask.Count == 0)
+                {
+                    @Html.Raw("No Sub Task")
+                }
+
+            </td>
             <td>
                 @if (item.StartDate != null)
                 {<span>@item.StartDate.Value.ToString("dd/MM/yyyy")</span>}
@@ -53,31 +78,7 @@
 
 
 
-            <td>
-                @if (item.ChildTask.Count > 0)
-                {
-                    <div class="btn-group">
-                        <button class="btn btn-small">Sub Tasks (@item.ChildTask.Count)</button>
-                        <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                            @foreach (PMTool.Models.Task task in item.ChildTask)
-                            {
-                                <li>@Html.ActionLink(task.Title, "Edit", new { id = task.TaskID }, new { @target = "_blank" })</li>
-                                
-                            }
-                            <li class="divider"></li>
-                            <li>@Html.ActionLink("All Sub Tasks", "SubTaskList", new { ProjectID = item.ProjectID, TaskID = item.TaskID }, new { @target = "_blank" })</li>
 
-
-                        </ul>
-                    </div>
-                }
-                @if (item.ChildTask.Count == 0)
-                {
-                    @Html.Raw("No Sub Task")
-                }
-
-            </td>
 
             <td style="text-align:center !important;">
 

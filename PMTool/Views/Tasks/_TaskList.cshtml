@@ -80,7 +80,8 @@
                             <ul class="dropdown-menu">
                                 @foreach (PMTool.Models.Task task in item.ChildTask)
                                 {
-                                    <li>@Html.ActionLink(task.Title, "Edit", new { id = task.TaskID }, new { @target = "_blank" })</li>
+                                    @*<li>@Html.ActionLink(task.Title, "Edit", new { id = task.TaskID }, new { @target = "_blank" })</li>*@
+                                    <li>@Html.ActionLink(task.Title + " -" + task.ProjectStatus.Name + (task.EndDate !=null ? "-" + task.EndDate.Value.ToString("dd/MM/yyyy"):""), "Details","Tasks", new { id = task.TaskID }, new { @target = "_blank" })</li>
                                 
                                 }
                                 <li class="divider"></li>

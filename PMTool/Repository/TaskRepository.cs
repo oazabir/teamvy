@@ -174,7 +174,7 @@ namespace PMTool.Repository
                     else
                     {
                         ProjectStatus stat = context.ProjectStatuses.Where(s => s.ProjectStatusID == task.ProjectStatusID).FirstOrDefault();
-                        change.FromSataus = stat.Name;
+                        change.ToStatus = stat.Name;
                     }
                 }
                 if (task.StartDate != existingTask.StartDate)
@@ -307,6 +307,7 @@ namespace PMTool.Repository
                                         && (search.SelectedPriorityID == null || t.PriorityID == search.SelectedPriorityID)
                                         && (search.SelectedSprintID == null || t.SprintID == search.SelectedSprintID)
                                         && (search.SelectedUserID == null || t.Users.Any(u => u.UserId == search.SelectedUserID))
+                                        && (t.ParentTaskId == null)
                                         ).ToList();
             return taskList;
         }

@@ -213,14 +213,14 @@ namespace PMTool.Controllers
             project = unitOfWork.ProjectRepository.Find(projectID);
             //If this project is created by the current user. Then he can see all task.
             if (project.CreatedBy == user.UserId)
-                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.ProjectStatusID == statusId).ToList();
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.ProjectStatusID == statusId && p.ParentTaskId == null).ToList();
 
             //If this project is owned by the current user. Then he can see all task.
             else if (project.ProjectOwners.Contains(user))
-                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.ProjectStatusID == statusId).ToList();
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.ProjectStatusID == statusId && p.ParentTaskId == null).ToList();
 
             else
-                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.ProjectStatusID == statusId).ToList();
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ProjectStatus.ProjectStatusID == statusId && p.ParentTaskId == null).ToList();
 
         }
 
@@ -232,14 +232,14 @@ namespace PMTool.Controllers
             project = unitOfWork.ProjectRepository.Find(projectID);
             //If this project is created by the current user. Then he can see all task.
             if (project.CreatedBy == user.UserId)
-                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p=>p.ParentTaskId == null).ToList();
 
             //If this project is owned by the current user. Then he can see all task.
             else if (project.ProjectOwners.Contains(user))
-                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ParentTaskId == null).ToList();
 
             else
-                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).ToList();
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, user, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p => p.ParentTaskId == null).ToList();
 
         }
 
@@ -260,6 +260,7 @@ namespace PMTool.Controllers
 
         public ViewResult Details(long id)
         {
+            MakeNotificationReadonly();
             Task task = unitOfWork.TaskRepository.Find(id);
             return View(task);
         }
@@ -721,7 +722,8 @@ namespace PMTool.Controllers
                         foreach (UserProfile user in task.Users)
                         {
                             Notification notification = new Notification();
-                            notification.Title = status + " for you";
+                            notification.Title = status + " for you. " + "Task Title: " + task.Title;
+                           
                             notification.UserID = user.UserId;
                             notification.Description = notification.Title;
                             notification.ProjectID = task.ProjectID;
@@ -756,8 +758,8 @@ namespace PMTool.Controllers
             # region if Insert
             else
             {
-                UserProfile modifieddUser = unitOfWork.UserRepository.GetUserByUserID(task.CreatedBy);
-                status = modifieddUser.FirstName + " " + modifieddUser.LastName + " changed";
+                UserProfile modifieddUser = unitOfWork.UserRepository.GetUserByUserID(task.ModifiedBy);
+                status = modifieddUser.FirstName + " " + modifieddUser.LastName + " has changed task : \"" + task.Title + "\".";
                 status = GetModifiedStatus(status, change, task);
                 if (!isSubTask)
                 {
@@ -810,6 +812,8 @@ namespace PMTool.Controllers
         {
             string phrase1 = "";
             string phrase2 = "";
+            //if (change != null)
+            //    status += "Change history: ";
             if (change.IsStartDateChanged)
             {
                 status = status + " Start Date from ";
@@ -1213,7 +1217,7 @@ namespace PMTool.Controllers
 
                 TaskPropertyChange Change = unitOfWork.TaskRepository.InsertOrUpdate(task);
                 unitOfWork.Save();
-                if (task.ParentTaskId != null)
+                if (task.ParentTaskId == null) //Means it is not subtask
                 {
                     SaveNotification(task, false, false, Change);
                 }
