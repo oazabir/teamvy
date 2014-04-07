@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="@Url.Content("~/Content/themes/site/css/style.default.css")" rel="stylesheet" type="text/css" />
+    <link id="skinstyle" rel="stylesheet" href="~/Content/themes/site/css/style.dark.css"
+        type="text/css" />
+    <link href="@Url.Content("~/Content/themes/site/prettify/prettify.css")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="@Url.Content("~/Content/themes/site/js/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Content/themes/site/js/jquery-migrate-1.1.1.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/themes/site/js/jquery-ui-1.9.2.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/themes/site/js/bootstrap.min.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/themes/site/js/jquery.dataTables.nightly.js")"></script>
+    <script src="@Url.Content("~/Content/themes/site/js/jquery.cookie.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/themes/site/js/custom.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/themes/site/js/chosen.jquery.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/themes/site/js/jquery.jgrowl.js")" type="text/javascript"></script>
+
+
+    @*<script src="@Url.Content("~/Content/themes/site/js/charts.js")" type="text/javascript"></script>*@
+
+
+    <script src="@Url.Content("~/Content/themes/site/js/jquery.flot.pack.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/requiredif.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/themes/site/js/jquery.tagsinput.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/themes/site/prettify/prettify.js")" type="text/javascript"></script>
+
+
+    @*      <script src="@Url.Content("~/Content/themes/site/js/jquery-1.9.1.min.js")" type="text/javascript"></script>*@
+
+
+
+    <script type="text/javascript">
+
+    </script>
+
+</head>
+<body>
+    @RenderSection("featured", required: false)
+    <div class="mainwrapper">
+
+        <!-- START OF LEFT PANEL -->
+        <div class="leftpanel">
+
+            <div class="logopanel">
+                <h1><a href="@Url.Action("Index", "Home")">PM Tool <span>v1.0</span></a></h1>
+            </div>
+            <!--logopanel-->
+
+            <div class="datewidget">Today is @DateTime.Now.ToString("f")</div>
+
+        </div>
+        <!--mainleft-->
+        <!-- END OF LEFT PANEL -->
+
+        <!-- START OF RIGHT PANEL -->
+
+        <div class="rightpanel">
+            <div class="headerpanel">
+                <a href="#" class="showmenu"></a>
+
+                <div class="headerright">
+
+                </div>
+                <!--headerright-->
+
+            </div>
+            <!--headerpanel-->
+            <div class="pageheadertitle breadcrumbwidget">
+                <span style="vertical-align: middle; display: block;">
+         @*           @if (ViewBag.PageTitle != null)
+                    {
+                        @ViewBag.PageTitle
+                    }*@
+                </span>
+            </div>
+            <!--breadcrumbwidget-->
+            <!--pagetitle-->
+
+            <div class="maincontent">
+                <div class="dashboard">
+                    @RenderBody()
+                </div>
+                <!--contentinner-->
+            </div>
+            <!--maincontent-->
+
+        </div>
+        <!--mainright-->
+        <!-- END OF RIGHT PANEL -->
+
+
+        <div class="clearfix"></div>
+
+        <div class="footer">
+            <div class="footerleft">Project Management Tool v1.0</div>
+            <div class="footerright">Design & Developed by:</div>
+        </div>
+        <!--footer-->
+
+
+    </div>
+    <!--mainwrapper-->
+
+    <div id="jGrowl" class="top-right jGrowl">
+        <div class="jGrowl-notification"></div>
+    </div>
+
+
+    <script>
+        function Loading() {
+            jQuery("#ModalLoading").modal('show');
+        }
+    </script>
+
+    <script>
+        function Unload() {
+            jQuery("#ModalLoading").modal('hide');
+        }
+    </script>
+    <script>
+        function HidePopup(data) {
+            jQuery("#ModalLoading").modal('hide');
+            var adata = '#' + data;
+            jQuery(adata).modal('hide');
+            jQuery('.modal-backdrop').remove();
+        }
+        jQuery(document).ready(function () {
+            //jQuery(document).ajaxStart(function () {
+            //    jQuery("#ModalLoading").modal('show');
+            //});
+        });
+    </script>
+    <div id='ModalLoading' class="modal hide fade" tabindex="-1" style="width: 50px!important; height: 50px!important; overflow: hidden!important;" role="dialog" aria-hidden="true">
+        <img src="~/Content/themes/site/img/loaders/loader19.gif" /><br />
+        Loading....
+    </div>
+
+</body>
+</html>

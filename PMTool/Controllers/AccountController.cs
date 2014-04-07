@@ -36,7 +36,8 @@ namespace PMTool.Controllers
             //string email = WebSecurity.GetEmail(username);
             string email = username;
             string token = WebSecurity.GetConfirmationToken(username);
-            SendEmailConfirmation(email, username, token);
+            string password = "";
+            SendEmailConfirmation(email, username, password, token);
         }
 
         //
@@ -123,7 +124,7 @@ namespace PMTool.Controllers
                 {
                     string confirmationToken =
                         WebSecurity.CreateUserAndAccount(model.UserName, model.Password, model.UserName, model.FirstName,model.LastName,true); //model.UserName = user email as 3rd parameter
-                    SendEmailConfirmation(model.Email, model.UserName, confirmationToken);
+                    SendEmailConfirmation(model.Email, model.UserName, model.Password, confirmationToken);
 
                     return RedirectToAction("RegisterStepTwo", "Account");
                 }
@@ -162,7 +163,7 @@ namespace PMTool.Controllers
 
 
 
-        private void SendEmailConfirmation(string to, string username, string confirmationToken)
+        private void SendEmailConfirmation(string to, string username, string password, string confirmationToken)
         {
             //dynamic email = new Email("RegEmail");
             //email.To = to;
@@ -187,7 +188,7 @@ namespace PMTool.Controllers
                     //Body = "<b>Dear</b>" + "<b>" + userName + "</b>" + "," + "Your user name:" + userName + " and password:" + "Please confirm your account by clicking the following URL. " + verifyUrl
 
                 };
-                string Body = "<b>Dear</b>" + " " + "<b>" + username + "</b>" + ",<br>" + "Your user name:" + " " + "<b>" + username + "</b>" + " " + "and password:" + " " + "<b>" + "This for test" + "</b>." + "Please confirm your account by clicking on accept.<br><br><a href='" + verifyUrl + "'>" + "<img src='cid:imageId' align=baseline border=0 />" + "</a>";
+                string Body = "<b>Dear</b>" + " " + "<b>" + username + "</b>" + ",<br>" + "Your user name:" + " " + "<b>" + username + "</b>" + " " + "and password:" + " " + "<b>" + password + "</b>." + "Please confirm your account by clicking on accept.<br><br><a href='" + verifyUrl + "'>" + "<img src='cid:imageId' align=baseline border=0 />" + "</a>";
                 AlternateView htmlView = AlternateView.CreateAlternateViewFromString(Body, null, "text/html");
                 LinkedResource imagelink = new LinkedResource(Server.MapPath("~/UploadedDocument/accept.png"));
                 imagelink.ContentId = "imageId";
@@ -221,18 +222,8 @@ namespace PMTool.Controllers
 
         private void SendResetPwdEmail(string username, string confirmationToken)
         {
-            //dynamic email = new Email("RegEmail");
-            //email.To = to;
-            //email.UserName = username;
-            //email.ConfirmationToken = confirmationToken;
-            //email.Send();
-
             var message = new MailMessage();
             var client = new SmtpClient();
-
-            //MembershipUser user = Membership.GetUser(username); //User Name = User Email
-            //string confirmationGuid = user.ProviderUserKey.ToString();
-            //string verifyUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/account/verify?ID=" + confirmationGuid;
 
             string verifyUrl = Request.Url.GetLeftPart(UriPartial.Authority) + Url.Content("~") + "/Account/ResetPasswordConfirmation?Id=" + confirmationToken;
             client.UseDefaultCredentials = false;
@@ -240,11 +231,11 @@ namespace PMTool.Controllers
             {
                 message = new MailMessage(ConfigurationManager.AppSettings["EmailFrom"].ToString(), username) //username as to email address
                 {
-                    Subject = "Hi " + " " + username + " " + "Password reset confirmation email."
+                    Subject = "Password reset confirmation email."
                     //Body = "<b>Dear</b>" + "<b>" + userName + "</b>" + "," + "Your user name:" + userName + " and password:" + "Please confirm your account by clicking the following URL. " + verifyUrl
 
                 };
-                string Body = "<b>Dear</b>" + " " + "<b>" + username + "</b>" + ",<br>" + "Your user name:" + " " + "<b>" + username + "</b>" + " " + "and password:" + " " + "<b>" + "This for test" + "</b>." + "Please confirm your account by clicking on accept.<br><br><a href='" + verifyUrl + "'>" + "<img src='cid:imageId' align=baseline border=0 />" + "</a>";
+                string Body = "<b>Dear</b>" + " " + "<b>" + username + ",<br></b>" + "If you want to reset your password, please confirm by clicking on accept button.<br><br><a href='" + verifyUrl + "'>" + "<img src='cid:imageId' align=baseline border=0 />" + "</a>";
                 AlternateView htmlView = AlternateView.CreateAlternateViewFromString(Body, null, "text/html");
                 LinkedResource imagelink = new LinkedResource(Server.MapPath("~/UploadedDocument/accept.png"));
                 imagelink.ContentId = "imageId";

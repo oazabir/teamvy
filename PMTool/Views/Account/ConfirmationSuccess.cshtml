@@ -1,10 +1,17 @@
-﻿@*@{
-    Layout = null;
-}*@
+﻿@{
+    ViewBag.Title = "RegisterStepTwo";
+    Layout = "~/Views/Shared/_LayoutAnonymous.cshtml";
+}
 
 @{
     ViewBag.Title = "Registration Completed";
 }
 
-<h2>Registration Completed</h2>
-<p>You have completed the registration process. You can now logon to the system by clicking on the logon link.</p>
+
+
+<h3>Registration Completed!</h3>
+<p>
+    <b>You have completed the registration process. You can now logon to the system by clicking on the logon link.</b>
+    <br />
+    @Html.ActionLink("Logon", "Login", "Account")
+</p>

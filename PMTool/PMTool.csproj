@@ -1141,11 +1141,9 @@
     <Content Include="Views\Sprints\SprintBurnDown.cshtml" />
     <Content Include="Views\Projects\BurndownCharts.cshtml" />
     <Content Include="Views\Account\PassRecovery.cshtml" />
-    <Content Include="Views\Account\RegisterStepTwo.cshtml" />
     <Content Include="Views\Account\ConfirmationFailure.cshtml" />
     <Content Include="Views\Account\ConfirmationSuccess.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\ResetPwStepTwo.cshtml" />
     <Content Include="Views\Account\PasswordResetSuccess.cshtml" />
     <Content Include="Views\Account\PasswordResetFailure.cshtml" />
@@ -1155,6 +1153,9 @@
     <Content Include="Views\Home\_TaskListGroupBy.cshtml" />
     <Content Include="Views\Home\AddTimeLog.cshtml" />
     <Content Include="Views\Home\_TaskEntryLog.cshtml" />
+    <Content Include="Views\Shared\_LayoutAnonymous.cshtml" />
+    <Content Include="Views\Account\RegisterStepTwo.cshtml" />
+    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
