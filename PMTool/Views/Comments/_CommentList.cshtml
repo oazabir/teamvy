@@ -1,0 +1,19 @@
+﻿@model IEnumerable<PMTool.Models.Comment>
+
+@if (Model != null)
+{
+
+    foreach (var item in Model)
+    {    
+        <p>
+            <b><span style="color:steelblue">@item.CommentByUser.FirstName @item.CommentByUser.LastName</span>
+            </b>
+            <br />
+            <span class="icon-comment"></span>@item.Message
+            <br />
+            <a href="#">Reply</a>
+        </p>
+        <br />
+
+    }
+}

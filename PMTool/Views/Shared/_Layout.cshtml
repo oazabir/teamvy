@@ -130,9 +130,18 @@
 
                     </li>
 
-                    <li>@Html.ActionLink("Labels", "Index", "Labels")</li>
-                    <li>@Html.ActionLink("Priorities", "Index", "Priorities")</li>
-                    <li>@Html.ActionLink("Invite People", "InvitePeople", "Account")</li>
+                    <li class="dropdown"><a href="#"><span class="icon-hand-right"></span>Advanced</a>
+                        <ul style="display: block">
+                            <li>@Html.ActionLink("Labels", "Index", "Labels")</li>
+                            <li>@Html.ActionLink("Priorities", "Index", "Priorities")</li>
+                            <li>@Html.ActionLink("Invite People", "InvitePeople", "Account")</li>
+                            <li>@Html.ActionLink("Email Sending Option", "MyAssignTask", "Tasks")</li>
+                        </ul>
+
+                    </li>
+
+
+
 
                 </ul>
             </div>

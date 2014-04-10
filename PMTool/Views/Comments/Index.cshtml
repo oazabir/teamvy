@@ -1,0 +1,71 @@
+@model IEnumerable<PMTool.Models.Comment>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            Message
+        </th>
+        <th>
+            Task
+        </th>
+        <th>
+            ParentComment
+        </th>
+        <th>
+            CommentBy
+        </th>
+        <th>
+            CommentByUser
+        </th>
+        <th>
+            CreateDate
+        </th>
+        <th>
+            ModifiedDate
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+        <td>
+			@item.Message
+        </td>
+        <td>
+			@(item.Task == null ? "None" : item.Task.Title)
+        </td>
+        <td>
+			@item.ParentComment
+        </td>
+        <td>
+			@item.CommentBy
+        </td>
+        <td>
+			@(item.CommentByUser == null ? "None" : item.CommentByUser.LastName)
+        </td>
+        <td>
+			@String.Format("{0:g}", item.CreateDate)
+        </td>
+        <td>
+			@String.Format("{0:g}", item.ModifiedDate)
+        </td>
+    </tr>
+}
+
+</table>
+
+

@@ -1,0 +1,41 @@
+@model PMTool.Models.Comment
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Comment</legend>
+
+    <div class="display-label">Message</div>
+    <div class="display-field">@Model.Message</div>
+
+    <div class="display-label">Task</div>
+    <div class="display-field">@(Model.Task == null ? "None" : Model.Task.Title)</div>
+
+    <div class="display-label">ParentComment</div>
+    <div class="display-field">@Model.ParentComment</div>
+
+    <div class="display-label">CommentBy</div>
+    <div class="display-field">@Model.CommentBy</div>
+
+    <div class="display-label">CommentByUser</div>
+    <div class="display-field">@(Model.CommentByUser == null ? "None" : Model.CommentByUser.LastName)</div>
+
+    <div class="display-label">CreateDate</div>
+    <div class="display-field">@String.Format("{0:g}", Model.CreateDate)</div>
+
+    <div class="display-label">ModifiedDate</div>
+    <div class="display-field">@String.Format("{0:g}", Model.ModifiedDate)</div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}
+
+

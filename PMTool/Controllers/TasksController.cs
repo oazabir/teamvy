@@ -258,10 +258,11 @@ namespace PMTool.Controllers
         //
         // GET: /Tasks/Details/5
 
-        public ViewResult Details(long id)
+        public ViewResult Details(long id) // id = task id
         {
             MakeNotificationReadonly();
             Task task = unitOfWork.TaskRepository.Find(id);
+            ViewBag.Comments = unitOfWork.CommentRepository.GetComments(id);
             return View(task);
         }
 

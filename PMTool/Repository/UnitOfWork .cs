@@ -230,6 +230,34 @@ namespace PMTool.Repository
             }
         }
 
+
+        private CommentRepository _commentRepository;
+        public CommentRepository CommentRepository
+        {
+            get
+            {
+                if (this._commentRepository == null)
+                {
+                    this._commentRepository = new CommentRepository(context);
+                }
+                return _commentRepository;
+            }
+        }
+
+        private EmailProcessor _emailProcessor;
+        public EmailProcessor EmailProcessor
+        {
+            get
+            {
+
+                if (this._emailProcessor == null)
+                {
+                    this._emailProcessor = new EmailProcessor();
+                }
+                return _emailProcessor;
+            }
+        }
+
         public void Save()
         {
             context.SaveChanges();

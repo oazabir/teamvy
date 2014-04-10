@@ -1,0 +1,55 @@
+@model PMTool.Models.Comment
+
+@* This partial view defines form fields that will appear when creating and editing entities *@
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Message)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Message)
+    @Html.ValidationMessageFor(model => model.Message)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.ParentComment)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.ParentComment)
+    @Html.ValidationMessageFor(model => model.ParentComment)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.CommentBy)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.CommentBy)
+    @Html.ValidationMessageFor(model => model.CommentBy)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.CreateDate)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.CreateDate)
+    @Html.ValidationMessageFor(model => model.CreateDate)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.ModifiedDate)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.ModifiedDate)
+    @Html.ValidationMessageFor(model => model.ModifiedDate)
+</div>
+
+<div class="editor-label">
+    Task
+</div>
+<div class="editor-field">
+    @Html.DropDownListFor(model => model.TaskID, ((IEnumerable<PMTool.Models.Task>)ViewBag.PossibleTasks).Select(option => new SelectListItem {
+        Text = (option == null ? "None" : option.Title), 
+        Value = option.TaskID.ToString(),
+        Selected = (Model != null) && (option.TaskID == Model.TaskID)
+    }), "Choose...")
+    @Html.ValidationMessageFor(model => model.TaskID)
+</div>

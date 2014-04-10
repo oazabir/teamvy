@@ -97,5 +97,7 @@ namespace PMTool.Repository
 
         public DbSet<PMTool.Models.TaskMessage> TaskMessages { get; set; }
 
+        public DbSet<PMTool.Models.Comment> Comments { get; set; }
+
     }
 }

@@ -196,7 +196,7 @@ namespace PMTool.Controllers
                 htmlView.LinkedResources.Add(imagelink);
                 message.AlternateViews.Add(htmlView);
                 SmtpClient smtp = new SmtpClient();
-                smtp.DeliveryMethod = SmtpDeliveryMethod.PickupDirectoryFromIis;
+                //smtp.DeliveryMethod = SmtpDeliveryMethod.PickupDirectoryFromIis;
                 message.IsBodyHtml = true;
 
                 client.Credentials = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["EmailFrom"].ToString(), ConfigurationManager.AppSettings["EmailFromPass"].ToString());

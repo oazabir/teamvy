@@ -224,6 +224,7 @@
     <Compile Include="Context\DataContextInitializer.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\FetchMailsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LabelsController.cs" />
@@ -258,9 +259,19 @@
     <Compile Include="Migrations\201404020157442_TimeLogModelCng-2.Designer.cs">
       <DependentUpon>201404020157442_TimeLogModelCng-2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201404100703084_addComment.cs" />
+    <Compile Include="Migrations\201404100703084_addComment.Designer.cs">
+      <DependentUpon>201404100703084_addComment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404100714467_modifiedcomment.cs" />
+    <Compile Include="Migrations\201404100714467_modifiedcomment.Designer.cs">
+      <DependentUpon>201404100714467_modifiedcomment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Chart.cs" />
+    <Compile Include="Models\Comment.cs" />
+    <Compile Include="Repository\CommentRepository.cs" />
     <Compile Include="Models\Mailer.cs" />
     <Compile Include="Models\ProjectStatusRule.cs" />
     <Compile Include="Models\TaskActivityLog.cs" />
@@ -272,6 +283,7 @@
     <Compile Include="Models\TaskMessage.cs" />
     <Compile Include="Models\TaskPropertyChange.cs" />
     <Compile Include="Models\TimeLog.cs" />
+    <Compile Include="Repository\EmailProcessor.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\MembershipRepository.cs" />
     <Compile Include="Repository\ModelConfiguration\OperationsToRolesConfiguration.cs" />
@@ -1156,6 +1168,14 @@
     <Content Include="Views\Shared\_LayoutAnonymous.cshtml" />
     <Content Include="Views\Account\RegisterStepTwo.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Comments\Create.cshtml" />
+    <Content Include="Views\Comments\Edit.cshtml" />
+    <Content Include="Views\Comments\Delete.cshtml" />
+    <Content Include="Views\Comments\Details.cshtml" />
+    <Content Include="Views\Comments\Index.cshtml" />
+    <Content Include="Views\Comments\_CreateOrEdit.cshtml" />
+    <Content Include="Views\Comments\_CommentList.cshtml" />
+    <Content Include="Views\Comments\_PostComments.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -1249,6 +1269,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201404020157442_TimeLogModelCng-2.resx">
       <DependentUpon>201404020157442_TimeLogModelCng-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404100703084_addComment.resx">
+      <DependentUpon>201404100703084_addComment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404100714467_modifiedcomment.resx">
+      <DependentUpon>201404100714467_modifiedcomment.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
