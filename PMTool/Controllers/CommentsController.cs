@@ -145,14 +145,28 @@ namespace PMTool.Controllers
                     string subject = "Comments on task \"" + task.Title +"\"";
                     string body = "<br />" + comment.Message + "";
                     string url = Request.Url.GetLeftPart(UriPartial.Authority) + Url.Content("~") + "/Tasks/Details?id=" + task.TaskID;
-                    body += "<br/>Task Title: <a href=\"" + url + "\">" + task.Title + "</a>";
+                    body += "<br/>Task Title: <a href=\"" + url + "\"target=\"_blank\" shape=\"rect\">" + task.Title + "</a>";
+                    body += "<br/>Comment from: " + commentby.FirstName + " " + commentby.LastName;
                     body += "<br /><div><p>We sent you this email because you signed up in PMTool and You are assigned or followed the task. <br /> Please don't reply this mail.</p><p>"
                         + "Regards,<br />PMTool</p></div>";
-                    body += "</br>Comment from: " + commentby.FirstName + " " + commentby.LastName;
+                   
+                    //List of user should be as: to like mahedee@yahoo.com; jamil@gmail.com;
+                    //List of follower should be as in cc like mahedee@yahoo.com; jamil@gmail.com;
+                    //string emailto = String.Empty;
+                    //foreach (var user in lstInvolvedUser)
+                    //{
+                    //    emailto += user.UserName + ";";
+                    //}
+
+                    List<string> emailtolist = new List<string>();
                     foreach (var user in lstInvolvedUser)
                     {
-                        unitOfWork.EmailProcessor.SendEmail("", user.UserName, subject, body);
+                        emailtolist.Add(user.UserName);
                     }
+                    
+                    if(emailtolist != null)
+                        unitOfWork.EmailProcessor.SendEmail("",emailtolist,null,null, subject, body);
+
 
                     //unitOfWork.EmailProcessor.SendEmail("",user.UserName,
                 }

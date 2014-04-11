@@ -137,7 +137,7 @@ namespace PMTool.Repository
            // deletedUsers.ForEach(c => existingProject.Users.Remove(c));
             foreach (UserProfile user in existingProject.Users.ToList())
             {
-                List<Task> taskList = context.Tasks.Include("UserProfiles").Where(t => t.Users.Any(u => u.UserId == user.UserId)).ToList();
+                List<Task> taskList = context.Tasks.Include("Users").Where(t => t.Users.Any(u => u.UserId == user.UserId)).ToList();
                if (taskList.Count == 0)
                    existingProject.Users.Remove(user);
                else

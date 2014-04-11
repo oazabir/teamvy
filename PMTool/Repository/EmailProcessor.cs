@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Mail;
+using System.Text;
 using System.Web;
 
 namespace PMTool.Repository
 {
     public class EmailProcessor
     {
-        public string SendEmail(string mailfrom, string mailto, string subject, string body)
+        public string SendEmail(string mailfrom, List<string> mailto, List<string> ccto, List<string> bccto, string subject, string body)
         {
 
             var message = new MailMessage();
             var client = new SmtpClient();
+            MailAddress fromAddress = null;
 
             //MembershipUser user = Membership.GetUser(userName); //User Name = User Email
             //string confirmationGuid = user.ProviderUserKey.ToString();
@@ -24,24 +26,36 @@ namespace PMTool.Repository
             {
                 if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["EmailFrom"]) && !String.IsNullOrEmpty(ConfigurationManager.AppSettings["EmailFromPass"]))
                 {
-                    message = new MailMessage(ConfigurationManager.AppSettings["EmailFrom"].ToString(), mailto)
+                    fromAddress = new MailAddress(ConfigurationManager.AppSettings["EmailFrom"]);
+                    message.From = fromAddress;
+                    foreach (string emailto in mailto)
                     {
-                        Subject = subject
-                        //Body = "<b>Dear</b>" + "<b>" + userName + "</b>" + "," + "Your user name:" + userName + " and password:" + "Please confirm your account by clicking the following URL. " + verifyUrl
+                        message.To.Add(emailto);
+                    }
 
-                    };
-                    string Body = body;
-                    //"<b>Dear</b>" + " " + "<b>" + firstName + "</b>" + " " + "<b>" + lastName + "</b>" + ",<br>" + "Your user name:" + " " + "<b>" + userName + "</b>" + " " + "and password:" + " " + "<b>" + password + "</b>." + "Please confirm your account by clicking on accept.<br><br><a href='" + verifyUrl + "'>" + "<img src='cid:imageId' align=baseline border=0 />" + "</a>";
-                    AlternateView htmlView = AlternateView.CreateAlternateViewFromString(Body, null, "text/html");
-                    //LinkedResource imagelink = new LinkedResource(Server.MapPath("~/UploadedDocument/accept.png"));
-                    //imagelink.ContentId = "imageId";
-                    //imagelink.TransferEncoding = System.Net.Mime.TransferEncoding.Base64;
-                    //htmlView.LinkedResources.Add(imagelink);
+                    message.Subject = subject;
+                 
+                    AlternateView htmlView = AlternateView.CreateAlternateViewFromString(body, null, "text/html");
+  
                     message.AlternateViews.Add(htmlView);
-                    SmtpClient smtp = new SmtpClient();
-                    smtp.DeliveryMethod = SmtpDeliveryMethod.PickupDirectoryFromIis;
-                    message.IsBodyHtml = true;
+                    //message.BodyEncoding = Encoding.UTF8;
+                    //message.AlternateViews.Add(plainview);
+                    //SmtpClient smtp = new SmtpClient();
+                    //smtp.DeliveryMethod = SmtpDeliveryMethod.PickupDirectoryFromIis;
 
+  
+                    //message.IsBodyHtml = true;
+                    //string html = RegisterMessageBodyHtml(recvrName, verCode,NewUserID);
+                    //string plain = RegisterMessageBodyPlaintext(recvrName, verCode, NewUserID);
+                    //message.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, new ContentType("text/html"));
+                    //message.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(plain, new ContentType("text/plain"));
+
+                    //message.BodyFormat = MailFormat.Html;
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    message.Headers.Add("Reply-To", "mahedee.hasan@bs-23.com");
+                    //message.ReplyToList.Add(new MailAddress(fromAddress));
+
+                    message.IsBodyHtml = true;
                     client.Credentials = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["EmailFrom"].ToString(), ConfigurationManager.AppSettings["EmailFromPass"].ToString());
                 }
 
@@ -63,6 +77,11 @@ namespace PMTool.Repository
             catch (Exception exp)
             {
                 //....//
+            }
+            finally
+            {
+                message.Dispose();
+                client.Dispose();
             }
             return "";
         }
