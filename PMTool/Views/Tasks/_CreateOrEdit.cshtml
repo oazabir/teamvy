@@ -76,13 +76,15 @@
     <td>Priority
     </td>
     <td>
-        @Html.DropDownListFor(model => model.PriorityID, ((IEnumerable<PMTool.Models.Priority>)ViewBag.PossiblePriorities).Select(option => new SelectListItem
+@*        @Html.DropDownListFor(model => model.PriorityID, ((IEnumerable<PMTool.Models.Priority>)ViewBag.PossiblePriorities).Select(option => new SelectListItem
    {
        Text = (option == null ? "None" : option.Name),
        Value = option.PriorityID.ToString(),
        Selected = (Model != null) && (option.PriorityID == Model.PriorityID)
-   }), "None")
+   }), "None")*@
 @*        @Html.ValidationMessageFor(model => model.PriorityID)*@
+
+
     </td>
 </tr>
 <script type="text/javascript">

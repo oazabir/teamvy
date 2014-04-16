@@ -1,0 +1,132 @@
+@model PMTool.Models.EmailScheduler
+
+@* This partial view defines form fields that will appear when creating and editing entities *@
+
+<tr>
+<td>
+   @* @Html.LabelFor(model => model.Title)*@
+    Schedule Title
+</td>
+<td>
+    @Html.EditorFor(model => model.Title)
+    @Html.ValidationMessageFor(model => model.Title)
+</td>
+
+</tr>
+
+<tr>
+<td>
+    Project Name
+</td>
+<td>
+    @Html.DropDownListFor(model => model.ProjectID, ((IEnumerable<PMTool.Models.Project>)ViewBag.PossibleProjects).Select(option => new SelectListItem {
+        Text = (option == null ? "None" : option.Name), 
+        Value = option.ProjectID.ToString(),
+        Selected = (Model != null) && (option.ProjectID == Model.ProjectID)
+    }), "Choose...")
+    @Html.ValidationMessageFor(model => model.ProjectID)
+</td>
+</tr>
+
+<tr>
+<td>
+    @Html.LabelFor(model => model.ScheduleTypeID)
+</td>
+<td>
+   @* @Html.EditorFor(model => model.ScheduleTypeID)*@
+
+@*  
+    @Html.DropDownListFor(model => model.ScheduleTypeID, ((IEnumerable<>)ViewBag.PossiblePriorities).Select(option => new SelectListItem
+   {
+       Text = (option == null ? "None" : option.Name),
+       Value = option.PriorityID.ToString(),
+       Selected = (Model != null) && (option.PriorityID == Model.PriorityID)
+   }), "None") 
+    
+    *@
+    @Html.DropDownListFor(model=>model.ScheduleTypeID, Model.ScheduleType)
+
+    @Html.ValidationMessageFor(model => model.ScheduleTypeID)
+</td>
+ </tr>
+<tr>
+<td>
+    @Html.LabelFor(model => model.ScheduledTime)
+</td>
+<td class="bootstrap-timepicker">
+    @*@Html.TextBoxFor(model => model.ScheduledTime)
+    @Html.ValidationMessageFor(model => model.ScheduledTime)*@
+
+@*    <div class="input-append bootstrap-timepicker">
+<input id="timepicker1" type="text" class="input-small">
+<span class="add-on"><i class="icon-time"></i></span>
+</div>*@
+
+@*<div class="bootstrap-timepicker">
+<input id="timepicker5" type="text" class="input-small">
+<i class="icon-time"></i>
+</div>*@
+    @*<input id="timepicker5" type="text" class="input-small">*@
+
+    @Html.TextBoxFor(model => model.ScheduledTime, new {@class = "input-small"})
+
+    <i class="icon-time"></i>
+</td>
+</tr>
+<tr>
+<td>
+    @Html.LabelFor(model => model.RecipientUserType)
+</td>
+<td>
+@*    @Html.EditorFor(model => model.RecipientUsers)*@
+     @Html.DropDownListFor(model=>model.RecipientUserType, Model.EmailRecipientUsers)
+    @Html.ValidationMessageFor(model => model.RecipientUserType)
+
+
+
+</td>
+</tr>
+
+<tr>
+<td>
+    @Html.LabelFor(model => model.ScheduledDay)
+</td>
+<td>
+@*    @Html.EditorFor(model => model.ScheduledDay)
+    @Html.ValidationMessageFor(model => model.ScheduledDay)*@
+
+    @Html.DropDownListFor(model=>model.ScheduledDay, Model.Days)
+    @Html.ValidationMessageFor(model => model.ScheduledDay)
+</td>
+</tr>
+
+<tr>
+<td>
+    @Html.LabelFor(model => model.ScheduledDate)
+</td>
+<td>
+
+  @*  @Html.EditorFor(model => model.ScheduledDate, "{0:dd/MM/yyyy}",  new { @class = "datepicker" })
+    @Html.ValidationMessageFor(model => model.ScheduledDate)*@
+
+    @Html.TextBoxFor(model => model.ScheduledDate, "{0:dd/MM/yyyy}",  new { @class = "datepicker" })
+    @Html.ValidationMessageFor(model => model.ScheduledDate)
+
+</td>
+</tr>
+
+@*<tr>
+<td>
+    @Html.LabelFor(model => model.IsActive)
+</td>
+<td>
+    @Html.EditorFor(model => model.IsActive)
+    @Html.ValidationMessageFor(model => model.IsActive)
+</td>
+</tr>*@
+
+<tr>
+
+
+
+</tr>

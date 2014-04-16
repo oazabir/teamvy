@@ -99,5 +99,7 @@ namespace PMTool.Repository
 
         public DbSet<PMTool.Models.Comment> Comments { get; set; }
 
+        public DbSet<PMTool.Models.EmailScheduler> EmailSchedulers { get; set; }
+
     }
 }

@@ -14,7 +14,7 @@ namespace PMTool.Controllers
     public class CommentsController : Controller
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
-        private PMToolContext context = new PMToolContext();
+        private PMToolContext context = new PMToolContext(); //It have to remove after code refactoring
 
         //
         // GET: /Comments/

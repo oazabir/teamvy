@@ -225,6 +225,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
+    <Compile Include="Controllers\EmailSchedulersController.cs" />
     <Compile Include="Controllers\FetchMailsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LabelsController.cs" />
@@ -267,10 +268,37 @@
     <Compile Include="Migrations\201404100714467_modifiedcomment.Designer.cs">
       <DependentUpon>201404100714467_modifiedcomment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201404151001430_emailscheduler.cs" />
+    <Compile Include="Migrations\201404151001430_emailscheduler.Designer.cs">
+      <DependentUpon>201404151001430_emailscheduler.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404151151060_scheduletypelistadded.cs" />
+    <Compile Include="Migrations\201404151151060_scheduletypelistadded.Designer.cs">
+      <DependentUpon>201404151151060_scheduletypelistadded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404151151472_scheduletypelistadded2.cs" />
+    <Compile Include="Migrations\201404151151472_scheduletypelistadded2.Designer.cs">
+      <DependentUpon>201404151151472_scheduletypelistadded2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404151211494_scheduletypelistadded3.cs" />
+    <Compile Include="Migrations\201404151211494_scheduletypelistadded3.Designer.cs">
+      <DependentUpon>201404151211494_scheduletypelistadded3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404160933316_addtable.cs" />
+    <Compile Include="Migrations\201404160933316_addtable.Designer.cs">
+      <DependentUpon>201404160933316_addtable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404160950522_editEmailscheduler.cs" />
+    <Compile Include="Migrations\201404160950522_editEmailscheduler.Designer.cs">
+      <DependentUpon>201404160950522_editEmailscheduler.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Chart.cs" />
     <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\EmailScheduler.cs" />
+    <Compile Include="Repository\EmailSchedulerRepository.cs" />
+    <Compile Include="Models\EmailSentStatus.cs" />
     <Compile Include="Repository\CommentRepository.cs" />
     <Compile Include="Models\Mailer.cs" />
     <Compile Include="Models\ProjectStatusRule.cs" />
@@ -314,9 +342,14 @@
     </Compile>
     <Compile Include="Repository\UserProfileRepository.cs" />
     <Compile Include="Repository\UserRepository.cs" />
+    <Compile Include="Repository\Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="collapse.png" />
+    <Content Include="Content\themes\site\css\jquery.timepicker.css" />
+    <Content Include="Content\themes\site\js\jquery.timepicker.js" />
+    <Content Include="Content\themes\site\js\jquery.timepicker.min.js" />
+    <Content Include="Scripts\jquery.timepicker.js" />
     <Content Include="Scripts\requiredIf.js" />
     <Content Include="UploadedDocument\accept.png" />
     <Content Include="Content\themes\site\css\animate.delay.css" />
@@ -1176,6 +1209,12 @@
     <Content Include="Views\Comments\_CreateOrEdit.cshtml" />
     <Content Include="Views\Comments\_CommentList.cshtml" />
     <Content Include="Views\Comments\_PostComments.cshtml" />
+    <Content Include="Views\EmailSchedulers\Create.cshtml" />
+    <Content Include="Views\EmailSchedulers\Edit.cshtml" />
+    <Content Include="Views\EmailSchedulers\Delete.cshtml" />
+    <Content Include="Views\EmailSchedulers\Details.cshtml" />
+    <Content Include="Views\EmailSchedulers\Index.cshtml" />
+    <Content Include="Views\EmailSchedulers\_CreateOrEdit.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -1275,6 +1314,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201404100714467_modifiedcomment.resx">
       <DependentUpon>201404100714467_modifiedcomment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404151001430_emailscheduler.resx">
+      <DependentUpon>201404151001430_emailscheduler.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404151151060_scheduletypelistadded.resx">
+      <DependentUpon>201404151151060_scheduletypelistadded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404151151472_scheduletypelistadded2.resx">
+      <DependentUpon>201404151151472_scheduletypelistadded2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404151211494_scheduletypelistadded3.resx">
+      <DependentUpon>201404151211494_scheduletypelistadded3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404160933316_addtable.resx">
+      <DependentUpon>201404160933316_addtable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404160950522_editEmailscheduler.resx">
+      <DependentUpon>201404160950522_editEmailscheduler.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

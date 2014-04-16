@@ -258,6 +258,21 @@ namespace PMTool.Repository
             }
         }
 
+
+        private EmailSchedulerRepository _emailSchedulerRepository;
+        public EmailSchedulerRepository EmailSchedulerRepository
+        {
+            get
+            {
+                if (this._emailSchedulerRepository == null)
+                {
+                    this._emailSchedulerRepository = new EmailSchedulerRepository();
+                }
+                return _emailSchedulerRepository;
+            }
+          
+        }
+
         public void Save()
         {
             context.SaveChanges();
