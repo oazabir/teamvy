@@ -13,7 +13,9 @@ namespace PMTool.Models
     {
         
         [Required,Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long SchedulerID { get; set; }
+        public long ID { get; set; }
+
+        public int SchedulerID { get; set; }
 
         [Required]
         [Display(Name = "Title")]
@@ -34,7 +36,8 @@ namespace PMTool.Models
         //public virtual ScheduleType ScheduleType { get; set; }
  
         [Display(Name = "Time of Day")]
-        public TimeSpan? ScheduledTime { get; set; }
+       // public DateTime? ScheduledTime { get; set; }
+        public string ScheduledTime { get; set; }
 
         [Display(Name = "Recipient Users")]
         public int? RecipientUserType { get; set; } /* 1 = Task Users, 2 = Task Followers, 3 = Task Users and followers, 4 = Project Users */
@@ -56,7 +59,7 @@ namespace PMTool.Models
         [Required]
         public int CreatedBy { get; set; }
 
-        [Required]
+        //[Required]
         public int? ModifiedBy { get; set; }
 
 
@@ -71,7 +74,7 @@ namespace PMTool.Models
         [Required]
         public DateTime CreateDate { get; set; }
 
-        [Required]
+        //[Required]
         public DateTime? ModificationDate { get; set; }
 
     }

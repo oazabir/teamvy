@@ -231,6 +231,7 @@
     <Compile Include="Controllers\LabelsController.cs" />
     <Compile Include="Controllers\PrioritiesController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="Controllers\ScheduleMailsAPIController.cs" />
     <Compile Include="Controllers\SprintsController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="Entities\Operations.cs" />
@@ -292,11 +293,32 @@
     <Compile Include="Migrations\201404160950522_editEmailscheduler.Designer.cs">
       <DependentUpon>201404160950522_editEmailscheduler.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201404180427449_updateemailscheduler180401.cs" />
+    <Compile Include="Migrations\201404180427449_updateemailscheduler180401.Designer.cs">
+      <DependentUpon>201404180427449_updateemailscheduler180401.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404180634319_updateemailscheduler180402.cs" />
+    <Compile Include="Migrations\201404180634319_updateemailscheduler180402.Designer.cs">
+      <DependentUpon>201404180634319_updateemailscheduler180402.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404180645117_updateemailscheduler180403.cs" />
+    <Compile Include="Migrations\201404180645117_updateemailscheduler180403.Designer.cs">
+      <DependentUpon>201404180645117_updateemailscheduler180403.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404180647248_updateemailscheduler180404.cs" />
+    <Compile Include="Migrations\201404180647248_updateemailscheduler180404.Designer.cs">
+      <DependentUpon>201404180647248_updateemailscheduler180404.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404181057347_emailsentstatus01.cs" />
+    <Compile Include="Migrations\201404181057347_emailsentstatus01.Designer.cs">
+      <DependentUpon>201404181057347_emailsentstatus01.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Chart.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\EmailScheduler.cs" />
+    <Compile Include="Repository\EmailSentStatusRepository.cs" />
     <Compile Include="Repository\EmailSchedulerRepository.cs" />
     <Compile Include="Models\EmailSentStatus.cs" />
     <Compile Include="Repository\CommentRepository.cs" />
@@ -343,6 +365,7 @@
     <Compile Include="Repository\UserProfileRepository.cs" />
     <Compile Include="Repository\UserRepository.cs" />
     <Compile Include="Repository\Utility.cs" />
+    <Compile Include="Utility\DateTimeUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="collapse.png" />
@@ -1332,6 +1355,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201404160950522_editEmailscheduler.resx">
       <DependentUpon>201404160950522_editEmailscheduler.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404180427449_updateemailscheduler180401.resx">
+      <DependentUpon>201404180427449_updateemailscheduler180401.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404180634319_updateemailscheduler180402.resx">
+      <DependentUpon>201404180634319_updateemailscheduler180402.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404180645117_updateemailscheduler180403.resx">
+      <DependentUpon>201404180645117_updateemailscheduler180403.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404180647248_updateemailscheduler180404.resx">
+      <DependentUpon>201404180647248_updateemailscheduler180404.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404181057347_emailsentstatus01.resx">
+      <DependentUpon>201404181057347_emailsentstatus01.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

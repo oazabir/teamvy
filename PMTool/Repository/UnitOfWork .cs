@@ -266,12 +266,31 @@ namespace PMTool.Repository
             {
                 if (this._emailSchedulerRepository == null)
                 {
-                    this._emailSchedulerRepository = new EmailSchedulerRepository();
+                    this._emailSchedulerRepository = new EmailSchedulerRepository(context);
                 }
                 return _emailSchedulerRepository;
             }
-          
+
         }
+
+        private EmailSentStatusRepository _emailSentStatusRepository;
+        public EmailSentStatusRepository EmailSentStatusRepository
+        {
+            get
+            {
+                if (this._emailSentStatusRepository == null)
+                {
+                    this._emailSentStatusRepository = new EmailSentStatusRepository(context);
+                }
+                return _emailSentStatusRepository;
+            }
+
+        }
+
+
+        
+
+
 
         public void Save()
         {

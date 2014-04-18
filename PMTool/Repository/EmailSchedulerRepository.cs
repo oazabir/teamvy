@@ -12,8 +12,9 @@ namespace PMTool.Repository
 { 
     public class EmailSchedulerRepository : IEmailSchedulerRepository
     {
-        PMToolContext context = new PMToolContext();
+        //PMToolContext context = new PMToolContext();
 
+        PMToolContext context = new PMToolContext();
 
         public EmailSchedulerRepository()
             : this(new PMToolContext())
@@ -47,6 +48,15 @@ namespace PMTool.Repository
             return context.EmailSchedulers.Find(id);
         }
 
+
+        public Dictionary<int, string> GetSchedulerList()
+        {
+            var lstOfEmailSchedules = new Dictionary<int, string> {{ 1, "Reminder mail to provide estimation" }, 
+                                                                { 2, "Optional scheduler" }, };
+
+            return lstOfEmailSchedules;
+        }
+
         public void InsertOrUpdate(EmailScheduler emailscheduler)
         {
             if (emailscheduler.SchedulerID == default(long)) {
@@ -56,6 +66,8 @@ namespace PMTool.Repository
                 // Existing entity
                 context.Entry(emailscheduler).State = System.Data.Entity.EntityState.Modified;
             }
+
+
         }
 
         public void Delete(long id)

@@ -26,7 +26,7 @@
     <div class="display-field">@Model.ScheduledTime</div>
 
     <div class="display-label">RecipientUsers</div>
-    <div class="display-field">@Model.RecipientUsers</div>
+    <div class="display-field">@Model.RecipientUserType</div>
 
     <div class="display-label">EmailRecipientUsers</div>
     <div class="display-field">@Html.DisplayTextFor(_ => Model.EmailRecipientUsers).ToString()</div>
@@ -35,7 +35,7 @@
     <div class="display-field">@Model.ScheduledDay</div>
 
     <div class="display-label">day</div>
-    <div class="display-field">@Html.DisplayTextFor(_ => Model.day).ToString()</div>
+    <div class="display-field">@Html.DisplayTextFor(_ => Model.Days).ToString()</div>
 
     <div class="display-label">ScheduledDate</div>
     <div class="display-field">@String.Format("{0:g}", Model.ScheduledDate)</div>

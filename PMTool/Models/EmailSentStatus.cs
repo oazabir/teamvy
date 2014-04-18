@@ -17,11 +17,13 @@ namespace PMTool.Models
 
         public int? ScheduleTypeID { get; set; } // Daily = 1, Weekly = 2, Monthly = 3
 
-        public DateTime? ScheduleDate { get; set; }
+        public DateTime? ScheduleDateTime { get; set; }
+        public DateTime? SentDateTime { get; set; }
 
-        public TimeSpan? ScheduleTime { get; set; }
 
-        public TimeSpan? SentTime { get; set; }
+        //public TimeSpan? ScheduleTime { get; set; } //Schedule Time
+
+        //public TimeSpan? SentTime { get; set; } //Actual sent time
 
         public bool? SentStatus { get; set; }
 

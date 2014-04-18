@@ -101,5 +101,7 @@ namespace PMTool.Repository
 
         public DbSet<PMTool.Models.EmailScheduler> EmailSchedulers { get; set; }
 
+        public DbSet<PMTool.Models.EmailSentStatus> EmailSentStatus { get; set; }
+
     }
 }
