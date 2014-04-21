@@ -269,50 +269,6 @@
     <Compile Include="Migrations\201404100714467_modifiedcomment.Designer.cs">
       <DependentUpon>201404100714467_modifiedcomment.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201404151001430_emailscheduler.cs" />
-    <Compile Include="Migrations\201404151001430_emailscheduler.Designer.cs">
-      <DependentUpon>201404151001430_emailscheduler.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404151151060_scheduletypelistadded.cs" />
-    <Compile Include="Migrations\201404151151060_scheduletypelistadded.Designer.cs">
-      <DependentUpon>201404151151060_scheduletypelistadded.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404151151472_scheduletypelistadded2.cs" />
-    <Compile Include="Migrations\201404151151472_scheduletypelistadded2.Designer.cs">
-      <DependentUpon>201404151151472_scheduletypelistadded2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404151211494_scheduletypelistadded3.cs" />
-    <Compile Include="Migrations\201404151211494_scheduletypelistadded3.Designer.cs">
-      <DependentUpon>201404151211494_scheduletypelistadded3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404160933316_addtable.cs" />
-    <Compile Include="Migrations\201404160933316_addtable.Designer.cs">
-      <DependentUpon>201404160933316_addtable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404160950522_editEmailscheduler.cs" />
-    <Compile Include="Migrations\201404160950522_editEmailscheduler.Designer.cs">
-      <DependentUpon>201404160950522_editEmailscheduler.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404180427449_updateemailscheduler180401.cs" />
-    <Compile Include="Migrations\201404180427449_updateemailscheduler180401.Designer.cs">
-      <DependentUpon>201404180427449_updateemailscheduler180401.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404180634319_updateemailscheduler180402.cs" />
-    <Compile Include="Migrations\201404180634319_updateemailscheduler180402.Designer.cs">
-      <DependentUpon>201404180634319_updateemailscheduler180402.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404180645117_updateemailscheduler180403.cs" />
-    <Compile Include="Migrations\201404180645117_updateemailscheduler180403.Designer.cs">
-      <DependentUpon>201404180645117_updateemailscheduler180403.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404180647248_updateemailscheduler180404.cs" />
-    <Compile Include="Migrations\201404180647248_updateemailscheduler180404.Designer.cs">
-      <DependentUpon>201404180647248_updateemailscheduler180404.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404181057347_emailsentstatus01.cs" />
-    <Compile Include="Migrations\201404181057347_emailsentstatus01.Designer.cs">
-      <DependentUpon>201404181057347_emailsentstatus01.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Chart.cs" />
@@ -1337,39 +1293,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201404100714467_modifiedcomment.resx">
       <DependentUpon>201404100714467_modifiedcomment.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404151001430_emailscheduler.resx">
-      <DependentUpon>201404151001430_emailscheduler.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404151151060_scheduletypelistadded.resx">
-      <DependentUpon>201404151151060_scheduletypelistadded.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404151151472_scheduletypelistadded2.resx">
-      <DependentUpon>201404151151472_scheduletypelistadded2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404151211494_scheduletypelistadded3.resx">
-      <DependentUpon>201404151211494_scheduletypelistadded3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404160933316_addtable.resx">
-      <DependentUpon>201404160933316_addtable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404160950522_editEmailscheduler.resx">
-      <DependentUpon>201404160950522_editEmailscheduler.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404180427449_updateemailscheduler180401.resx">
-      <DependentUpon>201404180427449_updateemailscheduler180401.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404180634319_updateemailscheduler180402.resx">
-      <DependentUpon>201404180634319_updateemailscheduler180402.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404180645117_updateemailscheduler180403.resx">
-      <DependentUpon>201404180645117_updateemailscheduler180403.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404180647248_updateemailscheduler180404.resx">
-      <DependentUpon>201404180647248_updateemailscheduler180404.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404181057347_emailsentstatus01.resx">
-      <DependentUpon>201404181057347_emailsentstatus01.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

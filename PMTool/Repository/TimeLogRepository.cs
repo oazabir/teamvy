@@ -38,9 +38,9 @@ namespace PMTool.Repository
         public IQueryable<TimeLog> AllIncluding(params Expression<Func<TimeLog, object>>[] includeProperties)
         {
             IQueryable<TimeLog> query = context.TimeLogs;
-            foreach (var includeProperty in includeProperties) {
-                query = query.Include(includeProperty);
-            }
+            //foreach (var includeProperty in includeProperties) {
+            //    query = query.Include(includeProperty);
+            //}
             return query;
         }
 
