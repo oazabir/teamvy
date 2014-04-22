@@ -117,7 +117,7 @@ namespace PMTool.Controllers
         //[ValidateAntiForgeryToken]
         public ActionResult Register(RegisterModel model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) 
             {
                 // Attempt to register the user
                 try
