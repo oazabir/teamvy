@@ -1,0 +1,33 @@
+@model PMTool.Models.Label
+
+@* This partial view defines form fields that will appear when creating and editing entities *@
+
+<tr>
+    <td>
+        @Html.LabelFor(model => model.Name)
+    </td>
+    <td>
+        @Html.EditorFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+    </td>
+</tr>
+
+<tr>
+    <td>
+        @Html.LabelFor(model => model.Description)
+    </td>
+    <td>
+        @Html.EditorFor(model => model.Description)
+        @Html.ValidationMessageFor(model => model.Description)
+    </td>
+</tr>
+<tr>
+    <td>
+        @Html.LabelFor(model => model.IsActive)
+    </td>
+    <td>
+        @Html.EditorFor(model => model.IsActive)
+        @Html.ValidationMessageFor(model => model.IsActive)
+    </td>
+</tr>
+

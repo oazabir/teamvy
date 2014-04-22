@@ -1,0 +1,146 @@
+﻿@model PMTool.Models.TaskMessage
+<div id="divMessage">
+<script type="text/javascript">
+    jQuery(".chosen").chosen({ max_selected_options: 10 });
+    jQuery(".chosen-deselect").chosen({ allow_single_deselect: true });
+    jQuery(".chosen").chosen().change();
+    jQuery(".chosen").trigger('liszt:updated');
+
+    var selectedUserID = jQuery('Select#Users').val();
+    var Users = "";
+
+    if (selectedUserID != null) {
+        jQuery.each(selectedUserID, function (index, value) {
+            Users = Users + value + ",";
+        });
+
+        var UserArray = new Array();
+        jQuery('Select#Users').val(UserArray);
+
+        jQuery('.chzn-select').trigger('chosen:updated');
+    }
+
+    var selectedFollowedUserID = jQuery('Select#Users').val();
+    var Followers = "";
+
+    if (selectedFollowedUserID != null) {
+        jQuery.each(selectedFollowedUserID, function (index, value) {
+            Followers = Followers + value + ",";
+        });
+
+        var FollowedUserArray = new Array();
+        jQuery('Select#Followers').val(FollowedUserArray);
+
+        jQuery('.chzn-select').trigger('chosen:updated');
+    }
+
+    var SelectedLabelID = jQuery('Select#Labels').val();
+    var Labels = "";
+
+    if (SelectedLabelID != null) {
+        jQuery.each(SelectedLabelID, function (index, value) {
+            Labels = Labels + value + ",";
+        });
+
+        var LabelArray = new Array();
+        jQuery('Select#Labels').val(LabelArray);
+
+        jQuery('.chzn-select').trigger('chosen:updated');
+    }
+</script>
+
+@using (Ajax.BeginForm("AddMessage", "Tasks", new AjaxOptions { UpdateTargetId = "divMessage", OnBegin = "Loading()", OnComplete = "Unload()" }, new { @id = "form" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m=>m.TaskID)
+    @Html.HiddenFor(m=>m.FormUserID)
+    @Html.HiddenFor(m=>m.CreateDate)
+<table class="table table-bordered table-invoice">
+    <tbody>
+        <tr>
+            <td>To
+            </td>
+            <td>
+                @Html.ListBoxFor(m => m.SelectedToUsers, (IEnumerable<SelectListItem>)ViewBag.PossibleUser,
+            new { @class = "chosen", multiple = "multiple", style = "width: 350px;" })
+                 @Html.ValidationMessageFor(model => model.SelectedToUsers)
+                @Html.ValidationMessage("CustomError")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Message
+
+            </td>
+            <td>
+                 @Html.TextAreaFor(m=>m.Message)
+                 @Html.ValidationMessageFor(model => model.Message)
+            </td>
+        </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </td>
+            </tr>
+    </tbody>
+</table>
+}
+
+<br />
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>From
+            </th>
+            <th>To
+            </th>
+            <th>Message</th>
+            <th>on</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if(ViewBag.AllMessage!=null)
+        {
+         foreach (var item in (List<PMTool.Models.TaskMessage>)ViewBag.AllMessage)
+        {
+            <tr>
+                <td>
+                    <strong>
+                        @item.FromUser.FirstName   @item.FromUser.LastName
+                    </strong>
+                </td>
+                <td>
+                    <strong>
+                        @item.ToUser.FirstName    @item.ToUser.LastName
+                    </strong>
+                </td>
+                <td>
+                        <span> @Html.Raw(item.Message)</span>
+                </td>
+                <td>
+                    
+                    <strong>
+                        @item.CreateDate
+                    </strong>
+                </td>
+            </tr>
+         }
+        }
+    </tbody>
+</table>
+    </div>
+
+<script type="text/javascript">
+
+    jQuery(document).ready(function () {
+        jQuery('#form').removeData('validator');
+        jQuery('#form').removeData('unobtrusiveValidation');
+        jQuery("#form").each(function () { jQuery.data(jQuery(this)[0], 'validator', false); }); //enable to display the error messages
+        jQuery.validator.unobtrusive.parse("#form");
+
+
+    });
+
+</script>

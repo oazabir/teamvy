@@ -1,0 +1,60 @@
+﻿@model IEnumerable<PMTool.Models.Task>
+
+@{
+    if (ViewBag.CurrentProject != null)
+    {
+        PMTool.Models.Project projetc = (PMTool.Models.Project)ViewBag.CurrentProject;
+        ViewBag.Title = projetc.Name + " | Sub Tasks";
+    }
+}
+
+
+
+
+
+<div class="pagetitle">
+    <h1>Task List</h1>
+    <span>@(((PMTool.Models.Project)ViewBag.CurrentProject).Name)  Tasks....</span>
+</div>
+
+<table class="table table-bordered" id="dyntable">
+    <thead>
+        <tr>
+            <th>Project Name
+            </th>
+            <th>Title
+            </th>
+            <th>Description</th>
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Project.Name
+                </td>
+                <td>
+                    @Html.DisplayTextFor(_ => item.Title).ToString()
+                </td>
+                <td>
+                    @Html.DisplayTextFor(_ => item.Description).ToString()
+                </td>
+                <td align="center">
+                    @Html.ActionLink(" ", "Edit", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
+                    |
+                    @Html.ActionLink(" ", "Details", new { id = item.TaskID }, new { @class = "icon-list-alt", @title = "Details" })
+                    |
+                    @Html.ActionLink(" ", "Delete", new { id = item.TaskID }, new { @class = "icon-trash", @title = "Delete" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    @Html.ActionLink("Back to List", "ProjectTasks", "Tasks", new { ProjectID=(((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID)}, new { @class = "btn" })
+</div>
+
+

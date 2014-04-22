@@ -1,0 +1,59 @@
+@model PMTool.Models.Project
+
+@{
+    ViewBag.Title = "Details | Projects";
+}
+
+<div class="pagetitle">
+    <h1>
+        Project Details
+    </h1>
+    <span>Project details below....</span>
+</div>
+<table class="table table-bordered table-invoice">
+    <tbody>
+        <tr>
+            <td class="width30">
+                Name
+            </td>
+            <td>
+                @Model.Name
+            </td>
+        </tr>
+        <tr>
+            <td class="width30">
+                Description
+            </td>
+            <td>
+                @Html.DisplayTextFor(_ => Model.Description).ToString()
+            </td>
+        </tr>
+        <tr>
+            <td class="width30">
+                Is Locked
+            </td>
+            <td>
+                @Html.DisplayTextFor(_ => Model.IsLocked).ToString()
+            </td>
+        </tr>
+        <tr>
+            <td class="width30">
+                Is Active
+            </td>
+            <td>
+                @Html.DisplayTextFor(_ => Model.IsActive).ToString()
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ProjectID }, new { @class = "btn btn-primary" })
+    |
+    @Html.ActionLink("Back to List", "Index","Projects", "",new { @class="btn"})
+    
+|
+    @Html.ActionLink("Back to List", "ProjectTasks", "Tasks", new { ProjectID=Model.ProjectID}, new { @class = "btn" })
+
+</p>
+
+

@@ -1,0 +1,96 @@
+﻿@model PMTool.Models.ProjectStatusRule
+
+<div id="ListofRules">
+@using (Ajax.BeginForm("RulesForm", "Tasks", new AjaxOptions { UpdateTargetId = "ListofRules", OnBegin = "Loading()", OnComplete = "Unload()"}, new { @id = "form" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ProjectID)
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    Update on Change
+                </th>
+                <th>
+                    From Status
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DropDownListFor(model => model.DateMaper, (Model.DateMaperSelectList).Select(option => new SelectListItem
+                       {
+                           Text = (option == null ? "Choose..." : option.ToString().Replace('_',' ')),
+                           Value = option.GetHashCode().ToString(),
+                           Selected = (Model != null) && (option.ToString() == Model.DateMaper.ToString())
+                       }), "None")
+                    @Html.ValidationMessageFor(model => model.DateMaper)
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.ProjectStatusID, ((IEnumerable<PMTool.Models.ProjectStatus>)ViewBag.CurrentProjectStatuses).Select(option => new SelectListItem
+                       {
+                           Text = (option == null ? "Choose..." : option.Name),
+                           Value = option.ProjectStatusID.ToString(),
+                           Selected = (Model != null) && (option.ProjectStatusID == Model.ProjectStatusID)
+                       }), "None")
+                            @Html.ValidationMessageFor(model => model.ProjectStatusID)
+                </td>
+           
+                <td>
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+<table class="table table-bordered table-invoice">
+        <thead>
+            <tr>
+                <th>
+                    Update on Change
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(PMTool.Models.ProjectStatusRule rule in (List<PMTool.Models.ProjectStatusRule>)ViewBag.Rules)
+            {
+            <tr>
+                <td>
+                    @rule.DateMaper.ToString().Replace('_',' ')
+                </td>
+           
+                <td>
+                    @rule.ProjectStatus.Name
+                </td>
+            
+                <td>
+                    @*@Html.ActionLink(" ", "DeleteRule", new { id = rule.ProjectStatusRuleID }, new { @class = "icon-trash", @title = "Delete" })*@
+                    @Ajax.ActionLink(" ", "DeleteRule",new { id = rule.ProjectStatusRuleID },new AjaxOptions { UpdateTargetId = "ListofRules", OnBegin = "Loading()", OnComplete = "Unload()"},new { @class = "icon-trash", @title = "Delete" })
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+
+
+<script type="text/javascript">
+
+    jQuery(document).ready(function () {
+
+        jQuery('#form').removeData('validator');
+        jQuery('#form').removeData('unobtrusiveValidation');
+        jQuery("#form").each(function () { jQuery.data(jQuery(this)[0], 'validator', false); }); //enable to display the error messages
+        jQuery.validator.unobtrusive.parse("#form");
+
+            
+    });
+</script>

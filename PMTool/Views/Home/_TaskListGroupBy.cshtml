@@ -1,0 +1,104 @@
+﻿@model IEnumerable<PMTool.Models.Task>
+
+@if (Model != null)
+{
+  
+
+        int i = 0;
+        foreach (var item in Model)
+        {
+        <tr>
+
+            <td>
+                @if (i == 0)
+                {
+                    @Html.DisplayTextFor(_ => item.GroupBy).ToString()
+                }
+            </td>
+            <td>
+                @Html.DisplayTextFor(_ => item.Title).ToString()
+            </td>
+
+            <td>
+                @item.Project.Name
+            </td>
+                        <td>
+                @if (item.ChildTask.Count > 0)
+                {
+                    <div class="btn-group">
+                        <button class="btn btn-small">Sub Tasks (@item.ChildTask.Count)</button>
+                        <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            @foreach (PMTool.Models.Task task in item.ChildTask)
+                            {
+                                <li>@Html.ActionLink(task.Title + " -" + task.ProjectStatus.Name + (task.EndDate !=null ? "-" + task.EndDate.Value.ToString("dd/MM/yyyy"):""), "Details","Tasks", new { id = task.TaskID }, new { @target = "_blank" })</li>
+                                
+                            }
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("All Sub Tasks", "SubTaskList", new { ProjectID = item.ProjectID, TaskID = item.TaskID }, new { @target = "_blank" })</li>
+
+
+                        </ul>
+                    </div>
+                }
+                @if (item.ChildTask.Count == 0)
+                {
+                    @Html.Raw("No Sub Task")
+                }
+
+            </td>
+            <td>
+                @if (item.StartDate != null)
+                {<span>@item.StartDate.Value.ToString("dd/MM/yyyy")</span>}
+            </td>
+
+            <td>
+                @if (item.EndDate != null)
+                {<span>@item.EndDate.Value.ToString("dd/MM/yyyy")</span>}
+            </td>
+
+
+            <td>
+                @if (item.ProjectStatusID != null)
+                {
+                    <div class="btn-group">
+                        <button data-toggle="dropdown" class="btn dropdown-toggle">@item.ProjectStatus.Name <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            @foreach (PMTool.Models.ProjectStatus status in item.Project.ProjectStatuses)
+                            {
+                                <li>
+                                    @Ajax.ActionLink(@status.Name, "ChangeStatusView", "Home", new { taskID = item.TaskID, statusID = @status.ProjectStatusID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divTaskList" }, new { @title = "Change Status" })
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                                                                     
+                }
+            </td>
+
+
+
+
+
+            <td style="text-align:center !important;">
+
+                <a  href="#" onclick="return ShowEffortEntryForm(@item.TaskID);" class="icon-time"></a>
+            </td>
+
+
+            <td align="center">
+                @Html.ActionLink(" ", "Edit", "Tasks", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
+                |
+                    @Html.ActionLink(" ", "Details", "Tasks", new { id = item.TaskID }, new { @class = "icon-list-alt", @title = "Details" })
+                |
+                    @Html.ActionLink(" ", "Delete", "Tasks", new { id = item.TaskID }, new { @class = "icon-trash", @title = "Delete" })
+            </td>
+        </tr>
+            i++;
+        }
+
+}
+
+
+
+

@@ -1,0 +1,47 @@
+@model IEnumerable<PMTool.Models.Priority>
+
+@{
+    ViewBag.Title = "Index | Priority";
+}
+
+
+<div class="pagetitle">
+    <h1>Priority List</h1>
+    <span>List of Priorities....</span>
+</div>
+
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @title = "Add Label", @class = "btn btn-primary" })
+</p>
+<table class="table table-bordered" id="dyntable">
+    <thead>
+        <tr>
+            <th>Name
+            </th>
+            <th>Description
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @Html.DisplayTextFor(_ => item.Description).ToString()
+                </td>
+                <td align="center">
+                    @Html.ActionLink(" ", "Edit", new { id = item.PriorityID }, new { @class = "icon-edit", @title = "Edit" })
+                    |
+                    @Html.ActionLink(" ", "Details", new { id = item.PriorityID }, new { @class = "icon-list-alt", @title = "Details" })
+                    |
+                    @Html.ActionLink(" ", "Delete", new { id = item.PriorityID }, new { @class = "icon-trash", @title = "Delete" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

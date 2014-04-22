@@ -1,0 +1,68 @@
+@model PMTool.Models.Project
+
+@{
+    ViewBag.Title = "Delete | Project";
+}
+
+  <div class="pagetitle">
+        <h1>
+            Delete Project
+        </h1>
+        <span>Are you sure you want to delete this?</span>
+    </div>
+
+
+
+
+    @using (Html.BeginForm())
+    {
+
+
+        <table class="table table-bordered table-invoice">
+            <tbody>
+                <tr>
+                    <td class="width30">
+                        Name
+                    </td>
+                    <td>
+                        @Model.Name
+                    </td>
+                </tr>
+                <tr>
+                    <td class="width30">
+                        Description
+                    </td>
+                    <td>
+                        @Model.Description
+                    </td>
+                </tr>
+                  <tr>
+                    <td class="width30">
+                        Is Locked
+                    </td>
+                    <td>
+                        @Model.IsLocked
+                    </td>
+                </tr>
+                <tr>
+                    <td class="width30">
+                        Is Active
+                    </td>
+                    <td>
+                        @Model.IsActive
+                    </td>
+                </tr>
+                <tr>
+                    <td class="width30">
+                    </td>
+                    <td>
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    <p>
+    @Html.ActionLink("Back to List", "Index","Projects", "",new { @class="btn"})
+    </p>
+    }
+

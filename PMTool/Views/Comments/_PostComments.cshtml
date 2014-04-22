@@ -1,0 +1,21 @@
+﻿@model PMTool.Models.Comment
+
+<p>
+    @Html.TextAreaFor(model => model.Message, new { @style = "width:600px;" })
+    @Html.ValidationMessageFor(model => model.Message)
+</p>
+<p>
+
+    <input type="submit" value="Publish" class="btn btn-primary" />
+</p>
+
+
+
+<script type="text/javascript">
+
+    function LoadComplete() {
+        jQuery("#ModalLoading").modal('hide');
+        jQuery("#Message").val("");
+
+    }
+</script>

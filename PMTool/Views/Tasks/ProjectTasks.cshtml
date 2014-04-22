@@ -1,0 +1,274 @@
+﻿@using MvcPaging
+@model IPagedList<PMTool.Models.Task>
+<div id="divProjectTasks">
+@{
+    if (ViewBag.CurrentProject != null)
+    {
+        PMTool.Models.Project projetc = (PMTool.Models.Project)ViewBag.CurrentProject;
+        ViewBag.Title = projetc.Name + " | Tasks";
+    }
+}
+
+
+<div id='ModalpopupTaskDetails' data-url='@Url.Action("TaskDetails", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerTaskDetails'>
+    </div>
+</div>
+
+
+
+<p>
+    @Html.ActionLink("Create New", "Create", new { @ProjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID }, new { @title = "Add Task", @class = "btn btn-primary" })
+    ||
+    @Html.ActionLink("View Kanban", "Kanban", new { @ProjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID }, new { @title = "View Kanban", @class = "btn btn-inverse" })
+    || 
+    <a href="#" class="show_hide_div btn btn-info btn-rounded" id="plus"> + Search Panel</a>
+    
+
+</p>
+
+
+@using (Html.BeginForm("ProjectTasks", "Tasks", FormMethod.Get))
+{
+<input type="hidden" name ="projectID" value ="@ViewBag.CurrentProjectId" />
+<div class="slidingDiv" style="display: block;">
+
+        <table class="table table-bordered table-invoice">
+            <tr>
+                <td>Status</td>
+                <td>
+                    
+                    <select name="SelectedStatusID">
+                         <option value="">Choose...</option>  
+                    @foreach (var item in ViewData["TaskStatus"] as List<SelectListItem>)
+                    {
+                        PMTool.Models.Search search = (PMTool.Models.Search)ViewBag.SearchObj;
+                       
+                        if (search.SelectedStatusID.ToString() == item.Value)
+                        {
+                            <option value="@item.Value" selected="selected">@item.Text</option>  
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Text</option>  
+                        }
+                    }
+
+                        </select>
+                </td>
+                <td>Priority</td>
+                <td>
+           
+                     <select name="SelectedPriorityID">
+                         <option value="">Choose...</option>  
+                    @foreach (var item in ViewData["PossiblePriorities"] as List<SelectListItem>)
+                    {
+                         PMTool.Models.Search search = (PMTool.Models.Search)ViewBag.SearchObj;
+                       
+                        if (search.SelectedPriorityID.ToString() == item.Value)
+                        {
+                            <option value="@item.Value" selected="selected">@item.Text</option>  
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Text</option>  
+                        }
+                    }
+
+                        </select>
+                </td>
+
+            </tr>
+             <tr>
+                <td>Assigned User</td>
+                <td>
+             
+                    <select name="SelectedUserID">
+                         <option value="">Choose...</option>  
+                    @foreach (var item in ViewData["PossibleUsers"] as List<SelectListItem>)
+                    {
+                        PMTool.Models.Search search = (PMTool.Models.Search)ViewBag.SearchObj;
+                       
+                        if (search.SelectedUserID.ToString() == item.Value)
+                        {
+                            <option value="@item.Value" selected="selected">@item.Text</option>  
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Text</option>  
+                        }
+                    }
+
+                        </select>
+                </td>
+                <td>Sprint</td>
+                <td>
+           
+                     <select name="SelectedSprintID">
+                         <option value="">Choose...</option>  
+                    @foreach (var item in ViewData["PossibleSprints"] as List<SelectListItem>)
+                    {
+                        PMTool.Models.Search search = (PMTool.Models.Search)ViewBag.SearchObj;
+                       
+                        if (search.SelectedSprintID.ToString() == item.Value)
+                        {
+                            <option value="@item.Value" selected="selected">@item.Text</option>  
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Text</option>  
+                        }
+                    }
+
+                        </select>
+                </td>
+                   
+
+
+            </tr>
+            <tr>
+                
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </td>
+          
+
+            </tr>
+        </table>
+
+    </div>
+}
+
+
+<div id="divTaskList" >
+
+    @{@Html.Partial("_TaskList", Model)}
+
+
+
+</div>
+
+    </div>
+<script type="text/javascript">
+
+    function onAddTag(tag) {
+        alert("Added a tag: " + tag);
+    }
+    function onRemoveTag(tag) {
+        alert("Removed a tag: " + tag);
+    }
+
+    function onChangeTag(input, tag) {
+        alert("Changed a tag: " + tag);
+    }
+
+    jQuery(function () {
+
+        jQuery('#tags_1').tagsInput({ width: 'auto' });
+        jQuery('#tags_2').tagsInput({
+            width: 'auto',
+            onChange: function (elem, elem_tags) {
+                var languages = ['php', 'ruby', 'javascript'];
+                jQuery('.tag', elem_tags).each(function () {
+                    if (jQuery(this).text().search(new RegExp('\\b(' + languages.join('|') + ')\\b')) >= 0)
+                        jQuery(this).css('background-color', 'yellow');
+                });
+            }
+        });
+        jQuery('#tags_3').tagsInput({
+            width: 'auto',
+
+            autocomplete_url: 'test/fake_json_endpoint.html' // jquery ui autocomplete requires a json endpoint
+        });
+
+
+        jQuery(".slidingDiv").hide();
+        jQuery(".show_hide_div").show();
+        jQuery("#plus").text("+ Search Panel");
+
+        jQuery('.show_hide_div').toggle(function () {
+            //alert("Working");
+            jQuery(".slidingDiv").slideDown(
+              function () {
+                  jQuery("#plus").text("- Search Panel")
+              }
+            );
+        }, function () {
+            jQuery(".slidingDiv").slideUp(
+            function () {
+                jQuery("#plus").text("+ Search Panel")
+            }
+            );
+        });
+
+    });
+
+
+    function ShowTaskDetails(taskid) {
+        var url = jQuery('#ModalpopupTaskDetails').data('url');
+
+
+        jQuery.ajax({
+            url: url,
+            data: { id: taskid },
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+
+                jQuery('#popupcontainerTaskDetails').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#ModalpopupTaskDetails").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        return false;
+    }
+</script>
+<script type="text/javascript">
+
+    function beginPaging(args) {
+        // Animate
+        $('#grid-list').fadeOut('normal');
+    }
+
+    function successPaging() {
+        // Animate
+        $('#grid-list').fadeIn('normal');
+        $('a').tooltip();
+    }
+
+    function failurePaging() {
+        alert("Could not retrieve list.");
+    }
+
+</script>
+    <script type="text/javascript">
+        function ShowEstimateForm(id) {
+            var url = jQuery('#ModalpopupShowEstimateForm').data('url') + "/" + id;
+
+            jQuery.ajax({
+                url: url,
+                cache: false,
+                beforeSend: function () {
+                    jQuery("#ModalLoading").modal('show');
+                },
+                success: function (data) {
+                    jQuery('#popupcontainerShowEstimateForm').html(data);
+                    jQuery("#ModalLoading").modal('hide');
+                    jQuery("#ModalpopupShowEstimateForm").modal('show');
+                },
+                error: function (error) {
+                    jQuery.jGrowl('somethig is wrong', { life: 5000 });
+                }
+            });
+            return false;
+        }
+</script>

@@ -1,0 +1,33 @@
+﻿@model PMTool.Models.Task
+
+@{
+    ViewBag.Title = "Create | Task";
+}
+
+<div class="pagetitle">
+    <h1>
+        Create Sub Task
+    </h1>
+    <span>Parent Task " @Model.ParentTask.Title "</span>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ParentTaskId)
+    <table class="table table-bordered table-invoice">
+        <tbody>
+            <tr>
+                <td>
+                    @Html.Partial("_CreateOrEdit", Model)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}

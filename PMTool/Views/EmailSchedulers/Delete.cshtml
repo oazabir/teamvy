@@ -1,0 +1,71 @@
+@model PMTool.Models.EmailScheduler
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>EmailScheduler</legend>
+
+    <div class="display-label">Title</div>
+    <div class="display-field">@Model.Title</div>
+
+    <div class="display-label">Project</div>
+    <div class="display-field">@(Model.Project == null ? "None" : Model.Project.Name)</div>
+
+    <div class="display-label">ScheduleTypeID</div>
+    <div class="display-field">@Model.ScheduleTypeID</div>
+
+    <div class="display-label">ScheduleType</div>
+    <div class="display-field">@Html.DisplayTextFor(_ => Model.ScheduleType).ToString()</div>
+
+    <div class="display-label">ScheduledTime</div>
+    <div class="display-field">@Model.ScheduledTime</div>
+
+    <div class="display-label">RecipientUsers</div>
+    <div class="display-field">@Model.RecipientUserType</div>
+
+    <div class="display-label">EmailRecipientUsers</div>
+    <div class="display-field">@Html.DisplayTextFor(_ => Model.EmailRecipientUsers).ToString()</div>
+
+    <div class="display-label">ScheduledDay</div>
+    <div class="display-field">@Model.ScheduledDay</div>
+
+    <div class="display-label">day</div>
+    <div class="display-field">@Html.DisplayTextFor(_ => Model.Days).ToString()</div>
+
+    <div class="display-label">ScheduledDate</div>
+    <div class="display-field">@String.Format("{0:g}", Model.ScheduledDate)</div>
+
+    <div class="display-label">IsActive</div>
+    <div class="display-field">@Model.IsActive</div>
+
+    <div class="display-label">CreatedBy</div>
+    <div class="display-field">@Model.CreatedBy</div>
+
+    <div class="display-label">ModifiedBy</div>
+    <div class="display-field">@Model.ModifiedBy</div>
+
+    <div class="display-label">ModifiedByUser</div>
+    <div class="display-field">@(Model.ModifiedByUser == null ? "None" : Model.ModifiedByUser.LastName)</div>
+
+    <div class="display-label">CreatedByUser</div>
+    <div class="display-field">@(Model.CreatedByUser == null ? "None" : Model.CreatedByUser.LastName)</div>
+
+    <div class="display-label">CreateDate</div>
+    <div class="display-field">@String.Format("{0:g}", Model.CreateDate)</div>
+
+    <div class="display-label">ModificationDate</div>
+    <div class="display-field">@String.Format("{0:g}", Model.ModificationDate)</div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}
+
+

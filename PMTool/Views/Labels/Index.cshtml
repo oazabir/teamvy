@@ -1,0 +1,49 @@
+@model IEnumerable<PMTool.Models.Label>
+
+@{
+    ViewBag.Title = "Index | Label";
+}
+
+
+
+
+<div class="pagetitle">
+    <h1>Label List</h1>
+    <span>List of Labels....</span>
+</div>
+
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @title = "Add Label", @class = "btn btn-primary" })
+</p>
+<table class="table table-bordered" id="dyntable">
+    <thead>
+        <tr>
+            <th>Name
+            </th>
+            <th>Is Active
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @Html.DisplayTextFor(_ => item.IsActive).ToString()
+                </td>
+                <td align="center">
+                    @Html.ActionLink(" ", "Edit", new { id = item.LabelID }, new { @class = "icon-edit", @title = "Edit" })
+                    |
+                    @Html.ActionLink(" ", "Details", new { id = item.LabelID }, new { @class = "icon-list-alt", @title = "Details" })
+                    |
+                    @Html.ActionLink(" ", "Delete", new { id = item.LabelID }, new { @class = "icon-trash", @title = "Delete" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

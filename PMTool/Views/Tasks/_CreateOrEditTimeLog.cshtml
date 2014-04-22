@@ -1,0 +1,48 @@
+﻿@model PMTool.Models.TimeLog
+
+<tr>
+    <td>
+        @Html.LabelFor(model => model.EntryDate)
+    </td>
+    <td>
+       @Html.TextBoxFor(model => model.EntryDate, "{0:dd/MM/yyyy}",  new { @class = "datepicker" })
+        @Html.ValidationMessageFor(model => model.EntryDate)
+    </td>
+</tr>
+
+
+<tr>
+    <td>
+        @Html.LabelFor(model => model.TaskHour)
+    </td>
+    <td>
+        @Html.TextBoxFor(model => model.TaskHour)
+        @Html.ValidationMessageFor(model => model.TaskHour)
+
+          
+    </td>
+</tr>
+
+
+<tr>
+    <td>
+        @Html.LabelFor(model => model.Description)
+    </td>
+    <td>
+        @Html.TextAreaFor(model => model.Description)
+        @Html.ValidationMessageFor(model => model.Description)
+
+          
+    </td>
+</tr>
+
+@Html.HiddenFor(model => model.TaskID)
+@Html.HiddenFor(model => model.SprintID)
+
+
+       
+   
+
+          
+
+

@@ -1,0 +1,241 @@
+﻿<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.dragbox')
+        .each(function () {
+            jQuery(this).hover(function () {   
+                //jQuery(this).find('h2').addClass('collapse');
+            }, function () {
+                //jQuery(this).find('h2').removeClass('collapse');
+            })
+            .find('h2').hover(function () {
+                //jQuery(this).find('.configure').css('visibility', 'visible');
+            }, function () {
+                //jQuery(this).find('.configure').css('visibility', 'hidden');
+            })
+            .click(function () {
+                jQuery(this).siblings('.dragbox-content').toggle();
+            })
+            .end();
+            //.find('.configure').css('visibility', 'hidden');
+        });
+        jQuery('.column').sortable({
+            connectWith: '.column',
+            handle: 'h2',
+            cursor: 'move',
+            placeholder: 'placeholder',
+            forcePlaceholderSize: true,
+            opacity: 0.4,
+            receive: function (event, ui) {
+                //jQuery(ui.item).find('h2').click();
+                //var sortorder = '';
+
+                var columnId = jQuery(this).attr('id');
+                var taskId = ui.item[0].id;
+                var sprintId = "";
+                if (this.parentNode.id.search("sprintId") != -1) {
+                    sprintId = this.parentNode.id.replace('sprintId', '');
+                }
+                else {
+                    sprintId = this.parentNode.parentNode.id.replace('sprintId', '');
+                }
+                if (taskId != null && columnId != null)
+                    UpdateRecord(taskId, columnId, sprintId);
+                /*Pass sortorder variable to server using ajax to save state*/
+            }
+        })
+        .disableSelection();
+
+        activate_tab();
+
+    });
+
+    function activate_tab() {
+        var countContain = jQuery('.ui-sortable');
+        if (countContain.length > 1) {
+            jQuery("#hideUl").css("display", "block");
+        }
+        else {
+            jQuery("#hideUl").css("display", "none");
+        }
+    }
+    function UpdateRecord(task, status, sprintId) {
+        jQuery.ajax({
+            url: '@Url.Action("Kanban", "Tasks")',
+            data: { taskid: task, statusid: status, sprintid: sprintId },
+            type: 'POST',
+            success: function (data) {
+                var msg = new String(data);
+                if (msg.indexOf('T') == 0)
+                    jQuery.jGrowl(data, { life: 5000 });
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+    }
+
+    //function ActiveIcon() {
+    //    alert("active" + this.id);
+    //}
+  
+    
+  function DeleteSprint(projectID, sprintId) {
+        
+       
+        
+        jQuery.ajax({
+            url: '@Url.Action("DeleteSprint", "Tasks")',
+            data: { projectID: projectID, sprintId: sprintId},
+            type: 'POST',
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                //var msg = new String(data);
+                //if (msg.indexOf('T') == 0)
+                //    jQuery.jGrowl(data, { life: 5000 });
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#kanbanBoard").html(data);
+                //alert(data);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+
+    }
+
+
+</script>
+
+@model IEnumerable<PMTool.Models.Task>
+<div class="projectBacklog">
+
+    <fieldset class='column' id=' '>
+        <legend class="widgettitle ctitle">Project Backlog</legend>
+        @{
+            
+            foreach (PMTool.Models.Task item in Model.Where(t => t.SprintID == null))
+            {
+                { Html.RenderAction("_KanbanTaskDetail", "Tasks", new { taskID = item.TaskID }); }
+            }
+        }
+    </fieldset>
+</div>
+
+
+<div class="sprintDashboard">
+    @{
+        List<PMTool.Models.ProjectStatus> columnList = new List<PMTool.Models.ProjectStatus>();
+        if (((PMTool.Models.Project)ViewBag.CurrentProject).ProjectStatuses != null)
+        {
+            columnList = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectStatuses.OrderBy(p => p.ProjectStatusID).ToList();
+        }
+        List<PMTool.Models.Task> taskList = (List<PMTool.Models.Task>)Model;
+        PMTool.Models.Project currentProject = ((PMTool.Models.Project)ViewBag.CurrentProject);
+
+        if (currentProject.Sprints != null)
+        {
+
+            bool flag = true;
+            string Cssclass = "active";
+            string CssclassPanActive = "tab-pane active";
+            string cssclassforEditIcon = "icon-edit sprint-edit-icon";
+            string cssclassforDeleteIcon = "icon-trash sprint-delete-button";
+                
+        <div class="tabbable tabs-below">
+            <ul class="nav nav-tabs" id="hideUl">
+
+                @foreach (PMTool.Models.Sprint sprint in currentProject.Sprints)
+                {
+                    <!-- change tabs-left for left-->
+                
+                    string gsprintId = "sprintId" + sprint.SprintID;
+                    
+                    <li class="@Cssclass">
+                   
+                            <a data-toggle="tab" href="#@gsprintId">
+                                <button id="sprintEdit" class="@cssclassforEditIcon" onclick="return ShowSprintEditForm(@sprint.SprintID);"></button>
+                                @sprint.Name
+                                <button id="sprintDelete" class="@cssclassforDeleteIcon"  onclick="return DeleteSprint(@sprint.ProjectID, @sprint.SprintID);"></button>
+                               
+                            </a>
+     
+                    </li>
+                    
+                    Cssclass = "";
+                    //cssclassforEditIcon = "hideIcon";
+                    //cssclassforDeleteIcon = "hideIcon";
+
+                }
+            </ul>
+            <div class="tab-content">
+
+
+                @foreach (PMTool.Models.Sprint sprint in currentProject.Sprints)
+                {
+                    string gsprintId = "sprintId" + sprint.SprintID;
+            
+                
+                    <div id = "@gsprintId" class="@CssclassPanActive">
+
+                        <fieldset class='column' id=' '>
+                            <legend class="widgettitle ctitle">@sprint.Name  Backlog</legend>
+                            @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectStatusID == null && t.SprintID == sprint.SprintID))
+                            {
+                                { 
+                                    Html.RenderAction("_KanbanTaskDetail", "Tasks", new { taskID = item.TaskID }); 
+                                }
+                            }
+                        </fieldset>
+
+                        @foreach (PMTool.Models.ProjectStatus status in columnList.Where(c => c.Name != "Closed").OrderBy(c => c.SlNo).ThenBy(c => c.ProjectStatusID).ToList())
+                        {
+                            long CurrentPorjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID;
+                            <div class="columnHolder">
+                                <fieldset class='column' id='@status.ProjectStatusID'>
+                                    <legend class="widgettitle ctitle" style="background-color:@status.color !important;!important;">@status.Name
+
+                                        @Ajax.ActionLink(" ", "RemoveStatusFormKanban", "Tasks", new { status = status.ProjectStatusID, projectID = CurrentPorjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard", OnBegin = "return confirm('Are you suer???')",OnFailure="jQuery.jGrowl('somethig is wrong', { life: 5000 });" }, new { @class = "icon-remove", @style = "float:right;", @title = "Delete" })
+                                        
+                                        <a onclick="return ShowStatusEditForm(@status.ProjectStatusID,@CurrentPorjectID)" class="icon-edit" style="float:left;cursor:pointer" title="Edit"></a>
+                                    </legend>
+                                    @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectStatusID == status.ProjectStatusID && t.SprintID == sprint.SprintID))
+                                    {
+                                        { Html.RenderAction("_KanbanTaskDetail", "Tasks", new { taskID = item.TaskID }); }
+                                    }
+                                </fieldset>
+                            </div>
+                        }
+                        @{
+                        PMTool.Models.ProjectStatus closedStatus = columnList.Where(c => c.Name == "Closed").FirstOrDefault();
+                        if (closedStatus != null)
+                        {
+                            <div class="columnHolder">
+                                <fieldset class='column' id='@closedStatus.ProjectStatusID'>
+                                    <legend class="widgettitle ctitle" style="background-color:@closedStatus.color !important;!important;">@closedStatus.Name
+                                        @Ajax.ActionLink(" ", "RemoveStatusFormKanban", "Tasks", new { status = closedStatus.ProjectStatusID, projectID = closedStatus.ProjectID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "kanbanBoard", OnBegin = "return confirm('Are you suer???\\nAll tasks under this column will go to UnAssigned!!!')" }, new { @class = "icon-remove", @style = "float:right;display:none;", @title = "Delete" })
+
+                                        <a onclick="return ShowStatusEditForm(@closedStatus.ProjectStatusID,@closedStatus.ProjectID)" class="icon-edit" style="float:left;cursor:pointer" title="Edit"></a>
+                                    </legend>
+                                    @foreach (PMTool.Models.Task item in taskList.Where(t => t.ProjectStatusID == closedStatus.ProjectStatusID && t.SprintID == sprint.SprintID).OrderByDescending(u=>u.ModificationDate))
+                                    {
+                                        { Html.RenderAction("_KanbanTaskDetail", "Tasks", new { taskID = item.TaskID }); }
+                                    }
+                                </fieldset>
+                            </div>
+                        }
+                        }
+                    </div>
+                        CssclassPanActive = "tab-pane";
+                }
+
+            </div>
+
+        </div>
+        
+        }
+    
+    }
+</div>
+

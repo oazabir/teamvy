@@ -1,0 +1,73 @@
+@model IEnumerable<PMTool.Models.EmailScheduler>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="pagetitle">
+    <h1>Email Schedule Setup
+    </h1>
+    <span>List of email schedule setup</span>
+</div>
+
+
+<table class="table table-bordered table-invoice">
+    <tr>
+        <th>Title
+        </th>
+        <th>Project
+        </th>
+        <th>ScheduleType
+        </th>
+        <th>ScheduledTime
+        </th>
+
+        <th>EmailRecipientUsers
+        </th>
+
+        <th>day
+        </th>
+        <th>ScheduledDate
+        </th>
+        <th></th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @item.Title
+            </td>
+            <td>
+                @(item.Project == null ? "None" : item.Project.Name)
+            </td>
+            <td>
+                @Html.DisplayTextFor(_ => item.ScheduleType).ToString()
+            </td>
+            <td>
+                @item.ScheduledTime
+            </td>
+
+            <td>
+                @Html.DisplayTextFor(_ => item.EmailRecipientUsers).ToString()
+            </td>
+
+            <td>
+                @Html.DisplayTextFor(_ => item.Days).ToString()
+            </td>
+            <td>
+                @String.Format("{0:g}", item.ScheduledDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.SchedulerID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.SchedulerID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.SchedulerID })
+            </td>
+        </tr>
+    }
+
+</table>
+
+

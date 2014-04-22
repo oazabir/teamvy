@@ -1,0 +1,57 @@
+@model IEnumerable<PMTool.Models.Task>
+
+@{
+    ViewBag.Title = "Index | Task";
+}
+
+
+
+
+
+<div class="pagetitle">
+    <h1>Task List</h1>
+    <span>List of Tasks....</span>
+</div>
+
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @title = "Add Task", @class = "btn btn-primary" })
+</p>
+<table class="table table-bordered" id="dyntable">
+    <thead>
+        <tr>
+            <th>Project Name
+            </th>
+            <th>Title
+            </th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Project.Name
+                </td>
+                <td>
+                    @Html.DisplayTextFor(_ => item.Title).ToString()
+                </td>
+                <td>
+                    @Html.DisplayTextFor(_ => item.Description).ToString()
+                </td>
+                <td align="center">
+                    @Html.ActionLink(" ", "Edit", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
+                    |
+                    @Html.ActionLink(" ", "Details", new { id = item.TaskID }, new { @class = "icon-list-alt", @title = "Details" })
+                    |
+                    @Html.ActionLink(" ", "Delete", new { id = item.TaskID }, new { @class = "icon-trash", @title = "Delete" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+

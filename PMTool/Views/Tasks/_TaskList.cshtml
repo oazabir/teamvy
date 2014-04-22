@@ -1,0 +1,196 @@
+﻿@using MvcPaging
+@model IPagedList<PMTool.Models.Task>
+<div id="divTaskpagger">
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Task ID
+            </th>
+            <th>Task Title
+            </th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+            <th>Sub Tasks
+            </th>
+            <th>Add Sub Task</th>
+
+            <th>Assign To</th>
+            
+                 
+            <th>Estimate</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                
+                <td>
+                    <strong>
+                       @item.TaskUID
+
+                        </strong>
+                </td>
+                <td>
+                    <strong>
+                        <a href="#" onclick="return ShowTaskDetails(@item.TaskID); ">@item.Title</a>
+                        </strong>
+                </td>
+                <td>
+                    @if (item.StartDate != null)
+                    {<span>@item.StartDate.Value.ToString("dd/MM/yyyy")</span>}
+                </td>
+
+                <td>
+                    @if (item.EndDate != null)
+                    {<span>@item.EndDate.Value.ToString("dd/MM/yyyy")</span>}
+                </td>
+
+                <td>
+                    @if (item.ProjectStatusID != null)
+                    {
+                        @* @item.ProjectStatus.Name*@
+                        <div class="btn-group">
+                            <button data-toggle="dropdown" class="btn dropdown-toggle">@item.ProjectStatus.Name <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                @foreach (PMTool.Models.ProjectStatus status in item.Project.ProjectStatuses)
+                                {
+                                    <li>
+                                        @*<a href="@Url.Action("ChangeStatusView", new { @taskID=item.TaskID,@statusID=@status.ProjectStatusID})">@status.Name</a>*@
+
+                                         @Ajax.ActionLink(@status.Name, "ChangeStatusView", "Tasks", new { taskID = item.TaskID, statusID = @status.ProjectStatusID }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divTaskpagger"}, new {@title = "Change Status" })
+                                    </li>
+                        }
+                            </ul>
+                        </div>
+                                          
+                                          
+                                              
+                    }
+                </td>
+                  
+                <td>
+                    @if (item.ChildTask.Count > 0)
+                    {
+                        <div class="btn-group">
+                            <button class="btn btn-small">Sub Tasks (@item.ChildTask.Count)</button>
+                            <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                @foreach (PMTool.Models.Task task in item.ChildTask)
+                                {
+                                    @*<li>@Html.ActionLink(task.Title, "Edit", new { id = task.TaskID }, new { @target = "_blank" })</li>*@
+                                    <li>@Html.ActionLink(task.Title + " -" + task.ProjectStatus.Name + (task.EndDate !=null ? "-" + task.EndDate.Value.ToString("dd/MM/yyyy"):""), "Details","Tasks", new { id = task.TaskID }, new { @target = "_blank" })</li>
+                                
+                                }
+                                <li class="divider"></li>
+                                <li>@Html.ActionLink("All Sub Tasks", "SubTaskList", new { ProjectID = item.ProjectID, TaskID = item.TaskID }, new { @target = "_blank" })</li>
+
+
+                            </ul>
+                        </div>
+                    }
+                    @if (item.ChildTask.Count == 0)
+                    {
+                        @Html.Raw("No Sub Task")
+                    }
+
+                </td>
+                <td>
+                    @if (item.Users.Any(u => u.UserName == User.Identity.Name) || item.Project.ProjectOwners.Any(u => u.UserName == User.Identity.Name))
+                    {
+                        @Html.ActionLink("Add SubTask", "CreateSubTask", new { ProjectID = item.ProjectID, TaskID = item.TaskID }, new { @title = "Add SubTask" })
+                    }
+                </td>
+                <td>
+                    @foreach (UserProfile user in item.Users)
+                    {
+   
+                        <span>@user.FirstName,</span>
+                    }
+                    </td>
+                <td>
+                    @if (item.TaskHour > 0)
+                    {
+                        <a  href="#"  onclick="return ShowEstimateForm(@item.TaskID)"><span class="icon-plus" ></span>@item.TaskHour</a>
+                    }
+                    @if (item.TaskHour<= 0)
+                    {
+                        <a  href="#" onclick="return ShowEstimateForm(@item.TaskID)"><span class="icon-plus" ></span>Estimate</a>
+                    }
+                </td>
+                <td align="center">
+                    @if (item.Users.Any(u => u.UserName == User.Identity.Name) || item.Project.ProjectOwners.Any(u => u.UserName == User.Identity.Name))
+                    {
+                        @Html.ActionLink(" ", "Edit", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
+                        <span>|</span>
+                        @Html.ActionLink(" ", "Delete", new { id = item.TaskID }, new { @class = "icon-trash", @title = "Delete" })
+                    }
+                </td>
+
+            </tr>
+        }
+    </tbody>
+    </table>
+
+
+
+
+<div class="pager1">
+ 
+    
+     @Html.Raw(Html.Pager(
+            new Options
+            {
+                PageSize = Model.PageSize,
+                TotalItemCount = Model.TotalItemCount,
+                CurrentPage = Model.PageNumber,
+                ItemTexts = new ItemTexts() { Next = "Next", Previous = "Previous" },
+                ItemIcon = new ItemIcon() { First = "icon-backward", Previous = "icon-chevron-left", Next = "icon-chevron-right", Last = "icon-forward" },
+                TooltipTitles = new TooltipTitles() { Next = "Next page {0}", Previous = "Previous page {0}", Page = "Go to page {0}" },
+                Size = Size.normal,
+                Alignment = Alignment.centered,
+                IsShowControls = true,
+                IsShowFirstLast = true,
+                IsShowPages = true
+            }, new { projectID=ViewData["CurrentProjectID"], SelectedStatusID = ViewData["SelectedStatusID"],SelectedPriorityID=ViewData["SelectedPriorityID"],SelectedUserID=ViewData["SelectedUserID"],SelectedSprintID=ViewData["SelectedSprintID"]}))
+    <div class="well">
+        Showing <span class="badge badge-success">@Model.ItemStart</span> to <span class="badge badge-success">@Model.ItemEnd</span>
+        of <span class="badge badge-info">@Model.TotalItemCount</span> entries</div>
+</div>
+
+<div id='ModalpopupShowEstimateForm' data-url='@Url.Action("ShowEstimateView", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerShowEstimateForm'>
+    </div>
+</div>
+
+
+    </div>
+
+
+<script>
+    function Loading() {
+        jQuery("#ModalLoading").modal('show');
+    }
+</script>
+
+<script>
+    function Unload() {
+        jQuery("#ModalLoading").modal('hide');
+    }
+</script>
+<script>
+    function HidePopup(data) {
+        jQuery("#ModalLoading").modal('hide');
+        var adata = '#' + data;
+        jQuery(adata).modal('hide');
+        jQuery('.modal-backdrop').remove();
+       // jQuery(".modal-backdrop fade in").hide();
+    }
+    jQuery(document).ready(function () {
+        //jQuery(document).ajaxStart(function () {
+        //    jQuery("#ModalLoading").modal('show');
+        //});
+    });
+</script>

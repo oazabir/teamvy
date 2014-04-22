@@ -1,0 +1,35 @@
+﻿@model IEnumerable<PMTool.Models.TimeLog>
+<thead>
+    <tr>
+        <th>Day</th>
+        <th>Value</th>
+        <th>Summary</th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            @* <td>@item.User.FirstName + " " + @item.User.LastName</td>*@
+            <td>
+                @if (item.EntryDate != null)
+                {<span>@item.EntryDate.Value.ToString("dd/MM/yyyy")</span>}
+            </td>
+
+            <td>@item.TaskHour
+            </td>
+            <td>@item.Description</td>
+            <td align="center">
+
+                @Html.ActionLink(" ", "Edit", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
+                <span>|</span>
+
+                @Html.ActionLink(" ", "Delete", new { id = item.TaskID }, new { @class = "icon-trash", @title = "Delete" })
+
+
+            </td>
+
+        </tr>
+    }
+</tbody>

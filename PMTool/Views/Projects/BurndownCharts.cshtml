@@ -1,0 +1,66 @@
+﻿@*@{
+    ViewBag.Title = "Burndown Charts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}*@
+
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@*<div class="pagetitle">
+    <h1>Dashboard</h1>
+    <span>This is a sample description for dashboard page...</span>
+</div>*@
+<!--pagetitle-->
+
+<div class="maincontent">
+    <div class="contentinner content-dashboard">
+        <div class="">
+            @*<h4 style="text-align: center !important;">Sprint List</h4>*@
+
+            <h5><u>List of Sprints</u></h5>
+
+            <table class="table table-bordered" id="dyntable">
+                <thead>
+                    <tr>
+                        <th>Project Name</th>
+                        <th>Sprint Name
+                        </th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Burndown Chart</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in (List<PMTool.Models.Sprint>)ViewBag.SprintList)
+                    {
+                        <tr>
+                            <td>
+                                @item.Project.Name
+                            </td>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @item.StartDate
+                            </td>
+                            <td>
+                                @item.EndDate
+                            </td>
+                            <td>
+                                @Html.ActionLink(" ", "SprintBurnDown", "Sprints", new { sprintId = item.SprintID }, new { @class = "icon-signal", @title = "Burndown Chart" })
+                            </td>
+
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+</div>

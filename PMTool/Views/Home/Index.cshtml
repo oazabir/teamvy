@@ -1,0 +1,138 @@
+﻿@model IEnumerable<PMTool.Models.Task>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<script type="text/javascript">
+    function ShowEffortEntryForm(taskId) {
+
+        var url = jQuery('#divPopupEffortEntry').data('url') + "/" + taskId;
+        //alert(url);
+
+        jQuery.ajax({
+            url: url,
+            //async: false,
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                //alert("Success..");
+                jQuery('#divPopupEffortEntryContainer').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#divPopupEffortEntry").detach().appendTo("body");
+                jQuery("#divPopupEffortEntry").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        //alert("Working..");
+        return false;
+    }
+
+    function ShowEffortEntry(taskId) {
+
+        var url = jQuery('#divPopupEffortEntry').data('url') + "/" + taskId;
+        //alert(url);
+
+        jQuery.ajax({
+            url: url,
+            //async: false,
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                //alert("Success..");
+                jQuery('#divPopupEffortEntryContainer').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#divPopupEffortEntry").detach().appendTo("body");
+                jQuery("#divPopupEffortEntry").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        //alert("Working..");
+        return false;
+    }
+
+
+</script>
+
+
+
+@*<div class="pagetitle">
+    <h1>Dashboard</h1>
+    <span>This is a sample description for dashboard page...</span>
+</div>*@
+<!--pagetitle-->
+
+<div class="maincontent">
+    <div class="contentinner content-dashboard">
+        <div id="divTaskList" class="">
+            @{@Html.Partial("_TaskList", Model)}
+        </div>
+    </div>
+    <!--row-fluid-->
+</div>
+<!--contentinner-->
+
+<!--maincontent-->
+
+<div style="margin: 0 auto; position:relative; z-index:1;overflow:hidden">
+    <div id='divPopupEffortEntry' data-url='@Url.Action("AddTimeLog", "Home")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div id='divPopupEffortEntryContainer'>
+        </div>
+        <hr />
+        <div id='divEffortGrid'>
+        </div>
+    </div>
+</div>
+@*<div id='ModalpopupShowEffortEntryForm' data-url='@Url.Action("AddTimeLog","Home")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerShowEffortEntryForm'>
+    </div>
+</div>*@
+
+@*<script type="text/javascript">
+    function Loading() {
+        jQuery("#ModalLoading").modal('show');
+    }
+</script>*@
+
+@*<script>
+    function Unload() {
+        jQuery("#ModalLoading").modal('hide');
+    }
+</script>*@
+@*<script type="text/javascript">
+    function HidePopup(data) {
+        jQuery("#ModalLoading").modal('hide');
+        var adata = '#' + data;
+        jQuery(adata).modal('hide');
+        jQuery('.modal-backdrop').remove();
+        // jQuery(".modal-backdrop fade in").hide();
+    }
+    jQuery(document).ready(function () {
+        //jQuery(document).ajaxStart(function () {
+        //    jQuery("#ModalLoading").modal('show');
+        //});
+    });
+</script>*@
+
+@*
+<script type="text/javascript">
+
+    jQuery(document).ready(function () {
+
+        jQuery('#form').removeData('validator');
+        jQuery('#form').removeData('unobtrusiveValidation');
+        jQuery("#form").each(function () { jQuery.data(jQuery(this)[0], 'validator', false); }); //enable to display the error messages
+        jQuery.validator.unobtrusive.parse("#form");
+    });
+</script>
+*@
+

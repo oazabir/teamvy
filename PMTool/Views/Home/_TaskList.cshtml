@@ -1,0 +1,80 @@
+﻿@model IEnumerable<PMTool.Models.Task>
+
+@if (Model != null)
+{
+    List<PMTool.Models.Task> dueTaskList = Model.Where(p => (p.StartDate < DateTime.Today && p.EndDate >= DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
+    dueTaskList.ForEach(a => a.GroupBy = "Due Tasks");
+
+    List<PMTool.Models.Task> overdueTaskList = Model.Where(p => (p.EndDate < DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
+    overdueTaskList.ForEach(a => a.GroupBy = "Overdue Tasks");
+
+
+    List<PMTool.Models.Task> todaysTaskList = Model.Where(p => p.StartDate == DateTime.Today && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
+    todaysTaskList.ForEach(a => a.GroupBy = "Today's Tasks");
+
+    List<PMTool.Models.Task> dueTomorrowTaskList = Model.Where(p => p.EndDate == DateTime.Today.AddDays(1) && (p.ProjectStatusID != null && p.ProjectStatus.Name != "Closed")).ToList();
+    dueTomorrowTaskList.ForEach(a => a.GroupBy = "Due Tomorrows Tasks");
+
+    List<PMTool.Models.Task> futureTaskList = Model.Where(p => p.StartDate > DateTime.Today && (p.ProjectStatusID != null || p.ProjectStatus.Name != "Closed")).ToList();
+    futureTaskList.ForEach(a => a.GroupBy = "Future Task");
+
+    <table class="table table-bordered dyntable">
+        <thead>
+            <tr>
+                <th>Group By
+                </th>
+                <th>Task Title
+                </th>
+                <th>Project Name
+
+                </th>
+                <th>Sub Tasks
+                </th>
+
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+
+
+                <th style="text-align: center !important;">Effort</th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (dueTaskList.Count > 0)
+            {
+                //overdueTaskList.ForEach(a => a.GroupBy = "Overdue Tasks");
+                @Html.Partial("_TaskListGroupBy", dueTaskList)
+            }
+
+            @if (overdueTaskList.Count > 0)
+            {
+                //overdueTaskList.ForEach(a => a.GroupBy = "Overdue Tasks");
+                @Html.Partial("_TaskListGroupBy", overdueTaskList)
+            }
+
+            @if (todaysTaskList.Count > 0)
+            {
+                //overdueTaskList.ForEach(a => a.GroupBy = "Overdue Tasks");
+                @Html.Partial("_TaskListGroupBy", todaysTaskList)
+            }
+
+            @if (dueTomorrowTaskList.Count > 0)
+            {
+                //overdueTaskList.ForEach(a => a.GroupBy = "Overdue Tasks");
+                @Html.Partial("_TaskListGroupBy", dueTomorrowTaskList)
+            }
+
+            @if (futureTaskList.Count > 0)
+            {
+                //overdueTaskList.ForEach(a => a.GroupBy = "Overdue Tasks");
+                @Html.Partial("_TaskListGroupBy", futureTaskList)
+            }
+
+        </tbody>
+    </table>
+}
+
+
+

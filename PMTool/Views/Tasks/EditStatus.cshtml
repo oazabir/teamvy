@@ -1,0 +1,78 @@
+﻿@model PMTool.Models.ProjectStatus
+
+@{
+    ViewBag.Title = "Edit | Status";
+}
+
+
+
+
+<div class="pagetitle">
+    <h1>Status Edit
+    </h1>
+    <span>Edit Status below....</span>
+</div>
+     @using (Ajax.BeginForm("EditStatus", "Tasks", new AjaxOptions { UpdateTargetId = "kanbanBoard", OnBegin = "Loading()", OnComplete = "Unload()", OnSuccess = "HidePopup('ModalpopupEditStatus')" }, new { @id = "form" }))
+ {
+    @Html.ValidationSummary(true)
+     
+
+    @Html.HiddenFor(model => model.ProjectID)
+    @Html.HiddenFor(model => model.ProjectStatusID)
+
+    <table class="table table-bordered table-invoice">
+        <tbody>
+
+            <tr>
+                <td>Status
+                </td>
+                <td>
+                  
+                    @Html.TextBoxFor(model => model.Name)
+                </td>
+            </tr>
+            <tr>
+                <td>Select Color</td>
+                <td>
+                @*<input type="text" name="colorpicker" class="input-mini" id="colorpicker" />*@
+                     @Html.TextBoxFor(model => model.color, new { @id="colorpicker",@class="input-mini"})
+<span id="colorSelector" class="colorselector">
+   <span></span>
+</span></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    
+                    <button id="btn2" class="btn btn-primary">Save  </button><br />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+<script src="~/Content/themes/site/js/colorpicker.js"></script>
+<script>
+    jQuery(document).ready(function () {
+        jQuery('#form').removeData('validator');
+        jQuery('#form').removeData('unobtrusiveValidation');
+        jQuery("#form").each(function () { jQuery.data(jQuery(this)[0], 'validator', false); }); //enable to display the error messages
+        jQuery.validator.unobtrusive.parse("#form");
+        var col = '@Model.color';
+        jQuery('#colorSelector span').css('backgroundColor', col);
+        jQuery('#colorSelector').ColorPicker({
+            onShow: function (colpkr) {
+                jQuery(colpkr).fadeIn(500);
+                return false;
+            },
+            onHide: function (colpkr) {
+                jQuery(colpkr).fadeOut(500);
+                return false;
+            },
+            onChange: function (hsb, hex, rgb) {
+                jQuery('#colorSelector span').css('backgroundColor', '#' + hex);
+                jQuery('#colorpicker').val('#' + hex);
+            }
+        });
+    });
+</script>

@@ -1,0 +1,37 @@
+@model PMTool.Models.Label
+
+@{
+    ViewBag.Title = "Edit | Label";
+}
+
+<div class="pagetitle">
+    <h1>
+        Label Edit
+    </h1>
+    <span>Edit Label below....</span>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+     
+
+    @Html.HiddenFor(model => model.LabelID)
+    @Html.HiddenFor(model => model.CreatedBy)
+    @Html.HiddenFor(model => model.CreateDate)
+
+    <table class="table table-bordered table-invoice">
+        <tbody>
+    @Html.Partial("_CreateOrEdit", Model)
+            <tr>
+                <td class="width30">
+                </td>
+                <td>
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+<div>
+    @Html.ActionLink("Back to List", "Index","Labels", null,  new { @class="btn"})
+</div>

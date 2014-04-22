@@ -1,0 +1,56 @@
+﻿@model IEnumerable<PMTool.Models.Task>
+
+<div class="pagetitle">
+    <h1>Task Assigned to you</h1>
+    <span>Task assigned to you. Please entry time log</span>
+</div>
+
+<div class="maincontent">
+    <div class="contentinner content-dashboard">
+        <table class="table table-bordered dyntable" id="dyntable5">
+
+
+            <thead>
+                <tr>
+                    <th>Project Name
+                    </th>
+                     <th>Task ID
+                    </th>
+                    <th>Task Title
+                    </th>
+
+
+                    <th style="text-align:center;">Total Effort(Hours)</th>
+                    <th style="text-align:center;">Effort Entry</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @item.Project.Name
+                        </td>
+                        
+                        <td>
+                            <strong>@item.TaskUID</strong>
+                        </td>
+                        <td>
+                            <strong>@item.Title</strong>
+                        </td>
+                        <td style="text-align:center;">
+                            @item.ActualTaskHour
+                        </td>
+                        <td style="text-align:center;">
+                              @Html.ActionLink(" ", "TaskTimeLog","Tasks", new { taskId = item.TaskID, sprintId = item.SprintID  }, new { @class = "icon-time", @title = "Log Entry" })
+                        </td>
+          
+                    </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

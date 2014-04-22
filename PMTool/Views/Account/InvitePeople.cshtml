@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Invite People";
+    //Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PM Tools</title>
+    <link rel="stylesheet" href="../../Content/themes/site/css/style.dark.css" type="text/css" />
+    <script type="text/javascript" src="../../Content/themes/site/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../Content/themes/site/js/jquery-migrate-1.1.1.min.js"></script>
+</head>
+
+<body class="loginbody">
+
+    <div class="loginwrapper">
+        <div class="loginwrap zindex100 animate2 bounceInDown">
+            <h1 class="logintitle"><span class="iconfa-lock"></span>Invite People <span class="subtitle">Invite people to your team!</span></h1>
+            <div class="loginwrapperinner">
+                <form method="post" >
+                      <p class="animate4 bounceIn">
+                    <input type="text" name="email" placeholder="Email" /></p>
+                    <input type="submit" value="Invite People" class="btn btn-default btn-block" />
+                </form>
+                @ViewBag.Message;
+
+
+
+        </div>
+        <div class="loginshadow animate3 fadeInUp"></div>
+
+    </div>
+    <!--loginwrapper-->
+
+    <script type="text/javascript">
+        
+    </script>
+</body>
+</html>

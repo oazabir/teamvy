@@ -1,0 +1,48 @@
+@model PMTool.Models.Project
+
+@{
+    ViewBag.Title = "Edit | Project";
+}
+
+@if (TempData["Message"]!=null)
+{
+<div class="alert alert-info">
+    <button class="close" data-dismiss="alert" type="button">×</button>
+    <strong>Warning!</strong>
+    @TempData["Message"]
+</div>
+}
+
+
+<div class="pagetitle">
+    <h1>
+        Project Edit
+    </h1>
+    <span>Edit Project below....</span>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+     
+
+    @Html.HiddenFor(model => model.ProjectID)
+    @Html.HiddenFor(model => model.CreatedBy)
+    @Html.HiddenFor(model => model.CreateDate)
+
+    <table class="table table-bordered table-invoice">
+        <tbody>
+    @Html.Partial("_CreateOrEdit", Model)
+            <tr>
+                <td class="width30">
+                </td>
+                <td>
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+<div>
+    @Html.ActionLink("Back to List", "Index","Projects", null,  new { @class="btn"})
+</div>
+

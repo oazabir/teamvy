@@ -1,0 +1,370 @@
+﻿@model IEnumerable<PMTool.Models.Task>
+
+@{
+    if (ViewBag.CurrentProject != null)
+    {
+        PMTool.Models.Project projetc = (PMTool.Models.Project)ViewBag.CurrentProject;
+        ViewBag.Title = projetc.Name + " | Kanban Board";
+    }
+}
+
+
+
+
+<div class="pagetitle">
+    <h1>@(((PMTool.Models.Project)ViewBag.CurrentProject).Name) Kanban Board</h1>
+    <span>@(((PMTool.Models.Project)ViewBag.CurrentProject).Name)  Kanban Board....</span>
+</div>
+<br />
+
+<div class="msghead">
+    <ul class="msghead_menu">
+        @{
+            if (ViewBag.CurrentProject != null)
+            {
+                PMTool.Models.Project projetc = (PMTool.Models.Project)ViewBag.CurrentProject;
+            <li>
+                <a  href="#" id="showdata" onclick="return ShowProjectForm(@projetc.ProjectID)"><span class="icon-plus" ></span>Add Status</a>
+            </li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <a  href="#"  id="showTask" onclick="return ShowTaskForm(@projetc.ProjectID)"><span class="icon-plus" ></span>Add Task</a>
+            </li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <a  href="#"  onclick="return ShowSprintForm(@projetc.ProjectID)"><span class="icon-plus" ></span>Add Sprint</a>
+            </li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <a  href="#"   onclick="return ShowSwapForm(@projetc.ProjectID)"><span class="icon-plus" ></span>Rearrange Status</a>
+            </li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li>
+                <a  href="#"   onclick="return ShowRulesForm(@projetc.ProjectID)"><span class="icon-plus" ></span>Setup Drag-Drop Rules</a>
+            </li>
+    }
+        }
+    </ul>
+</div>
+<br />
+<div>
+<div id="kanbanBoard" class="kanbanBoard">
+   
+     @{Html.RenderAction("_Kanban", "Tasks", new { ProjectID = ((PMTool.Models.Project)ViewBag.CurrentProject).ProjectID });}
+</div>
+    </div>
+<hr style="clear: both;" />
+<div id='Modalpopup'  data-url='@Url.Action("EditFromKanban", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainer'>
+    </div>
+</div>
+<div id='ModalpopupProject' data-url='@Url.Action("CreateStatus", "Tasks")' style="width:400px !important;height:360px !important;" class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerProject'>
+    </div>
+</div>
+<div id='ModalpopupTask' data-url='@Url.Action("CreateFromKanban", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerTask'>
+    </div>
+</div>
+<div id='ModalpopupEditStatus' data-url='@Url.Action("EditStatus", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerEditStatus'>
+    </div>
+</div>
+<div id='ModalpopupCreateSprint' data-url='@Url.Action("CreateSprintFromKanban", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerCreateSprint'>
+    </div>
+</div>
+<div id='ModalpopupShowActivity' data-url='@Url.Action("Activity", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerShowActivity'>
+    </div>
+</div>
+<div id='ModalpopupShowLog' data-url='@Url.Action("ShowLog", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerShowLog'>
+    </div>
+</div>
+
+<div id='ModalpopupEditSprint' data-url='@Url.Action("EditSprint", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerEditSprint'>
+    </div>
+</div>
+
+<div id='ModalpopupSwapForm' data-url='@Url.Action("StatusSwapForm", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerSwapForm'>
+    </div>
+</div>
+
+<div id='ModalpopupRulesForm' data-url='@Url.Action("RulesForm", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerRulesForm'>
+    </div>
+</div>
+
+
+<div id='ModalpopupShowDetail' data-url='@Url.Action("TaskDetailForm", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerShowDetail'>
+    </div>
+</div>
+
+
+<div id='ModalpopupAddMessage' data-url='@Url.Action("AddMessage", "Tasks")' class="modal hide fade" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div id='popupcontainerAddMessage'>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function AddMessage(id) {
+        //jQuery("#hideUl").css("display", "block");
+        var url = jQuery('#ModalpopupAddMessage').data('url') + "/" + id;
+        jQuery.ajax({
+            url: url,
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                jQuery('#popupcontainerAddMessage').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#ModalpopupAddMessage").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        return false;
+    }
+
+    function ShowDetail(id) {
+        //jQuery("#hideUl").css("display", "block");
+        var url = jQuery('#ModalpopupShowDetail').data('url') + "/" + id;
+        jQuery.ajax({
+            url: url,
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                jQuery('#popupcontainerShowDetail').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#ModalpopupShowDetail").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        return false;
+    }
+
+    function ShowRulesForm(id) {
+        //jQuery("#hideUl").css("display", "block");
+        var url = jQuery('#ModalpopupRulesForm').data('url') + "/" + id;
+        jQuery.ajax({
+            url: url,
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                jQuery('#popupcontainerRulesForm').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#ModalpopupRulesForm").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        return false;
+    }
+    function ShowSwapForm(id) {
+        //jQuery("#hideUl").css("display", "block");
+        var url = jQuery('#ModalpopupSwapForm').data('url') + "/" + id;
+        jQuery.ajax({
+            url: url,
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                jQuery('#popupcontainerSwapForm').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#ModalpopupSwapForm").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        return false;
+    }
+
+    function ShowLog(id) {
+        var url = jQuery('#ModalpopupShowLog').data('url') + "?taskID=" + id;
+
+        jQuery.ajax({
+            url: url,
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                jQuery('#popupcontainerShowLog').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#ModalpopupShowLog").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        return false;
+    }
+
+    function ShowActivity(id) {
+        var url = jQuery('#ModalpopupShowActivity').data('url') + "?taskID=" + id;
+
+        jQuery.ajax({
+            url: url,
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                jQuery('#popupcontainerShowActivity').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#ModalpopupShowActivity").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+                }
+        });
+        return false;
+    }
+
+    function ShowEditForm(id) {
+        var url = jQuery('#Modalpopup').data('url')+"/"+id;
+
+        jQuery.ajax({
+            url: url,
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                jQuery('#popupcontainer').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#Modalpopup").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        return false;
+    }
+
+    function ShowProjectForm(id) {
+        var url = jQuery('#ModalpopupProject').data('url') + "/" + id;
+
+        jQuery.ajax({
+            url: url,
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                jQuery('#popupcontainerProject').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#ModalpopupProject").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        return false;
+    }
+    
+    function ShowTaskForm(id) {
+        var url = jQuery('#ModalpopupTask').data('url') + "/" + id;
+
+        jQuery.ajax({
+            url: url,
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                jQuery('#popupcontainerTask').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#ModalpopupTask").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        return false;
+    }
+    
+    
+    function ShowSprintForm(id) {
+        //jQuery("#hideUl").css("display", "block");
+        var url = jQuery('#ModalpopupCreateSprint').data('url') + "/" + id;
+        jQuery.ajax({
+            url: url,
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                jQuery('#popupcontainerCreateSprint').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#ModalpopupCreateSprint").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        return false;
+    }
+    function ShowStatusEditForm(ststus,projectID) {
+        var url = jQuery('#ModalpopupEditStatus').data('url');
+       
+
+        jQuery.ajax({
+            url: url,
+            data: { status: ststus, projectID: projectID },
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                jQuery('#popupcontainerEditStatus').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#ModalpopupEditStatus").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        return false;
+    }
+
+
+    function ShowSprintEditForm(sprintId) {
+        var url = jQuery('#ModalpopupEditSprint').data('url');
+
+
+        jQuery.ajax({
+            url: url,
+            data: { sprintId: sprintId},
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+                jQuery('#popupcontainerEditSprint').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#ModalpopupEditSprint").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        return false;
+    }
+
+</script>

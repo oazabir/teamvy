@@ -1,0 +1,51 @@
+@model PMTool.Models.Task
+
+@{
+    ViewBag.Title = "Delete | Task";
+}
+
+<div class="pagetitle">
+    <h1>Delete Task
+    </h1>
+    <span>Are you sure you want to delete this?</span>
+</div>
+@using (Html.BeginForm())
+{
+    <table class="table table-bordered table-invoice">
+        <tbody>
+            <tr>
+                <td class="width30">Name
+                </td>
+                <td>
+                    @(Model.Project == null ? "None" : Model.Project.Name)
+                </td>
+            </tr>
+            <tr>
+                <td class="width30">Title
+                </td>
+                <td>
+                    @Model.Title
+                </td>
+            </tr>
+
+            <tr>
+                <td class="width30">Description
+                </td>
+                <td>
+                    @Model.Description
+                </td>
+            </tr>
+            <tr>
+                <td class="width30"></td>
+                <td>
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p>
+       @Html.ActionLink("Back to List", "ProjectTasks", "Tasks", new { @ProjectID=Model.ProjectID}, new { @class = "btn" })
+    </p>
+}
+
+

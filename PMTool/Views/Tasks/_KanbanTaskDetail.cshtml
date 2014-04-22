@@ -1,0 +1,64 @@
+﻿@model PMTool.Models.Task
+
+
+
+<div class="dragbox" id="@Model.TaskID">
+<h2>
+    @if (!string.IsNullOrEmpty(Model.TaskUID))
+    {
+        
+    @Model.TaskUID
+    }
+    @Model.Title
+
+
+</h2>
+<div class="dragbox-content" style="display: none;">
+
+    @{
+        if (@Model.StartDate!=null)
+        {
+        <span>Start Date: @Model.StartDate.Value.ToShortDateString()</span><br />
+        }
+        else
+        {
+        <span>Start Date: Undefined</span><br />
+        }
+        if (@Model.EndDate != null)
+        {
+        <span>End Date: @Model.EndDate.Value.ToShortDateString()</span><br />
+        }
+        else
+        {
+        <span>End Date: Undefined</span><br />
+        }
+        string users="";
+        if (Model.Users != null && Model.Users.Count>0)
+        {
+            users = "Assign User (s): ";
+        }
+        int i=0;
+        foreach (UserProfile user in Model.Users)
+        {
+            users = users + user.FirstName + " " + user.LastName;
+            i++;
+            if (Model.Users.Count<i)
+            {
+                users = users + ", ";
+            }
+        }
+    
+    <span>@users</span><br />
+    }
+    <a href="#" title="Edit" id="showdata" onclick="return ShowEditForm(@Model.TaskID)"><span class="icon-edit" for="showSprint"></span>Edit </a>
+    
+    <a  href="#" title="Attachments"  onclick="return ShowActivity(@Model.TaskID)"><span class="iconsweets-paperclip" for="showSprint"></span>Attachments</a>
+
+    <a  href="#" title="Log"  onclick="return ShowLog(@Model.TaskID)"><span class="icon-align-center" for="showSprint"></span>log</a>
+
+    <br />
+    <a  href="#" title="Task Detail"  onclick="return ShowDetail(@Model.TaskID)"><span class="icon-tasks" ></span>Task Detail</a>
+    <a  href="#" title="Message"  onclick="return AddMessage(@Model.TaskID)"><span class="icon-tasks" ></span>Message</a>
+        
+</div>
+</div>

@@ -1,0 +1,30 @@
+@model PMTool.Models.Project
+@{
+    ViewBag.Title = "Create | Project";
+}
+<div class="pagetitle">
+    <h1>
+        Create Project
+    </h1>
+    <span>Create a Project below....</span>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <table class="table table-bordered table-invoice">
+        <tbody>
+            <tr>
+                <td>
+                    @Html.Partial("_CreateOrEdit", Model)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}

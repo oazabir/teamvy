@@ -1,0 +1,26 @@
+﻿@model PMTool.Models.LocalPasswordModel
+@{
+    ViewBag.Title = "Change Password";
+}
+
+
+<div class="pagetitle">
+    <h1>
+        @ViewBag.Title
+    </h1>
+</div>
+
+
+<p class="message-success">@ViewBag.StatusMessage</p>
+
+<p style="color:#9a1616;">You're logged in as <strong>@User.Identity.Name</strong>.</p>
+
+@if (ViewBag.HasLocalPassword)
+{
+    @Html.Partial("_ChangePasswordPartial")
+}
+
+else
+{ 
+    @Html.Partial("_SetPasswordPartial")
+}

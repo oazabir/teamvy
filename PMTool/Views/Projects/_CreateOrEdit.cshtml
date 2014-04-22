@@ -1,0 +1,186 @@
+@model PMTool.Models.Project
+
+@* This partial view defines form fields that will appear when creating and editing entities *@
+
+<tr>
+    <td>
+        @Html.LabelFor(model => model.Name)
+    </td>
+    <td>
+        @Html.EditorFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+    </td>
+</tr>
+
+<tr>
+    <td>
+        @Html.LabelFor(model => model.Description)
+    </td>
+    <td>
+        @Html.EditorFor(model => model.Description)
+        @Html.ValidationMessageFor(model => model.Description)
+    </td>
+</tr>
+
+<script type="text/javascript">
+
+    jQuery(document).ready(function () {
+
+        jQuery('.chosen').chosen();
+    });
+</script>
+
+<script type="text/javascript">
+    jQuery(".chosen").chosen({ max_selected_options: 10 });
+    jQuery(".chosen-deselect").chosen({ allow_single_deselect: true });
+    jQuery(".chosen").chosen().change();
+    jQuery(".chosen").trigger('liszt:updated');
+
+    var selectedUserID = jQuery('Select#Users').val();
+    var Users = "";
+
+    if (selectedUserID != null) {
+        jQuery.each(selectedUserID, function (index, value) {
+            Users = Users + value + ",";
+        });
+
+        var UserArray = new Array();
+        jQuery('Select#Users').val(UserArray);
+
+        jQuery('.chzn-select').trigger('chosen:updated');
+    }
+
+    var selectedProjectsOwnersID = jQuery('Select#ProjectsOwners').val();
+    var owner = "";
+    if (selectedUserID != null) {
+        jQuery.each(selectedUserID, function (index, value) {
+            Users = Users + value + ",";
+        });
+
+        var UserArray = new Array();
+        jQuery('Select#Users').val(UserArray);
+
+        jQuery('.chzn-select').trigger('chosen:updated');
+    }
+
+</script>
+<tr>
+    <td>Assigned To
+    </td>
+    <td>
+        @Html.ListBoxFor(m => m.SelectedAssignedUsers, (IEnumerable<SelectListItem>)ViewBag.PossibleUsers,
+            new { @class = "chosen", multiple = "multiple", style = "width: 350px;" })
+    </td>
+</tr>
+
+<tr>
+    <td>Project Owner
+    </td>
+    <td>
+        @Html.ListBoxFor(m => m.SelectedProjectsOwners, (IEnumerable<SelectListItem>)ViewBag.PossibleUsers,
+            new { @class = "chosen", multiple = "multiple", style = "width: 350px;" })
+    </td>
+</tr>
+
+<tr>
+    <td>Status
+    </td>
+    <td>
+        <input type="text" id="itemText" value="" placeholder="Add Status" />
+        <button id="btn2" class="btn">+  </button>
+        <div id="items" class="tagsinput">
+   
+            @{
+                if (Model.ProjectStatuses != null)
+                {
+                    foreach (PMTool.Models.ProjectStatus col in Model.ProjectStatuses)
+                    {
+                        if(col.Name == "Closed")
+                        {
+                            <span id="@col.ProjectStatusID" class="tag">@col.Name
+                              @*<a title="Removing Status" onclick="removeitbyID('@col.ProjectStatusID','@col.Name')" >x</a>*@
+                              </span>  
+                        }
+                        else
+                        {
+                              <span id="@col.ProjectStatusID" class="tag">@col.Name
+                              <a title="Removing Status" onclick="removeitbyID('@col.ProjectStatusID','@col.Name')" >x</a>
+                              </span>
+                        }
+                    }
+                }
+                }
+        </div>
+         @Html.HiddenFor(model => model.allStatus, new { @id = "hdnStatus" })
+    </td>
+</tr>
+<script>
+    jQuery(document).ready(function () {
+        jQuery("#btn2").click(function () {
+            var id = jQuery("#items").children().length;
+            id = id + 1;
+
+            //There is only one Closed status by default. Updated by Mahedee, date 06-03-14
+            if (jQuery("#itemText").val() != "" && jQuery("#itemText").val().toLowerCase() != "closed") {
+                jQuery("#items").append("<span class='tag' " + " id=" + "'" + id + "'" + ">" + jQuery("#itemText").val() + "&nbsp;&nbsp;<a    onclick='removeit(" + id + ",\"" + jQuery("#itemText").val() + "\")' title='Removing tag'>x</a></span>");
+
+                //jQuery("#allStatus").val(jQuery("#allStatus").val() + jQuery("#itemText").val() + ",");
+                if (jQuery("#hdnStatus").val() != "") {
+                    jQuery("#hdnStatus").val(jQuery("#hdnStatus").val() + "," + jQuery("#itemText").val());
+                }
+                else {
+                    jQuery("#hdnStatus").val(jQuery("#itemText").val());
+                }
+
+                jQuery("#itemText").val("");
+            }
+            return false;
+        });
+    });
+
+    function removeit(id,text) {
+        var val = jQuery("#hdnStatus").val();
+        var newVal = "";
+        var replaceStr = text;
+        
+        newVal = val.replace(replaceStr, "");
+        jQuery("#" + id).hide();
+        jQuery("#hdnStatus").val(newVal);
+    }
+</script>
+
+
+<script type="text/javascript">
+
+    function removeitbyID(id, name) {
+        var projectID =  @Model.ProjectID;
+        var val = jQuery("#hdnStatus").val();
+        var newVal = "";
+        var replaceStr = name;
+        jQuery.ajax({
+            url: '@Url.Action("DeleteStatusByProject", "Projects")',
+            data: { projectID: projectID, statsusID: id },
+            type: 'POST',
+            success: function (data) {
+                var msg = new String(data);
+                if(msg=='success')
+                {
+                    newVal = val.replace(replaceStr, "");
+                    jQuery("#" + id).hide();
+                    jQuery("#hdnStatus").val(newVal);
+                    jQuery.jGrowl('Success', { life: 5000 });
+                }
+                else
+                {
+                    jQuery.jGrowl(msg, { life: 5000 });
+                }
+
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+
+       
+    }
+</script>

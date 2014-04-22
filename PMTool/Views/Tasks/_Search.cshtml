@@ -1,0 +1,79 @@
+﻿@model PMTool.Models.Search
+
+@using (Ajax.BeginForm("_Search", "Tasks", new AjaxOptions { UpdateTargetId = "dyntable5", OnBegin = "Loading()", OnComplete = "Unload()" }))
+{
+    <input type="hidden" name ="SelectedProjectID" value ="@ViewBag.CurrentProjectId" />
+    <div class="slidingDiv" style="display: block;">
+        <table class="table table-bordered table-invoice">
+            <tr>
+                <td>Status</td>
+                <td>
+                    @Html.DropDownListFor(model => model.SelectedStatusID, (Model.statusList).Select(option => new SelectListItem
+                     {
+                         Text = (option == null ? "None" : option.Name),
+                         Value = option.ProjectStatusID.ToString(),
+                         Selected = (ViewData["SelectedStatusID"]  != null) && (option.ProjectStatusID == (long)ViewData["SelectedStatusID"] )
+                     }), "Choose...")
+
+                </td>
+                <td>Priority</td>
+                <td>
+                    @Html.DropDownListFor(model => model.SelectedPriorityID, (Model.priorityList).Select(option => new SelectListItem
+                     {
+                         Text = (option == null ? "None" : option.Name),
+                         Value = option.PriorityID.ToString(),
+                         Selected = (Model != null) && (option.PriorityID == Model.SelectedPriorityID)
+                     }), "Choose...")
+
+                </td>
+
+            </tr>
+             <tr>
+                <td>Assigned User</td>
+                <td>
+                    @Html.DropDownListFor(model => model.SelectedUserID, (Model.UserList).Select(option => new SelectListItem
+                     {
+                         Text = (option == null ? "None" : option.FirstName+" "+option.LastName),
+                         Value = option.UserId.ToString(),
+                         Selected = (Model != null) && (option.UserId == Model.SelectedUserID)
+                     }), "Choose...")
+
+                </td>
+                <td>Sprint</td>
+                <td>
+                    @Html.DropDownListFor(model => model.SelectedSprintID, (Model.SprintList).Select(option => new SelectListItem
+                     {
+                         Text = (option == null ? "None" : option.Name),
+                         Value = option.SprintID.ToString(),
+                         Selected = (Model != null) && (option.SprintID == Model.SelectedSprintID)
+                     }), "Choose...")
+
+                </td>
+                   
+
+
+            </tr>
+            <tr>
+                
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </td>
+          
+
+            </tr>
+        </table>
+
+    </div>
+}
+
+@*<script type="text/javascript">
+    jQuery(document).ready(function () {
+        var 
+        jQuery("#gate option[value='Gateway 2']").attr('selected', 'selected');
+        // you need to specify id of combo to set right combo, if more than one combo
+    })
+</script>*@

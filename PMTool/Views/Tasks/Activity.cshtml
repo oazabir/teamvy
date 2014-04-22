@@ -1,0 +1,104 @@
+﻿@model PMTool.Models.TaskActivityLog
+
+@{
+    ViewBag.Title = "Add | Activity";
+}
+
+	<link href="~/Content/themes/site/css/jquery.fileupload.css" rel="stylesheet" />
+	<script src="~/Content/themes/site/js/jquery.ui.widget.js"></script>
+
+	<script src="~/Content/themes/site/js/jquery.fileupload.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        var id =@(((PMTool.Models.Task)ViewBag.CurrentTask).TaskID);
+        var url='@Url.Action("ActivityAdd", "Tasks")'+ "?taskID=" + id;
+		jQuery('#fileupload').fileupload({
+			dataType: 'json',
+			url: url,
+			autoUpload: true,
+			done: function (e, data) {
+			    jQuery("#ModalpopupShowActivity").modal('hide');
+				jQuery('.file_name').html(data.result.name);
+				jQuery('.file_type').html(data.result.type);
+				jQuery('.file_size').html(data.result.size);
+			}
+		}).on('fileuploadprogressall', function (e, data) {
+			var progress = parseInt(data.loaded / data.total * 100, 10);
+			jQuery('.progress .progress-bar').css('width', progress + '%');
+		});
+	});
+</script>
+
+<div class="pagetitle">
+    <h1>Activity
+    </h1>
+    <span>Create Activity....</span>
+</div>
+
+@Html.ValidationSummary(true)
+
+@Html.HiddenFor(model => model.TaskID)
+
+<table class="table table-bordered table-invoice">
+    <tbody>
+        <tr>
+            <td></td>
+            <td>
+
+                <span class="btn btn-success fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>Add files...</span>
+                    <input id="fileupload" type="file" name="files[]" multiple>
+                </span>
+                <br />
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                        <span class="sr-only">0% complete</span>
+                    </div>
+                </div>
+                <br />
+                <div class="file_name"></div>
+                <br />
+                <div class="file_type"></div>
+                <br />
+                <div class="file_size"></div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<br />
+<br />
+        @if (ViewBag.PossibleActivities!=null)
+        {
+<table class="table table-bordered" id="dyntable">
+    <thead>
+        <tr>
+            <th>
+                File
+            </th>
+            <th>Comment
+            </th>
+            <th>Created Date</th>
+        </tr>
+    </thead>
+    <tbody>
+            @foreach (PMTool.Models.TaskActivityLog log in (List<PMTool.Models.TaskActivityLog>)ViewBag.PossibleActivities)
+            {
+                <tr>
+                    <td>
+                       <a href="@Url.Content(log.FileUrl)">@log.FileDisplayName</a> 
+                    </td>
+                    <td>
+                        @log.Comment
+                    </td>
+                    <td>
+                        @log.CreateDate.ToShortDateString()
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>
+            
+        }
