@@ -22,7 +22,7 @@
         <th>ScheduledTime
         </th>
 
-        <th>EmailRecipientUsers
+        <th>Recipient Users
         </th>
 
         <th>day
@@ -38,36 +38,38 @@
         <tr>
 
             <td>
-                @item.Title
+                @*@item.Title*@
+                @Html.DisplayTextFor(_=> item.SchedulerTitles.FirstOrDefault().Text).ToString()
             </td>
             <td>
                 @(item.Project == null ? "None" : item.Project.Name)
             </td>
             <td>
-                @Html.DisplayTextFor(_ => item.ScheduleType).ToString()
+                @Html.DisplayTextFor(_ => item.ScheduleType.FirstOrDefault().Text).ToString()
             </td>
             <td>
                 @item.ScheduledTime
             </td>
 
             <td>
-                @Html.DisplayTextFor(_ => item.EmailRecipientUsers).ToString()
+                @Html.DisplayTextFor(_ => item.EmailRecipientUsers.FirstOrDefault().Text).ToString()
             </td>
 
             <td>
-                @Html.DisplayTextFor(_ => item.Days).ToString()
+                @Html.DisplayTextFor(_ => item.Days.FirstOrDefault().Text).ToString()
             </td>
             <td>
                 @String.Format("{0:g}", item.ScheduledDate)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.SchedulerID }) |
-            @Html.ActionLink("Details", "Details", new { id = item.SchedulerID }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.SchedulerID })
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.ID  }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.ID  })
             </td>
         </tr>
     }
 
 </table>
-
+<br />
+@Html.ActionLink("Create New", "Create", null, new { @title = "Add new schedule", @class = "btn btn-primary" })
 

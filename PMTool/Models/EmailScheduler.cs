@@ -15,11 +15,12 @@ namespace PMTool.Models
         [Required,Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ID { get; set; }
 
-        public int SchedulerID { get; set; }
+        public int SchedulerTitleID { get; set; } //Email Title ID
+        public virtual IEnumerable<SelectListItem> SchedulerTitles { get; set; }  
 
-        [Required]
-        [Display(Name = "Title")]
-        public string Title { get; set; }
+        //[Required]
+        //[Display(Name = "Title")]
+        //public string Title { get; set; }
         
         [Required]
         [Display(Name = "Project Name")]

@@ -8,8 +8,12 @@
     Schedule Title
 </td>
 <td>
-    @Html.EditorFor(model => model.Title)
-    @Html.ValidationMessageFor(model => model.Title)
+@*    @Html.EditorFor(model => model.Title)
+    @Html.ValidationMessageFor(model => model.Title)*@
+      @Html.DropDownListFor(model=>model.SchedulerTitleID, Model.SchedulerTitles)
+
+    @Html.ValidationMessageFor(model => model.SchedulerTitleID)
+
 </td>
 
 </tr>
