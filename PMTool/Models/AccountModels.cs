@@ -19,6 +19,7 @@ namespace PMTool.Models
     //    public string Email { get; set; }
     //}
 
+      
     public class RegisterExternalLoginModel
     {
         [Required]
