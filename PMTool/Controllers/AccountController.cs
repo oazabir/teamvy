@@ -9,7 +9,7 @@ using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
 
 using PMTool.Filters;
-using PMTool.Models;
+using PMTool.Models; 
 using PMTool.Repository;
 using System.Net.Mail;
 using System.Configuration;
@@ -20,10 +20,10 @@ namespace PMTool.Controllers
     [InitializeSimpleMembership]
     public class AccountController : BaseController
     {
-        //
-        // GET: /Account/Login
+        // 
+        // GET: /Account/Login   
 
-        [AllowAnonymous]
+        [AllowAnonymous] 
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -117,7 +117,7 @@ namespace PMTool.Controllers
         //[ValidateAntiForgeryToken]
         public ActionResult Register(RegisterModel model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) 
             {
                 // Attempt to register the user
                 try
