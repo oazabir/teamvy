@@ -14,7 +14,7 @@ using PMTool.Repository;
 using System.Net.Mail;
 using System.Configuration;
 
-namespace PMTool.Controllers
+namespace PMTool.Controllers 
 {
     [Authorize]
     [InitializeSimpleMembership]
