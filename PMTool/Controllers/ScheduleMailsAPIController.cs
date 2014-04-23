@@ -42,6 +42,9 @@ namespace PMTool.Controllers
             //lstTestMailer.Add(new Mailer { UseMailID = "mahedee.hasan@gmail.com", HtmlMailBody = "This is a test mgs", MailSubject = "Hello msg" });
 
             lstTestMailer = EstimationMail();
+            //if scheduler id == 2
+            //{
+               //}
             return lstTestMailer;
             //return new List<Mailer>();
         }
