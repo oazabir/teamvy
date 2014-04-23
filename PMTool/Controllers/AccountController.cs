@@ -9,7 +9,7 @@ using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
 
 using PMTool.Filters;
-using PMTool.Models;
+using PMTool.Models; 
 using PMTool.Repository;
 using System.Net.Mail;
 using System.Configuration;
@@ -20,7 +20,7 @@ namespace PMTool.Controllers
     [InitializeSimpleMembership]
     public class AccountController : BaseController
     {
-        //
+        // 
         // GET: /Account/Login   
 
         [AllowAnonymous] 
