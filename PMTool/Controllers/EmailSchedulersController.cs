@@ -48,6 +48,12 @@ namespace PMTool.Controllers
 
             //IEnumerable<ScheduleType> scheduleTypes = Enum.GetValues(typeof(ScheduleType)).Cast<ScheduleType>();
 
+            emailScheduler.SchedulerTitles = from item in unitOfWork.EmailSchedulerRepository.GetSchedulerList()
+                                             select new SelectListItem
+                                             {
+                                                 Text = item.Value,
+                                                 Value = item.Key
+                                             };
 
             emailScheduler.ScheduleType = from item in unitOfWork.EmailSchedulerRepository.GetSchedulerTypeAll()
                                           select new SelectListItem
