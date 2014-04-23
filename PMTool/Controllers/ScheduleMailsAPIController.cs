@@ -41,6 +41,18 @@ namespace PMTool.Controllers
            
             //lstTestMailer.Add(new Mailer { UseMailID = "mahedee.hasan@gmail.com", HtmlMailBody = "This is a test mgs", MailSubject = "Hello msg" });
 
+            List<EmailScheduler> emailschedulerlst = unitofWork.EmailSchedulerRepository.GetEmailSchedulerAll();
+
+            foreach (var emailSchedule in emailschedulerlst)
+            {
+                if (emailSchedule.SchedulerTitleID == 2) //Daily Status mail
+                {
+
+                }
+            }
+
+
+
             lstTestMailer = EstimationMail();
             return lstTestMailer;
             //return new List<Mailer>();
