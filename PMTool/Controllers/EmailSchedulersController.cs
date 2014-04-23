@@ -25,11 +25,8 @@ namespace PMTool.Controllers
             //return View(context.EmailSchedulers.Include(emailscheduler => emailscheduler.Project).ToList());
 
             //return View(unitOfWork.EmailSchedulerRepository.in EmailSchedulers.Include(emailscheduler => emailscheduler.Project).ToList());
-            //List<EmailScheduler> emailscheduler = unitOfWork.EmailSchedulerRepository.AllIncluding().Include(escheduler => escheduler.Project).ToList();
 
-
-            return View(unitOfWork.EmailSchedulerRepository.GetEmailSchedulerAll());
-
+            return View(unitOfWork.EmailSchedulerRepository.AllIncluding().ToList());
         }
 
         //
@@ -49,64 +46,34 @@ namespace PMTool.Controllers
             ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All; //context.Projects;
             EmailScheduler emailScheduler = new EmailScheduler();
 
-            //IEnumerable<ScheduleType> scheduleTypes = Enum.GetValues(typeof(ScheduleType)).Cast<ScheduleType>();
-            //emailScheduler.ScheduleType = from action in scheduleTypes
-            //                    select new SelectListItem
-            //                    {
-            //                        Text = action.ToString(),
-            //                        Value = ((int)action).ToString()
-            //                    };
+            IEnumerable<ScheduleType> scheduleTypes = Enum.GetValues(typeof(ScheduleType)).Cast<ScheduleType>();
+            emailScheduler.ScheduleType = from action in scheduleTypes
+                                select new SelectListItem
+                                {
+                                    Text = action.ToString(),
+                                    Value = ((int)action).ToString()
+                                };
 
-            emailScheduler.ScheduleType = from item in unitOfWork.EmailSchedulerRepository.GetSchedulerTypeAll() //Dictionary of email scheduler
-                                             select new SelectListItem
-                                             {
-                                                 Text = item.Value,
-                                                 Value = item.Key
-                                             };
+            var recipientTypes = new Dictionary<string, string> {{ "0", "--- Select recipient users ---" }, 
+                                                                { "1", "Task's Users" }, 
+                                                                { "2", "Task's Followers" },
+                                                                { "3", "Task's Users & Followers" },
+                                                                 { "4", "Project's Users" }};
 
-            //var recipientTypes = new Dictionary<string, string> {{ "0", "--- Select recipient users ---" }, 
-            //                                                    { "1", "Task's Users" }, 
-            //                                                    { "2", "Task's Followers" },
-            //                                                    { "3", "Task's Users & Followers" },
-            //                                                     { "4", "Project's Users" }};
-
-
-            emailScheduler.EmailRecipientUsers = from item in unitOfWork.EmailSchedulerRepository.GetRecipientUserTypeAll()
+            emailScheduler.EmailRecipientUsers = from item in recipientTypes
                                                  select new SelectListItem
                                                  {
                                                      Text = item.Value,
                                                      Value = item.Key
                                                  };
 
-
-
-
-            emailScheduler.SchedulerTitles = from item in unitOfWork.EmailSchedulerRepository.GetSchedulerList() //Dictionary of email scheduler
-                                             select new SelectListItem
-                                             {
-                                                 Text = item.Value,
-                                                 Value = item.Key
-                                             };
-
-
-
-            emailScheduler.Days = from item in unitOfWork.EmailSchedulerRepository.GetDaysOfWeek() //Dictionary of email scheduler
-                                             select new SelectListItem
-                                             {
-                                                 Text = item.Value,
-                                                 Value = item.Key
-                                             };
-
-            //IEnumerable<Week> days = Enum.GetValues(typeof(Week)).Cast<Week>();
-            //emailScheduler.Days = from action in days
-            //                              select new SelectListItem
-            //                              {
-            //                                  Text = action.ToString(),
-            //                                  Value = ((int)action).ToString()
-            //                              };
-
-
-
+            IEnumerable<Week> days = Enum.GetValues(typeof(Week)).Cast<Week>();
+            emailScheduler.Days = from action in days
+                                          select new SelectListItem
+                                          {
+                                              Text = action.ToString(),
+                                              Value = ((int)action).ToString()
+                                          };
 
             //emailScheduler.ScheduledTime = new TimeSpan(11, 30, 0);
 
@@ -134,15 +101,6 @@ namespace PMTool.Controllers
             emailscheduler.CreatedBy = (int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey;
             emailscheduler.ModifiedBy = (int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey;
             //timeLog.UserID = (int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey;
-
-            //TimeSpan tspn = new TimeSpan(emailscheduler.ScheduledTime);
-
-            //string s = "4:15 PM";
-            //DateTime t = DateTime.ParseExact(emailscheduler.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
-            //if you really need a TimeSpan this will get the time elapsed since midnight:
-            //TimeSpan ts = t.TimeOfDay;
-
-
             emailscheduler.CreateDate = DateTime.Now;
             emailscheduler.ModificationDate = DateTime.Now;
             emailscheduler.IsActive = true;
