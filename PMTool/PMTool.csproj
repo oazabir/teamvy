@@ -269,6 +269,10 @@
     <Compile Include="Migrations\201404100714467_modifiedcomment.Designer.cs">
       <DependentUpon>201404100714467_modifiedcomment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201404230714330_modifyemailscheduler.cs" />
+    <Compile Include="Migrations\201404230714330_modifyemailscheduler.Designer.cs">
+      <DependentUpon>201404230714330_modifyemailscheduler.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Chart.cs" />
@@ -1293,6 +1297,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201404100714467_modifiedcomment.resx">
       <DependentUpon>201404100714467_modifiedcomment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404230714330_modifyemailscheduler.resx">
+      <DependentUpon>201404230714330_modifyemailscheduler.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

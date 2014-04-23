@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Web;
 using PMTool.Repository;
 using PMTool.Models;
+using System.Web.Mvc;
 
 namespace PMTool.Repository
 { 
@@ -49,17 +50,101 @@ namespace PMTool.Repository
         }
 
 
-        public Dictionary<int, string> GetSchedulerList()
+
+        public List<EmailScheduler> GetEmailSchedulerAll()
         {
-            var lstOfEmailSchedules = new Dictionary<int, string> {{ 1, "Reminder mail to provide estimation" }, 
-                                                                { 2, "Optional scheduler" }, };
+            List<EmailScheduler> emailschedulerlst = this.AllIncluding().ToList();
+
+            foreach (var item in emailschedulerlst)
+            {
+                item.SchedulerTitles = from title in GetSchedulerList()
+                                       where title.Key == item.SchedulerTitleID.ToString()
+                                                 select new SelectListItem
+                                                 {
+                                                     Text = title.Value,
+                                                     Value = title.Key
+                                                 };
+
+                //IEnumerable<ScheduleType> scheduleTypes = Enum.GetValues(typeof(ScheduleType)).Cast<ScheduleType>();
+                item.ScheduleType = from stype in GetSchedulerTypeAll() where stype.Key == item.ScheduleTypeID.ToString()
+                                              select new SelectListItem
+                                              {
+                                                  Text = stype.Value,
+                                                  Value = stype.Key
+                                              };
+
+                item.EmailRecipientUsers = from rutype in GetRecipientUserTypeAll()
+                                           where rutype.Key == item.RecipientUserType.ToString()
+                                    select new SelectListItem
+                                    {
+                                        Text = rutype.Value,
+                                        Value = rutype.Key
+                                    };
+
+                item.Days = from days in GetDaysOfWeek()
+                            where days.Key == item.ScheduledDay.ToString()
+                                           select new SelectListItem
+                                           {
+                                               Text = days.Value,
+                                               Value = days.Key
+                                           };
+
+
+
+            }
+
+            return emailschedulerlst;
+        }
+
+        public Dictionary<string, string> GetDaysOfWeek()
+        {
+            return new Dictionary<string, string> 
+            {{"0", "---Select Day---"},
+             {"1", "Saturday"},
+             {"2", "Sunday"},
+             {"3", "Monday"},
+             {"4", "Tuesday"},
+             {"5", "Wednesday"},
+             {"6", "Thursday"},
+             {"7", "Friday"}
+
+            };
+          }
+        public Dictionary<string, string> GetRecipientUserTypeAll()
+        {
+
+            return new Dictionary<string, string> {{ "0", "--- Select recipient users ---" }, 
+                                                                { "1", "Task's Users" }, 
+                                                                { "2", "Task's Followers" },
+                                                                { "3", "Task's Users & Followers" },
+                                                                 { "4", "Project's Users" }};
+        }
+
+        public Dictionary<string, string> GetSchedulerTypeAll()
+        {
+            var lstOfScheduleType = new Dictionary<string, string> {
+            {"0", "---Select Type---"},
+            { "1", "Daily" }, 
+            { "2", "Weekly" },
+            { "3", "Monthly" }, };
+
+            return lstOfScheduleType;
+        }
+
+        public Dictionary<string, string> GetSchedulerList()
+        {
+            var lstOfEmailSchedules = new Dictionary<string, string> {
+            {"0", "---Select Title---"},
+            { "1", "Reminder mail to provide estimation" }, 
+            { "2", "Daily status mail" },
+            { "3", "Daily digest mail" }, };
 
             return lstOfEmailSchedules;
         }
 
         public void InsertOrUpdate(EmailScheduler emailscheduler)
         {
-            if (emailscheduler.SchedulerID == default(long)) {
+            if (emailscheduler.ID == default(long)) {
                 // New entity
                 context.EmailSchedulers.Add(emailscheduler);
             } else {
