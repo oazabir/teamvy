@@ -43,7 +43,7 @@ namespace PMTool.Controllers
 
             List<EmailScheduler> emailschedulerlst = unitofWork.EmailSchedulerRepository.GetEmailSchedulerAll();
 
-            foreach (var emailSchedule in emailschedulerlst)
+            foreach (var emailSchedule in emailschedulerlst) 
             {
                 if (emailSchedule.SchedulerTitleID == 2) //Daily Status mail
                 {
