@@ -3,6 +3,7 @@ using PMTool.Repository;
 using PMTool.Utility;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -22,57 +23,74 @@ namespace PMTool.Controllers
         /// Mahedee @20-03-14
         /// </summary>
         /// <returns></returns>
-
-     
-
-        //public List<Mailer> Get()
-        //{
-        //    List<Mailer> lstTestMailer = new List<Mailer>();
+        public List<Mailer> Get()
+        {
+            List<Mailer> lstTestMailer = new List<Mailer>();
             
-        //    //Dictionary<int, string> lstOfEmailSchedules = unitofWork.EmailSchedulerRepository.GetSchedulerList();
+            //Dictionary<int, string> lstOfEmailSchedules = unitofWork.EmailSchedulerRepository.GetSchedulerList();
 
-        //    //foreach (KeyValuePair<int,string> item in lstOfEmailSchedules)
-        //    //{
-        //    //    if (item.Key == 1)  //Do for "Remainder email for provide estimation"
-        //    //    {
-        //    //        //Do for "Remainder email for provide estimation"
+            //foreach (KeyValuePair<int,string> item in lstOfEmailSchedules)
+            //{
+            //    if (item.Key == 1)  //Do for "Remainder email for provide estimation"
+            //    {
+            //        //Do for "Remainder email for provide estimation"
 
-        //    //       lstTestMailer = EstimationMail();
-        //    //    }
-        //    //}
+            //       lstTestMailer = EstimationMail();
+            //    }
+            //}
 
            
-        //    //lstTestMailer.Add(new Mailer { UseMailID = "mahedee.hasan@gmail.com", HtmlMailBody = "This is a test mgs", MailSubject = "Hello msg" });
+            //lstTestMailer.Add(new Mailer { UseMailID = "mahedee.hasan@gmail.com", HtmlMailBody = "This is a test mgs", MailSubject = "Hello msg" });
 
-        //    //List<EmailScheduler> emailschedulerlst = unitofWork.EmailSchedulerRepository.GetEmailSchedulerAll();
+            List<EmailScheduler> emailschedulerlst = unitofWork.EmailSchedulerRepository.GetEmailSchedulerAll();
 
-        //    //foreach (var emailSchedule in emailschedulerlst)
-        //    //{
-        //    //    if (emailSchedule.SchedulerTitleID == 2) //Daily Status mail
-        //    //    {
-        //    //        lstTestMailer = GetDailyUpdatedTaskStatus();
-        //    //    }
-        //    //}
+            foreach (var emailSchedule in emailschedulerlst) 
+            {
+                if (emailSchedule.SchedulerTitleID == 2) //Daily Status mail
+                {
+                    lstTestMailer = DailyTaskStatus();
+                    
+                    if (lstTestMailer.Count() > 0)
+                    {
+                        
+                        EmailSentStatus objEmailSentStatus = new EmailSentStatus();
+
+                        objEmailSentStatus.EmailSchedulerID = 2;
+                        objEmailSentStatus.ScheduleTypeID = 1;      
+                        DateTime date =DateTime.ParseExact(emailSchedule.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
+                        TimeSpan ts = date.TimeOfDay;
+                        objEmailSentStatus.ScheduleDateTime =  DateTime.Today.Add(ts);     
+                        objEmailSentStatus.SentDateTime=DateTime.Now;
+                        objEmailSentStatus.SentStatus=true;
+                        objEmailSentStatus.ActionTime=DateTime.Now;
+                        unitofWork.EmailSentStatusRepository.InsertOrUpdate(objEmailSentStatus);
+                        unitofWork.Save();
+                    }
+                }
+            }
 
 
 
-        //    //lstTestMailer = EstimationMail();
-        //    //if scheduler id == 2
-        //    //{
-        //       //}
-        //    return lstTestMailer;
-        //    //return new List<Mailer>();
-        //}
+            //lstTestMailer = EstimationMail();
+            //if scheduler id == 2
+            //{
+               //}
+            return lstTestMailer;
+            //return new List<Mailer>();
+        }
 
-        // This method is for sending the Daily Task Status that are part of sprints and Updated History of each task  should be send to the mail on specifc time set  
-        public List<Mailer> GetDailyUpdatedTaskStatus() 
+        /*
+         Send a daily Task Status email to each user having tasks in projects, that are part of Sprints.
+         It should be sent on a specific time setat the project level. 
+         */
+        public List<Mailer> DailyTaskStatus() 
         {
             List<Mailer> mailerList = new List<Mailer>();
             List<Task> taskList = unitofWork.TaskRepository.AllIncludingForMail().Where(t => t.ProjectStatus.Name.ToLower() != "closed").ToList();
             List<UserProfile> userList = unitofWork.UserRepository.All();
 
             string styleTableHeader = "style= \"background-color:#0094ff; border:1px solid;\"";
-            //string styleGroupbyRow = "style= \"background-color:#57C0E1;\"";
+            string styleGroupbyRow = "style= \"background-color:#57C0E1;\"";
             string styleTaskRow = "style= \"background-color:#A0D0FF;\"";
 
             foreach(UserProfile objOfuser in userList)
@@ -80,17 +98,18 @@ namespace PMTool.Controllers
                 string messageBody = string.Empty;
                 List<Task> userTaskList = taskList.Where(a => a.Users.Any(b => b.UserId == objOfuser.UserId)).ToList();
 
-                if (userTaskList.Count > 1) 
+                if (userTaskList.Count > 0)
                 {
                     messageBody = "<b>Dear &nbsp;" + objOfuser.FirstName + "</b>,<br>" + "<b>Your Daily Tasks Status are given below</b><br>";
                     messageBody += "<table><tr " + styleTableHeader + "><th>Task ID</th> <th>Task Title</th> <th>Task Status</th></tr>";
 
-                    foreach (var task in userTaskList) 
-                    {
-                        messageBody += "<tr " + styleTaskRow + "><td colspan='4'> Task: " + task.TaskID + "</td></tr>";
-                        messageBody += "<tr " + styleTaskRow + "><td colspan='4'> Task: " + task.Title + "</td></tr>";
-                        messageBody += "<tr " + styleTaskRow + "><td colspan='4'> Task: " + task.Status + "</td></tr>";
-
+                    foreach (var task in userTaskList)
+                    {                 
+                        messageBody += "<tr> ";
+                        messageBody += "<td " + styleTaskRow +    "> "+ task.TaskUID + "</td>";
+                        messageBody += "<td " + styleGroupbyRow + "> " + task.Title + "</td>";
+                        messageBody += "<td " + styleGroupbyRow + "> " + task.ProjectStatus.Name + "</td>";
+                        messageBody += "</tr>";
                     }
 
                     messageBody += "</table></div><br /><div style='float:left;'><p>We sent you this email because you signed up in PMTool and tasks are assigned to you. <br /> Please don't reply this mail.</p><p>"
@@ -98,16 +117,14 @@ namespace PMTool.Controllers
 
                     Mailer mailer = new Mailer();
                     mailer.UseMailID = objOfuser.UserName;
-                    mailer.MailSubject = "Daily Task Status";
+                    mailer.MailSubject = "Daily Task Status111";
                     mailer.HtmlMailBody = messageBody;
                     mailerList.Add(mailer);
                 }
-
             }
 
             return mailerList;
         }
-
 
 
         /*

@@ -57,6 +57,7 @@ namespace PMTool.Repository
 
             foreach (var item in emailschedulerlst)
             {
+                
                 item.SchedulerTitles = from title in GetSchedulerList()
                                        where title.Key == item.SchedulerTitleID.ToString()
                                                  select new SelectListItem
