@@ -117,7 +117,8 @@ namespace PMTool.Repository
                                                                 { "1", "Task's Users" }, 
                                                                 { "2", "Task's Followers" },
                                                                 { "3", "Task's Users & Followers" },
-                                                                 { "4", "Project's Users" }};
+                                                                {"4", "Task's Creator & Followrs"}
+                                                                 { "5", "Project's Users" }};
         }
 
         public Dictionary<string, string> GetSchedulerTypeAll()
