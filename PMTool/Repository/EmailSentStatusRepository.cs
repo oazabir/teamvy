@@ -58,7 +58,7 @@ namespace PMTool.Repository
         {
             List<EmailSentStatus> emailSentStatusList = this.AllIncluding().ToList();
             emailSentStatusList = context.EmailSentStatus.ToList();
-
+  
             return emailSentStatusList;
         }
 
