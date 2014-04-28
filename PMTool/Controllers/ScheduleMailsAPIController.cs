@@ -48,24 +48,120 @@ namespace PMTool.Controllers
             {
                 if (emailSchedule.SchedulerTitleID == 2) //Daily Status mail
                 {
-                    lstTestMailer = DailyTaskStatus();
-                    
-                    if (lstTestMailer.Count() > 0)
-                    {
+                        List<EmailSentStatus> objOfEmailSent = new List<EmailSentStatus>();
+                        objOfEmailSent = unitofWork.EmailSentStatusRepository.GetEmailSentStatuseAll();
                         
-                        EmailSentStatus objEmailSentStatus = new EmailSentStatus();
+                           
+                            DateTime cdate = DateTime.Now;
+                            DateTime onlyDate = cdate.Date;
 
-                        objEmailSentStatus.EmailSchedulerID = 2;
-                        objEmailSentStatus.ScheduleTypeID = 1;      
-                        DateTime date =DateTime.ParseExact(emailSchedule.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
-                        TimeSpan ts = date.TimeOfDay;
-                        objEmailSentStatus.ScheduleDateTime =  DateTime.Today.Add(ts);     
-                        objEmailSentStatus.SentDateTime=DateTime.Now;
-                        objEmailSentStatus.SentStatus=true;
-                        objEmailSentStatus.ActionTime=DateTime.Now;
-                        unitofWork.EmailSentStatusRepository.InsertOrUpdate(objEmailSentStatus);
-                        unitofWork.Save();
-                    }
+                            DateTime scheduleDateTime = DateTime.ParseExact(emailSchedule.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
+
+                            TimeSpan ts1 = cdate.TimeOfDay;
+                            DateTime currentdateTime = onlyDate + ts1;
+
+
+                            foreach (var ObjofList in objOfEmailSent)
+                            {
+                                
+                                bool emailStatus=unitofWork.EmailSentStatusRepository.EmailSentStatus(ObjofList.EmailSchedulerID,ObjofList.ScheduleTypeID,ObjofList.ScheduleDateTime);
+                                if (emailStatus = true && scheduleDateTime == currentdateTime)
+                                {
+                                    continue;
+                                }
+
+                                else 
+                                {
+                                       lstTestMailer = DailyTaskStatus();
+
+                                if (lstTestMailer.Count() > 0)
+                                {
+
+                                    EmailSentStatus objEmailSentStatus = new EmailSentStatus();
+                                    objEmailSentStatus.EmailSchedulerID = 2;
+                                    objEmailSentStatus.ScheduleTypeID = 1;
+                                    DateTime date = DateTime.ParseExact(emailSchedule.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
+                                    TimeSpan ts = date.TimeOfDay;
+                                    objEmailSentStatus.ScheduleDateTime = DateTime.Today.Add(ts);
+                                    objEmailSentStatus.SentDateTime = DateTime.Now;
+                                    objEmailSentStatus.SentStatus = true;
+                                    objEmailSentStatus.ActionTime = DateTime.Now;
+
+                                    unitofWork.EmailSentStatusRepository.InsertOrUpdate(objEmailSentStatus);
+                                    unitofWork.Save();
+
+                                }
+                                }
+                            }
+
+           
+                            //if (scheduleDateTime == currentdateTime)
+                            //{
+                            //    continue;
+                            //}
+                          
+                            //else
+                            //{
+                            //    lstTestMailer = DailyTaskStatus();
+
+                            //    if (lstTestMailer.Count() > 0)
+                            //    {
+
+                            //        EmailSentStatus objEmailSentStatus = new EmailSentStatus();
+                            //        objEmailSentStatus.EmailSchedulerID = 2;
+                            //        objEmailSentStatus.ScheduleTypeID = 1;
+                            //        DateTime date = DateTime.ParseExact(emailSchedule.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
+                            //        TimeSpan ts = date.TimeOfDay;
+                            //        objEmailSentStatus.ScheduleDateTime = DateTime.Today.Add(ts);
+                            //        objEmailSentStatus.SentDateTime = DateTime.Now;
+                            //        objEmailSentStatus.SentStatus = true;
+                            //        objEmailSentStatus.ActionTime = DateTime.Now;
+
+                            //        unitofWork.EmailSentStatusRepository.InsertOrUpdate(objEmailSentStatus);
+                            //        unitofWork.Save();
+
+                            //    }
+                            //}
+
+                        
+                       
+                        //DateTime cdate =DateTime.Now;
+                        //DateTime onlyDate = cdate.Date;
+                        
+                        //DateTime scheduleDateTime = DateTime.ParseExact(emailSchedule.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
+                        
+                        //TimeSpan ts1 = cdate.TimeOfDay;
+                        //DateTime currentdateTime = onlyDate + ts1;
+
+
+                        //if (currentdateTime == scheduleDateTime)
+                        //{
+                        //    continue;
+                        //}
+
+                        //else 
+                        //{
+                        //    lstTestMailer = DailyTaskStatus();
+
+                        //    if (lstTestMailer.Count() > 0)
+                        //    {
+
+                        //        EmailSentStatus objEmailSentStatus = new EmailSentStatus();
+                        //        objEmailSentStatus.EmailSchedulerID = 2;
+                        //        objEmailSentStatus.ScheduleTypeID = 1;
+                        //        DateTime date = DateTime.ParseExact(emailSchedule.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
+                        //        TimeSpan ts = date.TimeOfDay;
+                        //        objEmailSentStatus.ScheduleDateTime = DateTime.Today.Add(ts);
+                        //        objEmailSentStatus.SentDateTime = DateTime.Now;
+                        //        objEmailSentStatus.SentStatus = true;
+                        //        objEmailSentStatus.ActionTime = DateTime.Now;
+
+                        //        unitofWork.EmailSentStatusRepository.InsertOrUpdate(objEmailSentStatus);
+                        //        unitofWork.Save();
+
+                        //    }
+                        //}
+
                 }
             }
 

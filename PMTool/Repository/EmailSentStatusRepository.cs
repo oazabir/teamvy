@@ -53,6 +53,26 @@ namespace PMTool.Repository
             return context.EmailSentStatus.Find(id);
         }
 
+        // This Method is for getting list of the Sent Mails Status - Created By Foysal @ 25-April,2014
+        public List<EmailSentStatus> GetEmailSentStatuseAll() 
+        {
+            List<EmailSentStatus> emailSentStatusList = this.AllIncluding().ToList();
+            emailSentStatusList = context.EmailSentStatus.ToList();
+
+            return emailSentStatusList;
+        }
+
+        public bool EmailSentStatus(long schedulerId, int? schedulerType, DateTime? sentTime)
+        {
+           List<EmailSentStatus> lstEmailSentStatus = context.EmailSentStatus.Where(p => p.ScheduleDateTime == sentTime && p.ScheduleTypeID == schedulerType && p.EmailSchedulerID == schedulerId).ToList();
+           if (lstEmailSentStatus.Count > 0)
+               return true;
+           else
+               return false;
+            
+        }
+
+
         public void InsertOrUpdate(EmailSentStatus emailsentstatus)
         {
             if (emailsentstatus.ID == default(long)) {
