@@ -1,8 +1,8 @@
+jQuery.noConflict();
 
 jQuery(document).ready(function(){
-    jQuery.noConflict();
-
-	//prettyPrint();			//syntax highlighter
+	
+	prettyPrint();			//syntax highlighter
 	mainwrapperHeight();
 	responsive();
 	
@@ -194,6 +194,16 @@ jQuery(document).ready(function(){
 	}
 	
 	
+	// dynamic table
+	if(jQuery('#dyntable').length > 0) {
+		jQuery('#dyntable').dataTable({
+			"sPaginationType": "full_numbers",
+			"aaSortingFixed": [[0,'asc']],
+			"fnDrawCallback": function(oSettings) {
+				jQuery.uniform.update();
+			}
+		});
+	}
 	
 	
 	/////////////////////////////// ELEMENTS.HTML //////////////////////////////
@@ -224,66 +234,12 @@ jQuery(document).ready(function(){
 		});
 	}
 
-	var DEFAULT_Z_INDEX = 10;
+	
 	// date picker
-	if (jQuery('.datepicker').length > 0) {
-	    jQuery(".datepicker").datepicker({
-	        dateFormat: "dd/mm/yy",
-	        showStatus: true,
-	        showWeeks: true,
-	        currentText: 'Now',
-	        autoSize: true,
-	        gotoCurrent: true,
-	        showAnim: 'blind',
-	        highlightWeek: true
-	    })
-            .on('show', function() {
-
-	        // Make sure that z-index is above any open modal.
-	        var jQueryinput= jQuery(this);
-	        var modalZIndex = jQueryinput.closest('.modal').css('z-index');
-	        var zIndex = DEFAULT_Z_INDEX;
-	        if (modalZIndex) {
-	            zIndex = parseInt(modalZIndex) + 1;
-	        }
-
-	        jQuery('.datepicker').css("z-index", zIndex);;
-
-            });
-	    
-	    }
-
-	if (('#datepicker').length > 0) {
-	    jQuery("#datepicker").datepicker({
-	        dateFormat: "dd/mm/yy",
-	        showStatus: true,
-	        showWeeks: true,
-	        currentText: 'Now',
-	        autoSize: true,
-	        gotoCurrent: true,
-	        showAnim: 'blind',
-	        highlightWeek: true
-	    });
-
-	}
-
-	jQuery.validator.addMethod('date',
-        function (value, element) {
-            if (this.optional(element)) {
-                return true;
-            }
-            var ok = true;
-            try {
-                jQuery.datepicker.parseDate('dd/mm/yy', value);
-            }
-            catch (err) {
-                ok = false;
-            }
-            return ok;
-        });
-	jQuery(".datepicker").datepicker({ dateFormat: 'dd/mm/yy', changeYear: true });
-
-
+	if(jQuery('#datepicker').length > 0)
+		jQuery( "#datepicker" ).datepicker();
+		
+	
 	// growl notification
 	if(jQuery('#growl').length > 0) {
 		jQuery('#growl').click(function(){
@@ -464,5 +420,5 @@ jQuery(document).ready(function(){
 			jQuery.cookie("skin-color", c, { path: '/' });
 		}
 	}
-
+	
 });

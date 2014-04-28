@@ -29,7 +29,33 @@
        
         var id = @Model.SprintID;
         var url = '@Url.Action("SprintBurnDownData", "Sprints")' + "?sprintId=" + id;
+        var urlEstmt = '@Url.Action("SprintBurnDownEstimetedData", "Sprints")' + "?sprintId=" + id;
      
+
+
+        function GetEstmSprintData()
+        {
+            var result = [];
+            jQuery.ajax({
+                type: "POST",
+                url: urlEstmt,
+                dataType: 'json',
+                async: false,
+                data: "{}",
+                success: function(data) {
+                    jQuery.each(data, function (i, item) {
+                        var individual_result = [];
+                        individual_result.push(item.XValue);
+                        individual_result.push(item.YValue);
+                        result.push(individual_result);
+                        if(item.YValue > highestYValue)
+                            highestYValue = item.YValue;
+                    });
+                }
+            });
+            return result;
+        }
+
 
         /*Preaper and nx2 dimensional array aginst Json data and return for burdown chart
         by Mahedee on 19-03-2014
@@ -71,9 +97,8 @@
 
         var plot = jQuery.plot(jQuery("#chartplace"),
              /*Call GetSprintDate() function to get plotting data as array by Mahedee on 19-03-2014 */
-               //[ { data: html5, label: "HTML5(x)", color: "#72f905" }], {
-                
-                [{ data: GetSprintData(), label: "Estimated Hour: "+highestYValue, color: "#72f905" }], {
+                [ { data: GetEstmSprintData(), label: "Estimated Hour", color: "#f9ac05" },
+                { data: GetSprintData(), label: "Actual Hour: "+highestYValue, color: "#72f905" }], {
                     series: {
                         lines: { show: true, fill: true, fillColor: { colors: [{ opacity: 0.05 }, { opacity: 0.15 }] } },
                         points: { show: true }

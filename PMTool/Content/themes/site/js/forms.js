@@ -8,9 +8,9 @@
  *	Built for Katniss Premium Responsive Admin Template
  *  http://themeforest.net/category/site-templates/admin-templates
  */
-jQuery(document).ready(function(){
 
-    jQuery.noConflict();
+jQuery(document).ready(function(){
+	
 	// Transform upload file
 	jQuery('.uniform-file').uniform();
 	
@@ -90,6 +90,6 @@ jQuery(document).ready(function(){
 	    }
 	});
 	
-//	jQuery('#timepicker1').timepicker();
+	jQuery('#timepicker1').timepicker();
 	
 });
