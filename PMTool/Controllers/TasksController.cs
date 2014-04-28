@@ -106,6 +106,7 @@ namespace PMTool.Controllers
             TimeLog timelog = new TimeLog();
             timelog.TaskID = taskId;
             timelog.SprintID = sprintId;
+            
 
             return View(timelog);
         }
