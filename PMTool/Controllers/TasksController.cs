@@ -739,6 +739,19 @@ namespace PMTool.Controllers
                             unitOfWork.NotificationRepository.InsertOrUpdate(notification);
                         }
                     }
+
+                    //For Task Creator
+                    Notification objNotification = new Notification();
+                    objNotification.Title = "You have created a task. " + "Task Title: " + task.Title;
+
+                    objNotification.UserID = createdUser.UserId;
+                    objNotification.Description = objNotification.Title;
+                    objNotification.ProjectID = task.ProjectID;
+                    objNotification.TaskID = task.TaskID;
+                    objNotification.ActionDate = DateTime.Now;
+                    unitOfWork.NotificationRepository.InsertOrUpdate(objNotification);
+
+
                 }
                 else
                 {
@@ -786,6 +799,17 @@ namespace PMTool.Controllers
                             unitOfWork.NotificationRepository.InsertOrUpdate(notification);
                         }
                     }
+
+                    //For Task Creator
+                    Notification objNotification = new Notification();
+                    objNotification.Title = status;
+
+                    objNotification.UserID = unitOfWork.UserRepository.GetUserByUserID(task.CreatedBy).UserId;
+                    objNotification.Description = objNotification.Title;
+                    objNotification.ProjectID = task.ProjectID;
+                    objNotification.TaskID = task.TaskID;
+                    objNotification.ActionDate = DateTime.Now;
+                    unitOfWork.NotificationRepository.InsertOrUpdate(objNotification);
                 }
             }
 
