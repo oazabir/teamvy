@@ -735,6 +735,7 @@ namespace PMTool.Controllers
                             notification.Description = notification.Title;
                             notification.ProjectID = task.ProjectID;
                             notification.TaskID = task.TaskID;
+                            notification.ActionDate = DateTime.Now;
                             unitOfWork.NotificationRepository.InsertOrUpdate(notification);
                         }
                     }
@@ -755,6 +756,7 @@ namespace PMTool.Controllers
                                 notification.Description = notification.Title;
                                 notification.ProjectID = task.ProjectID;
                                 notification.TaskID = task.TaskID;
+                                notification.ActionDate = DateTime.Now;
                                 unitOfWork.NotificationRepository.InsertOrUpdate(notification);
                             }
                         }
@@ -780,6 +782,7 @@ namespace PMTool.Controllers
                             notification.Description = notification.Title;
                             notification.ProjectID = task.ProjectID;
                             notification.TaskID = task.TaskID;
+                            notification.ActionDate = DateTime.Now;
                             unitOfWork.NotificationRepository.InsertOrUpdate(notification);
                         }
                     }
