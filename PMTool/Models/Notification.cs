@@ -36,5 +36,7 @@ namespace PMTool.Models
         public int UserID { get; set; }
 
         public virtual UserProfile User { get; set; }
+
+        public DateTime? ActionDate { get; set; }
     }
 }

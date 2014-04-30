@@ -106,6 +106,7 @@ namespace PMTool.Controllers
             TimeLog timelog = new TimeLog();
             timelog.TaskID = taskId;
             timelog.SprintID = sprintId;
+            
 
             return View(timelog);
         }
@@ -192,6 +193,9 @@ namespace PMTool.Controllers
 
         public PartialViewResult _TaskList(long projectID, long? statusID, int? page, string SelectedStatusID, string SelectedPriorityID, string SelectedUserID, string SelectedSprintID)
         {
+
+            if (page == null) page = 1;
+
             int currentPageIndex = page.HasValue ? page.Value : 1;
             IList<Task> taskList;
             Project project;
@@ -232,7 +236,7 @@ namespace PMTool.Controllers
             project = unitOfWork.ProjectRepository.Find(projectID);
             //If this project is created by the current user. Then he can see all task.
             if (project.CreatedBy == user.UserId)
-                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p=>p.ParentTaskId == null).ToList();
+                taskList = unitOfWork.TaskRepository.ByProjectIncluding(projectID, task => task.Project).Include(task => task.Priority).Include(task => task.ChildTask).Include(task => task.Users).Include(task => task.Followers).Include(task => task.Labels).Where(p=>p.ParentTaskId == null && p.ProjectStatus.Name.ToLower() != "closed").ToList();
 
             //If this project is owned by the current user. Then he can see all task.
             else if (project.ProjectOwners.Contains(user))
@@ -307,6 +311,7 @@ namespace PMTool.Controllers
             ViewBag.PossibleLabels = allLabels;
             Task task = new Task();
             task.ProjectID = ProjectID;
+            task.TaskUID = "T" + unitOfWork.TaskRepository.All.Where(p=>p.ProjectID == ProjectID).Count().ToString();
             //task.StartDate = DateTime.Now;
             //task.EndDate = DateTime.Now;
 
@@ -730,9 +735,23 @@ namespace PMTool.Controllers
                             notification.Description = notification.Title;
                             notification.ProjectID = task.ProjectID;
                             notification.TaskID = task.TaskID;
+                            notification.ActionDate = DateTime.Now;
                             unitOfWork.NotificationRepository.InsertOrUpdate(notification);
                         }
                     }
+
+                    //For Task Creator
+                    Notification objNotification = new Notification();
+                    objNotification.Title = "You have created a task. " + "Task Title: " + task.Title;
+
+                    objNotification.UserID = createdUser.UserId;
+                    objNotification.Description = objNotification.Title;
+                    objNotification.ProjectID = task.ProjectID;
+                    objNotification.TaskID = task.TaskID;
+                    objNotification.ActionDate = DateTime.Now;
+                    unitOfWork.NotificationRepository.InsertOrUpdate(objNotification);
+
+
                 }
                 else
                 {
@@ -750,6 +769,7 @@ namespace PMTool.Controllers
                                 notification.Description = notification.Title;
                                 notification.ProjectID = task.ProjectID;
                                 notification.TaskID = task.TaskID;
+                                notification.ActionDate = DateTime.Now;
                                 unitOfWork.NotificationRepository.InsertOrUpdate(notification);
                             }
                         }
@@ -775,9 +795,21 @@ namespace PMTool.Controllers
                             notification.Description = notification.Title;
                             notification.ProjectID = task.ProjectID;
                             notification.TaskID = task.TaskID;
+                            notification.ActionDate = DateTime.Now;
                             unitOfWork.NotificationRepository.InsertOrUpdate(notification);
                         }
                     }
+
+                    //For Task Creator
+                    Notification objNotification = new Notification();
+                    objNotification.Title = status;
+
+                    objNotification.UserID = unitOfWork.UserRepository.GetUserByUserID(task.CreatedBy).UserId;
+                    objNotification.Description = objNotification.Title;
+                    objNotification.ProjectID = task.ProjectID;
+                    objNotification.TaskID = task.TaskID;
+                    objNotification.ActionDate = DateTime.Now;
+                    unitOfWork.NotificationRepository.InsertOrUpdate(objNotification);
                 }
             }
 

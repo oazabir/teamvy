@@ -131,23 +131,57 @@ namespace PMTool.Controllers
 
             var SprintTimeLog = from s in expendedTime
                             group s by new {s.EntryDate} into g
-                            select new { g.Key.EntryDate, TotalHour = g.Sum(s => s.TaskHour) };
+                            //select new { g.Key.EntryDate, TotalHour = g.Sum(s => s.TaskHour) };
+                            select new { g.Key.EntryDate, TotalRemaingHour = g.Sum(s => s.RemainingHour) };
+
 
             int baseValue = 0;
             decimal remainingHour = sprintEstHour;
 
             for (DateTime dt = sprint.StartDate; dt <= sprint.EndDate && dt <= DateTime.Today; dt = dt.AddDays(1))
             {
-                decimal entryHour = 0;
-                entryHour = SprintTimeLog.Where(p => p.EntryDate == dt).Sum(q=> q.TotalHour);
-                remainingHour = remainingHour - entryHour;
-                Chart chart = new Chart { XValue = baseValue, YValue = remainingHour };
+                //decimal entryHour = 0;
+                //entryHour = SprintTimeLog.Where(p => p.EntryDate == dt).Sum(q=> q.TotalHour);
+                decimal? totalRemainingHour = 0;
+                totalRemainingHour = SprintTimeLog.Where(p => p.EntryDate == dt).Sum(q => q.TotalRemaingHour);
+
+                //remainingHour = remainingHour - entryHour;
+                //List<TimeLog> lstTask = unitOfWork.TimeLogRepository.All.Where(t=>t.SprintID == sprintId
+             
+                Chart chart = new Chart { XValue = baseValue, YValue = totalRemainingHour};
                 chartList.Add(chart);
                 baseValue++;
                 
             }
             return Json(chartList, JsonRequestBehavior.AllowGet);
         }
+
+
+        public JsonResult SprintBurnDownEstimetedData(long sprintId)
+        {
+            Decimal sprintEstHour = 0;
+
+            Sprint sprint = unitOfWork.SprintRepository.Find(sprintId);
+            List<Task> sprintTasks = unitOfWork.TaskRepository.GetTasksBySprintID(sprintId);
+            var chartList = new List<Chart>();
+
+            sprintEstHour = sprintTasks.Sum(p => p.TaskHour);
+
+            int totalDay = (int)(sprint.EndDate - sprint.StartDate).TotalDays;
+
+            decimal y = sprintEstHour;
+            for (int x = 0; x < totalDay; x++)
+            {
+                Chart chart = new Chart { XValue = x, YValue = y };
+                chartList.Add(chart);
+
+                y = y - (sprintEstHour / totalDay);
+            }
+
+            return Json(chartList, JsonRequestBehavior.AllowGet);
+        }
+
+        
 
 
     }

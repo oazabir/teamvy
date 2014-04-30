@@ -11,7 +11,7 @@ namespace PMTool.Models
     /// </summary>
     public class Chart
     {
-        public decimal XValue { get; set; }
-        public decimal YValue { get; set; }
+        public decimal? XValue { get; set; }
+        public decimal? YValue { get; set; }
     }
 }

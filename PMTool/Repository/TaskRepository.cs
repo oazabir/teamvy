@@ -296,7 +296,7 @@ namespace PMTool.Repository
 
         public List<Task> GetTasksByProjectID(long projectID)
         {
-            return context.Tasks.Where(t => t.ProjectID == projectID).ToList();
+            return context.Tasks.Where(t => t.ProjectID == projectID && t.ProjectStatus.Name.ToLower() != "closed").ToList();
         }
 
         public List<Task> GetBySearchCriteria(Search search)
