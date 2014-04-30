@@ -73,7 +73,7 @@ namespace PMTool.Controllers
 
                                 else
                                 {
-                                    objOflstMailer = DailyTaskStatus();
+                                    objOflstMailer = DailyTaskStatus(emailSchedule);
                                     objOflstMailer.AddRange(DailyTaskStatusForCreator());
 
                                     if (objOflstMailer.Count() > 0)
@@ -99,7 +99,7 @@ namespace PMTool.Controllers
 
                         else 
                         {
-                            objOflstMailer = DailyTaskStatus();
+                            objOflstMailer = DailyTaskStatus(emailSchedule);
 
                             if (objOflstMailer.Count() > 0)
                             {
@@ -131,7 +131,7 @@ namespace PMTool.Controllers
          Send a daily Task Status email to each user having tasks in projects, that are part of Sprints.
          It should be sent on a specific time setat the project level. 
          */
-        public List<Mailer> DailyTaskStatus() 
+        public List<Mailer> DailyTaskStatus(EmailScheduler objEmailScheduler ) 
         {
             List<Mailer> mailerList = new List<Mailer>();
             List<Task> taskList = unitofWork.TaskRepository.AllIncludingForMail().Where(t => t.ProjectStatus.Name.ToLower() != "closed").ToList();
@@ -144,12 +144,12 @@ namespace PMTool.Controllers
             foreach(UserProfile objOfuser in userList)
             {
                 string messageBody = string.Empty;
-                List<Task> userTaskList = taskList.Where(a => a.Users.Any(b => b.UserId == objOfuser.UserId)).ToList();
+                List<Task> userTaskList = taskList.Where(a => a.Users.Any(b => b.UserId == objOfuser.UserId) && a.ProjectID == objEmailScheduler.ProjectID).ToList();
 
                 if (userTaskList.Count > 0)
                 {
                     messageBody = "<b>Dear &nbsp;" + objOfuser.FirstName + "</b>,<br>" + "<b>Your Daily Tasks Status are given below</b><br>";
-                    messageBody += "<table><tr " + styleTableHeader + "><th>Task ID</th> <th>Task Title</th> <th>Task Status</th></tr>";
+                    messageBody += "<table><tr " + styleTableHeader + "><th>Task ID</th> <th>Task Title</th> <th>Task Status</th> <th>Project</th></tr>";
 
                     foreach (var task in userTaskList)
                     {                 
@@ -160,6 +160,7 @@ namespace PMTool.Controllers
                         //if(task.ProjectStatus.Name == "")
                           //  val = task.ProjectStatus.Name;
                         messageBody += "<td " + styleGroupbyRow + "> " + ((task.ProjectStatus==null) ? " " : task.ProjectStatus.Name )+ "</td>";
+                        messageBody += "<td " + styleGroupbyRow + "> " + task.Project.Name + "</td>";
                         messageBody += "</tr>";
                     }
 
@@ -200,7 +201,7 @@ namespace PMTool.Controllers
                 if (userTaskList.Count > 0)
                 {
                     messageBody = "<b>Dear &nbsp;" + objOfuser.FirstName + "</b>,<br>" + "<b>Your Daily Tasks Status are given below</b><br>";
-                    messageBody += "<table><tr " + styleTableHeader + "><th>Task ID</th> <th>Task Title</th> <th>Task Status</th></tr>";
+                    messageBody += "<table><tr " + styleTableHeader + "><th>Task ID</th> <th>Task Title</th> <th>Task Status</th> <th>Project</th></tr>";
 
                     foreach (var task in userTaskList)
                     {
@@ -211,6 +212,7 @@ namespace PMTool.Controllers
                         //if(task.ProjectStatus.Name == "")
                         //  val = task.ProjectStatus.Name;
                         messageBody += "<td " + styleGroupbyRow + "> " + ((task.ProjectStatus == null) ? " " : task.ProjectStatus.Name) + "</td>";
+                        messageBody += "<td " + styleGroupbyRow + "> " + task.Project.Name + "</td>";
                         messageBody += "</tr>";
                     }
 
