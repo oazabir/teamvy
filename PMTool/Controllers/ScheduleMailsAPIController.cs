@@ -141,7 +141,9 @@ namespace PMTool.Controllers
                             bool NotificationDet = unitofWork.NotificationRepository.GetNotificationDet(objOfnotification.ProjectID);
                             if (NotificationDet == true && objOfnotification.ActionDate > scheduleDateTime && objOfnotification.ActionDate < scheduleDateTime)
                             {
+                                
                                 //objOflstMailer = NotificationEmail();
+                                //
                             }
                         }
                     }
