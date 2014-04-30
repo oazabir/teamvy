@@ -42,23 +42,30 @@ namespace PMTool.Controllers
            
             //objOflstMailer.Add(new Mailer { UseMailID = "mahedee.hasan@gmail.com", HtmlMailBody = "This is a test mgs", MailSubject = "Hello msg" });
 
-            List<EmailScheduler> emailschedulerlst = unitofWork.EmailSchedulerRepository.GetEmailSchedulerAll();
+            List<EmailScheduler> emailschedulerlst = unitofWork.EmailSchedulerRepository.GetEmailSchedulerAll(); // This Method Return All the Schedule
+            
+            DateTime cdate = DateTime.Now;
+            DateTime onlyDate = cdate.Date;
+            TimeSpan ts1 = cdate.TimeOfDay;
+            DateTime currentdateTime = onlyDate + ts1;
+
+            List<EmailSentStatus> objOfEmailSent = new List<EmailSentStatus>();
+            objOfEmailSent = unitofWork.EmailSentStatusRepository.GetEmailSentStatuseAll();
+
 
             foreach (var emailSchedule in emailschedulerlst) 
             {
                 if (emailSchedule.SchedulerTitleID == 2) //This is for Daily Status mail
                 {
-                        List<EmailSentStatus> objOfEmailSent = new List<EmailSentStatus>();
-                        objOfEmailSent = unitofWork.EmailSentStatusRepository.GetEmailSentStatuseAll();
-
-                        DateTime cdate = DateTime.Now;
-                        DateTime onlyDate = cdate.Date;
-
+                        //List<EmailSentStatus> objOfEmailSent = new List<EmailSentStatus>();
+                        //objOfEmailSent = unitofWork.EmailSentStatusRepository.GetEmailSentStatuseAll();
+                        
+                        //DateTime cdate = DateTime.Now;
+                        //DateTime onlyDate = cdate.Date;
+                        //TimeSpan ts1 = cdate.TimeOfDay;
+                        //DateTime currentdateTime = onlyDate + ts1;
+                        
                         DateTime scheduleDateTime = DateTime.ParseExact(emailSchedule.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
-
-                        TimeSpan ts1 = cdate.TimeOfDay;
-                        DateTime currentdateTime = onlyDate + ts1;
-
 
                         if (objOfEmailSent.Count>0)
                         {
@@ -66,7 +73,7 @@ namespace PMTool.Controllers
                             {
 
                                 bool emailStatus = unitofWork.EmailSentStatusRepository.EmailSentStatus(ObjofList.EmailSchedulerID, ObjofList.ScheduleTypeID, ObjofList.ScheduleDateTime);
-                                if (emailStatus = true && currentdateTime <= scheduleDateTime)
+                                if (emailStatus = true && currentdateTime >= scheduleDateTime)
                                 {
                                     continue;
                                 }
@@ -121,6 +128,32 @@ namespace PMTool.Controllers
                         }
                            
                 }
+
+                else if (emailSchedule.SchedulerTitleID == 4) // This is for Notification Email
+                {
+                    DateTime scheduleDateTime = DateTime.ParseExact(emailSchedule.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
+                    List<Notification> ListOfNotification = unitofWork.NotificationRepository.GetNotificationDetails();              
+  
+                    if (objOfEmailSent.Count > 0)
+                    {
+                        foreach (var objOfnotification in ListOfNotification)
+                        {
+                            bool NotificationDet = unitofWork.NotificationRepository.GetNotificationDet(objOfnotification.ProjectID);
+                            if (NotificationDet == true && objOfnotification.ActionDate > scheduleDateTime && objOfnotification.ActionDate < scheduleDateTime)
+                            {
+                                //objOflstMailer = NotificationEmail();
+                            }
+                        }
+                    }
+                    else 
+                    {
+                        // 
+                    }
+
+                  
+                }
+
+
             }
 
             return objOflstMailer;

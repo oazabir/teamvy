@@ -81,6 +81,26 @@ namespace PMTool.Repository
             List<Notification> notification = context.Notifications.Where(n => n.ProjectID == ProjectID).ToList();
             return notification;
         }
+
+        public List<Notification> GetNotificationDetails() // Created By Foysal For Notification Mail Purpose
+        {
+            List<Notification> ObjListOfNotification = this.AllIncluding().ToList();
+            ObjListOfNotification = context.Notifications.ToList();
+            return ObjListOfNotification;
+        }
+
+        public bool GetNotificationDet(long? projectId) // Created By Foysal For Notification Mail Purpose
+        {
+            List<Notification> lstOfNotification = context.Notifications.Where(a => a.ProjectID == projectId).ToList();
+            if (lstOfNotification.Count > 0)
+            {
+                return true;
+            }
+            else 
+            {
+                return false;
+            }
+        }
     }
 
     public interface INotificationRepository : IDisposable

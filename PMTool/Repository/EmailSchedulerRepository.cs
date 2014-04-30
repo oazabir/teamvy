@@ -144,7 +144,8 @@ namespace PMTool.Repository
             {"0", "---Select Title---"},
             { "1", "Reminder mail to provide estimation" }, 
             { "2", "Daily status mail" },
-            { "3", "Daily digest mail" }, };
+            { "3", "Daily digest mail" }, 
+            { "4", "Daily Notification mail"}};
 
             return lstOfEmailSchedules;
         }
