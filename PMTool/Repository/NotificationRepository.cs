@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Web;
 using PMTool.Models;
 using PMTool.Repository;
+using System.Globalization;
 
 namespace PMTool.Repository
 { 
@@ -80,6 +81,13 @@ namespace PMTool.Repository
         {
             List<Notification> notification = context.Notifications.Where(n => n.ProjectID == ProjectID).ToList();
             return notification;
+        }
+
+        public List<Notification> GetNotificationDetails() // Created By Foysal For Notification Mail Purpose
+        {
+            List<Notification> ObjListOfNotification = this.AllIncluding().ToList();
+            ObjListOfNotification = context.Notifications.ToList();
+            return ObjListOfNotification;
         }
     }
 

@@ -121,8 +121,10 @@ namespace PMTool.Repository
                                                                 { "1", "Task's Users" }, 
                                                                 { "2", "Task's Followers" },
                                                                 { "3", "Task's Users & Followers" },
-                                                                {"4", "Task's Creator & Followrs"},
-                                                                 { "5", "Project's Users" }};
+                                                                { "4", "Task's Creator & Followers"},
+                                                                { "5", "Project's Users" },
+                                                                { "6","Task's Creator & Users"},
+                                                                { "7","Task's Creator"}};
         }
 
         public Dictionary<string, string> GetSchedulerTypeAll()
@@ -142,7 +144,8 @@ namespace PMTool.Repository
             {"0", "---Select Title---"},
             { "1", "Reminder mail to provide estimation" }, 
             { "2", "Daily status mail" },
-            { "3", "Daily digest mail" }, };
+            { "3", "Daily digest mail" }, 
+            { "4", "Daily Notification mail"}};
 
             return lstOfEmailSchedules;
         }
