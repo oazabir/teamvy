@@ -67,13 +67,17 @@ namespace PMTool.Controllers
                         
                         DateTime scheduleDateTime = DateTime.ParseExact(emailSchedule.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
 
-                        if (objOfEmailSent.Count>0)
+                        if (objOfEmailSent.Count > 0)
                         {
                             foreach (var ObjofList in objOfEmailSent)
                             {
 
-                                bool emailStatus = unitofWork.EmailSentStatusRepository.EmailSentStatus(ObjofList.EmailSchedulerID, ObjofList.ScheduleTypeID, ObjofList.ScheduleDateTime);
-                                if (emailStatus = true && currentdateTime >= scheduleDateTime)
+                                bool emailStatus = unitofWork.EmailSentStatusRepository.EmailSentStatus(ObjofList.EmailSchedulerID, ObjofList.ScheduleTypeID, scheduleDateTime);
+                                if (emailStatus == true && currentdateTime >= scheduleDateTime)
+                                {
+                                    continue;
+                                }
+                                else if(currentdateTime<=scheduleDateTime)
                                 {
                                     continue;
                                 }
@@ -83,7 +87,7 @@ namespace PMTool.Controllers
                                     objOflstMailer = DailyTaskStatus(emailSchedule);
                                     objOflstMailer.AddRange(DailyTaskStatusForCreator());
 
-                                    if (objOflstMailer.Count() > 0)
+                                    if (objOflstMailer.Count >= 0)
                                     {
 
                                         EmailSentStatus objEmailSentStatus = new EmailSentStatus();
@@ -106,25 +110,29 @@ namespace PMTool.Controllers
 
                         else 
                         {
-                            objOflstMailer = DailyTaskStatus(emailSchedule);
-
-                            if (objOflstMailer.Count() > 0)
+                            if (currentdateTime >= scheduleDateTime) 
                             {
+                                objOflstMailer = DailyTaskStatus(emailSchedule);
+                                objOflstMailer.AddRange(DailyTaskStatusForCreator());
 
-                                EmailSentStatus objEmailSentStatus = new EmailSentStatus();
-                                objEmailSentStatus.EmailSchedulerID = 2;
-                                objEmailSentStatus.ScheduleTypeID = 1;
-                                DateTime date = DateTime.ParseExact(emailSchedule.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
-                                TimeSpan ts = date.TimeOfDay;
-                                objEmailSentStatus.ScheduleDateTime = DateTime.Today.Add(ts);
-                                objEmailSentStatus.SentDateTime = DateTime.Now;
-                                objEmailSentStatus.SentStatus = true;
-                                objEmailSentStatus.ActionTime = DateTime.Now;
+                                if (objOflstMailer.Count >= 0)
+                                {
 
-                                unitofWork.EmailSentStatusRepository.InsertOrUpdate(objEmailSentStatus);
-                                unitofWork.Save();
+                                    EmailSentStatus objEmailSentStatus = new EmailSentStatus();
+                                    objEmailSentStatus.EmailSchedulerID = 2;
+                                    objEmailSentStatus.ScheduleTypeID = 1;
+                                    DateTime date = DateTime.ParseExact(emailSchedule.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
+                                    TimeSpan ts = date.TimeOfDay;
+                                    objEmailSentStatus.ScheduleDateTime = DateTime.Today.Add(ts);
+                                    objEmailSentStatus.SentDateTime = DateTime.Now;
+                                    objEmailSentStatus.SentStatus = true;
+                                    objEmailSentStatus.ActionTime = DateTime.Now;
 
-                            }
+                                    unitofWork.EmailSentStatusRepository.InsertOrUpdate(objEmailSentStatus);
+                                    unitofWork.Save();
+
+                                }
+                            }                  
                         }
                            
                 }
@@ -134,7 +142,7 @@ namespace PMTool.Controllers
                     DateTime scheduleDateTime = DateTime.ParseExact(emailSchedule.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
                     //List<Notification> ListOfNotification = unitofWork.NotificationRepository.GetNotificationDetails(emailSchedule);              
   
-                    if (objOfEmailSent.Count > 0)
+                    if (objOfEmailSent.Count >0)
                     {
 
                         foreach (var objOfEmailSentStutusDet in objOfEmailSent) 
@@ -143,6 +151,10 @@ namespace PMTool.Controllers
                             bool emailStatus = unitofWork.EmailSentStatusRepository.EmailSentStatus(objOfEmailSentStutusDet.EmailSchedulerID, objOfEmailSentStutusDet.ScheduleTypeID, scheduleDateTime);
 
                             if (emailStatus == true && currentdateTime>scheduleDateTime)
+                            {
+                                continue;
+                            }
+                            else if(currentdateTime<=scheduleDateTime)
                             {
                                 continue;
                             }
@@ -173,23 +185,27 @@ namespace PMTool.Controllers
                     }
                     else 
                     {
-                        objOflstMailer = NotificationEmail(emailSchedule.ProjectID, scheduleDateTime); // Mail Function Call here
-
-                        if (objOflstMailer.Count > 0)
+                        if (currentdateTime >= scheduleDateTime) 
                         {
-                            EmailSentStatus objEmailSentStatus = new EmailSentStatus();
-                            objEmailSentStatus.EmailSchedulerID = 4;
-                            objEmailSentStatus.ScheduleTypeID = 1;
-                            DateTime date = DateTime.ParseExact(emailSchedule.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
-                            TimeSpan ts = date.TimeOfDay;
-                            objEmailSentStatus.ScheduleDateTime = DateTime.Today.Add(ts);
-                            objEmailSentStatus.SentDateTime = DateTime.Now;
-                            objEmailSentStatus.SentStatus = true;
-                            objEmailSentStatus.ActionTime = DateTime.Now;
+                            objOflstMailer = NotificationEmail(emailSchedule.ProjectID, scheduleDateTime); // Mail Function Call here
 
-                            unitofWork.EmailSentStatusRepository.InsertOrUpdate(objEmailSentStatus);
-                            unitofWork.Save();
+                            if (objOflstMailer.Count >= 0)
+                            {
+                                EmailSentStatus objEmailSentStatus = new EmailSentStatus();
+                                objEmailSentStatus.EmailSchedulerID = 4;
+                                objEmailSentStatus.ScheduleTypeID = 1;
+                                DateTime date = DateTime.ParseExact(emailSchedule.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
+                                TimeSpan ts = date.TimeOfDay;
+                                objEmailSentStatus.ScheduleDateTime = DateTime.Today.Add(ts);
+                                objEmailSentStatus.SentDateTime = DateTime.Now;
+                                objEmailSentStatus.SentStatus = true;
+                                objEmailSentStatus.ActionTime = DateTime.Now;
+
+                                unitofWork.EmailSentStatusRepository.InsertOrUpdate(objEmailSentStatus);
+                                unitofWork.Save();
+                            }
                         }
+                     
                     }
 
                   
@@ -255,7 +271,7 @@ namespace PMTool.Controllers
 
 
         /* 
-         Send Notification Email if any update occur in task update
+         Send Notification Email to the User if any update occur in task update
          */
 
         public List<Mailer> NotificationEmail(long projectId, DateTime scheduleDt) 
