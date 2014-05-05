@@ -132,24 +132,64 @@ namespace PMTool.Controllers
                 else if (emailSchedule.SchedulerTitleID == 4) // This is for Notification Email
                 {
                     DateTime scheduleDateTime = DateTime.ParseExact(emailSchedule.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
-                    List<Notification> ListOfNotification = unitofWork.NotificationRepository.GetNotificationDetails();              
+                    //List<Notification> ListOfNotification = unitofWork.NotificationRepository.GetNotificationDetails(emailSchedule);              
   
                     if (objOfEmailSent.Count > 0)
                     {
-                        foreach (var objOfnotification in ListOfNotification)
+
+                        foreach (var objOfEmailSentStutusDet in objOfEmailSent) 
                         {
-                            bool NotificationDet = unitofWork.NotificationRepository.GetNotificationDet(objOfnotification.ProjectID);
-                            if (NotificationDet == true && objOfnotification.ActionDate > scheduleDateTime && objOfnotification.ActionDate < scheduleDateTime)
+
+                            bool emailStatus = unitofWork.EmailSentStatusRepository.EmailSentStatus(objOfEmailSentStutusDet.EmailSchedulerID, objOfEmailSentStutusDet.ScheduleTypeID, scheduleDateTime);
+
+                            if (emailStatus == true && currentdateTime>scheduleDateTime)
                             {
-                                
-                                //objOflstMailer = NotificationEmail();
-                                //
+                                continue;
+                            }
+                           
+                            else
+                            {
+                                objOflstMailer = NotificationEmail(emailSchedule.ProjectID, scheduleDateTime); // Mail Function Call here
+
+                                if (objOflstMailer.Count >= 0)
+                                {
+                                    EmailSentStatus objEmailSentStatus = new EmailSentStatus();
+                                    objEmailSentStatus.EmailSchedulerID = 4;
+                                    objEmailSentStatus.ScheduleTypeID = 1;
+                                    DateTime date = DateTime.ParseExact(emailSchedule.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
+                                    TimeSpan ts = date.TimeOfDay;
+                                    objEmailSentStatus.ScheduleDateTime = DateTime.Today.Add(ts);
+                                    objEmailSentStatus.SentDateTime = DateTime.Now;
+                                    objEmailSentStatus.SentStatus = true;
+                                    objEmailSentStatus.ActionTime = DateTime.Now;
+
+                                    unitofWork.EmailSentStatusRepository.InsertOrUpdate(objEmailSentStatus);
+                                    unitofWork.Save();
+                                }
                             }
                         }
+
+                     
                     }
                     else 
                     {
-                        // 
+                        objOflstMailer = NotificationEmail(emailSchedule.ProjectID, scheduleDateTime); // Mail Function Call here
+
+                        if (objOflstMailer.Count > 0)
+                        {
+                            EmailSentStatus objEmailSentStatus = new EmailSentStatus();
+                            objEmailSentStatus.EmailSchedulerID = 4;
+                            objEmailSentStatus.ScheduleTypeID = 1;
+                            DateTime date = DateTime.ParseExact(emailSchedule.ScheduledTime, "h:mm tt", CultureInfo.InvariantCulture);
+                            TimeSpan ts = date.TimeOfDay;
+                            objEmailSentStatus.ScheduleDateTime = DateTime.Today.Add(ts);
+                            objEmailSentStatus.SentDateTime = DateTime.Now;
+                            objEmailSentStatus.SentStatus = true;
+                            objEmailSentStatus.ActionTime = DateTime.Now;
+
+                            unitofWork.EmailSentStatusRepository.InsertOrUpdate(objEmailSentStatus);
+                            unitofWork.Save();
+                        }
                     }
 
                   
@@ -212,6 +252,155 @@ namespace PMTool.Controllers
 
             return mailerList;
         }
+
+
+        /* 
+         Send Notification Email if any update occur in task update
+         */
+
+        public List<Mailer> NotificationEmail(long projectId, DateTime scheduleDt) 
+        {
+            List<EmailSentStatus> lstEmailSent = unitofWork.EmailSentStatusRepository.All.Where(p => p.ScheduleTypeID == 1 && p.EmailSchedulerID == 4).ToList();
+            var maxSentDate = (from m in lstEmailSent
+                               select m.ScheduleDateTime).Max();
+
+            if (lstEmailSent.Count != 0)
+            {
+                List<Notification> ListOfNotification = unitofWork.NotificationRepository.AllIncluding().Where(p => p.ActionDate > maxSentDate && p.ActionDate <= scheduleDt && p.ProjectID == projectId).ToList();
+                List<Mailer> mailerList = new List<Mailer>();
+                List<UserProfile> userList = unitofWork.UserRepository.All();
+
+                string styleTableHeader = "style= \"background-color:#0094ff; border:1px solid;\"";
+                string styleGroupbyRow = "style= \"background-color:#57C0E1;\"";
+
+                foreach (UserProfile objOfuser in userList)
+                {
+                    string messageBody = string.Empty;
+                    List<Notification> userTasksNotificationList = ListOfNotification.Where(a => a.UserID == objOfuser.UserId).ToList();
+
+
+                    if (userTasksNotificationList.Count > 0)
+                    {
+
+                        messageBody = "<b>Dear &nbsp;" + objOfuser.FirstName + "</b>,<br>" + "<b>Your Task Changes History is Given Below</b><br>";
+                        messageBody += "<table><tr " + styleTableHeader + "><th>Task ID</th><th>Task Title</th><th>Description</th><th>Modifying Date</th></tr>";
+
+                        foreach (var Notificationlst in userTasksNotificationList)
+                        {
+
+                            messageBody += "<tr>";
+                            messageBody += "<td " + styleGroupbyRow + "> " + ((Notificationlst.Task == null) ? " " : Notificationlst.Task.TaskUID) + "</td>";
+                            messageBody += "<td " + styleGroupbyRow + "> " + ((Notificationlst.Task == null) ? " " : Notificationlst.Task.Title) + "</td>";
+                            messageBody += "<td " + styleGroupbyRow + "> " + Notificationlst.Description + "</td>";
+                            messageBody += "<td " + styleGroupbyRow + "> " + Notificationlst.ActionDate + "</td>";
+                            messageBody += "</tr>";
+                        }
+                        messageBody += "</table></div><br /><div style='float:left;'><p>We sent you this email because you signed up in PMTool and tasks are assigned to you. <br /> Please don't reply To this mail.</p><p>"
+                        + "Regards,<br />PMTool</p></div>";
+
+                        Mailer mailer = new Mailer();
+                        mailer.UseMailID = objOfuser.UserName;
+                        mailer.MailSubject = "Task Changes history Notification";
+                        mailer.HtmlMailBody = messageBody;
+                        mailerList.Add(mailer);
+                    }
+
+                }
+
+                return mailerList;
+
+            }
+
+            else 
+            {
+                List<Notification> ListOfNotification = unitofWork.NotificationRepository.AllIncluding().Where(p =>p.ActionDate >= scheduleDt && p.ProjectID == projectId).ToList();
+                List<Mailer> mailerList = new List<Mailer>();
+                List<UserProfile> userList = unitofWork.UserRepository.All();
+
+                string styleTableHeader = "style= \"background-color:#0094ff; border:1px solid;\"";
+                string styleGroupbyRow = "style= \"background-color:#57C0E1;\"";
+
+                foreach (UserProfile objOfuser in userList)
+                {
+                    string messageBody = string.Empty;
+                    List<Notification> userTasksNotificationList = ListOfNotification.Where(a => a.UserID == objOfuser.UserId).ToList();
+
+
+                    if (userTasksNotificationList.Count > 0)
+                    {
+
+                        messageBody = "<b>Dear &nbsp;" + objOfuser.FirstName + "</b>,<br>" + "<b>Your Task Changes History is Given Below</b><br>";
+                        messageBody += "<table><tr " + styleTableHeader + "><th>Task ID</th><th>Task Title</th><th>Description</th><th>Modifying Date</th></tr>";
+
+                        foreach (var Notificationlst in userTasksNotificationList)
+                        {
+
+                            messageBody += "<tr>";
+                            messageBody += "<td " + styleGroupbyRow + "> " + ((Notificationlst.Task == null) ? " " : Notificationlst.Task.TaskUID) + "</td>";
+                            messageBody += "<td " + styleGroupbyRow + "> " + ((Notificationlst.Task == null) ? " " : Notificationlst.Task.Title) + "</td>";
+                            messageBody += "<td " + styleGroupbyRow + "> " + Notificationlst.Description + "</td>";
+                            messageBody += "<td " + styleGroupbyRow + "> " + Notificationlst.ActionDate + "</td>";
+                            messageBody += "</tr>";
+                        }
+                        messageBody += "</table></div><br /><div style='float:left;'><p>We sent you this email because you signed up in PMTool and tasks are assigned to you. <br /> Please don't reply To this mail.</p><p>"
+                        + "Regards,<br />PMTool</p></div>";
+
+                        Mailer mailer = new Mailer();
+                        mailer.UseMailID = objOfuser.UserName;
+                        mailer.MailSubject = "Task Changes history Notification";
+                        mailer.HtmlMailBody = messageBody;
+                        mailerList.Add(mailer);
+                    }
+
+                }
+                return mailerList;
+            }
+
+            //List<Notification> ListOfNotification = unitofWork.NotificationRepository.AllIncluding().Where(p => p.ActionDate > maxSentDate && p.ActionDate <= scheduleDt && p.ProjectID == projectId).ToList();           
+            //List<Mailer> mailerList = new List<Mailer>();          
+            //List<UserProfile> userList = unitofWork.UserRepository.All();
+
+            //string styleTableHeader = "style= \"background-color:#0094ff; border:1px solid;\"";
+            //string styleGroupbyRow = "style= \"background-color:#57C0E1;\"";
+
+            //foreach (UserProfile objOfuser in userList)
+            //{
+            //    string messageBody = string.Empty;
+            //    List<Notification> userTasksNotificationList = ListOfNotification.Where(a => a.UserID == objOfuser.UserId).ToList();
+                
+                
+            //    if(userTasksNotificationList.Count>0)
+            //    {
+
+            //        messageBody = "<b>Dear &nbsp;" + objOfuser.FirstName + "</b>,<br>" + "<b>Your Task Changes History is Given Below</b><br>";
+            //        messageBody += "<table><tr " + styleTableHeader + "><th>Task ID</th><th>Task Title</th><th>Description</th><th>Modifying Date</th></tr>";
+
+            //        foreach(var Notificationlst in userTasksNotificationList)
+            //        {
+                       
+            //            messageBody += "<tr>";
+            //            messageBody += "<td " + styleGroupbyRow + "> " + ((Notificationlst.Task == null) ? " " : Notificationlst.Task.TaskUID) + "</td>";
+            //            messageBody += "<td " + styleGroupbyRow + "> " + ((Notificationlst.Task == null) ? " " : Notificationlst.Task.Title) + "</td>";
+            //            messageBody += "<td " + styleGroupbyRow + "> " + Notificationlst.Description + "</td>";
+            //            messageBody += "<td " + styleGroupbyRow + "> " + Notificationlst.ActionDate + "</td>";
+            //            messageBody += "</tr>";
+            //        }
+            //        messageBody += "</table></div><br /><div style='float:left;'><p>We sent you this email because you signed up in PMTool and tasks are assigned to you. <br /> Please don't reply To this mail.</p><p>"
+            //        + "Regards,<br />PMTool</p></div>";
+
+            //        Mailer mailer = new Mailer();
+            //        mailer.UseMailID = objOfuser.UserName;
+            //        mailer.MailSubject = "Task Changes history Notification";
+            //        mailer.HtmlMailBody = messageBody;
+            //        mailerList.Add(mailer);
+            //    }
+
+            //}
+
+            //return mailerList;
+        }
+    
+
 
 
         /*

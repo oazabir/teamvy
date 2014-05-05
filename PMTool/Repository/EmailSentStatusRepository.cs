@@ -56,9 +56,8 @@ namespace PMTool.Repository
         // This Method is for getting list of the Sent Mails Status Details - Created By Foysal @ 25-April,2014
         public List<EmailSentStatus> GetEmailSentStatuseAll() 
         {
-            List<EmailSentStatus> emailSentStatusList = this.AllIncluding().ToList();
+            List<EmailSentStatus> emailSentStatusList = new List<EmailSentStatus>();
             emailSentStatusList = context.EmailSentStatus.ToList();
-  
             return emailSentStatusList;
         }
 
