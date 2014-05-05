@@ -251,9 +251,9 @@
     </Compile>
     <Compile Include="Membership\Crypto.cs" />
     <Compile Include="Membership\WebSecurity.cs" />
-    <Compile Include="Migrations\201405050929357_initalmigration.cs" />
-    <Compile Include="Migrations\201405050929357_initalmigration.Designer.cs">
-      <DependentUpon>201405050929357_initalmigration.cs</DependentUpon>
+    <Compile Include="Migrations\201405050932466_initalmigration01.cs" />
+    <Compile Include="Migrations\201405050932466_initalmigration01.Designer.cs">
+      <DependentUpon>201405050932466_initalmigration01.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
@@ -2328,8 +2328,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201405050929357_initalmigration.resx">
-      <DependentUpon>201405050929357_initalmigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201405050932466_initalmigration01.resx">
+      <DependentUpon>201405050932466_initalmigration01.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
