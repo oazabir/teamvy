@@ -251,37 +251,9 @@
     </Compile>
     <Compile Include="Membership\Crypto.cs" />
     <Compile Include="Membership\WebSecurity.cs" />
-    <Compile Include="Migrations\201403240920209_Task unique ID modified.cs" />
-    <Compile Include="Migrations\201403240920209_Task unique ID modified.Designer.cs">
-      <DependentUpon>201403240920209_Task unique ID modified.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403281120151_initalmigration.cs" />
-    <Compile Include="Migrations\201403281120151_initalmigration.Designer.cs">
-      <DependentUpon>201403281120151_initalmigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404020128343_TimeLogModelCng.cs" />
-    <Compile Include="Migrations\201404020128343_TimeLogModelCng.Designer.cs">
-      <DependentUpon>201404020128343_TimeLogModelCng.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404020153013_TimeLogModelCng-1.cs" />
-    <Compile Include="Migrations\201404020153013_TimeLogModelCng-1.Designer.cs">
-      <DependentUpon>201404020153013_TimeLogModelCng-1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404020157442_TimeLogModelCng-2.cs" />
-    <Compile Include="Migrations\201404020157442_TimeLogModelCng-2.Designer.cs">
-      <DependentUpon>201404020157442_TimeLogModelCng-2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404100703084_addComment.cs" />
-    <Compile Include="Migrations\201404100703084_addComment.Designer.cs">
-      <DependentUpon>201404100703084_addComment.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404100714467_modifiedcomment.cs" />
-    <Compile Include="Migrations\201404100714467_modifiedcomment.Designer.cs">
-      <DependentUpon>201404100714467_modifiedcomment.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404230714330_modifyemailscheduler.cs" />
-    <Compile Include="Migrations\201404230714330_modifyemailscheduler.Designer.cs">
-      <DependentUpon>201404230714330_modifyemailscheduler.cs</DependentUpon>
+    <Compile Include="Migrations\201405050932466_initalmigration01.cs" />
+    <Compile Include="Migrations\201405050932466_initalmigration01.Designer.cs">
+      <DependentUpon>201405050932466_initalmigration01.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
@@ -2356,29 +2328,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201403240920209_Task unique ID modified.resx">
-      <DependentUpon>201403240920209_Task unique ID modified.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403281120151_initalmigration.resx">
-      <DependentUpon>201403281120151_initalmigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404020128343_TimeLogModelCng.resx">
-      <DependentUpon>201404020128343_TimeLogModelCng.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404020153013_TimeLogModelCng-1.resx">
-      <DependentUpon>201404020153013_TimeLogModelCng-1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404020157442_TimeLogModelCng-2.resx">
-      <DependentUpon>201404020157442_TimeLogModelCng-2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404100703084_addComment.resx">
-      <DependentUpon>201404100703084_addComment.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404100714467_modifiedcomment.resx">
-      <DependentUpon>201404100714467_modifiedcomment.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404230714330_modifyemailscheduler.resx">
-      <DependentUpon>201404230714330_modifyemailscheduler.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201405050932466_initalmigration01.resx">
+      <DependentUpon>201405050932466_initalmigration01.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
