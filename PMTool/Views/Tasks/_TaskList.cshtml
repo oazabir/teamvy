@@ -121,12 +121,14 @@
                     }
                 </td>
                 <td align="center">
-                    @if (item.Users.Any(u => u.UserName == User.Identity.Name) || item.Project.ProjectOwners.Any(u => u.UserName == User.Identity.Name))
+                   @* @if (item.Users.Any(u => u.UserName == User.Identity.Name) || item.Project.ProjectOwners.Any(u => u.UserName == User.Identity.Name))
                     {
+                        *@
+                        
                         @Html.ActionLink(" ", "Edit", new { id = item.TaskID }, new { @class = "icon-edit", @title = "Edit" })
                         <span>|</span>
                         @Html.ActionLink(" ", "Delete", new { id = item.TaskID }, new { @class = "icon-trash", @title = "Delete" })
-                    }
+                   @* }*@
                 </td>
 
             </tr>
