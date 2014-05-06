@@ -1,7 +1,189 @@
-﻿@{
+﻿@using MvcPaging
+@model PMTool.Models.SearchViewModel
+@{
     ViewBag.Title = "GetAllTasksCretedByUser";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+
+<script type="text/javascript">
+    jQuery(function ($) {
+        $("select#SelectedProjectID").change(function (evt) {
+
+            if ($("select#SelectedProjectID").val() != "-1") {
+
+                $.ajax({
+                    url: "@Url.Content("~/Tasks/ChangeProject")",
+
+                    
+                    type: 'POST',
+                    data: { SelectedProjectID: $("select#SelectedProjectID").val() },
+                    success: function (response) {
+                        $("select#SelectedStatusID").replaceWith(response)
+                    },
+                    error: function (xhr) {
+                        alert("Something went wrong, please try again");
+                    }
+                });
+            }
+        });
+
+
+    });
+
+</script>
+
+
+<script type="text/javascript">
+
+    function onAddTag(tag) {
+        alert("Added a tag: " + tag);
+    }
+    function onRemoveTag(tag) {
+        alert("Removed a tag: " + tag);
+    }
+
+    function onChangeTag(input, tag) {
+        alert("Changed a tag: " + tag);
+    }
+
+    jQuery(function () {
+
+        jQuery('#tags_1').tagsInput({ width: 'auto' });
+        jQuery('#tags_2').tagsInput({
+            width: 'auto',
+            onChange: function (elem, elem_tags) {
+                var languages = ['php', 'ruby', 'javascript'];
+                jQuery('.tag', elem_tags).each(function () {
+                    if (jQuery(this).text().search(new RegExp('\\b(' + languages.join('|') + ')\\b')) >= 0)
+                        jQuery(this).css('background-color', 'yellow');
+                });
+            }
+        });
+        jQuery('#tags_3').tagsInput({
+            width: 'auto',
+
+            autocomplete_url: 'test/fake_json_endpoint.html' // jquery ui autocomplete requires a json endpoint
+        });
+
+
+        jQuery(".slidingDiv").hide();
+        jQuery(".show_hide_div").show();
+        jQuery("#plus").text("+ Search Panel");
+
+        jQuery('.show_hide_div').toggle(function () {
+            //alert("Working");
+            jQuery(".slidingDiv").slideDown(
+              function () {
+                  jQuery("#plus").text("- Search Panel")
+              }
+            );
+        }, function () {
+            jQuery(".slidingDiv").slideUp(
+            function () {
+                jQuery("#plus").text("+ Search Panel")
+            }
+            );
+        });
+
+    });
+
+
+    function ShowTaskDetails(taskid) {
+        var url = jQuery('#ModalpopupTaskDetails').data('url');
+
+
+        jQuery.ajax({
+            url: url,
+            data: { id: taskid },
+            cache: false,
+            beforeSend: function () {
+                jQuery("#ModalLoading").modal('show');
+            },
+            success: function (data) {
+
+                jQuery('#popupcontainerTaskDetails').html(data);
+                jQuery("#ModalLoading").modal('hide');
+                jQuery("#ModalpopupTaskDetails").modal('show');
+            },
+            error: function (error) {
+                jQuery.jGrowl('somethig is wrong', { life: 5000 });
+            }
+        });
+        return false;
+    }
+</script>
+
+<p>
+
+  <a id="plus" class="show_hide_div btn btn-info btn-rounded" href="#" style="display: inline;">+ Search Panel</a>
+</p>
+
+@using (Html.BeginForm("SearchTaskForUser", "Tasks", FormMethod.Post))
+{
+    
+    <div class="slidingDiv" style="display: block;">
+
+        <table class="table table-bordered table-invoice">
+            <tr>
+                <td>Project</td>
+                <td>
+                    
+                    
+
+
+                    <span class="formwrapper">
+                        @Html.DropDownListFor(model => model.SelectedProjectID, ((IEnumerable<PMTool.Models.Project>)ViewBag.AllPossibleProjects).Select(option => new SelectListItem
+                   {
+                       Text = Html.DisplayTextFor(_ => option.Name).ToString(),
+                       Value = option.ProjectID.ToString(),
+                       Selected = (Model != null) && (option.ProjectID == Model.SelectedProjectID)
+                   }), "Choose...", new { @data_placeholder = "Choose a Country...", @style = "width: 221px", @class = "chzn-select", @tabindex = "2" })
+                   
+                   
+                   </span>
+
+                       
+                       
+                    
+
+
+                </td>
+                <td>Status</td>
+                <td>
+
+
+    @Html.DropDownListFor(model => model.SelectedStatusID, ((IEnumerable<PMTool.Models.ProjectStatus>)ViewBag.PossibleProjectStatus).Select(option => new SelectListItem
+{
+        Text = Html.DisplayTextFor(_ => option.Name).ToString(),
+        Value = option.ProjectStatusID.ToString(),
+        Selected = (Model != null) && (option.ProjectStatusID == Model.SelectedStatusID)
+}), "Choose...")
+
+
+
+                </td>
+                
+                
+
+            </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </td>
+          
+
+            </tr>
+            
+        </table>
+
+    </div>
+}
+
 
 <div class="pagetitle">
     <h1>Tasks Created By Me</h1>
@@ -31,7 +213,9 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (PMTool.Models.Task item in Model)
+            @if(ViewBag.AllTaskList!=null)
+            {
+            foreach (PMTool.Models.Task item in ViewBag.AllTaskList)
             {
                 <tr>
 
@@ -86,7 +270,7 @@
                                     @foreach (PMTool.Models.ProjectStatus status in item.Project.ProjectStatuses)
                                     {
                                         <li>
-                                            @Html.ActionLink(@status.Name, "ChangeStatusForUser", "Tasks",new { taskID = item.TaskID, statusID = @status.ProjectStatusID },"")
+                                            @Html.ActionLink(@status.Name, "ChangeStatusForUser", "Tasks",new { taskID = item.TaskID, statusID = @status.ProjectStatusID,filter=2 },"")
                                         </li>
                                     }
                                 </ul>
@@ -110,6 +294,7 @@
                     @Html.ActionLink(" ", "Delete", "Tasks", new { id = item.TaskID }, new { @class = "icon-trash", @title = "Delete" })
                     </td>
                 </tr>
+            }
             }
 
 
