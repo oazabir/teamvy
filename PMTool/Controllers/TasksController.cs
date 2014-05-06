@@ -210,6 +210,52 @@ namespace PMTool.Controllers
             return PartialView(taskList);
         }
 
+
+        public ActionResult GetAllTasksForUser()
+        {
+            List<Task> taskList = new List<Task>();
+            UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
+
+            if(user.Tasks.Count>0)
+            {
+                taskList=user.Tasks;
+            }
+
+
+            return View(taskList);
+        }
+
+        public ActionResult ChangeStatusForUser(long taskID, long? statusID)
+        {
+            Task task = unitOfWork.TaskRepository.Find(taskID);
+            task.ProjectStatusID = statusID;
+            unitOfWork.Save();
+            //return RedirectToAction("ProjectTasks", new { projectID =task.ProjectID});
+            List<Task> taskList = unitOfWork.TaskRepository.GetTasksByProjectID(task.ProjectID);
+            //return PartialView("_TaskList", taskList.ToPagedList(1, defaultPageSize));
+            return RedirectToAction("GetAllTasksForUser");
+
+           
+
+
+            //return RedirectToAction("Index");
+        }
+
+        public ActionResult GetAllTasksCretedByUser()
+        {
+            List<Task> taskList = new List<Task>();
+            UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
+
+            if (user.Tasks.Count > 0)
+            {
+                taskList = user.Tasks.Where(p => p.CreatedBy == user.UserId).ToList();
+            }
+
+
+            return View(taskList);
+        }
+
+
         private void GetTaskList(long projectID, out IList<Task> taskList, out Project project, long? statusId)
         {
             taskList = new List<Task>();
