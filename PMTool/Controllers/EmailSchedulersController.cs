@@ -11,7 +11,7 @@ using System.Web.Security;
 
 namespace PMTool.Controllers
 {
-    public class EmailSchedulersController : Controller
+    public class EmailSchedulersController : BaseController
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
 

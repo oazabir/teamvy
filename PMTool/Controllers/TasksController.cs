@@ -90,7 +90,29 @@ namespace PMTool.Controllers
         }
 
         //Action for get all time log on corresponding task added by Mahedee @ 13-03-14
-        public ViewResult TaskTimeLog(long taskId, long sprintId)
+        //public ViewResult TaskTimeLog(long taskId, long sprintId)
+        //{
+        //    List<TimeLog> timeLog = new List<TimeLog>();
+        //    timeLog = unitOfWork.TimeLogRepository.All.Where(p => p.TaskID == taskId).ToList();
+        //    ViewBag.TaskId = taskId;
+        //    ViewBag.SprintId = sprintId;
+        //    return View(timeLog);
+        //}
+
+        //Action for create time log on corresponding task added by Mahedee @ 13-03-14
+        //public ActionResult CreateTimeLog(long taskId, long sprintId)
+        //{
+        //    //Task task = unitOfWork.TaskRepository.get
+        //    TimeLog timelog = new TimeLog();
+        //    timelog.TaskID = taskId;
+        //    timelog.SprintID = sprintId;
+
+
+        //    return View(timelog);
+        //}
+        #region Methods of Badhon
+        //----------Methd Added by Badhon
+        public ViewResult TaskTimeLog(long taskId, string  sprintId)
         {
             List<TimeLog> timeLog = new List<TimeLog>();
             timeLog = unitOfWork.TimeLogRepository.All.Where(p => p.TaskID == taskId).ToList();
@@ -99,17 +121,24 @@ namespace PMTool.Controllers
             return View(timeLog);
         }
 
-        //Action for create time log on corresponding task added by Mahedee @ 13-03-14
-        public ActionResult CreateTimeLog(long taskId, long sprintId)
+
+        public ActionResult CreateTimeLog(long taskId, string sprintId)
         {
             //Task task = unitOfWork.TaskRepository.get
             TimeLog timelog = new TimeLog();
             timelog.TaskID = taskId;
-            timelog.SprintID = sprintId;
+            if (sprintId != string.Empty)
+            {
+                timelog.SprintID =Convert.ToInt64(sprintId);
+            }
 
 
             return View(timelog);
         }
+
+        //----------------------------
+        #endregion
+
 
 
         //Action to create time log on corresponding task added by Mahedee @ 18-03-14

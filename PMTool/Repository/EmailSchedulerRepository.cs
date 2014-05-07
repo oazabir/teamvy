@@ -84,13 +84,11 @@ namespace PMTool.Repository
 
                 item.Days = from days in GetDaysOfWeek()
                             where days.Key == item.ScheduledDay.ToString()
-                                           select new SelectListItem
-                                           {
-                                               Text = days.Value,
-                                               Value = days.Key
-                                           };
-
-
+                                    select new SelectListItem
+                                    {
+                                        Text = days.Value,
+                                        Value = days.Key
+                                    };
 
             }
 
