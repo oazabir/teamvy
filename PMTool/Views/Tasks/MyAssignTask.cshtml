@@ -44,7 +44,7 @@
                             @item.ActualTaskHour
                         </td>
                         <td style="text-align:center;">
-                              @Html.ActionLink(" ", "TaskTimeLog","Tasks", new { taskId = item.TaskID, sprintId = item.SprintID  }, new { @class = "icon-time", @title = "Log Entry" })
+                              @Html.ActionLink(" ", "TaskTimeLog","Tasks", new { taskId = item.TaskID, sprintId = item.SprintID.ToString()  }, new { @class = "icon-time", @title = "Log Entry" })
                         </td>
           
                     </tr>
