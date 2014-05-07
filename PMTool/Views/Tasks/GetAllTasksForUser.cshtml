@@ -1,6 +1,6 @@
 ﻿@model List<PMTool.Models.Task>
 @{
-    ViewBag.Title = "GetAllTasksForUser";
+    ViewBag.Title = "Get All Assigned Tasks";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -91,7 +91,7 @@
                                     @foreach (PMTool.Models.ProjectStatus status in item.Project.ProjectStatuses)
                                     {
                                         <li>
-                                            @Html.ActionLink(@status.Name, "ChangeStatusForUser", "Tasks",new { taskID = item.TaskID, statusID = @status.ProjectStatusID },"")
+                                            @Html.ActionLink(@status.Name, "ChangeStatusForUser", "Tasks",new { taskID = item.TaskID, statusID = @status.ProjectStatusID,filter=1 },"")
                                         </li>
                                     }
                                 </ul>
