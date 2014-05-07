@@ -1,0 +1,12 @@
+﻿@model List<PMTool.Models.ProjectStatus>
+@{
+    Layout = null;
+    <select id="SelectedStatusID" name="SelectedStatusID">
+    <option value="-1">Select...</option>
+        @foreach (var item in Model)
+        {
+            
+            <option value="@item.ProjectStatusID">@item.Name</option>
+        }
+    </select>
+}
