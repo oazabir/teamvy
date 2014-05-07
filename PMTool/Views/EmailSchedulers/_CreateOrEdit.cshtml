@@ -2,6 +2,58 @@
 
 @* This partial view defines form fields that will appear when creating and editing entities *@
 
+
+<script type="text/javascript">
+
+    function GetSchedule() {
+        if (jQuery('#ScheduleTypeID').val() == 1)
+        {
+            jQuery('#ScheduledDay').show();
+            jQuery('#ProjectID').show();
+            jQuery('#ScheduleTypeID').show();
+            jQuery('#ScheduledTime').show();
+            jQuery('#RecipientUserType').show();
+            jQuery("#ScheduledDay").parents("tr").hide();
+            jQuery("#ScheduledDate").parents("tr").hide();
+        }
+
+        else if (jQuery('#ScheduleTypeID').val() == 2)
+        {
+            jQuery('#ScheduledDay').show();
+            jQuery('#ProjectID').show();
+            jQuery('#ScheduleTypeID').show();
+            jQuery('#ScheduledTime').show();
+            jQuery('#RecipientUserType').show();
+            jQuery("#ScheduledDay").parents("tr").show();
+            jQuery('#ScheduledDate').parents("tr").hide();
+        }
+
+        else if (jQuery('#ScheduleTypeID').val() == 3)
+        {
+            jQuery('#ScheduledDay').show();
+            jQuery('#ProjectID').show();
+            jQuery('#ScheduleTypeID').show();
+            jQuery('#ScheduledTime').show();
+            jQuery('#RecipientUserType').show();
+            jQuery('#ScheduledDay').parents("tr").hide();
+            jQuery('#ScheduledDate').parents("tr").show();
+        }
+
+        else if (jQuery('#ScheduleTypeID').val() == 0)
+        {
+            jQuery('#ScheduledDay').show();
+            jQuery('#ProjectID').show();
+            jQuery('#ScheduleTypeID').show();
+            jQuery('#ScheduledTime').show();
+            jQuery('#RecipientUserType').show();
+            jQuery('#ScheduledDay').parents("tr").show();
+            jQuery('#ScheduledDate').parents("tr").show();
+        }
+    }
+  
+</script>
+
+
 <tr>
 <td>
    @* @Html.LabelFor(model => model.Title)*@
@@ -48,9 +100,11 @@
    }), "None") 
     
     *@
-    @Html.DropDownListFor(model=>model.ScheduleTypeID, Model.ScheduleType)
+   @* @Html.DropDownListFor(model=>model.ScheduleTypeID, Model.ScheduleType)*@
+    
+      @Html.DropDownListFor(model => model.ScheduleTypeID, new SelectList(Model.ScheduleType,"Value", "Text", Model.ScheduleTypeID), new{ @onchange="GetSchedule()"})
+      @Html.ValidationMessageFor(model => model.ScheduleTypeID)
 
-    @Html.ValidationMessageFor(model => model.ScheduleTypeID)
 </td>
  </tr>
 <tr>
