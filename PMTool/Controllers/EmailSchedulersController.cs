@@ -251,8 +251,7 @@ namespace PMTool.Controllers
 
         public ActionResult Delete(long id)
         {
-            EmailScheduler emailscheduler = unitOfWork.EmailSchedulerRepository.Find(id);
-            //context.EmailSchedulers.Single(x => x.SchedulerID == id);
+            EmailScheduler emailscheduler = unitOfWork.EmailSchedulerRepository.Find(id);      
             emailscheduler.SchedulerTitles = from item in unitOfWork.EmailSchedulerRepository.GetSchedulerList().Where(p => p.Key == emailscheduler.SchedulerTitleID.ToString())
                                              select new SelectListItem
                                              {
