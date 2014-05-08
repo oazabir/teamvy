@@ -76,7 +76,16 @@
      <script type="text/javascript">
 
          jQuery(document).ready(function () {
-             jQuery(".datepicker").datepicker();
+             jQuery(".datepicker").datepicker(
+
+                 {
+                     //changeMonth: true,
+                     //changeYear: true,
+                     //minDate: "-99Y",
+                     dateFormat: "dd/mm/yy"
+                 }
+
+                 );
 
          });
 

@@ -1,67 +1,98 @@
 @model PMTool.Models.EmailScheduler
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Details | emailscheduler";
 }
 
-<h2>Details</h2>
+@*<h2>Details</h2>
 
 <fieldset>
-    <legend>EmailScheduler</legend>
+    <legend>EmailScheduler</legend>*@
+<div class="pagetitle">
+    <h1>Schedule Details
+    </h1>
+    <span>Schedule details below....</span>
+</div>
 
-    <div class="display-label">Title</div>
-    <div class="display-field">@Model.Title</div>
+<table class="table table-bordered table-invoice">
+   <tr>
+         <td class="width30">
+             Title
+            </td>
+            <td>
+                @Model.SchedulerTitles.FirstOrDefault().Text 
+                   
+            </td>
+   </tr>
+    <tr>
+        <td class="width30">
+            Project
+        </td>
+        <td>
+            @(Model.Project == null ? "None" : Model.Project.Name)
+        </td>
+    </tr>
+    <tr>
+        <td class="width30">
+            Schedule Type
+        </td>
+        <td>
+            @Model.ScheduleType.FirstOrDefault().Text
+        </td>
+    </tr>
 
-    <div class="display-label">Project</div>
-    <div class="display-field">@(Model.Project == null ? "None" : Model.Project.Name)</div>
+        <tr>
+        <td class="width30">
+            Scheduled Time
+        </td>
+        <td>
+           @Model.ScheduledTime
+        </td>
+      </tr>
 
-    <div class="display-label">ScheduleTypeID</div>
-    <div class="display-field">@Model.ScheduleTypeID</div>
+    <tr>
+        <td class="width30">
+            Recipient Users
+        </td>
+        <td>
+            @Model.EmailRecipientUsers.FirstOrDefault().Text
+        </td>
+    </tr>
 
-    <div class="display-label">ScheduleType</div>
-    <div class="display-field">@Html.DisplayTextFor(_ => Model.ScheduleType).ToString()</div>
+    <tr>
+        <td class="width30">
+            Scheduled Day
+        </td>
+        <td>   
+            @if (Model.ScheduledDay != 0) 
+            {
+                 @Model.Days.FirstOrDefault().Text     
+            }
+                
+            
+        </td>
+    </tr>
+ 
 
-    <div class="display-label">ScheduledTime</div>
-    <div class="display-field">@Model.ScheduledTime</div>
+    <tr>
+        <td class="width30">
+            Scheduled Date
+        </td>
+        <td>
+            @if(Model.ScheduleTypeID==3)
+            {
+                @String.Format("{0:g}", Model.ScheduledDate)    
+            }
+                             
+        </td>
+    </tr>
+  
+</table>
 
-    <div class="display-label">RecipientUsers</div>
-    <div class="display-field">@Model.RecipientUsers</div>
 
-    <div class="display-label">EmailRecipientUsers</div>
-    <div class="display-field">@Html.DisplayTextFor(_ => Model.EmailRecipientUsers).ToString()</div>
 
-    <div class="display-label">ScheduledDay</div>
-    <div class="display-field">@Model.ScheduledDay</div>
-
-    <div class="display-label">day</div>
-    <div class="display-field">@Html.DisplayTextFor(_ => Model.day).ToString()</div>
-
-    <div class="display-label">ScheduledDate</div>
-    <div class="display-field">@String.Format("{0:g}", Model.ScheduledDate)</div>
-
-    <div class="display-label">IsActive</div>
-    <div class="display-field">@Model.IsActive</div>
-
-    <div class="display-label">CreatedBy</div>
-    <div class="display-field">@Model.CreatedBy</div>
-
-    <div class="display-label">ModifiedBy</div>
-    <div class="display-field">@Model.ModifiedBy</div>
-
-    <div class="display-label">ModifiedByUser</div>
-    <div class="display-field">@(Model.ModifiedByUser == null ? "None" : Model.ModifiedByUser.LastName)</div>
-
-    <div class="display-label">CreatedByUser</div>
-    <div class="display-field">@(Model.CreatedByUser == null ? "None" : Model.CreatedByUser.LastName)</div>
-
-    <div class="display-label">CreateDate</div>
-    <div class="display-field">@String.Format("{0:g}", Model.CreateDate)</div>
-
-    <div class="display-label">ModificationDate</div>
-    <div class="display-field">@String.Format("{0:g}", Model.ModificationDate)</div>
-</fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.SchedulerID }) |
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ScheduleTypeID },new { @class = "btn btn-primary" }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
 

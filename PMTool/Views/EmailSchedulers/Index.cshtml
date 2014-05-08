@@ -10,8 +10,7 @@
     <span>List of email schedule setup</span>
 </div>
 
-
-<table class="table table-bordered table-invoice">
+    <table class="table table-bordered table-invoice">
     <tr>
         <th>Title
         </th>
@@ -33,7 +32,7 @@
 
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.OrderBy(a=>a.ScheduleTypeID))
     {
         <tr>
 
@@ -56,10 +55,17 @@
             </td>
 
             <td>
-                @Html.DisplayTextFor(_ => item.Days.FirstOrDefault().Text).ToString()
+                @if (item.Days.FirstOrDefault().Value != "0")
+                {
+                     @Html.DisplayTextFor(_ => item.Days.FirstOrDefault().Text).ToString()
+                }
             </td>
             <td>
-                @String.Format("{0:g}", item.ScheduledDate)
+                @if (item.ScheduleTypeID == 3) 
+                {
+                 @String.Format("{0:g}", item.ScheduledDate)   
+                }
+                
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
@@ -70,6 +76,8 @@
     }
 
 </table>
+
+
 <br />
 @Html.ActionLink("Create New", "Create", null, new { @title = "Add new schedule", @class = "btn btn-primary" })
 
