@@ -113,7 +113,7 @@ namespace PMTool.Migrations
                 c => new
                     {
                         LogID = c.Long(nullable: false, identity: true),
-                        SprintID = c.Long(nullable: false),
+                        SprintID = c.Long(nullable: true),
                         TaskID = c.Long(nullable: false),
                         UserID = c.Int(nullable: false),
                         EntryDate = c.DateTime(nullable: false),

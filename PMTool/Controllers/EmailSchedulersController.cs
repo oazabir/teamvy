@@ -32,11 +32,40 @@ namespace PMTool.Controllers
         //
         // GET: /EmailSchedulers/Details/5
 
-        //public ViewResult Details(long id)
-        //{
-        //    EmailScheduler emailscheduler = context.EmailSchedulers.Single(x => x.SchedulerID == id);
-        //    return View(emailscheduler);
-        //}
+    
+        public ViewResult Details(long id) 
+        {
+            EmailScheduler emailscheduler = unitOfWork.EmailSchedulerRepository.Find(id);
+            emailscheduler.ScheduleType = from item in unitOfWork.EmailSchedulerRepository.GetSchedulerTypeAll().Where(p=>p.Key == emailscheduler.ScheduleTypeID.ToString())
+                                          select new SelectListItem
+                                          {
+                                              Text = item.Value,
+                                              Value = item.Key
+                                          };
+            emailscheduler.SchedulerTitles = from item in unitOfWork.EmailSchedulerRepository.GetSchedulerList().Where(p=>p.Key==emailscheduler.SchedulerTitleID.ToString())
+                                             select new SelectListItem
+                                             {
+                                                 Text = item.Value,
+                                                 Value = item.Key
+                                             };
+
+            emailscheduler.EmailRecipientUsers = from item in unitOfWork.EmailSchedulerRepository.GetRecipientUserTypeAll().Where(p=>p.Key==emailscheduler.RecipientUserType.ToString())
+                                                 select new SelectListItem
+                                                 {
+                                                     Text = item.Value,
+                                                     Value = item.Key
+                                                 };
+
+            emailscheduler.Days = from item in unitOfWork.EmailSchedulerRepository.GetDaysOfWeek().Where(p=>p.Key==emailscheduler.ScheduledDay.ToString())
+                                  select new SelectListItem
+                                  {
+                                      Text = item.Value,
+                                      Value = item.Key
+                                  };
+
+              
+            return View(emailscheduler);
+        }
 
         //
         // GET: /EmailSchedulers/Create
@@ -143,6 +172,49 @@ namespace PMTool.Controllers
         //
         // GET: /EmailSchedulers/Edit/5
 
+        public ActionResult Edit(long id) 
+        {
+            EmailScheduler emailscheduler = unitOfWork.EmailSchedulerRepository.Find(id);
+
+            emailscheduler.SchedulerTitles = from item in unitOfWork.EmailSchedulerRepository.GetSchedulerList()
+                                             select new SelectListItem
+                                             {
+                                                 Text = item.Value,
+                                                 Value = item.Key
+                                             };
+
+            emailscheduler.ScheduleType = from item in unitOfWork.EmailSchedulerRepository.GetSchedulerTypeAll()
+                                          select new SelectListItem
+                                          {
+                                              Text = item.Value,
+                                              Value = item.Key
+                                          };
+
+            var recipientTypes = unitOfWork.EmailSchedulerRepository.GetRecipientUserTypeAll();
+            //new Dictionary<string, string> {{ "0", "--- Select recipient users ---" }, 
+            //{ "1", "Task's Users" }, 
+            //{ "2", "Task's Followers" },
+            //{ "3", "Task's Users & Followers" },
+            // { "4", "Project's Users" }};
+
+            emailscheduler.EmailRecipientUsers = from item in recipientTypes
+                                                 select new SelectListItem
+                                                 {
+                                                     Text = item.Value,
+                                                     Value = item.Key
+                                                 };
+
+            emailscheduler.Days = from item in unitOfWork.EmailSchedulerRepository.GetDaysOfWeek()
+                                  select new SelectListItem
+                                  {
+                                      Text = item.Value,
+                                      Value = item.Key
+                                  };
+            ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
+
+            return View(emailscheduler);
+        }
+
         //public ActionResult Edit(long id)
         //{
         //    EmailScheduler emailscheduler = context.EmailSchedulers.Single(x => x.SchedulerID == id);
@@ -150,21 +222,29 @@ namespace PMTool.Controllers
         //    return View(emailscheduler);
         //}
 
-        //
-        // POST: /EmailSchedulers/Edit/5
+        
+         //POST: /EmailSchedulers/Edit/5
 
-        //[HttpPost]
-        //public ActionResult Edit(EmailScheduler emailscheduler)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        context.Entry(emailscheduler).State = System.Data.Entity.EntityState.Modified;
-        //        context.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    ViewBag.PossibleProjects = context.Projects;
-        //    return View(emailscheduler);
-        //}
+        [HttpPost]
+        public ActionResult Edit(EmailScheduler emailscheduler)
+        {
+            emailscheduler.ModifiedBy = (int)Membership.GetUser().ProviderUserKey;
+            emailscheduler.ModificationDate = DateTime.Now;
+
+            if (ModelState.IsValid)
+            {
+                unitOfWork.EmailSchedulerRepository.InsertOrUpdate(emailscheduler);
+                unitOfWork.Save();
+                return RedirectToAction("Index");
+                //context.Entry(emailscheduler).State = System.Data.Entity.EntityState.Modified;
+                //context.SaveChanges();
+                //return RedirectToAction("Index");
+            }
+
+            ViewBag.PossibleProjects = unitOfWork.ProjectRepository.All;
+            //ViewBag.PossibleProjects = context.Projects;
+            return View(emailscheduler);
+        }
 
         //
         // GET: /EmailSchedulers/Delete/5
@@ -173,6 +253,20 @@ namespace PMTool.Controllers
         {
             EmailScheduler emailscheduler = unitOfWork.EmailSchedulerRepository.Find(id);
             //context.EmailSchedulers.Single(x => x.SchedulerID == id);
+            emailscheduler.SchedulerTitles = from item in unitOfWork.EmailSchedulerRepository.GetSchedulerList().Where(p => p.Key == emailscheduler.SchedulerTitleID.ToString())
+                                             select new SelectListItem
+                                             {
+                                                 Text = item.Value,
+                                                 Value = item.Key
+                                             };
+            emailscheduler.ScheduleType = from item in unitOfWork.EmailSchedulerRepository.GetSchedulerTypeAll().Where(p => p.Key == emailscheduler.ScheduleTypeID.ToString())
+                                          select new SelectListItem
+                                          {
+                                              Text = item.Value,
+                                              Value = item.Key
+                                          };
+
+
             return View(emailscheduler);
         }
 
@@ -184,10 +278,7 @@ namespace PMTool.Controllers
         {
             EmailScheduler emailscheduler = unitOfWork.EmailSchedulerRepository.Find(id);
             unitOfWork.EmailSchedulerRepository.Delete(id);
-            unitOfWork.Save();
-            //context.EmailSchedulers.Single(x => x.SchedulerID == id);
-            //context.EmailSchedulers.Remove(emailscheduler);
-            //context.SaveChanges();
+            unitOfWork.Save();         
             return RedirectToAction("Index");
         }
 

@@ -140,7 +140,7 @@
 <td>
 @*    @Html.EditorFor(model => model.RecipientUsers)*@
      @Html.DropDownListFor(model=>model.RecipientUserType, Model.EmailRecipientUsers)
-    @Html.ValidationMessageFor(model => model.RecipientUserType)
+     @Html.ValidationMessageFor(model => model.RecipientUserType)
 
 
 
@@ -174,6 +174,9 @@
 
 </td>
 </tr>
+@Html.HiddenFor(model => model.CreateDate)
+@Html.HiddenFor(model => model.CreatedBy)
+@Html.HiddenFor(model=>model.IsActive)
 
 @*<tr>
 <td>
@@ -185,8 +188,3 @@
 </td>
 </tr>*@
 
-<tr>
-
-
-
-</tr>
