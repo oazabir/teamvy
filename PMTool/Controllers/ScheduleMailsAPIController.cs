@@ -282,7 +282,7 @@ namespace PMTool.Controllers
 
             if (lstEmailSent.Count != 0)
             {
-                List<Notification> ListOfNotification = unitofWork.NotificationRepository.AllIncluding().Where(p => p.ActionDate > maxSentDate && p.ActionDate <= scheduleDt && p.ProjectID == projectId).ToList();
+                //List<Notification> ListOfNotification = unitofWork.NotificationRepository.AllIncluding().Where(p => p.ActionDate > maxSentDate && p.ActionDate <= scheduleDt && p.ProjectID == projectId).ToList();
                 List<Mailer> mailerList = new List<Mailer>();
                 List<UserProfile> userList = unitofWork.UserRepository.All();
 
@@ -291,15 +291,46 @@ namespace PMTool.Controllers
 
                 foreach (UserProfile objOfuser in userList)
                 {
-                    string messageBody = string.Empty;
-                    List<Notification> userTasksNotificationList = ListOfNotification.Where(a => a.UserID == objOfuser.UserId).ToList();
+                    List<Notification> ListOfNotification = unitofWork.NotificationRepository.AllIncluding().Where(p => p.ActionDate > maxSentDate && p.ActionDate <= scheduleDt && p.ProjectID == projectId).ToList();
+                    List<Notification> userTasksNotificationList = ListOfNotification.Where(p => p.Task.Users.Any(u => u.UserId == objOfuser.UserId) || p.Task.CreatedBy == objOfuser.UserId).ToList();
 
+                    List<Task> userTask = unitofWork.TaskRepository.All.Where(p => (p.Users.Any(u => u.UserId == objOfuser.UserId) || p.CreatedBy == objOfuser.UserId) && p.ProjectStatus.Name.ToLower() != "closed").ToList();
+                        //.Where(a => a.UserID == objOfuser.UserId).ToList();
+                    List<Task> userTaskwithNoChange = userTask.Where(p => !userTasksNotificationList.Any(p2 => p2.TaskID == p.TaskID)).ToList();
+
+                    string messageBody = string.Empty;
+
+                    if(userTaskwithNoChange.Count>0)
+                    {
+
+                        messageBody = "<b>Dear &nbsp;" + objOfuser.FirstName + "</b>,<br>" + "<b>Your Task Changes History is Given Below</b><br>";
+                        messageBody += "<table><tr " + styleTableHeader + "><th>Task ID</th><th>Task Title</th><th>Change History</th><th>Modifying Date</th></tr>";
+
+                        foreach (var Notificationlst in userTaskwithNoChange)
+                        {
+
+                            messageBody += "<tr>";
+                            messageBody += "<td " + styleGroupbyRow + "> " + ((Notificationlst.TaskUID == null) ? " " : Notificationlst.TaskUID) + "</td>";
+                            messageBody += "<td " + styleGroupbyRow + "> " + ((Notificationlst.Title == null) ? " " : Notificationlst.Title) + "</td>";
+                            messageBody += "<td " + styleGroupbyRow + "> No Changes" + "</td>";
+                            messageBody += "<td " + styleGroupbyRow + "> " + Notificationlst.ActionDate + "</td>";
+                            messageBody += "</tr>";
+                        }
+                        messageBody += "</table></div><br /><div style='float:left;'><p>We sent you this email because you signed up in PMTool and tasks are assigned to you. <br /> Please don't reply To this mail.</p><p>"
+                        + "Regards,<br />PMTool</p></div>";
+
+                        Mailer mailer = new Mailer();
+                        mailer.UseMailID = objOfuser.UserName;
+                        mailer.MailSubject = "Task Changes history Notification";
+                        mailer.HtmlMailBody = messageBody;
+                        mailerList.Add(mailer);
+                    }
 
                     if (userTasksNotificationList.Count > 0)
                     {
 
                         messageBody = "<b>Dear &nbsp;" + objOfuser.FirstName + "</b>,<br>" + "<b>Your Task Changes History is Given Below</b><br>";
-                        messageBody += "<table><tr " + styleTableHeader + "><th>Task ID</th><th>Task Title</th><th>Description</th><th>Modifying Date</th></tr>";
+                        messageBody += "<table><tr " + styleTableHeader + "><th>Task ID</th><th>Task Title</th><th>Change History</th><th>Modifying Date</th></tr>";
 
                         foreach (var Notificationlst in userTasksNotificationList)
                         {
@@ -321,6 +352,7 @@ namespace PMTool.Controllers
                         mailerList.Add(mailer);
                     }
 
+                   
                 }
 
                 return mailerList;
@@ -346,7 +378,7 @@ namespace PMTool.Controllers
                     {
 
                         messageBody = "<b>Dear &nbsp;" + objOfuser.FirstName + "</b>,<br>" + "<b>Your Task Changes History is Given Below</b><br>";
-                        messageBody += "<table><tr " + styleTableHeader + "><th>Task ID</th><th>Task Title</th><th>Description</th><th>Modifying Date</th></tr>";
+                        messageBody += "<table><tr " + styleTableHeader + "><th>Task ID</th><th>Task Title</th><th>Change History</th><th>Modifying Date</th></tr>";
 
                         foreach (var Notificationlst in userTasksNotificationList)
                         {
