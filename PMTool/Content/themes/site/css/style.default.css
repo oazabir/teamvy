@@ -1675,3 +1675,25 @@ body.loginbody { background: #f7f7f7 url(../img/gray_jean.png); }
 .taskdetailspopup {
     min-height: 800px;
 }
+
+.timeLogTbl tbody tr td
+{
+	padding:0 0 0 5px;
+}
+
+.cmntreplyBox
+{
+	  background-color: #E0EDF6;
+    border-radius: 2px;
+    height: auto;
+    margin: 9px 0 0 52px;
+    min-height: 62px;
+    min-width: 564px;
+    padding: 2px 0 0 12px;
+    width: auto;
+}
+
+.tooltip.right
+{
+	background-color:#ffffff !important;
+}

@@ -14,7 +14,6 @@
             <li class="nav-header">Notifications
              @if (Model.Count() > 0)
              {
-@*<input type="submit" style="float:right;" id="btnReadAll" value="mark all as read" class="btn btn-primary" />*@ 
                  @Ajax.ActionLink("mark all as read", "_NotificationReadAll", "Home", new AjaxOptions { UpdateTargetId = "result" }, new { @class = "btn btn-info btn-rounded" })
              }
             </li>
@@ -24,27 +23,39 @@
                  if (notification.TaskID == null)
                  {
             <li>
-                <p style="width:500px !important; text-align:left;">
-                    <a href="@Url.Action("Details", "Projects", new { id = notification.ProjectID, notificationID = notification.NotificationID })"><span class='icon-envelope'></span><strong>@notification.Title</strong></a>
-                </p>
+                <a href="@Url.Action("Details", "Projects", new { id = notification.ProjectID, notificationID = notification.NotificationID })"><span class='icon-envelope'></span><strong>
+
+                    @notification.Title
+                </strong></a>
+
             </li>
                  }
                  if (notification.TaskID != null)
                  {
                      string noti = notification.Title;
-                     //if (notification.Title.Length > 100)
-                     //{
-                     //    noti = noti.Substring(0, 100) + "...";
-                     //}
-                    <li>
-                        <p style="width:500px !important; text-align:left;">
-                        <a data-placement="bottom" data-rel="tooltip" data-original-title="@notification.Title" class="btn" rel="tooltip" href="@Url.Action("Details", "Tasks", new { id = notification.TaskID, notificationID = notification.NotificationID })"><span class='icon-envelope'></span><strong>@noti</strong></a>
-                        </p>
-                    </li>
-                 }
 
-             }
+                     string result2 = noti;
+
+                   if(noti.Length>30)
+                     {
+                         result2 = noti.Substring(0, 30);
+                         result2 = result2 + "...";
+                     }
+                     
+                      
+                     
+                 
+       
+            <li>
+                <a data-placement="bottom" data-rel="tooltip" data-original-title="@notification.Title"  rel="tooltip" href="@Url.Action("Details", "Tasks", new { id = notification.TaskID, notificationID = notification.NotificationID })"><span class='icon-envelope'></span><strong>@result2</strong></a>
+
+            </li>
+            
         }
+             }
+
+        }
+
         @if (Model.Count() == 0)
         {
             <li class="viewmore"><a href="#">No unread notifications</a></li>

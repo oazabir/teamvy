@@ -49,7 +49,7 @@ namespace PMTool.Repository
 
         public List<Comment> GetComments(long taskId)
         {
-            List<Comment> comments = context.Comments.Where(cmt => cmt.TaskID == taskId).ToList(); //&& t.ParentTaskId == null -- add later
+            List<Comment> comments = context.Comments.Where(cmt => cmt.TaskID == taskId && cmt.ParentComment == null).ToList(); //&& t.ParentTaskId == null -- add later
             return comments;
   
             //IQueryable<Task> query = context.Tasks.Where(t => t.ProjectID == projectID && t.ParentTaskId == null);
@@ -87,6 +87,11 @@ namespace PMTool.Repository
         public void Dispose() 
         {
             context.Dispose();
+        }
+
+        public  List<Comment> GetReplyCommentsByID(long ID)
+        {
+            return context.Comments.Where(c => c.ParentComment == ID).ToList();
         }
     }
 

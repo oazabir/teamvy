@@ -4,6 +4,8 @@
     ViewBag.Title = "Tasks | Details";
 }
 
+
+
 <div class="pagetitle">
     <h1>
         Add Time Log
@@ -16,13 +18,37 @@
 
     </span>
 </div>
+
+<script type="text/javascript">
+   
+    function OnChangeEvent() {
+
+        var InputTaskHour = parseFloat(document.getElementById('TaskHour').value).toFixed(2);
+        var OriginalTaskHour = parseFloat(@objTask.TaskHour).toFixed(2);
+        if(InputTaskHour!=0 || InputTaskHour!=null )
+        {
+           
+                var remainingHour = parseFloat(@objTask.TaskHour).toFixed(2) - parseFloat(document.getElementById('TaskHour').value).toFixed(2);
+                document.getElementById('RemainingHour').value = remainingHour;
+            
+
+            
+        }
+        
+        
+
+        }
+
+</script>
+ 
+
 @using (Ajax.BeginForm("AddTimeLog", "Home", new AjaxOptions { UpdateTargetId = "divTimeLog", OnBegin = "Loading()", OnComplete = "LoadComplete()" }, new { @id = "form" }))
 {
    
     @Html.HiddenFor(m=>m.SprintID)
     @Html.HiddenFor(m=>m.TaskID)
 
-<table style="margin-left:4px;">
+<table style="margin-left:4px;" class="timeLogTbl" >
     <thead>
         <tr>
             <th>Entry Date
@@ -41,7 +67,7 @@
                 @Html.ValidationMessageFor(model => model.EntryDate)
             </td>
             <td>
-                @Html.TextBoxFor(m => m.TaskHour, new {@style = "width:70px;" })
+                @Html.TextBoxFor(m => m.TaskHour, new {@style = "width:70px;",@Value = "",@onchange = "OnChangeEvent();" })
                 @Html.ValidationMessageFor(Model => Model.TaskHour)
             </td>
             <td>

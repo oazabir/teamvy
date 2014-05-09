@@ -659,7 +659,29 @@ namespace PMTool.Controllers
         {
             MakeNotificationReadonly();
             Task task = unitOfWork.TaskRepository.Find(id);
-            ViewBag.Comments = unitOfWork.CommentRepository.GetComments(id);
+            //ViewBag.Comments = unitOfWork.CommentRepository.GetComments(id);
+
+            List<CommentViewModel> commentsWithReplyList = new List<CommentViewModel>();
+            List<Comment> comments = unitOfWork.CommentRepository.GetComments(id);
+            foreach (Comment item in comments)
+            {
+
+                CommentViewModel commentViewModel = new CommentViewModel();
+                commentViewModel.CommentBy = item.CommentBy;
+                commentViewModel.CommentByUser = item.CommentByUser;
+                commentViewModel.CreateDate = item.CreateDate;
+                commentViewModel.ID = item.ID;
+                commentViewModel.Message = item.Message;
+                commentViewModel.ModifiedDate = item.ModifiedDate;
+                commentViewModel.ParentComment = item.ParentComment;
+                commentViewModel.Task = item.Task;
+                commentViewModel.TaskID = item.TaskID;
+                commentViewModel.ReplyComments = unitOfWork.CommentRepository.GetReplyCommentsByID(item.ID);
+                commentsWithReplyList.Add(commentViewModel);
+
+            }
+            ViewBag.Comments = commentsWithReplyList;
+
             return View(task);
         }
 
