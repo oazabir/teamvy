@@ -40,8 +40,9 @@ namespace PMTool.Controllers
         {
             Project project = unitOfWork.ProjectRepository.Find(id);
             long notificationID =Convert.ToInt64(Request.QueryString["notificationID"]);
-            unitOfWork.NotificationRepository.Delete(notificationID);
-            unitOfWork.Save();
+            
+            //unitOfWork.NotificationRepository.Delete(notificationID);
+            //unitOfWork.Save();
             MakeNotificationReadonly();
             return View(project);
         }
