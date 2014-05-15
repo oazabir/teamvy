@@ -1,4 +1,43 @@
 @model PMTool.Models.Task
+
+<script type="text/javascript">
+
+    function OnChangeEvent() {
+
+        var lblStartDate =document.getElementById('StartDate').value;
+        var lblEndDate = document.getElementById('EndDate').value;
+
+        
+
+        if (lblEndDate != null && lblStartDate != null) {
+
+           
+            if (process(lblStartDate) > process(lblEndDate)) {
+                alert("Start Date should be less or equal to End Date");
+                document.getElementById('EndDate').value = "";
+            }
+
+           
+        }
+       
+          
+
+      
+
+        
+
+
+
+    }
+
+    function process(date) {
+        var parts = date.split("/");
+        return new Date(parts[2], parts[1] - 1, parts[0]);
+    }
+
+</script>
+
+
 <tr>
     <td>
         @Html.LabelFor(model => model.TaskUID)
@@ -39,7 +78,7 @@
     </td>
     <td>
 
-        @Html.TextBoxFor(model => model.StartDate, "{0:dd/MM/yyyy}",  new { @class = "datepicker" })
+        @Html.TextBoxFor(model => model.StartDate, "{0:dd/MM/yyyy}",  new { @class = "datepicker",@onchange = "OnChangeEvent();"})
         @Html.ValidationMessageFor(model => model.StartDate)
     </td>
 </tr>
@@ -49,7 +88,7 @@
         @Html.LabelFor(model => model.EndDate)
     </td>
     <td>
-        @Html.TextBoxFor(model => model.EndDate, "{0:dd/MM/yyyy}",  new { @class = "datepicker" })
+        @Html.TextBoxFor(model => model.EndDate, "{0:dd/MM/yyyy}",  new { @class = "datepicker",@onchange = "OnChangeEvent();" })
         @Html.ValidationMessageFor(model => model.EndDate)
     </td>
 </tr>
@@ -76,13 +115,13 @@
     <td>Priority
     </td>
     <td>
-@*        @Html.DropDownListFor(model => model.PriorityID, ((IEnumerable<PMTool.Models.Priority>)ViewBag.PossiblePriorities).Select(option => new SelectListItem
+        @Html.DropDownListFor(model => model.PriorityID, ((IEnumerable<PMTool.Models.Priority>)ViewBag.PossiblePriorities).Select(option => new SelectListItem
    {
        Text = (option == null ? "None" : option.Name),
        Value = option.PriorityID.ToString(),
        Selected = (Model != null) && (option.PriorityID == Model.PriorityID)
-   }), "None")*@
-@*        @Html.ValidationMessageFor(model => model.PriorityID)*@
+   }), "None")
+        @Html.ValidationMessageFor(model => model.PriorityID)
 
 
     </td>

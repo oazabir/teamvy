@@ -1,19 +1,78 @@
-﻿@model IEnumerable<PMTool.Models.Comment>
+﻿@model List<PMTool.Models.CommentViewModel>
+
+<script type="text/javascript">
+    function swap(id) {
+        var boxName = id.concat(" replyBox");
+
+        var e = document.getElementById(boxName);
+
+        if(e.style.display == 'block')
+            e.style.display = 'none';
+        else
+            e.style.display = 'block';
+        
+    }
+
+
+</script>
+
 
 @if (Model != null)
 {
 
     foreach (var item in Model)
     {    
+    <p>
+        <b><span style="color: steelblue">@item.CommentByUser.FirstName @item.CommentByUser.LastName</span>
+        </b>
+        <br />
+        <span class="icon-comment"></span>@item.Message
+        <br />
+        <a href="javascript:swap('@item.ID');">Reply</a>
+    </p>
+    
+    
+    <div id="@item.ID replyBox" style="display:none;">
+      
+
+         @using (Ajax.BeginForm("_PostReplys", "Comments",null, new AjaxOptions { UpdateTargetId = "divComments", OnBegin = "Loading()", OnComplete = "LoadComplete()" }, new { @id = "form" }))
+    {
+        PMTool.Models.Comment comment = new PMTool.Models.Comment();
+        comment.TaskID = item.TaskID;
+             comment.ParentComment=item.ID;
+        
+             
+                                <input type="hidden"  id="TaskID" name="TaskID" value="@item.TaskID" />
+                                <input type="hidden"  id="ParentComment" name="ParentComment" value="@item.ID" />
+
+       @Html.Partial("../Comments/_PostReplys", comment)
+    }
+
+
+    </div>
+    
+        if (item.ReplyComments.Count > 0)
+        {
+
+
+            foreach (var reply in item.ReplyComments)
+            {
+    <div class="cmntreplyBox">
         <p>
-            <b><span style="color:steelblue">@item.CommentByUser.FirstName @item.CommentByUser.LastName</span>
+            <b><span style="color: steelblue"><i>@reply.CommentByUser.FirstName @reply.CommentByUser.LastName </i></span>
             </b>
             <br />
-            <span class="icon-comment"></span>@item.Message
+            <span class="icon-comment"></span><i>@reply.Message</i>
             <br />
-            <a href="#">Reply</a>
+
         </p>
-        <br />
+
+
+    </div>
+       
+            }
+        }
+
 
     }
 }
