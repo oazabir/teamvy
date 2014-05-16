@@ -1,5 +1,23 @@
 ﻿@model IEnumerable<PMTool.Models.TimeLog>
 
+
+<script type="text/javascript">
+        jQuery.noConflict();
+        jQuery.noConflict();
+        jQuery(document).ready(function () {
+            jQuery("#dyntable5").dataTable().fnDestroy();
+            jQuery('#dyntable5').dataTable({
+                "sPaginationType": "full_numbers",
+                "aaSortingFixed": [[0, 'desc']],
+                "fnDrawCallback": function (oSettings) {
+                    //jQuery.uniform.update();
+                }
+            });
+        });
+
+
+    </script>
+
 <p>
     ||@Html.ActionLink("Add Effort", "CreateTimeLog",  new { @taskId = ViewBag.TaskId, @sprintId = ViewBag.SprintId  }, new { @title = "Add Task", @class = "btn btn-primary" })  @*Here id = task id*@
     ||@Html.ActionLink("Back", "MyAssignTask", "Tasks", new { @title = "Back", @class ="btn btn-primary"})
