@@ -144,6 +144,15 @@
                         </ul>
                     </li>
 
+                       <li class="dropdown"><a href="#"><span class="icon-th-list"></span>Own Projects</a>
+                        <ul style="display: block">
+                            @*<ul>*@
+                            <li>@Html.ActionLink("Create New Project", "Create", "Projects")</li>
+                            <li>@Html.ActionLink("Projects Created by you", "Index", "Projects")</li>
+                            <li>@Html.ActionLink("Projects Owned by you", "OwnProjects", "Projects")</li>
+                        </ul>
+                    </li>
+
                     <li class="dropdown"><a href=""><span class="icon-briefcase"></span>Tasks</a>
                         <ul style="display: block">
                             @*<ul>*@
@@ -154,14 +163,7 @@
 
                         </ul>
                     </li>
-                    <li class="dropdown"><a href="#"><span class="icon-th-list"></span>Own Projects</a>
-                        <ul style="display: block">
-                            @*<ul>*@
-                            <li>@Html.ActionLink("Create New Project", "Create", "Projects")</li>
-                            <li>@Html.ActionLink("Projects Created by you", "Index", "Projects")</li>
-                            <li>@Html.ActionLink("Projects Owned by you", "OwnProjects", "Projects")</li>
-                        </ul>
-                    </li>
+                 
                     <li class="dropdown"><a href="#"><span class="icon-time"></span>Time and Expenses</a>
                         <ul style="display: block">
 

@@ -1,10 +1,13 @@
 ﻿@model IEnumerable<PMTool.Models.Task>
 
+
+
 @if (Model != null)
 {
     List<PMTool.Models.Task> dueTaskList = Model.Where(p => (p.StartDate < DateTime.Today && p.EndDate >= DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name.ToLower() != "closed")).ToList();
     dueTaskList.ForEach(a => a.GroupBy = "Due Tasks");
-
+    
+    
     List<PMTool.Models.Task> overdueTaskList = Model.Where(p => (p.EndDate < DateTime.Today) && (p.ProjectStatusID != null && p.ProjectStatus.Name.ToLower() != "closed")).ToList();
     overdueTaskList.ForEach(a => a.GroupBy = "Overdue Tasks");
 

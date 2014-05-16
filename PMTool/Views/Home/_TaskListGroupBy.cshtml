@@ -12,7 +12,60 @@
             <td>
                 @if (i == 0)
                 {
-                    @Html.DisplayTextFor(_ => item.GroupBy).ToString()
+                    if (item.GroupBy == "Due Tasks")
+                    {
+                        <p style="color:#87228E;"> <b> @Html.DisplayTextFor(_ => item.GroupBy).ToString()</b></p>
+                    }
+
+                    else if (item.GroupBy == "Overdue Tasks")
+                    {
+                        <p style="color:red;"> <b>  @Html.DisplayTextFor(_ => item.GroupBy).ToString()</b></p>
+                    }
+
+                    else if (item.GroupBy == "Today's Tasks")
+                    {
+                        <p style="color:green;"><b>  @Html.DisplayTextFor(_ => item.GroupBy).ToString()</b></p>
+                    }
+
+                    else if (item.GroupBy == "Due Tomorrows Tasks")
+                    {
+                        <p style="color:blue;"> <b> @Html.DisplayTextFor(_ => item.GroupBy).ToString()</b> </p>
+                    }
+
+                    else if (item.GroupBy == "Future Task")
+                    {
+                        <p style="color: limegreen;"> <b> @Html.DisplayTextFor(_ => item.GroupBy).ToString()</b> </p>
+                    }
+                                       
+                }
+                else
+                {
+                     if (item.GroupBy == "Due Tasks")
+                    {
+                        <p style="color:#87228E;"> <b> @Html.DisplayTextFor(_ => item.GroupBy).ToString()</b> </p>
+                    }
+
+                    else if (item.GroupBy == "Overdue Tasks")
+                    {
+                        <p style="color:red;"> <b> @Html.DisplayTextFor(_ => item.GroupBy).ToString()</b></p>
+                    }
+
+                    else if (item.GroupBy == "Today's Tasks")
+                    {
+                        <p style="color:green;"> <b> @Html.DisplayTextFor(_ => item.GroupBy).ToString()</b></p>
+                    }
+
+                    else if (item.GroupBy == "Due Tomorrows Tasks")
+                    {
+                        <p style="color:blue;"> <b>@Html.DisplayTextFor(_ => item.GroupBy).ToString()</b> </p>
+                    }
+
+                    else if (item.GroupBy == "Future Task")
+                    {
+                        <p style="color:limegreen;"> <b>@Html.DisplayTextFor(_ => item.GroupBy).ToString()</b> </p>
+                    }
+                    
+                     
                 }
             </td>
             <td>
