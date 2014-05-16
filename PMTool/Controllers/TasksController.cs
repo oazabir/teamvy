@@ -115,7 +115,7 @@ namespace PMTool.Controllers
         public ViewResult TaskTimeLog(long taskId, string  sprintId)
         {
             List<TimeLog> timeLog = new List<TimeLog>();
-            timeLog = unitOfWork.TimeLogRepository.All.Where(p => p.TaskID == taskId).ToList();
+            timeLog = unitOfWork.TimeLogRepository.All.Where(p => p.TaskID == taskId).OrderByDescending(b => b.EntryDate).ToList();
             ViewBag.TaskId = taskId;
             ViewBag.SprintId = sprintId;
             return View(timeLog);
@@ -132,6 +132,17 @@ namespace PMTool.Controllers
                 timelog.SprintID =Convert.ToInt64(sprintId);
             }
 
+            List<TimeLog> timeLog = new List<TimeLog>();
+            timeLog = unitOfWork.TimeLogRepository.All.Where(p => p.TaskID == taskId).OrderByDescending(b => b.EntryDate).ToList();
+            foreach (TimeLog item in timeLog)
+            {
+                ViewBag.RemainingHour = item.RemainingHour.ToString();
+                break;
+                
+            }
+
+           
+            
 
             return View(timelog);
         }

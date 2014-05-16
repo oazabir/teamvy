@@ -228,6 +228,13 @@ namespace PMTool.Controllers
             List<Task> taskList = unitofWork.TaskRepository.AllIncludingForMail().Where(t => t.ProjectStatus.Name.ToLower() != "closed").ToList();
             List<UserProfile> userList = unitofWork.UserRepository.All();
 
+            //string emailbody = "style=\".emailTbl {border: 1px solid #000000;border-radius: 5px;margin: 0;padding: 0;width: 574px;-moz-border-radius-bottomleft:5px;-webkit-border-bottom-left-radius:5px;border-bottom-left-radius:5px;-moz-border-radius-bottomright:5px;-webkit-border-bottom-right-radius:5px;border-bottom-right-radius:5px;-moz-border-radius-topright:5px;-webkit-border-top-right-radius:5px;border-top-right-radius:5px;-moz-border-radius-topleft:5px;-webkit-border-top-left-radius:5px;border-top-left-radius:5px;}.emailTbl table{border-collapse: collapse;border-spacing: 0;width:100%;margin:0px;padding:0px;}.emailTbl tr:last-child td:last-child {-moz-border-radius-bottomright:5px;-webkit-border-bottom-right-radius:5px;border-bottom-right-radius:5px;}.emailTbl table tr:first-child td:first-child {-moz-border-radius-topleft:5px;-webkit-border-top-left-radius:5px;border-top-left-radius:5px;}.emailTbl table tr:first-child td:last-child {-moz-border-radius-topright:5px;-webkit-border-top-right-radius:5px;border-top-right-radius:5px;}.emailTbl tr:last-child td:first-child{-moz-border-radius-bottomleft:5px;-webkit-border-bottom-left-radius:5px;border-bottom-left-radius:5px;}.emailTbl tr:hover td{}.emailTbl tr:nth-child(odd){ background-color:#e8edff; }.emailTbl tr:nth-child(even){background-color:#ffffff; }.emailTbl td{vertical-align:middle;border:1px solid #000000;border-width:0px 1px 1px 0px;text-align:left;padding:9px;font-size:12px;font-family:Arial;font-weight:normal;color:#000000;}.emailTbl tr:last-child td{border-width:0px 1px 0px 0px;}.emailTbl tr td:last-child{border-width:0px 0px 1px 0px;}.emailTbl tr:last-child td:last-child{border-width:0px 0px 0px 0px;}.emailTbl tr:first-child td{background:-o-linear-gradient(bottom, #b9c9fe 5%, #b9c9fe 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b9c9fe), color-stop(1, #b9c9fe) );background:-moz-linear-gradient( center top, #b9c9fe 5%, #b9c9fe 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#b9c9fe,endColorstr=#b9c9fe);	background: -o-linear-gradient(top,#b9c9fe,b9c9fe);background-color:#b9c9fe;border:0px solid #000000;text-align:center;border-width:0px 0px 1px 1px;font-size:14px;font-family:Arial;font-weight:bold;color:#000000;}.emailTbl tr:first-child:hover td{background:-o-linear-gradient(bottom, #b9c9fe 5%, #b9c9fe 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b9c9fe), color-stop(1, #b9c9fe) );background:-moz-linear-gradient( center top, #b9c9fe 5%, #b9c9fe 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#b9c9fe, endColorstr=#b9c9fe);	background: -o-linear-gradient(top,#b9c9fe,b9c9fe);background-color:#b9c9fe;}.emailTbl tr:first-child td:first-child{border-width:0px 0px 1px 0px;}.emailTbl tr:first-child td:last-child{border-width:0px 0px 1px 1px;}\"";
+            //string styleTable     = "style=\"border-collapse: collapse;border-spacing: 0;width: 100%;margin: 0;padding: 0\"";
+            //string styleTableRow  = "style=\"background-color: #fff\"";
+            //string styleTableData = "style=\"vertical-align: middle;border: 1px solid #000;border-width: 0 1px 1px 0;text-align: left;padding: 9px;font-size: 12px;font-family: Arial;font-weight: normal;color: #000\"";
+
+
+
             string styleTableHeader = "style= \"background-color:#0094ff; border:1px solid;\"";
             string styleGroupbyRow = "style= \"background-color:#57C0E1;\"";
             string styleTaskRow = "style= \"background-color:#A0D0FF;\"";
@@ -240,17 +247,15 @@ namespace PMTool.Controllers
                 if (userTaskList.Count > 0)
                 {
                     messageBody = "<b>Dear &nbsp;" + objOfuser.FirstName + "</b>,<br>" + "<b>Your Daily Tasks Status are given below</b><br>";
+                   
                     messageBody += "<table><tr " + styleTableHeader + "><th>Task ID</th> <th>Task Title</th> <th>Task Status</th> <th>Project</th></tr>";
 
                     foreach (var task in userTaskList)
-                    {                 
+                    {
                         messageBody += "<tr> ";
-                        messageBody += "<td " + styleTaskRow +    "> "+ task.TaskUID + "</td>";
+                        messageBody += "<td " + styleTaskRow + "> " + task.TaskUID + "</td>";
                         messageBody += "<td " + styleGroupbyRow + "> " + task.Title + "</td>";
-                        //string val = "";
-                        //if(task.ProjectStatus.Name == "")
-                          //  val = task.ProjectStatus.Name;
-                        messageBody += "<td " + styleGroupbyRow + "> " + ((task.ProjectStatus==null) ? " " : task.ProjectStatus.Name )+ "</td>";
+                        messageBody += "<td " + styleGroupbyRow + "> " + ((task.ProjectStatus == null) ? " " : task.ProjectStatus.Name) + "</td>";
                         messageBody += "<td " + styleGroupbyRow + "> " + task.Project.Name + "</td>";
                         messageBody += "</tr>";
                     }

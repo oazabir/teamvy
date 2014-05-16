@@ -40,8 +40,9 @@ namespace PMTool.Controllers
         {
             Project project = unitOfWork.ProjectRepository.Find(id);
             long notificationID =Convert.ToInt64(Request.QueryString["notificationID"]);
-            unitOfWork.NotificationRepository.Delete(notificationID);
-            unitOfWork.Save();
+            
+            //unitOfWork.NotificationRepository.Delete(notificationID);
+            //unitOfWork.Save();
             MakeNotificationReadonly();
             return View(project);
         }
@@ -134,7 +135,7 @@ namespace PMTool.Controllers
 
         private void AddProjectStatus(Project project)
         {
-            unitOfWork.ProjectStatusRepository.DeletebyProjectID(project.ProjectID);
+           // unitOfWork.ProjectStatusRepository.DeletebyProjectID(project.ProjectID);
 
             List<string> statuses = new List<string>();
             if (!string.IsNullOrEmpty(project.allStatus))
@@ -229,7 +230,9 @@ namespace PMTool.Controllers
 
         public ActionResult Edit(long id)
         {
-            Project project = unitOfWork.ProjectRepository.Find(id);
+            Project project = new Project();
+             project = unitOfWork.ProjectRepository.Find(id);
+             project.allStatus = "";
             List<SelectListItem> allUsers = GetAllUser();
             ViewBag.PossibleUsers = allUsers;
             project.SelectedAssignedUsers = project.Users.Select(u => u.UserId.ToString()).ToList();
