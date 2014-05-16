@@ -146,6 +146,15 @@
                         </ul>
                     </li>
 
+                       <li class="dropdown"><a href="#"><span class="icon-th-list"></span>Own Projects</a>
+                        <ul style="display: block">
+                            @*<ul>*@
+                            <li>@Html.ActionLink("Create New Project", "Create", "Projects")</li>
+                            <li>@Html.ActionLink("Projects Created by you", "Index", "Projects")</li>
+                            <li>@Html.ActionLink("Projects Owned by you", "OwnProjects", "Projects")</li>
+                        </ul>
+                    </li>
+
                     <li class="dropdown"><a href=""><span class="icon-briefcase"></span>Tasks</a>
                         <ul style="display: block">
                             @*<ul>*@
@@ -156,14 +165,7 @@
 
                         </ul>
                     </li>
-                    <li class="dropdown"><a href="#"><span class="icon-th-list"></span>Own Projects</a>
-                        <ul style="display: block">
-                            @*<ul>*@
-                            <li>@Html.ActionLink("Create New Project", "Create", "Projects")</li>
-                            <li>@Html.ActionLink("Projects Created by you", "Index", "Projects")</li>
-                            <li>@Html.ActionLink("Projects Owned by you", "OwnProjects", "Projects")</li>
-                        </ul>
-                    </li>
+                 
                     <li class="dropdown"><a href="#"><span class="icon-time"></span>Time and Expenses</a>
                         <ul style="display: block">
 
@@ -212,7 +214,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="@Url.Action("EditProfile", "Account")"><span class="icon-edit"></span>Edit Profile</a></li>
                             <li><a href="@Url.Action("Manage", "Account")"><span class="icon-eye-open"></span>Change Password</a></li>
-                            <li><a href=""><span class="icon-wrench"></span>Account Settings</a></li>
+                       @*   <li><a href=""><span class="icon-wrench"></span>Account Settings</a></li>*@ @*This Functionality Will be active later*@   
 
                             <li class="divider"></li>
                             <li>

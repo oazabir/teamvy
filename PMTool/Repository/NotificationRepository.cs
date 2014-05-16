@@ -83,6 +83,18 @@ namespace PMTool.Repository
             return notification;
         }
 
+        /// <summary>
+        /// This is For Delete Task From notification Table
+        /// </summary>
+        /// <param name="TaskId"></param>
+        /// <returns></returns>
+
+        internal List<Notification> FindTaskIDInNotification(long TaskId) 
+        {
+            List<Notification> notification = context.Notifications.Where(n => n.TaskID == TaskId).ToList();
+            return notification;
+        }  
+
         public List<Notification> GetNotificationDetails() // Created By Foysal For Notification Mail Purpose
         {
             List<Notification> ObjListOfNotification = this.AllIncluding().ToList();
