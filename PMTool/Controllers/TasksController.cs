@@ -253,7 +253,32 @@ namespace PMTool.Controllers
 
         public ActionResult GetAllTasksForUser()
         {
+            //List<Task> taskList = new List<Task>();
+            //UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
+
+            //if (user.Tasks.Count > 0)
+            //{
+            //    foreach (Task item in user.Tasks)
+            //    {
+            //        if (item.ProjectStatusID != null)
+            //        {
+            //            if (item.ProjectStatus.Name != "Closed")
+            //            {
+            //                taskList.Add(item);
+            //            }
+            //        }
+
+            //    }
+
+            //}
+
+
+            //return View(taskList);
+
             List<Task> taskList = new List<Task>();
+            List<Project> possibleProjectList = new List<Project>();
+            List<ProjectStatus> possibleProjectStatusList = new List<ProjectStatus>();
+
             UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
 
             if (user.Tasks.Count > 0)
@@ -272,8 +297,19 @@ namespace PMTool.Controllers
 
             }
 
+            foreach (Project item in user.Projects)
+            {
+                possibleProjectList.Add(unitOfWork.ProjectRepository.Find(item.ProjectID));
+            }
 
-            return View(taskList);
+            ViewBag.AllPossibleProjects = possibleProjectList;
+            ViewBag.AllTaskList = taskList;
+            ViewBag.PossibleProjectStatus = possibleProjectStatusList;
+
+            return View();
+
+
+
         }
 
         public ActionResult ChangeStatusForUser(long taskID, long? statusID, long filter)
@@ -329,13 +365,7 @@ namespace PMTool.Controllers
 
                     }
 
-                    
-                   
-
-
-
                 }
-
 
             }
             foreach (Project item in user.Projects)
@@ -613,6 +643,261 @@ namespace PMTool.Controllers
 
             return View("GetAllTasksCretedByUser", model);
         }
+
+
+        /// <summary>
+        /// This post action for Searching task for User on Task assign To me UI --add by Foysal
+        /// </summary>
+
+        [HttpPost]
+        public ActionResult SearchTaskAssignToUser(SearchViewModel model)
+        {
+
+
+            if (model.SelectedProjectID == null && model.SelectedStatusID == null)
+            {
+                //Return Initial List
+
+                List<Task> taskList = new List<Task>();
+                List<Task> taskListFinal = new List<Task>();
+                List<Project> possibleProjectList = new List<Project>();
+                List<ProjectStatus> possibleProjectStatusList = new List<ProjectStatus>();
+                UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
+
+                if (user.Tasks.Count > 0)
+                {
+                    //taskList = user.Tasks.Where(p => p.CreatedBy == user.UserId).ToList();
+                    taskList = unitOfWork.TaskRepository.GetTasksByUser(user).ToList();
+                    if (taskList.Count > 0)
+                    {
+                        foreach (Task item in taskList)
+                        {
+                            if (item.ProjectStatusID != null)
+                            {
+                                if (item.ProjectStatus.Name != "Closed")
+                                {
+                                    taskListFinal.Add(item);
+
+                                }
+                            }
+
+                        }
+
+
+                    }
+
+                }
+          
+                foreach (Project item in user.Projects)
+                {
+                    possibleProjectList.Add(unitOfWork.ProjectRepository.Find(item.ProjectID));
+
+                }
+                ViewBag.AllPossibleProjects = possibleProjectList;
+                ViewBag.AllTaskList = taskListFinal;
+                ViewBag.PossibleProjectStatus = possibleProjectStatusList;
+
+            }
+            if (model.SelectedProjectID == null && model.SelectedStatusID == -1)
+            {
+                //return initial list
+                List<Task> taskList = new List<Task>();
+                List<Task> taskListFinal = new List<Task>();
+                List<Project> possibleProjectList = new List<Project>();
+                List<ProjectStatus> possibleProjectStatusList = new List<ProjectStatus>();
+                UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
+                if (user.Tasks.Count > 0)
+                {
+                    //taskList = user.Tasks.Where(p => p.CreatedBy == user.UserId).ToList();
+                    taskList = unitOfWork.TaskRepository.GetTasksByUser(user).ToList();
+
+                    if (taskList.Count > 0)
+                    {
+                        foreach (Task item in taskList)
+                        {
+                            if (item.ProjectStatusID != null)
+                            {
+                                if (item.ProjectStatus.Name != "Closed")
+                                {
+                                    taskListFinal.Add(item);
+
+                                }
+                            }
+
+                        }
+
+
+                    }
+
+
+                }
+
+                foreach (Project item in user.Projects)
+                {
+                    possibleProjectList.Add(unitOfWork.ProjectRepository.Find(item.ProjectID));
+                    //foreach (ProjectStatus status in unitOfWork.ProjectRepository.Find(item.ProjectID).ProjectStatuses)
+                    //{
+                    //    possibleProjectStatusList.Add(status);
+                    //}
+                }
+                ViewBag.AllPossibleProjects = possibleProjectList;
+                ViewBag.AllTaskList = taskListFinal;  
+                ViewBag.PossibleProjectStatus = possibleProjectStatusList;
+            }
+            if (model.SelectedProjectID == null && (model.SelectedStatusID != -1 && model.SelectedStatusID != null))
+            {
+                //return all project with that status
+                List<Task> taskList = new List<Task>();
+                List<Task> taskListFinal = new List<Task>();
+                List<Project> possibleProjectList = new List<Project>();
+                List<ProjectStatus> possibleProjectStatusList = new List<ProjectStatus>();
+                UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
+                if (user.Tasks.Count > 0)
+                {
+                    //taskList = user.Tasks.Where(p => p.CreatedBy == user.UserId).ToList();
+                    taskList = unitOfWork.TaskRepository.GetTasksByUser(user).ToList();
+
+                    if (taskList.Count > 0)
+                    {
+                        foreach (Task item in taskList)
+                        {
+                            if (item.ProjectStatusID != null)
+                            {
+                                if (item.ProjectStatusID == model.SelectedStatusID)
+                                {
+                                    taskListFinal.Add(item);
+
+                                }
+                            }
+
+
+                        }
+
+
+                    }
+                }
+
+                foreach (Project item in user.Projects)
+                {
+                    possibleProjectList.Add(unitOfWork.ProjectRepository.Find(item.ProjectID));
+                    foreach (ProjectStatus status in unitOfWork.ProjectRepository.Find(item.ProjectID).ProjectStatuses)
+                    {
+                        possibleProjectStatusList.Add(status);
+                    }
+                }
+
+                ViewBag.AllPossibleProjects = possibleProjectList;
+                ViewBag.AllTaskList = taskListFinal;
+                ViewBag.PossibleProjectStatus = possibleProjectStatusList;
+
+            }
+            if (model.SelectedProjectID != null && model.SelectedStatusID == -1)
+            {
+                //return that perticular project without status filter
+                List<Task> taskList = new List<Task>();
+                List<Task> taskListFinal = new List<Task>();
+                List<Project> possibleProjectList = new List<Project>();
+                List<ProjectStatus> possibleProjectStatusList = new List<ProjectStatus>();
+                UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
+                if (user.Tasks.Count > 0)
+                {
+                    //taskList = user.Tasks.Where(p => p.CreatedBy == user.UserId).ToList();
+                    taskList = unitOfWork.TaskRepository.GetTasksByUser(user).ToList();
+
+                    if (taskList.Count > 0)
+                    {
+                        foreach (Task item in taskList)
+                        {
+
+                            if (item.ProjectID == model.SelectedProjectID)
+                            {
+                                taskListFinal.Add(item);
+                            }
+
+
+
+                        }
+                    }
+
+                }
+
+                foreach (Project item in user.Projects)
+                {
+                    possibleProjectList.Add(unitOfWork.ProjectRepository.Find(item.ProjectID));
+
+                }
+                ViewBag.AllPossibleProjects = possibleProjectList;
+                ViewBag.AllTaskList = taskListFinal;
+
+                foreach (ProjectStatus status in unitOfWork.ProjectRepository.Find(model.SelectedProjectID.Value).ProjectStatuses)
+                {
+                    possibleProjectStatusList.Add(status);
+                }
+
+                ViewBag.PossibleProjectStatus = possibleProjectStatusList;
+
+
+            }
+            if (model.SelectedProjectID != null && (model.SelectedStatusID != -1 && model.SelectedStatusID != null))
+            {
+                //return all filtered
+                List<Task> taskList = new List<Task>();
+                List<Task> taskListFinal = new List<Task>();
+                List<Project> possibleProjectList = new List<Project>();
+                List<ProjectStatus> possibleProjectStatusList = new List<ProjectStatus>();
+                UserProfile user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
+
+                if (user.Tasks.Count > 0)
+                {
+                    //taskList = user.Tasks.Where(p => p.CreatedBy == user.UserId).ToList();
+                    taskList = unitOfWork.TaskRepository.GetTasksByUser(user).ToList();
+
+                    if (taskList.Count > 0)
+                    {
+                        foreach (Task item in taskList)
+                        {
+
+
+
+                            if (item.ProjectID == model.SelectedProjectID)
+                            {
+
+                                if (item.ProjectStatusID != null)
+                                {
+                                    if (item.ProjectStatusID == model.SelectedStatusID)
+                                    {
+                                        taskListFinal.Add(item);
+
+                                    }
+                                }
+
+                            }
+
+                        }
+                    }
+
+
+                }
+
+                foreach (Project item in user.Projects)
+                {
+                    possibleProjectList.Add(unitOfWork.ProjectRepository.Find(item.ProjectID));
+
+                }
+                ViewBag.AllPossibleProjects = possibleProjectList;
+                ViewBag.AllTaskList = taskListFinal;
+                foreach (ProjectStatus status in unitOfWork.ProjectRepository.Find(model.SelectedProjectID.Value).ProjectStatuses)
+                {
+                    possibleProjectStatusList.Add(status);
+                }
+                ViewBag.PossibleProjectStatus = possibleProjectStatusList;
+
+            }
+
+
+            return View("GetAllTasksForUser", model);
+        }
+
 
         private void GetTaskList(long projectID, out IList<Task> taskList, out Project project, long? statusId)
         {
