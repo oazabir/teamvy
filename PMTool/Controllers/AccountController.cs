@@ -23,6 +23,7 @@ namespace PMTool.Controllers
         // 
         // GET: /Account/Login   
 
+        private UnitOfWork unitOfWork = new UnitOfWork();
            
         [AllowAnonymous] 
         public ActionResult Login(string returnUrl)
@@ -110,6 +111,36 @@ namespace PMTool.Controllers
             return View();
         }
 
+        public ActionResult EditProfile()
+        {
+            // UserProfileViewModel userModel = new UserProfileViewModel();
+            UserProfile user = new UserProfile();
+            UserProfileViewModel userModel = new UserProfileViewModel();
+            user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
+            userModel.Email = user.Email;
+            userModel.FirstName = user.FirstName;
+            userModel.LastName = user.LastName;
+
+            return View(userModel);
+        }
+
+        [HttpPost]
+        public ActionResult EditProfile(UserProfileViewModel model)
+        {
+            UserProfile user = new UserProfile();
+            user = unitOfWork.UserRepository.GetUserByUserID((int)Membership.GetUser(WebSecurity.CurrentUserName).ProviderUserKey);
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+
+            unitOfWork.UserRepository.Update(user);
+            unitOfWork.Save();
+            ViewBag.Flag = "1";
+
+            //  MembershipUser user2= Membership.GetUser(user.UserName);
+
+
+            return View(model);
+        }
 
        
 
