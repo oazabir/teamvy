@@ -13,6 +13,7 @@ namespace PMTool.Controllers
         //
         // GET: /Sprints/
         UnitOfWork unitOfWork = new UnitOfWork();
+        
         public ActionResult CreateSprintFromKanban(long id)
         {
             Sprint sprint = new Sprint();
@@ -23,6 +24,115 @@ namespace PMTool.Controllers
 
             return PartialView(sprint); 
         }
+
+
+        [HttpPost]
+        public PartialViewResult CreateSprintFromKanban(Sprint sprint)
+        {
+
+            if (ModelState.IsValid)
+            {
+                unitOfWork.SprintRepository.InsertOrUpdate(sprint);
+                unitOfWork.Save();
+            }
+
+            Project project = unitOfWork.ProjectRepository.Find(sprint.ProjectID);
+            ViewBag.CurrentProject = project;
+            List<Task> taskList = new List<Task>();
+            taskList = unitOfWork.TaskRepository.GetTasksBySprintID(sprint.SprintID);
+
+            return PartialView("~/Views/Tasks/_Kanban", taskList);
+        }
+
+        public ActionResult CreateSprint(long projectId)
+        {
+            Sprint sprint = new Sprint();
+            sprint.StartDate = DateTime.Now;
+            sprint.EndDate = DateTime.Now;
+            sprint.ProjectID = projectId;
+            sprint.Project = unitOfWork.ProjectRepository.Find(sprint.ProjectID);
+
+            return View(sprint);
+        }
+
+        [HttpPost]
+        public ActionResult CreateSprint(Sprint sprint)
+        {
+
+            if (ModelState.IsValid)
+            {
+                unitOfWork.SprintRepository.InsertOrUpdate(sprint);
+                unitOfWork.Save();
+                return RedirectToAction("Sprint", new { @projectId = sprint.ProjectID });
+            }
+
+            Project project = unitOfWork.ProjectRepository.Find(sprint.ProjectID);
+            ViewBag.CurrentProject = project;
+            List<Task> taskList = new List<Task>();
+            taskList = unitOfWork.TaskRepository.GetTasksBySprintID(sprint.SprintID);
+
+            return RedirectToAction("Sprint", new { @projectId = sprint.ProjectID });
+
+            //return PartialView();
+        }
+/// <summary>
+/// The following view Result Method is not use right now
+/// </summary>
+/// <param name="SelectedProjectID"></param>
+/// <returns></returns>
+        public ViewResult Sprint(string SelectedProjectID)
+        {
+            List<Sprint> lstSprint = new List<Sprint>();
+            long projectId = Convert.ToInt32(SelectedProjectID);
+            lstSprint = unitOfWork.SprintRepository.All.Where(p => p.ProjectID == projectId).ToList();
+            return View(lstSprint);
+           
+        }
+
+        public ViewResult Index()
+        {
+            //return View(unitOfWork.SprintRepository.All);
+            List<Project> lstProject = new List<Project>();
+            lstProject = unitOfWork.ProjectRepository.All.ToList();
+            ViewBag.AllProjects = lstProject;
+            ViewBag.AllSprints = null;
+            return View();
+        }
+
+        /// <summary>
+        /// For Displaying the List of Sprint in index page the below Method is used
+        /// </summary>
+        /// <param name="SelectedProjectID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Index(string SelectedProjectID)
+        {
+            List<Sprint> lstSprint = new List<Sprint>();
+            List<Project> lstProject = new List<Project>();
+
+            if (SelectedProjectID != "")
+            {
+                long projectId = Convert.ToInt32(SelectedProjectID);
+                lstSprint = unitOfWork.SprintRepository.All.Where(p => p.ProjectID == projectId).ToList();
+                lstProject = unitOfWork.ProjectRepository.All.ToList();
+                ViewBag.AllProjects = lstProject;
+                ViewBag.AllSprints = lstSprint;
+                return View();
+            }
+
+            else 
+            {
+                //lstSprint = unitOfWork.SprintRepository.All.Where(p => p.ProjectID == projectId).ToList();
+                lstProject = unitOfWork.ProjectRepository.All.ToList();
+                ViewBag.AllProjects = lstProject;
+                ViewBag.AllSprints = lstSprint;
+                ViewBag.Flag = "1";
+                return View();
+            }
+            
+        }
+
+    
 
         [HttpPost]
         public ActionResult Delete(long sprintId)
@@ -43,23 +153,7 @@ namespace PMTool.Controllers
 
         }
 
-        [HttpPost]
-        public PartialViewResult CreateSprintFromKanban(Sprint sprint)
-        {
 
-            if (ModelState.IsValid)
-            {
-                unitOfWork.SprintRepository.InsertOrUpdate(sprint);
-                unitOfWork.Save();
-            }
-
-            Project project = unitOfWork.ProjectRepository.Find(sprint.ProjectID);
-            ViewBag.CurrentProject = project;
-            List<Task> taskList = new List<Task>();
-            taskList = unitOfWork.TaskRepository.GetTasksBySprintID(sprint.SprintID);
-
-            return PartialView("~/Views/Tasks/_Kanban",taskList);
-        }
 
 
         /// <summary>
