@@ -262,6 +262,7 @@
     <Compile Include="Models\CommentViewModel.cs" />
     <Compile Include="Models\EmailScheduler.cs" />
     <Compile Include="Models\SearchViewModel.cs" />
+    <Compile Include="Models\UserProfileViewModel.cs" />
     <Compile Include="Repository\EmailSentStatusRepository.cs" />
     <Compile Include="Repository\EmailSchedulerRepository.cs" />
     <Compile Include="Models\EmailSentStatus.cs" />
