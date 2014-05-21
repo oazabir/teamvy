@@ -1,5 +1,27 @@
 ﻿@model PMTool.Models.TimeLog
 
+<script type="text/javascript">
+
+    function OnChangeEvent() {
+
+        var InputTaskHour = parseFloat(document.getElementById('TaskHour').value).toFixed(2);
+        var OriginalTaskHour = parseFloat(@ViewBag.RemainingHour).toFixed(2);
+        if (InputTaskHour != 0 || InputTaskHour != null) {
+
+            var remainingHour = parseFloat(@ViewBag.RemainingHour).toFixed(2) - parseFloat(document.getElementById('TaskHour').value).toFixed(2);
+            document.getElementById('RemainingHour').value = remainingHour;
+
+
+
+        }
+
+
+
+    }
+
+</script>
+
+
 <tr>
     <td>
         @Html.LabelFor(model => model.EntryDate)
@@ -16,7 +38,7 @@
         @Html.LabelFor(model => model.TaskHour)
     </td>
     <td>
-        @Html.TextBoxFor(model => model.TaskHour)
+        @Html.TextBoxFor(model => model.TaskHour,new {@onchange = "OnChangeEvent();" } )
         @Html.ValidationMessageFor(model => model.TaskHour)
 
           
@@ -29,7 +51,7 @@
         @Html.LabelFor(model => model.RemainingHour)
     </td>
     <td>
-        @Html.TextBoxFor(model => model.RemainingHour)
+        @Html.TextBoxFor(model => model.RemainingHour, new { @Value = ViewBag.RemainingHour})
         @Html.ValidationMessageFor(model => model.RemainingHour)
 
           

@@ -9,6 +9,7 @@ namespace PMTool.Models
     {
         public List<ProjectStatus> statusList { get; set; }
         public List<Priority> priorityList { get; set; }
+        public List<Project> ProjectList { get; set; }
 
         private List<UserProfile> userList = new List<UserProfile>();
         private List<Sprint> sprintList = new List<Sprint>();

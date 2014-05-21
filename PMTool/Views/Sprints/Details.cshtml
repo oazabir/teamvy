@@ -1,0 +1,63 @@
+﻿@model PMTool.Models.Sprint
+
+@{
+    ViewBag.Title = "Details | Sprint";
+}
+
+<div class="pagetitle">
+    <h1>Sprint Details
+    </h1>
+    <span>Sprint details below....</span>
+</div>
+
+<table  class="table table-bordered table-invoice">
+    <tbody>
+          <tr>
+            <td class="width30">Project
+            </td>
+            <td>
+                @(Model.Project == null ? "None" : Model.Project.Name)
+            </td>
+        </tr>
+
+          <tr>
+            <td class="width30">Sprint Title
+            </td>
+            <td>
+                @Html.DisplayTextFor(_ => Model.Name).ToString()
+            </td>
+        </tr>
+
+          <tr>
+            <td class="width30">Sprint Description
+            </td>
+            <td>
+                @Html.DisplayTextFor(_ => Model.Description).ToString()
+                
+            </td>
+        </tr>
+
+          <tr>
+            <td class="width30">Start Date
+            </td>
+               <td> 
+                   @Model.StartDate.ToString("dd/MM/yyyyy")
+             </td>
+          </tr>
+            
+             <tr>
+            <td class="width30">End Date
+            </td>
+               <td>  
+                   @Model.EndDate.ToString("dd/MM/yyyyy")
+             </td>
+          </tr>
+    </tbody>
+</table>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.SprintID }, new { @class = "btn btn-primary" })
+    |
+    @Html.ActionLink("Back to List", "Index", "Sprints", new { @ProjectID = Model.ProjectID }, new { @class = "btn" })
+</p>
+
+

@@ -262,6 +262,7 @@
     <Compile Include="Models\CommentViewModel.cs" />
     <Compile Include="Models\EmailScheduler.cs" />
     <Compile Include="Models\SearchViewModel.cs" />
+    <Compile Include="Models\UserProfileViewModel.cs" />
     <Compile Include="Repository\EmailSentStatusRepository.cs" />
     <Compile Include="Repository\EmailSchedulerRepository.cs" />
     <Compile Include="Models\EmailSentStatus.cs" />
@@ -2252,6 +2253,10 @@
     <Content Include="Views\Tasks\GetAllTasksCretedByUser.cshtml" />
     <Content Include="Views\Tasks\ChangeProject.cshtml" />
     <Content Include="Views\Comments\_PostReplys.cshtml" />
+    <Content Include="Views\Sprints\Index.cshtml" />
+    <Content Include="Views\Sprints\Details.cshtml" />
+    <Content Include="Views\Sprints\DeleteSprint.cshtml" />
+    <Content Include="Views\Sprints\CreateSprint.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -2352,11 +2357,12 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>6397</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:3165/</IISUrl>
+          <IISUrl>
+          </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

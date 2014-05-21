@@ -1,0 +1,144 @@
+﻿@*@model IEnumerable<PMTool.Models.Sprint>*@
+@model PMTool.Models.Sprint
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="pagetitle">
+    <h1>Sprint List</h1>
+    <span>List of Sprint....</span>
+</div>
+
+@{
+    if(ViewBag.Flag=="1")
+    {
+    
+    <div class="alert alert-error">
+                              <button type="button" class="close" data-dismiss="alert">×</button>
+                              <strong>Warning!</strong> You have to select project.
+                            </div>
+}
+
+    
+    }
+
+
+@using (Html.BeginForm("Index", "Sprints", FormMethod.Post))
+{
+    
+  
+    <table id="tblSearch" class="table table-bordered table-invoice">
+        <thead>
+            <tr>
+                <td>Project</td>
+                <td>
+
+                    <select name="SelectedProjectID">
+                        <option value="">Choose...</option>
+                        @foreach (var item in ViewBag.AllProjects as List<PMTool.Models.Project>)
+                        {
+                            PMTool.Models.Search search = (PMTool.Models.Search)ViewBag.SearchObj;
+
+                            //if (search.SelectedProjectID.ToString() == item.Value)
+                            //{
+                       
+ <option value="@item.ProjectID" selected="selected">@item.Name</option> 
+                       
+                            //}
+                            // else
+                         
+ @*
+                        {
+                            <option value="@item.Value">@item.Text</option>  
+                        }*@
+                        }
+
+                    </select>
+
+                    @*<input type="hidden" name ="projectID" value ="1" />*@
+
+                </td>
+
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+}
+
+@{
+    if (ViewBag.ProjectID != null)
+    {
+<p>
+    @Html.ActionLink("Create New", "CreateSprint", new { projectId=ViewBag.ProjectID}, new { @title = "Add Sprint", @class = "btn btn-primary" })
+</p>
+      }
+      
+}
+    
+    
+
+
+        <div class="clearfix"></div>
+<table class="table table-bordered table-invoice" id="dyntable">
+    <thead>
+        <tr>
+            <th>Sprint Name
+            </th>
+            <th>Description
+            </th>
+            <th>Project
+            </th>
+            <th>Start Date
+            </th>
+            <th>End Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (ViewBag.AllSprints != null)
+        {
+
+            foreach (var item in @ViewBag.AllSprints)
+            {
+
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Description.ToString()
+                </td>
+                <td>
+                    @item.Project.Name.ToString()
+                </td>
+                <td>
+                    @if (item.StartDate != null)
+                    {<span>@item.StartDate.ToString("dd/MM/yyyy")</span>}
+                </td>
+                <td>
+                    @if (item.EndDate != null)
+                    {<span>@item.EndDate.ToString("dd/MM/yyyy")</span>}
+                </td>
+
+                <td align="center">
+                    @Html.ActionLink(" ", "Edit", new { id = item.SprintID }, new { @class = "icon-edit", @title = "Edit" })
+                    |
+                   
+                    @Html.ActionLink(" ", "Details", new { id = item.SprintID }, new { @class = "icon-list-alt", @title = "Details" })
+                    |
+                   
+                    @Html.ActionLink(" ", "DeleteSprint", new { id = item.SprintID }, new { @class = "icon-trash", @title = "Delete" })
+                </td>
+            </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
