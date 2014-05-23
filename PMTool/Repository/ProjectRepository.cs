@@ -237,6 +237,11 @@ namespace PMTool.Repository
             return project;
         }
 
+
+        public  List<Project> GetAll()
+        {
+            return context.Projects.ToList();
+        }
     }
 
     public interface IProjectRepository : IDisposable

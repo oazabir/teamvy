@@ -27,6 +27,13 @@
     jQuery(document).ready(function () {
 
         jQuery('.chosen').chosen();
+
+
+       
+
+
+
+
     });
 </script>
 
@@ -64,6 +71,14 @@
     }
 
 </script>
+
+
+<script>
+    
+</script>
+
+
+
 <tr>
     <td>Assigned To
     </td>
@@ -73,6 +88,7 @@
     </td>
      
 </tr>
+
 
 <tr>
     <td>Project Owner
@@ -90,30 +106,30 @@
         <input type="text" id="itemText" value="" placeholder="Add Status" />
         <button id="btn2" class="btn">+  </button>
         <div id="items" class="tagsinput">
-   
+
             @{
                 if (Model.ProjectStatuses != null)
                 {
                     foreach (PMTool.Models.ProjectStatus col in Model.ProjectStatuses)
                     {
-                        if(col.Name == "Closed")
+                        if (col.Name == "Closed")
                         {
-                            <span id="@col.ProjectStatusID" class="tag">@col.Name
-                              @*<a title="Removing Status" onclick="removeitbyID('@col.ProjectStatusID','@col.Name')" >x</a>*@
-                              </span>  
+                <span id="@col.ProjectStatusID" class="tag">@col.Name
+                    @*<a title="Removing Status" onclick="removeitbyID('@col.ProjectStatusID','@col.Name')" >x</a>*@
+                </span>  
                         }
                         else
                         {
-                              <span id="@col.ProjectStatusID" class="tag">@col.Name
-                              <a title="Removing Status" onclick="removeitbyID('@col.ProjectStatusID','@col.Name')" >x</a>
-                              </span>
+                <span id="@col.ProjectStatusID" class="tag">@col.Name
+                    <a title="Removing Status" onclick="removeitbyID('@col.ProjectStatusID','@col.Name')" >x</a>
+                </span>
                         }
                     }
                 }
-                }
+            }
         </div>
-         @Html.HiddenFor(model => model.allStatus, new { @id = "hdnStatus" })
-         
+        @Html.HiddenFor(model => model.allStatus, new { @id = "hdnStatus" })
+
     </td>
 </tr>
 <script>

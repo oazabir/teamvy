@@ -328,9 +328,35 @@ namespace PMTool.Controllers
         /// <returns></returns>
         public ActionResult BurndownCharts()
         {
-            List<Sprint> sprintList = unitOfWork.SprintRepository.AllByProjectID(1);
-            ViewBag.SprintList = sprintList;
-            return View();
+            //List<Sprint> sprintList = unitOfWork.SprintRepository.AllByProjectID(1);
+            List<Project> allProject = unitOfWork.ProjectRepository.GetAll();
+
+            ViewBag.allProject = allProject;
+            BurndownChartViewModel model = new BurndownChartViewModel();
+           // ViewBag.SprintList = sprintList;
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult BurndownCharts(BurndownChartViewModel model)
+        {
+            List<Project> allProject = unitOfWork.ProjectRepository.GetAll();
+            ViewBag.allProject = allProject;
+
+            if (model.ProjectID != null)
+            {
+                List<Sprint> sprintList = unitOfWork.SprintRepository.AllByProjectID(model.ProjectID);
+
+                ViewBag.SprintList = sprintList;
+            }
+
+            else
+            {
+
+            }
+
+
+            return View(model);
         }
 
 
