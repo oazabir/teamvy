@@ -257,6 +257,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\BurndownChartViewModel.cs" />
     <Compile Include="Models\Chart.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\CommentViewModel.cs" />
@@ -315,8 +316,15 @@
   <ItemGroup>
     <Content Include="collapse.png" />
     <Content Include="Content\themes\site\css\jquery.timepicker.css" />
+    <Content Include="Content\themes\site\css\normalize.css" />
+    <Content Include="Content\themes\site\css\selectize.css" />
+    <Content Include="Content\themes\site\js\es5.js" />
+    <Content Include="Content\themes\site\js\index.js" />
+    <Content Include="Content\themes\site\js\jquery.js" />
     <Content Include="Content\themes\site\js\jquery.timepicker.js" />
     <Content Include="Content\themes\site\js\jquery.timepicker.min.js" />
+    <Content Include="Content\themes\site\js\jqueryui.js" />
+    <Content Include="Content\themes\site\js\selectize.js" />
     <Content Include="richtexteditor\aspnet\colorpicker.aspx" />
     <Content Include="richtexteditor\aspnet\colorpicker.xml" />
     <Content Include="richtexteditor\aspnet\colorpicker_basic.aspx" />

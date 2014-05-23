@@ -67,6 +67,21 @@ h4.ctitle { border-color: #222 !important; }
 }
 
 
+.leftmenu .nav-tabs ul li ul
+{
+    margin: 0 0 0 19px;
+}
+
+.leftmenu .nav-tabs ul >.dropdown > a, .leftmenu .nav-tabs ul >.dropdown > a:hover
+{
+		 background-color: #8F8F8F;
+    background-image: url("../img/arrowdown2.png") !important;
+    background-position: right center;
+    background-repeat: no-repeat;
+    color: #EEEEEE;
+    margin: 0 0 0 -6px;
+}
+
 /*Notification CSS*/
 .jewelCount span {
 background: -webkit-gradient(linear, center top, center bottom, from(#fa3c45), to(#dc0d17));

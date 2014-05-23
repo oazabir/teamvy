@@ -1,11 +1,7 @@
-﻿@*@{
-    ViewBag.Title = "Burndown Charts";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}*@
-
-
+﻿@model PMTool.Models.BurndownChartViewModel
 @{
-    ViewBag.Title = "Home Page";
+
+    ViewBag.Title = "Burndown Chart";
 }
 
 @*<div class="pagetitle">
@@ -14,53 +10,88 @@
 </div>*@
 <!--pagetitle-->
 
-<div class="maincontent">
-    <div class="contentinner content-dashboard">
-        <div class="">
-            @*<h4 style="text-align: center !important;">Sprint List</h4>*@
 
-            <h5><u>List of Sprints</u></h5>
+@*<h4 style="text-align: center !important;">Sprint List</h4>*@
 
-            <table class="table table-bordered" id="dyntable">
-                <thead>
-                    <tr>
-                        <th>Project Name</th>
-                        <th>Sprint Name
-                        </th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Burndown Chart</th>
+@using (Html.BeginForm("BurndownCharts", "Projects", FormMethod.Post))
+{
+    
+    <table id="tblSearch" class="table table-bordered table-invoice">
 
-
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in (List<PMTool.Models.Sprint>)ViewBag.SprintList)
-                    {
-                        <tr>
-                            <td>
-                                @item.Project.Name
-                            </td>
-                            <td>
-                                @item.Name
-                            </td>
-                            <td>
-                                @item.StartDate
-                            </td>
-                            <td>
-                                @item.EndDate
-                            </td>
-                            <td>
-                                @Html.ActionLink(" ", "SprintBurnDown", "Sprints", new { sprintId = item.SprintID }, new { @class = "icon-signal", @title = "Burndown Chart" })
-                            </td>
+        <tr>
+            <td class="width30">Project</td>
+            <td class="width70">
+                <span class="formwrapper">
+                    @Html.DropDownListFor(model => model.ProjectID, ((IEnumerable<PMTool.Models.Project>)ViewBag.allProject).Select(option => new SelectListItem
+                   {
+                       Text = Html.DisplayTextFor(_ => option.Name).ToString(),
+                       Value = option.ProjectID.ToString(),
+                       Selected = (Model != null) && (option.ProjectID == Model.ProjectID)
+                   }), "Choose...", new { @data_placeholder = "Choose a Country...", @style = "width: 221px", @class = "chzn-select", @tabindex = "2" })
 
 
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                </span>
+
+                @Html.ValidationMessageFor(model => model.ProjectID)
+
+            </td>
+
+        </tr>
+
+        <tr>
+            <td class="width30"></td>
+            <td class="width70">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </td>
+        </tr>
+
+    </table>
+}
 
 
-        </div>
-    </div>
-</div>
+
+<h5><u>List of Sprints</u></h5>
+
+<table class="table table-bordered" id="dyntable">
+    <thead>
+        <tr>
+            <th>Project Name</th>
+            <th>Sprint Name
+            </th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Burndown Chart</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (ViewBag.SprintList != null)
+        {
+            foreach (var item in (List<PMTool.Models.Sprint>)ViewBag.SprintList)
+            {
+            <tr>
+                <td>
+                    @item.Project.Name
+                </td>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.StartDate.ToShortDateString()
+                </td>
+                <td>
+                    @item.EndDate.ToShortDateString()
+                </td>
+                <td>
+                    @Html.ActionLink(" ", "SprintBurnDown", "Sprints", new { sprintId = item.SprintID }, new { @class = "icon-signal", @title = "Burndown Chart" })
+                </td>
+
+
+            </tr>
+            }
+        }
+    </tbody>
+</table>
+
