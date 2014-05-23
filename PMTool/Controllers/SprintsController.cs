@@ -211,7 +211,35 @@ namespace PMTool.Controllers
 
         }
 
+        /// <summary>
+        /// Edit Sprint  added by Foysal
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult Edit(long id)
+        {
+            Sprint sprint = unitOfWork.SprintRepository.Find(id);
 
+            return View(sprint);
+        }
+
+        /// <summary>
+        /// Edit and Save
+        /// </summary>
+        /// <param name="sprint"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Edit(Sprint sprint)
+        {
+            if (ModelState.IsValid)
+            {
+                unitOfWork.SprintRepository.InsertOrUpdate(sprint);
+                unitOfWork.Save();
+                return RedirectToAction("Index", new { @projectId = sprint.ProjectID });
+            }
+
+            return View(sprint);
+        }
 
 
         /// <summary>

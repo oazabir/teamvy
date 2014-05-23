@@ -1,0 +1,61 @@
+﻿@model PMTool.Models.Sprint
+
+
+         <tr>
+                <td class="width30">Project
+                </td>
+                <td>
+                    @Html.DisplayTextFor(model => model.Project.Name)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Name)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name)
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Description)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Description)
+                    @Html.ValidationMessageFor(model => model.Description)
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.StartDate)
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(model => model.StartDate, "{0:dd/MM/yyyy}", new { @class = "datepicker", @style = "z-index:2000;" })
+                    @Html.ValidationMessageFor(model => model.StartDate)
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.EndDate)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.EndDate, "{0:dd/MM/yyyy}", new { @class = "datepicker", @style = "z-index:2000;" })
+                    @Html.ValidationMessageFor(model => model.EndDate)
+                </td>
+            </tr>
+
+
+         
+          
+              
+       
+
+
