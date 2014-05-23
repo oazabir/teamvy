@@ -1,0 +1,42 @@
+﻿@model PMTool.Models.Sprint
+
+@{
+    ViewBag.Title = "Edit | Sprint";
+}
+
+<div class="pagetitle">
+    <h1>
+        Sprint Edit
+    </h1>
+    <span>Edit Sprint below....</span>
+</div>
+
+@using (Html.BeginForm())
+{
+        @Html.HiddenFor(model => model.ProjectID)
+        @Html.HiddenFor(model=>model.SprintID)
+      
+    <table class="table table-bordered table-invoice">
+        <tbody>
+            <tr>
+                <td>
+                    @Html.Partial("_CreateOrEdit", Model)
+                </td>
+            </tr>
+            <tr>
+             <tr>
+                <td class="width30"></td>
+                <td>
+                    <input type="submit" id="btnSave" value="Save" class="btn btn-primary" />
+                </td>
+            </tr>
+               
+            </tr>
+        </tbody>
+    </table>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index","Sprints", null,  new { @class="btn"})
+</div>
+
