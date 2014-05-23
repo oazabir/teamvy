@@ -8,21 +8,21 @@ using PMTool.Repository;
 
 namespace PMTool.Controllers
 {
-    public class SprintsController : Controller
+    public class SprintsController : BaseController
     {
         //
         // GET: /Sprints/
         UnitOfWork unitOfWork = new UnitOfWork();
-        
+
         public ActionResult CreateSprintFromKanban(long id)
         {
             Sprint sprint = new Sprint();
             sprint.StartDate = DateTime.Now;
-            sprint.EndDate = DateTime.Now;     
+            sprint.EndDate = DateTime.Now;
             sprint.ProjectID = id;
             sprint.Project = unitOfWork.ProjectRepository.Find(sprint.ProjectID);
 
-            return PartialView(sprint); 
+            return PartialView(sprint);
         }
 
 
@@ -63,7 +63,8 @@ namespace PMTool.Controllers
             {
                 unitOfWork.SprintRepository.InsertOrUpdate(sprint);
                 unitOfWork.Save();
-                return RedirectToAction("Sprint", new { @projectId = sprint.ProjectID });
+                //return RedirectToAction("Sprint", new { @projectId = sprint.ProjectID });
+                return RedirectToAction("Index", new { @projectId = sprint.ProjectID });
             }
 
             Project project = unitOfWork.ProjectRepository.Find(sprint.ProjectID);
@@ -71,22 +72,23 @@ namespace PMTool.Controllers
             List<Task> taskList = new List<Task>();
             taskList = unitOfWork.TaskRepository.GetTasksBySprintID(sprint.SprintID);
 
-            return RedirectToAction("Sprint", new { @projectId = sprint.ProjectID });
+            //return RedirectToAction("Sprint", new { @projectId = sprint.ProjectID });
+            return RedirectToAction("Index", new { @projectId = sprint.ProjectID });
 
             //return PartialView();
         }
-/// <summary>
-/// The following view Result Method is not use right now
-/// </summary>
-/// <param name="SelectedProjectID"></param>
-/// <returns></returns>
+        /// <summary>
+        /// The following view Result Method is not use right now
+        /// </summary>
+        /// <param name="SelectedProjectID"></param>
+        /// <returns></returns>
         public ViewResult Sprint(string SelectedProjectID)
         {
             List<Sprint> lstSprint = new List<Sprint>();
             long projectId = Convert.ToInt32(SelectedProjectID);
             lstSprint = unitOfWork.SprintRepository.All.Where(p => p.ProjectID == projectId).ToList();
             return View(lstSprint);
-           
+
         }
 
         public ViewResult Index()
@@ -96,6 +98,7 @@ namespace PMTool.Controllers
             lstProject = unitOfWork.ProjectRepository.All.ToList();
             ViewBag.AllProjects = lstProject;
             ViewBag.AllSprints = null;
+            ViewBag.ProjectID = null;
             return View();
         }
 
@@ -117,39 +120,94 @@ namespace PMTool.Controllers
                 lstProject = unitOfWork.ProjectRepository.All.ToList();
                 ViewBag.AllProjects = lstProject;
                 ViewBag.AllSprints = lstSprint;
+                ViewBag.ProjectID = SelectedProjectID;
                 return View();
             }
 
-            else 
+            else
             {
                 //lstSprint = unitOfWork.SprintRepository.All.Where(p => p.ProjectID == projectId).ToList();
                 lstProject = unitOfWork.ProjectRepository.All.ToList();
                 ViewBag.AllProjects = lstProject;
                 ViewBag.AllSprints = lstSprint;
                 ViewBag.Flag = "1";
+
+                ViewBag.ProjectID = null;
                 return View();
             }
-            
+
         }
 
-    
 
-        [HttpPost]
-        public ActionResult Delete(long sprintId)
+        /// <summary>
+        ///  For Details 
+        /// </summary>
+        /// <param name="sprintId"></param>
+        /// <returns></returns>
+
+        public ViewResult Details(long id) // id = Project id
         {
-            
-            string status = "";
+            Sprint listofSprint = unitOfWork.SprintRepository.Find(id);
+            //ViewBag.Comments = unitOfWork.CommentRepository.GetComments(id);         
+            return View(listofSprint);
+        }
+
+
+        /// <summary>
+        /// For Delete
+        /// </summary>
+        /// <param name="sprintId"></param>
+        /// <returns></returns>
+
+        public ActionResult DeleteSprint(long id)
+        {
+            if (TempData["Status"] != null)
+            {
+                if (TempData["Status"].ToString() == "1")
+                {
+                    ViewBag.status = "1";
+                }
+            }
+
+            Sprint listofSprint = unitOfWork.SprintRepository.Find(id);
+            return View(listofSprint);
+        }
+
+
+        [HttpPost, ActionName("DeleteSprint")]
+        //public ActionResult Delete(long sprintId)
+        //{
+
+        //    string status = "";
+        //    try
+        //    {
+        //        unitOfWork.SprintRepository.Delete(sprintId);
+        //        unitOfWork.Save();
+        //        status = "success";
+        //    }
+        //    catch
+        //    {
+        //        status = "Error : One or more task is already attached in this sprint...";
+        //    }
+        //    return Content(status);
+
+        //}
+        public ActionResult Delete(long id)
+        {
+
             try
             {
-                unitOfWork.SprintRepository.Delete(sprintId);
+                unitOfWork.SprintRepository.Delete(id);
                 unitOfWork.Save();
-                status = "success";
+                return RedirectToAction("Index", new { @SprintID = id });
             }
             catch
             {
-                status = "Error : One or more task is already attached in this sprint...";
+                TempData["Status"] = "1";
+                return RedirectToAction("DeleteSprint", new { @SprintID = id });
             }
-            return Content(status);
+
+            //return Content(status);
 
         }
 
@@ -224,9 +282,9 @@ namespace PMTool.Controllers
             List<TimeLog> expendedTime = unitOfWork.TimeLogRepository.GetTimeLogBySprint(sprintId);
 
             var SprintTimeLog = from s in expendedTime
-                            group s by new {s.EntryDate} into g
-                            //select new { g.Key.EntryDate, TotalHour = g.Sum(s => s.TaskHour) };
-                            select new { g.Key.EntryDate, TotalRemaingHour = g.Sum(s => s.RemainingHour) };
+                                group s by new { s.EntryDate } into g
+                                //select new { g.Key.EntryDate, TotalHour = g.Sum(s => s.TaskHour) };
+                                select new { g.Key.EntryDate, TotalRemaingHour = g.Sum(s => s.RemainingHour) };
 
 
             int baseValue = 0;
@@ -241,11 +299,11 @@ namespace PMTool.Controllers
 
                 //remainingHour = remainingHour - entryHour;
                 //List<TimeLog> lstTask = unitOfWork.TimeLogRepository.All.Where(t=>t.SprintID == sprintId
-             
-                Chart chart = new Chart { XValue = baseValue, YValue = totalRemainingHour};
+
+                Chart chart = new Chart { XValue = baseValue, YValue = totalRemainingHour };
                 chartList.Add(chart);
                 baseValue++;
-                
+
             }
             return Json(chartList, JsonRequestBehavior.AllowGet);
         }
@@ -275,7 +333,7 @@ namespace PMTool.Controllers
             return Json(chartList, JsonRequestBehavior.AllowGet);
         }
 
-        
+
 
 
     }

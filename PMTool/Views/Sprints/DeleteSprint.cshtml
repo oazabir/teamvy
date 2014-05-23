@@ -1,0 +1,59 @@
+﻿@model PMTool.Models.Sprint
+@{
+    ViewBag.Title = "Delete | Sprint";
+}
+
+<div class="pagetitle">
+    <h1>Delete Sprint
+    </h1>
+    <span>Are you sure you want to delete this?</span>
+</div>
+
+@{
+    if (ViewBag.status == "1")
+    {
+    
+    <div class="alert alert-error">
+                              <button type="button" class="close" data-dismiss="alert">×</button>
+                              <strong>Warning!</strong> One or more task is already attached in this sprint.
+                            </div>
+    }
+
+    
+    }
+
+@using (Html.BeginForm())
+{
+    <table class="table table-bordered table-invoice">
+        <tbody>
+            <tr>
+                <td class="width30">Project Name
+                </td>
+                <td>
+                      @Model.Project.Name
+            </tr>
+            <tr>
+                <td class="width30">Sprint Name
+                </td>
+                <td>
+                    @Model.Name
+                </td>
+            </tr>
+
+      
+
+            <tr>
+                <td class="width30"></td>
+                <td>
+                      <input type="submit" value=" Delete" class="btn btn-danger" />
+                   
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p>
+       @Html.ActionLink("Back to List", "Index", "Sprints", new { @SprintId=Model.SprintID}, new { @class = "btn" })
+    </p>
+}
+
+

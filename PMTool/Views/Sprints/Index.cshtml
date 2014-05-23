@@ -65,8 +65,6 @@
                 <td>
                     <input type="submit" value="Search" class="btn btn-primary" />
                 </td>
-
-
             </tr>
         </thead>
         <tbody>
@@ -74,9 +72,17 @@
     </table>
 }
 
+@{
+    if (ViewBag.ProjectID != null)
+    {
 <p>
-    @Html.ActionLink("Create New", "CreateSprint", null, new { @title = "Add Sprint", @class = "btn btn-primary" })
+    @Html.ActionLink("Create New", "CreateSprint", new { projectId=ViewBag.ProjectID}, new { @title = "Add Sprint", @class = "btn btn-primary" })
 </p>
+      }
+      
+}
+    
+    
 
 
         <div class="clearfix"></div>
@@ -127,7 +133,7 @@
                     @Html.ActionLink(" ", "Details", new { id = item.SprintID }, new { @class = "icon-list-alt", @title = "Details" })
                     |
                    
-                    @Html.ActionLink(" ", "Delete", new { id = item.SprintID }, new { @class = "icon-trash", @title = "Delete" })
+                    @Html.ActionLink(" ", "DeleteSprint", new { id = item.SprintID }, new { @class = "icon-trash", @title = "Delete" })
                 </td>
             </tr>
             }
