@@ -34,7 +34,7 @@
                 <td>
 
                     <select name="SelectedProjectID">
-                        <option value="">Choose...</option>
+                        <option value="" selected="selected">Choose...</option>
                         @foreach (var item in ViewBag.AllProjects as List<PMTool.Models.Project>)
                         {
                             PMTool.Models.Search search = (PMTool.Models.Search)ViewBag.SearchObj;
@@ -42,7 +42,7 @@
                             //if (search.SelectedProjectID.ToString() == item.Value)
                             //{
                        
- <option value="@item.ProjectID" selected="selected">@item.Name</option> 
+ <option value="@item.ProjectID" >@item.Name</option> 
                        
                             //}
                             // else

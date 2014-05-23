@@ -97,7 +97,8 @@ namespace PMTool.Controllers
             List<UserProfile> userList = unitOfWork.UserRepository.All();
             foreach (UserProfile user in userList)
             {
-                SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName +" "+ user.LastName };
+                //SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName + " " + user.LastName };
+                SelectListItem item = new SelectListItem { Value = user.UserId.ToString(), Text = user.FirstName +" "+ user.LastName+" - "+user.UserName};
                 allUsers.Add(item);
             }
             return allUsers;
