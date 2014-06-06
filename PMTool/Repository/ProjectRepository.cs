@@ -210,6 +210,7 @@ namespace PMTool.Repository
             }
             return projectListNew;
         }
+    
 
         public  List<Project> GetListbyName(string searchParam,params Expression<Func<Project, object>>[] includeProperties)
         {
@@ -242,6 +243,7 @@ namespace PMTool.Repository
         {
             return context.Projects.ToList();
         }
+    
     }
 
     public interface IProjectRepository : IDisposable
