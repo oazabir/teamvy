@@ -85,7 +85,7 @@ namespace PMTool.Controllers
                                 else
                                 {
                                     objOflstMailer = DailyTaskStatus(emailSchedule);
-                                    objOflstMailer.AddRange(DailyTaskStatusForCreator());
+                                    //objOflstMailer.AddRange(DailyTaskStatusForCreator());
 
                                     if (objOflstMailer.Count >= 0)
                                     {
@@ -113,7 +113,7 @@ namespace PMTool.Controllers
                             if (currentdateTime >= scheduleDateTime) 
                             {
                                 objOflstMailer = DailyTaskStatus(emailSchedule);
-                                objOflstMailer.AddRange(DailyTaskStatusForCreator());
+                                //objOflstMailer.AddRange(DailyTaskStatusForCreator());
 
                                 if (objOflstMailer.Count >= 0)
                                 {
@@ -226,13 +226,52 @@ namespace PMTool.Controllers
         {
             List<Mailer> mailerList = new List<Mailer>();
             List<Task> taskList = unitofWork.TaskRepository.AllIncludingForMail().Where(t => t.ProjectStatus.Name.ToLower() != "closed").ToList();
-            List<UserProfile> userList = unitofWork.UserRepository.All();
+            //List<UserProfile> userList = unitofWork.UserRepository.All();          
 
             //string emailbody = "style=\".emailTbl {border: 1px solid #000000;border-radius: 5px;margin: 0;padding: 0;width: 574px;-moz-border-radius-bottomleft:5px;-webkit-border-bottom-left-radius:5px;border-bottom-left-radius:5px;-moz-border-radius-bottomright:5px;-webkit-border-bottom-right-radius:5px;border-bottom-right-radius:5px;-moz-border-radius-topright:5px;-webkit-border-top-right-radius:5px;border-top-right-radius:5px;-moz-border-radius-topleft:5px;-webkit-border-top-left-radius:5px;border-top-left-radius:5px;}.emailTbl table{border-collapse: collapse;border-spacing: 0;width:100%;margin:0px;padding:0px;}.emailTbl tr:last-child td:last-child {-moz-border-radius-bottomright:5px;-webkit-border-bottom-right-radius:5px;border-bottom-right-radius:5px;}.emailTbl table tr:first-child td:first-child {-moz-border-radius-topleft:5px;-webkit-border-top-left-radius:5px;border-top-left-radius:5px;}.emailTbl table tr:first-child td:last-child {-moz-border-radius-topright:5px;-webkit-border-top-right-radius:5px;border-top-right-radius:5px;}.emailTbl tr:last-child td:first-child{-moz-border-radius-bottomleft:5px;-webkit-border-bottom-left-radius:5px;border-bottom-left-radius:5px;}.emailTbl tr:hover td{}.emailTbl tr:nth-child(odd){ background-color:#e8edff; }.emailTbl tr:nth-child(even){background-color:#ffffff; }.emailTbl td{vertical-align:middle;border:1px solid #000000;border-width:0px 1px 1px 0px;text-align:left;padding:9px;font-size:12px;font-family:Arial;font-weight:normal;color:#000000;}.emailTbl tr:last-child td{border-width:0px 1px 0px 0px;}.emailTbl tr td:last-child{border-width:0px 0px 1px 0px;}.emailTbl tr:last-child td:last-child{border-width:0px 0px 0px 0px;}.emailTbl tr:first-child td{background:-o-linear-gradient(bottom, #b9c9fe 5%, #b9c9fe 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b9c9fe), color-stop(1, #b9c9fe) );background:-moz-linear-gradient( center top, #b9c9fe 5%, #b9c9fe 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#b9c9fe,endColorstr=#b9c9fe);	background: -o-linear-gradient(top,#b9c9fe,b9c9fe);background-color:#b9c9fe;border:0px solid #000000;text-align:center;border-width:0px 0px 1px 1px;font-size:14px;font-family:Arial;font-weight:bold;color:#000000;}.emailTbl tr:first-child:hover td{background:-o-linear-gradient(bottom, #b9c9fe 5%, #b9c9fe 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b9c9fe), color-stop(1, #b9c9fe) );background:-moz-linear-gradient( center top, #b9c9fe 5%, #b9c9fe 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#b9c9fe, endColorstr=#b9c9fe);	background: -o-linear-gradient(top,#b9c9fe,b9c9fe);background-color:#b9c9fe;}.emailTbl tr:first-child td:first-child{border-width:0px 0px 1px 0px;}.emailTbl tr:first-child td:last-child{border-width:0px 0px 1px 1px;}\"";
             //string styleTable     = "style=\"border-collapse: collapse;border-spacing: 0;width: 100%;margin: 0;padding: 0\"";
             //string styleTableRow  = "style=\"background-color: #fff\"";
             //string styleTableData = "style=\"vertical-align: middle;border: 1px solid #000;border-width: 0 1px 1px 0;text-align: left;padding: 9px;font-size: 12px;font-family: Arial;font-weight: normal;color: #000\"";
 
+            List<UserProfile> userList = new List<UserProfile>();
+
+            if (objEmailScheduler.RecipientUserType.Value == 1)             //Task's user
+            {
+               List<UserProfile> userListByProject = GetAllUserByProjectId(objEmailScheduler.ProjectID);
+               userList = userListByProject;
+            }
+            else if (objEmailScheduler.RecipientUserType.Value == 2)       // Task's Followers
+            {
+                List<UserProfile> userListByProject = GetAllUserByProjectId(objEmailScheduler.ProjectID);
+                userList = userListByProject;
+            }
+            else if (objEmailScheduler.RecipientUserType.Value == 3)        //Task's Users & Followers
+            {
+                List<UserProfile> userListByProject = GetAllUserByProjectId(objEmailScheduler.ProjectID);
+                userList = userListByProject;
+            }
+            else if (objEmailScheduler.RecipientUserType.Value == 4)        //Task's Creator & Followers
+            {
+                List<UserProfile> userListByProject = GetAllUserByProjectId(objEmailScheduler.ProjectID);
+                userList = userListByProject;
+            }
+            else if (objEmailScheduler.RecipientUserType.Value == 5)        //Project's Users
+            {
+                List<UserProfile> userListByProject = GetAllUserByProjectId(objEmailScheduler.ProjectID);
+                userList = userListByProject;
+            }
+
+            else if (objEmailScheduler.RecipientUserType.Value == 6)        //Task's Creator & Users
+            {
+                List<UserProfile> userListByProject = GetAllUserByProjectId(objEmailScheduler.ProjectID);
+                userList = userListByProject;
+            }
+
+            else if (objEmailScheduler.RecipientUserType.Value == 7)        //Task's Creator & Users
+            {
+                List<UserProfile> userListByProject = GetAllUserByProjectId(objEmailScheduler.ProjectID);
+                userList = userListByProject;
+            }
 
 
             string styleTableHeader = "style= \"background-color:#0094ff; border:1px solid;\"";
@@ -242,7 +281,44 @@ namespace PMTool.Controllers
             foreach(UserProfile objOfuser in userList)
             {
                 string messageBody = string.Empty;
-                List<Task> userTaskList = taskList.Where(a => a.Users.Any(b => b.UserId == objOfuser.UserId) && a.ProjectID == objEmailScheduler.ProjectID).ToList();
+                List<Task> userTaskList = new List<Task>();
+                           
+                if (objEmailScheduler.RecipientUserType.Value == 1)  //Task's user
+                {
+                    userTaskList= taskList.Where(a => a.Users.Any(b => b.UserId == objOfuser.UserId) && a.ProjectID == objEmailScheduler.ProjectID).ToList();
+                }
+
+                else if (objEmailScheduler.RecipientUserType.Value == 2)// Task's Followers
+                {
+                    userTaskList = taskList.Where(a => a.Followers.Any(b => b.UserId == objOfuser.UserId) && a.ProjectID == objEmailScheduler.ProjectID).ToList();
+                }
+
+                else if (objEmailScheduler.RecipientUserType.Value == 3) //Task's Users & Followers
+                {
+                    userTaskList = taskList.Where(a => a.Followers.Any(b => b.UserId == objOfuser.UserId && a.ProjectID == objEmailScheduler.ProjectID) || (a.Users.Any(c => c.UserId == objOfuser.UserId && a.ProjectID == objEmailScheduler.ProjectID))).ToList();
+                }
+                else if (objEmailScheduler.RecipientUserType.Value == 4) //Task's Creator & Followers
+                {
+                    userTaskList = taskList.Where((a => a.CreatedBy == objOfuser.UserId && a.ProjectID == objEmailScheduler.ProjectID || a.Followers.Any(b => b.UserId == objOfuser.UserId && a.ProjectID == objEmailScheduler.ProjectID))).ToList();
+                }
+
+                else if (objEmailScheduler.RecipientUserType.Value == 5) //Project's Users
+                {
+                    List<Task> tasklist = unitofWork.TaskRepository.AllTaskByIndividalProject(objEmailScheduler.ProjectID);               
+                    userTaskList = tasklist.Where(a => a.Users.Any(b => b.UserId == objOfuser.UserId)).ToList();
+                }
+                else if (objEmailScheduler.RecipientUserType.Value == 6) //Task's Creator & Users
+                {                 
+                    userTaskList = taskList.Where((a => a.CreatedByUser == objOfuser && a.ProjectID == objEmailScheduler.ProjectID || a.Users.Any(b => b.UserId == objOfuser.UserId && a.ProjectID==objEmailScheduler.ProjectID))).ToList();
+                }
+
+                else if (objEmailScheduler.RecipientUserType.Value == 7) //Task's Creator 
+                {                   
+                    userTaskList = taskList.Where(a => a.CreatedBy == objOfuser.UserId && a.ProjectID==objEmailScheduler.ProjectID).ToList();
+                }
+
+               
+                //taskList.Where(a => a.Users.Any(b => b.UserId == objOfuser.UserId) && a.ProjectID == objEmailScheduler.ProjectID).ToList();
 
                 if (userTaskList.Count > 0)
                 {
@@ -272,6 +348,29 @@ namespace PMTool.Controllers
             }
 
             return mailerList;
+        }
+
+
+        /// <summary>
+        /// This method Return the all User of Specific Project
+        /// Created By - Foysal 
+        /// Date : 05/06/2014
+        /// </summary>
+        /// <param name="ProjectID"></param>
+        /// <returns></returns>
+        private List<UserProfile> GetAllUserByProjectId(long ProjectID)
+        {
+            //List<UserProfile> allUsers = new List<UserProfile>();
+            //List<UserProfile> userList = unitofWork.ProjectRepository.Find(ProjectID).Users;
+            //foreach (UserProfile user in userList)
+            //{
+            //    UserProfile users = new UserProfile { UserId = user.UserId ,UserName = user.UserName ,FirstName=user.FirstName,LastName=user.LastName,Email=user.Email};
+            //    allUsers.Add(users);
+            //}
+            //return allUsers;
+
+            List<UserProfile> userList = unitofWork.ProjectRepository.Find(ProjectID).Users;
+            return userList;
         }
 
 
