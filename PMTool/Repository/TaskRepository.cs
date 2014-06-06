@@ -139,6 +139,24 @@ namespace PMTool.Repository
             return objTask;
         }
 
+
+
+        /// <summary>
+        /// for finding All Task By Individal Project created by foysal
+        /// </summary>
+        /// <param name="projectID"></param>
+        /// <returns></returns>
+
+        public List<Task> AllTaskByIndividalProject(long projectId)
+        {
+            List<Task> taskList = new List<Task>();
+            taskList = context.Tasks.Where(a => a.ProjectID == projectId && a.ProjectStatus.Name.ToLower() != "closed" ).ToList();
+            return taskList;
+        }
+
+
+
+
         public TaskPropertyChange InsertOrUpdate(Task task)
         {
             TaskPropertyChange change = new TaskPropertyChange();
@@ -293,6 +311,7 @@ namespace PMTool.Repository
         {
             context.Dispose();
         }
+
 
         public List<Task> GetTasksByProjectID(long projectID)
         {
